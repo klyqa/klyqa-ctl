@@ -1,0 +1,35 @@
+{
+  "name": "Klyqa CTL",
+  "build": {
+    "dockerfile": "../Dockerfile.dev"
+  },
+  "runArgs": [
+    "-e",
+    "GIT_EDITOR=code --wait",
+    "--network=host", // ipvlan
+    "--name=vscode-klyqa-ctl"
+  ],
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "explorer.autoReveal": true,
+    "explorer.compactFolders": true,
+    "explorer.fileNesting.expand": true,
+    "python.pythonPath": "/usr/local/bin/python",
+    "python.languageServer": "Pylance",
+    "python.linting.enabled": true,
+    "python.formatting.blackPath": "/usr/local/bin/black",
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true
+  },
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "donjayamanne.githistory",
+    "mhutchie.git-graph",
+    "waderyan.gitblame",
+    "donjayamanne.git-extension-pack",
+    "howardzuo.vscode-git-tags",
+    "donjayamanne.python-environment-manager"
+  ]
+}
