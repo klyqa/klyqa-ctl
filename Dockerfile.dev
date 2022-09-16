@@ -1,10 +1,9 @@
 ARG VARIANT="ubuntu-20.04"
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 
-ADD klyqa-ctl.py /
+ADD klyqa_ctl/*.py /
 ADD .git /
-ADD *.py /
-ADD requirements.txt /
+ADD klyqa_ctl/requirements.txt /
 
 ENV DEBIAN_FRONTEND=noninteractive
 
