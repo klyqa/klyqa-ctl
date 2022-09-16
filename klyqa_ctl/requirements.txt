@@ -3,7 +3,5 @@ aiohttp==3.8.1
 pycryptodome==3.15.0
 pycryptodomex==3.15.0
 requests==2.26.0
-#unicode_slugify==0.1.5
-#slugify
 python-slugify
 singleton-decorator

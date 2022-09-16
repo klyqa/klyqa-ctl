@@ -406,9 +406,7 @@ async def async_json_cache(json_data, json_file):
             async with aiofiles.open(
                 os.path.dirname(sys.argv[0]) + f"/{json_file}", mode="r"
             ) as f:
-                s = ""
-                async for i in f.readlines():
-                    s = s + i.strip()
+                s = await f.read()
             return_json = json.loads(s)
             cached = True
         except:
@@ -1396,7 +1394,11 @@ class Klyqa_account:
                         self.__read_tcp_task = asyncio.create_task(read_tcp_task())
 
                         LOGGER.debug("Started tcp reading..")
-                        await asyncio.wait_for(self.__read_tcp_task,timeout=1.0)
+                        try:
+                            await asyncio.wait_for(self.__read_tcp_task,timeout=1.0)
+                        except Exception as e:
+                            LOGGER.debug(f"Socket-Timeout for incoming tcp connections.")
+
                         result = self.__read_tcp_task.result()
                         if not result or not isinstance(result, tuple) or not len(result) == 3: # or self.__read_tcp_task.cancelled():
                             LOGGER.debug("no tcp read result. break")
@@ -1590,20 +1592,21 @@ class Klyqa_account:
                 return False
 
         if self.username is not None and self.password is not None:
+            login_response = None
             try:
                 login_data = {"email": self.username, "password": self.password}
 
                 login_response = await loop.run_in_executor(
                     None,
                     functools.partial(
-                        requests.post, self.host + "/auth/login", json=login_data, timeout=30
+                        requests.post, self.host + "/auth/login", json=login_data, timeout=10
                     ),
                 )
 
-                if (
+                if (not login_response or (
                     login_response.status_code != 200
                     and login_response.status_code != 201
-                ):
+                )):
                     LOGGER.error(
                         str(login_response.status_code)
                         + ", "
