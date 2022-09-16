@@ -9,7 +9,7 @@ It is written in python.
 You can run the python script directly with
 
 ```
-./klyqa-ctl.py
+./klyqa_ctl.py
 ```
 
 Use pip for installation of required dependency packages.
