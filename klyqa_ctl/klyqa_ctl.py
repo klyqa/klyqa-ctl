@@ -1394,7 +1394,11 @@ class Klyqa_account:
                         self.__read_tcp_task = asyncio.create_task(read_tcp_task())
 
                         LOGGER.debug("Started tcp reading..")
-                        await asyncio.wait_for(self.__read_tcp_task,timeout=1.0)
+                        try:
+                            await asyncio.wait_for(self.__read_tcp_task,timeout=1.0)
+                        except Exception as e:
+                            LOGGER.debug(f"Socket-Timeout for incoming tcp connections.")
+
                         result = self.__read_tcp_task.result()
                         if not result or not isinstance(result, tuple) or not len(result) == 3: # or self.__read_tcp_task.cancelled():
                             LOGGER.debug("no tcp read result. break")
