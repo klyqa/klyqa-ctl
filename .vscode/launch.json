@@ -17,7 +17,7 @@
       "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
-      "program": "./klyqa_ctl.py",
+      "program": "${workspaceFolder}/klyqa_ctl/klyqa_ctl.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
@@ -46,7 +46,7 @@
       "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
-      "program": "./klyqa_ctl.py",
+      "program": "${workspaceFolder}/klyqa_ctl/klyqa_ctl.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
