@@ -2,15 +2,12 @@
 
 ###################################################################
 #
-#
 # Interactive Klyqa Control commandline client
-#
 #
 # Company: QConnex GmbH / Klyqa
 # Author: Frederick Stallmeyer
 #
 # E-Mail: frederick.stallmeyer@gmx.de
-#
 #
 # nice to haves:
 #   -   list cloud connected devices in discovery.
@@ -19,11 +16,9 @@
 #   -   Implementation for the different device config profile versions and
 #       check on send.
 #
-#
 ###################################################################
 
 from dataclasses import dataclass
-import dataclasses
 import socket
 import sys
 import time
@@ -32,7 +27,7 @@ import datetime
 import argparse
 import select
 import logging
-from typing import TypeVar, Any, NewType
+from typing import TypeVar, Any
 NoneType = type(None)
 import requests, uuid, json
 import os.path
@@ -40,13 +35,21 @@ from threading import Thread
 from collections import ChainMap
 from threading import Event
 from enum import Enum
-import threading
-import multiprocessing
 import asyncio, aiofiles
 import functools, traceback
-import aiohttp
-import copy
 from asyncio.exceptions import CancelledError, TimeoutError
+from collections.abc import Callable
+
+import slugify as unicode_slug
+
+try:
+    from Cryptodome.Cipher import AES  # provided by pycryptodome
+    from Cryptodome.Random import get_random_bytes  # pycryptodome
+except:
+    from Crypto.Cipher import AES  # provided by pycryptodome
+    from Crypto.Random import get_random_bytes  # pycryptodome
+
+from typing import TypeVar
 
 # DEFAULT_SEND_TIMEOUT_MS=5000000000
 DEFAULT_SEND_TIMEOUT_MS=5000
@@ -61,18 +64,9 @@ logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
 
-import slugify as unicode_slug
+STARTED_TIME = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
 
-try:
-    from Cryptodome.Cipher import AES  # provided by pycryptodome
-    from Cryptodome.Random import get_random_bytes  # pycryptodome
-except:
-    from Crypto.Cipher import AES  # provided by pycryptodome
-    from Crypto.Random import get_random_bytes  # pycryptodome
-
-s = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
-
-print(f"{s} start")
+print(f"{STARTED_TIME} start")
 
 TypeJSON = dict[str, Any]
 
@@ -569,9 +563,6 @@ Bulb_TCP_return = Enum("Bulb_TCP_return", "sent answered wrong_uid wrong_aes tcp
 
 
 Message_state = Enum("Message_state", "sent answered unsent")
-from collections.abc import Callable
-
-from typing import List
 
 @dataclass
 class Message:
@@ -875,8 +866,6 @@ commands_send_to_bulb = [
     "cotton",
     "ice",
 ]
-
-from typing import TypeVar
 
 S = TypeVar("S", argparse.ArgumentParser, type(None))
 
@@ -1210,7 +1199,7 @@ class Klyqa_account:
     tcp: socket
     udp: socket
 
-    def __init__(self, username="", password="", host=""):
+    def __init__(self, username="", password="", host="", bind_ports: bool = False):
 
         self.username = username
         self.password = password
@@ -1229,6 +1218,43 @@ class Klyqa_account:
         self.__read_tcp_task: asyncio.Task = None
         self.tcp = None
         self.udp = None
+        if bind_ports:
+            asyncio.run(self.bind_ports())
+    
+    async def bind_ports(self, server_ip: str = None) -> bool:
+        """bind ports."""
+        await tcp_udp_port_lock.acquire()
+        try:
+            self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            if server_ip is not None:
+                server_address = (server_ip, 2222)
+            else:
+                server_address = ("0.0.0.0", 2222)
+            self.udp.bind(server_address)
+            LOGGER.debug("Bound UDP port 2222")
+
+        except Exception as e:
+            LOGGER.error(
+                "Error on opening and binding the udp port 2222 on host for initiating the lamp communication."
+            )
+            return False
+
+        try:
+            self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_address = ("0.0.0.0", 3333)
+            self.tcp.bind(server_address)
+            LOGGER.debug("Bound TCP port 3333")
+            self.tcp.listen(1)
+
+        except Exception as e:
+            LOGGER.error(
+                "Error on opening and binding the tcp port 3333 on host for initiating the lamp communication."
+            )
+            return False
+        return True
 
     async def bulb_handle_local_tcp(self, bulb: KlyqaBulb):
         return_state = -1
@@ -1324,7 +1350,7 @@ class Klyqa_account:
         loop = asyncio.get_event_loop()
 
         try:
-            while True:
+            while self.tcp:
                 # for debug cursor jump:
                 a = False
                 if a:
@@ -3096,41 +3122,43 @@ class Klyqa_account:
             AES_KEYs["dev"] = AES_KEY_DEV
 
         local_communication = args_parsed.local or args_parsed.tryLocalThanCloud
-        self.udp = None
-        self.tcp = None
+        # self.udp = None
+        # self.tcp = None
 
         if local_communication:
-            await tcp_udp_port_lock.acquire()
-            try:
-                self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-                self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                if args_parsed.myip is not None:
-                    server_address = (args_parsed.myip[0], 2222)
-                else:
-                    server_address = ("0.0.0.0", 2222)
-                self.udp.bind(server_address)
-                LOGGER.debug("Bound UDP port 2222")
-
-            except:
-                LOGGER.error(
-                    "Error on opening and binding the udp port 2222 on host for initiating the lamp communication."
-                )
+            # await tcp_udp_port_lock.acquire()
+            if not await self.bind_ports(args_parsed.myip[0] if args_parsed.myip is not None else None):
                 return 1
+            # try:
+            #     self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            #     self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            #     self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #     if args_parsed.myip is not None:
+            #         server_address = (args_parsed.myip[0], 2222)
+            #     else:
+            #         server_address = ("0.0.0.0", 2222)
+            #     self.udp.bind(server_address)
+            #     LOGGER.debug("Bound UDP port 2222")
 
-            try:
-                self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                server_address = ("0.0.0.0", 3333)
-                self.tcp.bind(server_address)
-                LOGGER.debug("Bound TCP port 3333")
-                self.tcp.listen(1)
+            # except:
+            #     LOGGER.error(
+            #         "Error on opening and binding the udp port 2222 on host for initiating the lamp communication."
+            #     )
+            #     return 1
 
-            except:
-                LOGGER.error(
-                    "Error on opening and binding the tcp port 3333 on host for initiating the lamp communication."
-                )
-                return 1
+            # try:
+            #     self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            #     self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #     server_address = ("0.0.0.0", 3333)
+            #     self.tcp.bind(server_address)
+            #     LOGGER.debug("Bound TCP port 3333")
+            #     self.tcp.listen(1)
+
+            # except:
+            #     LOGGER.error(
+            #         "Error on opening and binding the tcp port 3333 on host for initiating the lamp communication."
+            #     )
+            #     return 1
 
         exit_ret = 0
 
@@ -3184,12 +3212,12 @@ class Klyqa_account:
 
         return exit_ret
 
-klyqa_accs: dict[str, Klyqa_account] = None
 
-if __name__ == "__main__":
-
+def main():
+    # global klyqa_accs
+    klyqa_accs: dict[str, Klyqa_account] = None
     if not klyqa_accs:
-        klyqa_accs: dict[str, Klyqa_account] = dict()
+        klyqa_accs = dict()
 
     loop = asyncio.get_event_loop()
 
@@ -3268,3 +3296,117 @@ if __name__ == "__main__":
     klyqa_acc.shutdown()
 
     sys.exit(exit_ret)
+    
+async def brightness_msg_mass_test_async() -> None:
+    loop = asyncio.get_event_loop()
+
+    AES_KEYs["dev"] = AES_KEY_DEV
+    klyqa_acc = Klyqa_account() #bind_ports = True)
+    
+    if not await klyqa_acc.bind_ports():
+        sys.exit(1)
+        
+    parser = get_description_parser()
+    args=[]
+    args.extend(["--local", "--bulb_unitids", f"1e383c6ab161610d83f1"])
+    args.extend(["--debug"])
+    add_config_args(parser=parser)
+    add_command_args(parser=parser)
+    
+    async def send_task(i):
+        
+        send_event_cb: asyncio.Event = asyncio.Event()
+        
+        async def async_answer_callback(msg, uid):
+            if msg and msg.answer_utf8:
+                LOGGER.info(f"msg cb: {msg.answer_utf8}")
+            else:
+                LOGGER.info(f"msg cb: {msg.answer_utf8}")
+            send_event_cb.set()
+        args_in = args.copy()
+        args_in.extend(["--brightness", str(i*10)])
+        args_parsed = parser.parse_args(args=args_in)
+        
+        new_task = loop.create_task(
+        klyqa_acc._send_to_bulbs(
+            args_parsed,
+            args_in,
+            klyqa_acc.udp,
+            klyqa_acc.tcp,
+            async_answer_callback=async_answer_callback,
+            timeout_ms=5000,
+        ))
+        LOGGER.info(f"Send started! {i}")
+        await send_event_cb.wait()
+
+        LOGGER.info(f"Send started wait ended! {i}")
+        try:
+            await asyncio.wait([new_task], timeout=0.001)
+        except asyncio.TimeoutError:
+            LOGGER.error(f"timeout send. {i}")
+
+    tasks = []
+    # args_parsed = parser.parse_args(args=args)
+    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        tasks.append(loop.create_task(send_task(i)))
+    await asyncio.wait(tasks, timeout=0.001)
+    for t in tasks:
+        try:
+            await asyncio.wait_for(t,timeout=11.0)
+        except Exception as e:
+            LOGGER.debug(f"Socket-Timeout for incoming tcp connections.")
+    print("done")
+
+if __name__ == "__main__":
+    # klyqa_acc = Klyqa_account(
+    #     "frederick.stallmeyer@qconnex.com",
+    #     "testpwd1",
+    #     TEST_HOST,bind_ports = True
+    # )
+    # if args_parsed.dev:
+    BRIGHTNESS_TEST_ASYNC = True
+    BRIGHTNESS_TEST = False
+    
+    if BRIGHTNESS_TEST_ASYNC:
+        
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(brightness_msg_mass_test_async())
+        
+    elif BRIGHTNESS_TEST:
+        loop = asyncio.get_event_loop()
+        AES_KEYs["dev"] = AES_KEY_DEV
+        klyqa_acc = Klyqa_account() #bind_ports = True)
+        
+        if not loop.run_until_complete(klyqa_acc.bind_ports()):
+            sys.exit(1)
+            
+        async def async_answer_callback(msg, uid):
+            LOGGER.info(msg.answer_utf8)
+            
+        parser = get_description_parser()
+        args=[]
+        args.extend(["--local", "--bulb_unitids", f"1e383c6ab161610d83f1"])
+        # args.extend(["--debug"])
+        add_config_args(parser=parser)
+        add_command_args(parser=parser)
+
+        # args_parsed = parser.parse_args(args=args)
+        for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+            args_in = args.copy()
+            args_in.extend(["--brightness", str(i*10)])
+            args_parsed = parser.parse_args(args=args_in)
+            loop.run_until_complete(
+            klyqa_acc._send_to_bulbs(
+                args_parsed,
+                args_in,
+                klyqa_acc.udp,
+                klyqa_acc.tcp,
+                async_answer_callback=async_answer_callback,
+                timeout_ms=5000,
+            ))
+                
+    else:
+        main()
+    print(f"{STARTED_TIME} start")
+    END_TIME = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
+    print(f"{END_TIME} end")
