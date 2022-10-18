@@ -51,8 +51,8 @@ except:
 
 from typing import TypeVar
 
-# DEFAULT_SEND_TIMEOUT_MS=5000000000
-DEFAULT_SEND_TIMEOUT_MS=5000
+DEFAULT_SEND_TIMEOUT_MS=5000000000
+# DEFAULT_SEND_TIMEOUT_MS=5000
 
 LOGGER = logging.getLogger(__package__)
 LOGGER.setLevel(level=logging.INFO)
@@ -1289,14 +1289,14 @@ class Klyqa_account:
                     await msg_sent.callback(msg_sent, bulb.u_id)
                     LOGGER.debug(f"bulb {bulb.u_id} answered msg {msg_sent.msg_queue}")
 
-                if not bulb or (bulb and not bulb.u_id in self.message_queue or not self.message_queue[bulb.u_id]):
-                    try:
-                        LOGGER.debug(f"no more messages to sent for bulb {bulb.u_id}, close tcp tunnel.")
-                        bulb.local.connection.shutdown(socket.SHUT_RDWR)
-                        bulb.local.connection.close()
-                        bulb.local.connection = None
-                    except Exception as e:
-                        pass
+                # if not bulb or (bulb and not bulb.u_id in self.message_queue or not self.message_queue[bulb.u_id]):
+                #     try:
+                #         LOGGER.debug(f"no more messages to sent for bulb {bulb.u_id}, close tcp tunnel.")
+                bulb.local.connection.shutdown(socket.SHUT_RDWR)
+                bulb.local.connection.close()
+                bulb.local.connection = None
+                    # except Exception as e:
+                    #     pass
 
                 unit_id = f" Unit-ID: {bulb.u_id}" if bulb.u_id else ""
 
@@ -1350,6 +1350,7 @@ class Klyqa_account:
         loop = asyncio.get_event_loop()
 
         try:
+            tcp_reading_count = 0
             while self.tcp:
                 # for debug cursor jump:
                 a = False
@@ -1374,7 +1375,9 @@ class Klyqa_account:
 
                 #     self.message_queue.setdefault(target_bulb_uid, []).append(msg)
 
-                if self.message_queue:
+                if not self.message_queue:
+                    tcp_reading_count = 0
+                else:
 
                     read_broadcast_response = True
                     try:
@@ -1404,35 +1407,36 @@ class Klyqa_account:
                             LOGGER.debug(f"{e}")
                             pass
                         pass
-
+                    
                     while read_broadcast_response:
 
                         timeout_read = 1.9
-                        LOGGER.debug("Read again tcp port..")
+                        tcp_reading_count = tcp_reading_count + 1
+                        LOGGER.debug(f"Read again {tcp_reading_count} tcp port.. ")
                         async def read_tcp_task():
                             try:
                                 return await loop.run_in_executor(
                                 None, select.select, [self.tcp], [], [], timeout_read)
                             except CancelledError as e:
-                                LOGGER.debug("cancelled tcp reading.")
+                                LOGGER.debug(f"cancelled tcp reading {tcp_reading_count}.")
                             except Exception as e:
                                 LOGGER.error(f"{traceback.format_exc()}")
                         self.__read_tcp_task = asyncio.create_task(read_tcp_task())
 
-                        LOGGER.debug("Started tcp reading..")
+                        LOGGER.debug(f"Started tcp reading {tcp_reading_count}..")
                         try:
                             await asyncio.wait_for(self.__read_tcp_task,timeout=1.0)
                         except Exception as e:
-                            LOGGER.debug(f"Socket-Timeout for incoming tcp connections.")
+                            LOGGER.debug(f"Socket-Timeout for incoming tcp connections  {tcp_reading_count}.")
 
                         result = self.__read_tcp_task.result()
                         if not result or not isinstance(result, tuple) or not len(result) == 3: # or self.__read_tcp_task.cancelled():
-                            LOGGER.debug("no tcp read result. break")
+                            LOGGER.debug(f"no tcp read result {tcp_reading_count}. break")
                             break
                         readable, _, _ = self.__read_tcp_task.result()
                         # readable, _, _ = await loop.run_in_executor(
                         #     None, select.select, [self.tcp], [], [], timeout_read)
-                        LOGGER.debug("Reading tcp port done..")
+                        LOGGER.debug(f"Reading tcp {tcp_reading_count} port done..")
 
                         if not self.tcp in readable:
                             break
@@ -1909,6 +1913,7 @@ class Klyqa_account:
         bulb.local.connection.settimeout(0.001)
         pause = datetime.timedelta(milliseconds=0)
         elapsed = datetime.datetime.now() - last_send
+        msg_has_been_sent = False
 
         loop = asyncio.get_event_loop()
 
@@ -1935,7 +1940,7 @@ class Klyqa_account:
 
             elapsed = datetime.datetime.now() - last_send
 
-            async def send(msg):
+            async def send(msg) -> None:
                 nonlocal last_send, pause, return_val, bulb
 
                 LOGGER.debug(f"Sent msg '{msg.msg_queue}' to bulb '{bulb.u_id}'.")
@@ -1953,7 +1958,7 @@ class Klyqa_account:
 
                 return_val = Bulb_TCP_return.sent
 
-
+                # msg_queue inside the message was reversed, so pop messages from the back
                 if len(msg.msg_queue[-1]) == 2:
                     text, ts = msg.msg_queue.pop()
                     msg.msg_queue_sent.append(text)
@@ -1978,14 +1983,19 @@ class Klyqa_account:
 
             if bulb.local.state == "CONNECTED":
                 ## check how the answer come in and how they can be connected to the messages that has been sent.
+                # for now only send one message per handshake.
+                # TODO: send more messages when in the queue afteŕ little timeout when available and 
+                #       give per message send the timeout to wait. 
                 i = 0
                 try:
                     send_next = elapsed >= pause
+                     
                     # if len(message_queue_tx) > 0 and :
-                    while send_next and bulb.u_id in self.message_queue and i < len(self.message_queue[bulb.u_id]):
+                    while not msg_has_been_sent and send_next and bulb.u_id in self.message_queue and i < len(self.message_queue[bulb.u_id]):
                         msg = self.message_queue[bulb.u_id][i]
                         i = i + 1
                         if msg.state == Message_state.unsent:
+                            msg_has_been_sent = True
                             msg_sent = await send(msg)
                             r_msg.ref = msg_sent
                             if not msg_sent:
@@ -3334,7 +3344,7 @@ async def brightness_msg_mass_test_async() -> None:
             klyqa_acc.udp,
             klyqa_acc.tcp,
             async_answer_callback=async_answer_callback,
-            timeout_ms=5000,
+            timeout_ms=DEFAULT_SEND_TIMEOUT_MS,
         ))
         LOGGER.info(f"Send started! {i}")
         await send_event_cb.wait()
@@ -3352,7 +3362,7 @@ async def brightness_msg_mass_test_async() -> None:
     await asyncio.wait(tasks, timeout=0.001)
     for t in tasks:
         try:
-            await asyncio.wait_for(t,timeout=11.0)
+            await asyncio.wait_for(t,timeout=DEFAULT_SEND_TIMEOUT_MS)
         except Exception as e:
             LOGGER.debug(f"Socket-Timeout for incoming tcp connections.")
     print("done")
@@ -3364,7 +3374,7 @@ if __name__ == "__main__":
     #     TEST_HOST,bind_ports = True
     # )
     # if args_parsed.dev:
-    BRIGHTNESS_TEST_ASYNC = True
+    BRIGHTNESS_TEST_ASYNC = False
     BRIGHTNESS_TEST = False
     
     if BRIGHTNESS_TEST_ASYNC:
@@ -3402,7 +3412,7 @@ if __name__ == "__main__":
                 klyqa_acc.udp,
                 klyqa_acc.tcp,
                 async_answer_callback=async_answer_callback,
-                timeout_ms=5000,
+                timeout_ms=DEFAULT_SEND_TIMEOUT_MS,
             ))
                 
     else:
