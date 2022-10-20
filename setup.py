@@ -1,9 +1,6 @@
-import setuptools
+from setuptools import setup
 
-setuptools.setup(
-    name="klyqa_ctl",
-    version="1.0.3",
-    author="Frederick Stallmeyer",
-    description="Control the Klyqa Smart Devices.",
-    packages=["klyqa_ctl"],
-)
+# this grabs the requirements from requirements.txt
+# REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
+if __name__ == '__main__':
+    setup()

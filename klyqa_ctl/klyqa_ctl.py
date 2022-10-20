@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
+"""Klyqa control client."""
 
 ###################################################################
 #
-#
 # Interactive Klyqa Control commandline client
-#
 #
 # Company: QConnex GmbH / Klyqa
 # Author: Frederick Stallmeyer
 #
 # E-Mail: frederick.stallmeyer@gmx.de
-#
 #
 # nice to haves:
 #   -   list cloud connected devices in discovery.
@@ -19,11 +17,9 @@
 #   -   Implementation for the different device config profile versions and
 #       check on send.
 #
-#
 ###################################################################
-
+from __future__ import annotations
 from dataclasses import dataclass
-import dataclasses
 import socket
 import sys
 import time
@@ -32,7 +28,7 @@ import datetime
 import argparse
 import select
 import logging
-from typing import TypeVar, Any, NewType
+from typing import TypeVar, Any
 NoneType = type(None)
 import requests, uuid, json
 import os.path
@@ -40,13 +36,21 @@ from threading import Thread
 from collections import ChainMap
 from threading import Event
 from enum import Enum
-import threading
-import multiprocessing
 import asyncio, aiofiles
 import functools, traceback
-import aiohttp
-import copy
 from asyncio.exceptions import CancelledError, TimeoutError
+from collections.abc import Callable
+
+import slugify as unicode_slug
+
+try:
+    from Cryptodome.Cipher import AES  # provided by pycryptodome
+    from Cryptodome.Random import get_random_bytes  # pycryptodome
+except:
+    from Crypto.Cipher import AES  # provided by pycryptodome
+    from Crypto.Random import get_random_bytes  # pycryptodome
+
+from typing import TypeVar
 
 # DEFAULT_SEND_TIMEOUT_MS=5000000000
 DEFAULT_SEND_TIMEOUT_MS=5000
@@ -60,15 +64,6 @@ logging_hdl.setLevel(level=logging.INFO)
 logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
-
-import slugify as unicode_slug
-
-try:
-    from Cryptodome.Cipher import AES  # provided by pycryptodome
-    from Cryptodome.Random import get_random_bytes  # pycryptodome
-except:
-    from Crypto.Cipher import AES  # provided by pycryptodome
-    from Crypto.Random import get_random_bytes  # pycryptodome
 
 s = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
 
@@ -569,9 +564,6 @@ Bulb_TCP_return = Enum("Bulb_TCP_return", "sent answered wrong_uid wrong_aes tcp
 
 
 Message_state = Enum("Message_state", "sent answered unsent")
-from collections.abc import Callable
-
-from typing import List
 
 @dataclass
 class Message:
@@ -875,8 +867,6 @@ commands_send_to_bulb = [
     "cotton",
     "ice",
 ]
-
-from typing import TypeVar
 
 S = TypeVar("S", argparse.ArgumentParser, type(None))
 
@@ -1210,7 +1200,7 @@ class Klyqa_account:
     tcp: socket
     udp: socket
 
-    def __init__(self, username="", password="", host=""):
+    def __init__(self, username="", password="", host="", bind_ports: bool = False):
 
         self.username = username
         self.password = password
@@ -1229,6 +1219,43 @@ class Klyqa_account:
         self.__read_tcp_task: asyncio.Task = None
         self.tcp = None
         self.udp = None
+        if bind_ports:
+            asyncio.run(self.bind_ports())
+    
+    async def bind_ports(self, server_ip: str = None) -> bool:
+        """bind ports."""
+        await tcp_udp_port_lock.acquire()
+        try:
+            self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            if server_ip is not None:
+                server_address = (server_ip, 2222)
+            else:
+                server_address = ("0.0.0.0", 2222)
+            self.udp.bind(server_address)
+            LOGGER.debug("Bound UDP port 2222")
+
+        except Exception as e:
+            LOGGER.error(
+                "Error on opening and binding the udp port 2222 on host for initiating the lamp communication."
+            )
+            return False
+
+        try:
+            self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_address = ("0.0.0.0", 3333)
+            self.tcp.bind(server_address)
+            LOGGER.debug("Bound TCP port 3333")
+            self.tcp.listen(1)
+
+        except Exception as e:
+            LOGGER.error(
+                "Error on opening and binding the tcp port 3333 on host for initiating the lamp communication."
+            )
+            return False
+        return True
 
     async def bulb_handle_local_tcp(self, bulb: KlyqaBulb):
         return_state = -1
@@ -1263,14 +1290,14 @@ class Klyqa_account:
                     await msg_sent.callback(msg_sent, bulb.u_id)
                     LOGGER.debug(f"bulb {bulb.u_id} answered msg {msg_sent.msg_queue}")
 
-                if not bulb or (bulb and not bulb.u_id in self.message_queue or not self.message_queue[bulb.u_id]):
-                    try:
-                        LOGGER.debug(f"no more messages to sent for bulb {bulb.u_id}, close tcp tunnel.")
-                        bulb.local.connection.shutdown(socket.SHUT_RDWR)
-                        bulb.local.connection.close()
-                        bulb.local.connection = None
-                    except Exception as e:
-                        pass
+                # if not bulb or (bulb and not bulb.u_id in self.message_queue or not self.message_queue[bulb.u_id]):
+                #     try:
+                # LOGGER.debug(f"no more messages to sent for bulb {bulb.u_id}, close tcp tunnel.")
+                bulb.local.connection.shutdown(socket.SHUT_RDWR)
+                bulb.local.connection.close()
+                bulb.local.connection = None
+                    # except Exception as e:
+                    #     pass
 
                 unit_id = f" Unit-ID: {bulb.u_id}" if bulb.u_id else ""
 
@@ -1324,7 +1351,7 @@ class Klyqa_account:
         loop = asyncio.get_event_loop()
 
         try:
-            while True:
+            while self.tcp:
                 # for debug cursor jump:
                 a = False
                 if a:
@@ -3096,41 +3123,43 @@ class Klyqa_account:
             AES_KEYs["dev"] = AES_KEY_DEV
 
         local_communication = args_parsed.local or args_parsed.tryLocalThanCloud
-        self.udp = None
-        self.tcp = None
+        # self.udp = None
+        # self.tcp = None
 
         if local_communication:
-            await tcp_udp_port_lock.acquire()
-            try:
-                self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-                self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                if args_parsed.myip is not None:
-                    server_address = (args_parsed.myip[0], 2222)
-                else:
-                    server_address = ("0.0.0.0", 2222)
-                self.udp.bind(server_address)
-                LOGGER.debug("Bound UDP port 2222")
-
-            except:
-                LOGGER.error(
-                    "Error on opening and binding the udp port 2222 on host for initiating the lamp communication."
-                )
+            # await tcp_udp_port_lock.acquire()
+            if not await self.bind_ports(args_parsed.myip[0] if args_parsed.myip is not None else None):
                 return 1
+            # try:
+            #     self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            #     self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            #     self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #     if args_parsed.myip is not None:
+            #         server_address = (args_parsed.myip[0], 2222)
+            #     else:
+            #         server_address = ("0.0.0.0", 2222)
+            #     self.udp.bind(server_address)
+            #     LOGGER.debug("Bound UDP port 2222")
 
-            try:
-                self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                server_address = ("0.0.0.0", 3333)
-                self.tcp.bind(server_address)
-                LOGGER.debug("Bound TCP port 3333")
-                self.tcp.listen(1)
+            # except:
+            #     LOGGER.error(
+            #         "Error on opening and binding the udp port 2222 on host for initiating the lamp communication."
+            #     )
+            #     return 1
 
-            except:
-                LOGGER.error(
-                    "Error on opening and binding the tcp port 3333 on host for initiating the lamp communication."
-                )
-                return 1
+            # try:
+            #     self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            #     self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #     server_address = ("0.0.0.0", 3333)
+            #     self.tcp.bind(server_address)
+            #     LOGGER.debug("Bound TCP port 3333")
+            #     self.tcp.listen(1)
+
+            # except:
+            #     LOGGER.error(
+            #         "Error on opening and binding the tcp port 3333 on host for initiating the lamp communication."
+            #     )
+            #     return 1
 
         exit_ret = 0
 
@@ -3184,12 +3213,12 @@ class Klyqa_account:
 
         return exit_ret
 
-klyqa_accs: dict[str, Klyqa_account] = None
 
-if __name__ == "__main__":
-
+def main():
+    # global klyqa_accs
+    klyqa_accs: dict[str, Klyqa_account] = None
     if not klyqa_accs:
-        klyqa_accs: dict[str, Klyqa_account] = dict()
+        klyqa_accs = dict()
 
     loop = asyncio.get_event_loop()
 
@@ -3268,3 +3297,6 @@ if __name__ == "__main__":
     klyqa_acc.shutdown()
 
     sys.exit(exit_ret)
+
+if __name__ == "__main__":
+    main()
