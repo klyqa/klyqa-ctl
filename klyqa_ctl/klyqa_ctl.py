@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Klyqa control client."""
 
 ###################################################################
 #
@@ -17,7 +18,7 @@
 #       check on send.
 #
 ###################################################################
-
+from __future__ import annotations
 from dataclasses import dataclass
 import socket
 import sys
@@ -1289,14 +1290,14 @@ class Klyqa_account:
                     await msg_sent.callback(msg_sent, bulb.u_id)
                     LOGGER.debug(f"bulb {bulb.u_id} answered msg {msg_sent.msg_queue}")
 
-                if not bulb or (bulb and not bulb.u_id in self.message_queue or not self.message_queue[bulb.u_id]):
-                    try:
-                        LOGGER.debug(f"no more messages to sent for bulb {bulb.u_id}, close tcp tunnel.")
-                        bulb.local.connection.shutdown(socket.SHUT_RDWR)
-                        bulb.local.connection.close()
-                        bulb.local.connection = None
-                    except Exception as e:
-                        pass
+                # if not bulb or (bulb and not bulb.u_id in self.message_queue or not self.message_queue[bulb.u_id]):
+                #     try:
+                # LOGGER.debug(f"no more messages to sent for bulb {bulb.u_id}, close tcp tunnel.")
+                bulb.local.connection.shutdown(socket.SHUT_RDWR)
+                bulb.local.connection.close()
+                bulb.local.connection = None
+                    # except Exception as e:
+                    #     pass
 
                 unit_id = f" Unit-ID: {bulb.u_id}" if bulb.u_id else ""
 
