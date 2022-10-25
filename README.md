@@ -4,7 +4,18 @@ A commandline client for controlling your Klyqa devices.
 
 Using your klyqa account or dev mode for bulbs onboarded in dev mode.
 
-It is written in python.
+# Install via pypi:
+`pip install klyqa-ctl`
+
+Use then as module `import klyqa_ctl` or on the
+
+# Commandline
+```$ klyqa-ctl ...```
+
+
+# Git Repository
+
+You can also clone this repository.
 
 You can run the python script directly with
 
@@ -69,6 +80,10 @@ Use production (default) or test host.
 ```
 --prod or --test
 ```
+
+## Local Mode
+
+```klyqa-ctl --aes 00112233445566778899AABBCCDDEEFF --bulb_unitids db60e93f99```
 
 ### Connection types
 
