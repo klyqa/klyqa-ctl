@@ -1398,12 +1398,12 @@ class Klyqa_account:
         try:
             if (
                 not self.data_communicator.tcp or not self.data_communicator.udp
-            ):  # or self.udp.closed):
+            ):  # or self.data_communicator.udp.closed):
                 await self.data_communicator.bind_ports()
             while True:  # self.tcp:
                 if (
                     not self.data_communicator.tcp or not self.data_communicator.udp
-                ):  # or self.udp.closed):
+                ):  # or self.data_communicator.udp.closed):
                     break
                 # while self.tcp:
                 # for debug cursor jump:
@@ -1434,7 +1434,7 @@ class Klyqa_account:
                     read_broadcast_response = True
                     try:
                         LOGGER.debug("Broadcasting QCX-SYN Burst")
-                        self.udp.sendto(
+                        self.data_communicator.udp.sendto(
                             "QCX-SYN".encode("utf-8"), ("255.255.255.255", 2222)
                         )
 
@@ -1481,7 +1481,7 @@ class Klyqa_account:
                                 return await loop.run_in_executor(
                                     None,
                                     select.select,
-                                    [self.tcp],
+                                    [self.data_communicator.tcp],
                                     [],
                                     [],
                                     timeout_read,
@@ -1520,14 +1520,14 @@ class Klyqa_account:
                             break
                         readable, _, _ = self.__read_tcp_task.result()
                         # readable, _, _ = await loop.run_in_executor(
-                        #     None, select.select, [self.tcp], [], [], timeout_read)
+                        #     None, select.select, [self.data_communicator.tcp], [], [], timeout_read)
                         LOGGER.debug("Reading tcp port done..")
 
-                        if not self.tcp in readable:
+                        if not self.data_communicator.tcp in readable:
                             break
                         else:
                             bulb = KlyqaBulb()
-                            bulb.local.connection, addr = self.tcp.accept()
+                            bulb.local.connection, addr = self.data_communicator.tcp.accept()
                             bulb.local.address["ip"] = addr[0]
                             bulb.local.address["port"] = addr[1]
 
@@ -2080,7 +2080,7 @@ class Klyqa_account:
 
                 return_val = Bulb_TCP_return.sent
 
-                if len(msg.msg_queue[-1]) == 2:
+                if len(msg.msg_queue) and len(msg.msg_queue[-1]) == 2:
                     text, ts = msg.msg_queue.pop()
                     msg.msg_queue_sent.append(text)
                 else:
@@ -2165,13 +2165,13 @@ class Klyqa_account:
 
                     bulb_b: KlyqaBulb = self.bulbs[bulb.u_id]
                     if await bulb_b.use_lock():
-                        if not new_bulb:
-                            try:
-                                bulb_b.local.connection.shutdown(socket.SHUT_RDWR)
-                                bulb_b.local.connection.close()
-                                """just ensure connection is closed, so that bulb knows it as well"""
-                            except:
-                                pass
+                        # if not new_bulb:
+                        #     try:
+                        #         bulb_b.local.connection.shutdown(socket.SHUT_RDWR)
+                        #         bulb_b.local.connection.close()
+                        #         """just ensure connection is closed, so that bulb knows it as well"""
+                        #     except:
+                        #         pass
                         bulb_b.local = bulb.local
                         bulb = bulb_b
                         r_bulb.ref = bulb_b
@@ -2349,9 +2349,9 @@ class Klyqa_account:
             bool: True if succeeded.
         """
         if not udp:
-            udp = self.udp
+            udp = self.data_communicator.udp
         if not tcp:
-            tcp = self.tcp
+            tcp = self.data_communicator.tcp
         try:
             global sep_width, bulb_configs
 
@@ -3042,6 +3042,9 @@ class Klyqa_account:
                             discover_end_event.set()
 
                         LOGGER.debug(f"discover ping start")
+                        # send a message to uid "all" which is fake but will get the identification message
+                        # from the bulbs in the aes_search and send msg function and we can send then a real
+                        # request message to these discovered bulbs.
                         await self.set_send_message(
                             message_queue_tx_local,
                             "all",
@@ -3072,7 +3075,7 @@ class Klyqa_account:
                         try:
                             msg_wait_tasks[i] = loop.create_task(sl(i))
                         except Exception as e:
-                            print("ok")
+                            # print("ok")
                             pass
 
                     async def async_answer_callback_local(msg, uid):
@@ -3358,8 +3361,8 @@ class Klyqa_account:
             AES_KEYs["dev"] = AES_KEY_DEV
 
         local_communication = args_parsed.local or args_parsed.tryLocalThanCloud
-        # self.udp = None
-        # self.tcp = None
+        # self.data_communicator.udp = None
+        # self.data_communicator.tcp = None
 
         if local_communication:
             # await tcp_udp_port_lock.acquire()
@@ -3368,14 +3371,14 @@ class Klyqa_account:
             ):
                 return 1
             # try:
-            #     self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            #     self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            #     self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #     self.data_communicator.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            #     self.data_communicator.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            #     self.data_communicator.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             #     if args_parsed.myip is not None:
             #         server_address = (args_parsed.myip[0], 2222)
             #     else:
             #         server_address = ("0.0.0.0", 2222)
-            #     self.udp.bind(server_address)
+            #     self.data_communicator.udp.bind(server_address)
             #     LOGGER.debug("Bound UDP port 2222")
 
             # except:
@@ -3385,12 +3388,12 @@ class Klyqa_account:
             #     return 1
 
             # try:
-            #     self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            #     self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            #     self.data_communicator.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            #     self.data_communicator.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             #     server_address = ("0.0.0.0", 3333)
-            #     self.tcp.bind(server_address)
+            #     self.data_communicator.tcp.bind(server_address)
             #     LOGGER.debug("Bound TCP port 3333")
-            #     self.tcp.listen(1)
+            #     self.data_communicator.tcp.listen(1)
 
             # except:
             #     LOGGER.error(
@@ -3416,8 +3419,8 @@ class Klyqa_account:
         if not await self._send_to_bulbs(
             args_parsed,
             args_in,
-            udp=self.udp,
-            tcp=self.tcp,
+            udp=self.data_communicator.udp,
+            tcp=self.data_communicator.tcp,
             timeout_ms=timeout_ms,
             async_answer_callback=async_answer_callback,
         ):
@@ -3433,7 +3436,7 @@ class Klyqa_account:
         # args_parsed = parser.parse_args(args=args)
 
         # if not await self._send_to_bulbs(
-        #     args_parsed, args, udp=self.udp, tcp=self.tcp, timeout_ms=timeout_ms, async_answer_callback=async_answer_callback
+        #     args_parsed, args, udp=self.data_communicator.udp, tcp=self.data_communicator.tcp, timeout_ms=timeout_ms, async_answer_callback=async_answer_callback
         # ):
         #     exit_ret = 1
 
@@ -3441,18 +3444,19 @@ class Klyqa_account:
 
         LOGGER.debug("Closing ports")
         if local_communication:
-            try:
-                self.tcp.shutdown(socket.SHUT_RDWR)
-                self.tcp.close()
-                LOGGER.debug("Closed TCP port 3333")
-            except:
-                pass
+            self.data_communicator.shutdown()
+            # try:
+            #     self.data_communicator.tcp.shutdown(socket.SHUT_RDWR)
+            #     self.data_communicator.tcp.close()
+            #     LOGGER.debug("Closed TCP port 3333")
+            # except:
+            #     pass
 
-            try:
-                self.udp.close()
-                LOGGER.debug("Closed UDP port 2222")
-            except:
-                pass
+            # try:
+            #     self.udp.close()
+            #     LOGGER.debug("Closed UDP port 2222")
+            # except:
+            #     pass
             # tcp_udp_port_lock.release()
 
         return exit_ret
