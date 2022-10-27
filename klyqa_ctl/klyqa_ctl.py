@@ -3363,8 +3363,8 @@ class Klyqa_account:
 
         if local_communication:
             # await tcp_udp_port_lock.acquire()
-            if not await self.bind_ports(
-                args_parsed.myip[0] if args_parsed.myip is not None else None
+            if not await self.data_communicator.bind_ports(
+                # args_parsed.myip[0] if args_parsed.myip is not None else None
             ):
                 return 1
             # try:
@@ -3460,7 +3460,6 @@ class Klyqa_account:
 
 def main():
     # global klyqa_accs
-    data_communicator = Data_communicator()
 
     klyqa_accs: dict[str, Klyqa_account] = None
     if not klyqa_accs:
@@ -3486,8 +3485,11 @@ def main():
     if args_parsed.debug:
         LOGGER.setLevel(level=logging.DEBUG)
         logging_hdl.setLevel(level=logging.DEBUG)
-
-    loop.run_until_complete(data_communicator.bind_ports(args_parsed.server_ip))
+    
+    server_ip = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
+    data_communicator = Data_communicator(server_ip)
+        
+    # loop.run_until_complete(data_communicator.bind_ports())
 
     print_onboarded_lamps = (
         not args_parsed.bulb_name
@@ -3502,7 +3504,7 @@ def main():
             LOGGER.info("development mode. Using default aes key.")
         elif args_parsed.aes:
             LOGGER.info("aes key passed.")
-        klyqa_acc = Klyqa_account()
+        klyqa_acc = Klyqa_account(data_communicator)
 
     elif args_parsed.username is not None and args_parsed.username[0] in klyqa_accs:
 
@@ -3518,6 +3520,7 @@ def main():
             if args_parsed.test:
                 host = TEST_HOST
             klyqa_acc = Klyqa_account(
+                data_communicator,
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
                 host,
