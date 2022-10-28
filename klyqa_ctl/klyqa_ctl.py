@@ -2023,6 +2023,7 @@ class Klyqa_account:
                     7 - value not valid for device config
 
         """
+        
         global sep_width, LOGGER
         bulb: KlyqaBulb = r_bulb.ref
 
@@ -2038,6 +2039,49 @@ class Klyqa_account:
 
         msg_sent: Message = None
         communication_finished = False
+        
+        async def __send_msg(msg):
+            nonlocal last_send, pause, return_val, bulb
+
+            LOGGER.debug(f"Sent msg '{msg.msg_queue}' to bulb '{bulb.u_id}'.")
+
+            def rm_msg():
+                try:
+                    LOGGER.debug(f"rm_msg()")
+                    self.message_queue[bulb.u_id].remove(msg)
+                    msg.state = Message_state.sent
+
+                    if (
+                        bulb.u_id in self.message_queue
+                        and not self.message_queue[bulb.u_id]
+                    ):
+                        del self.message_queue[bulb.u_id]
+                except Exception as e:
+                    LOGGER.debug(traceback.format_exc())
+
+            return_val = Bulb_TCP_return.sent
+
+            if len(msg.msg_queue) and len(msg.msg_queue[-1]) == 2:
+                text, ts = msg.msg_queue.pop()
+                msg.msg_queue_sent.append(text)
+            else:
+                text, ts, check_func = msg.msg_queue.pop()
+                msg.msg_queue_sent.append(text)
+                if not check_func(product_id=bulb.ident.product_id):
+                    rm_msg()
+                    # return (7, "value not valid for device config")
+                    return None
+
+            pause = datetime.timedelta(milliseconds=timeout_ms)
+            try:
+                if await loop.run_in_executor(None, send_msg, text, bulb):
+                    rm_msg()
+                    last_send = datetime.datetime.now()
+                    return msg
+            except Exception as excep:
+                LOGGER.debug(traceback.format_exc())
+                # return (1, "error during send")
+            return None
 
         while not communication_finished and (
             len(self.message_queue) > 0 or elapsed < pause
@@ -2059,49 +2103,6 @@ class Klyqa_account:
 
             elapsed = datetime.datetime.now() - last_send
 
-            async def send(msg):
-                nonlocal last_send, pause, return_val, bulb
-
-                LOGGER.debug(f"Sent msg '{msg.msg_queue}' to bulb '{bulb.u_id}'.")
-
-                def rm_msg():
-                    try:
-                        LOGGER.debug(f"rm_msg()")
-                        self.message_queue[bulb.u_id].remove(msg)
-                        msg.state = Message_state.sent
-
-                        if (
-                            bulb.u_id in self.message_queue
-                            and not self.message_queue[bulb.u_id]
-                        ):
-                            del self.message_queue[bulb.u_id]
-                    except Exception as e:
-                        LOGGER.debug(traceback.format_exc())
-
-                return_val = Bulb_TCP_return.sent
-
-                if len(msg.msg_queue) and len(msg.msg_queue[-1]) == 2:
-                    text, ts = msg.msg_queue.pop()
-                    msg.msg_queue_sent.append(text)
-                else:
-                    text, ts, check_func = msg.msg_queue.pop()
-                    msg.msg_queue_sent.append(text)
-                    if not check_func(product_id=bulb.ident.product_id):
-                        rm_msg()
-                        # return (7, "value not valid for device config")
-                        return None
-
-                pause = datetime.timedelta(milliseconds=timeout_ms)
-                try:
-                    if await loop.run_in_executor(None, send_msg, text, bulb):
-                        rm_msg()
-                        last_send = datetime.datetime.now()
-                        return msg
-                except Exception as excep:
-                    LOGGER.debug(traceback.format_exc())
-                    # return (1, "error during send")
-                return None
-
             if bulb.local.state == "CONNECTED":
                 ## check how the answer come in and how they can be connected to the messages that has been sent.
                 i = 0
@@ -2116,7 +2117,7 @@ class Klyqa_account:
                         msg = self.message_queue[bulb.u_id][i]
                         i = i + 1
                         if msg.state == Message_state.unsent:
-                            msg_sent = await send(msg)
+                            msg_sent = await __send_msg(msg)
                             r_msg.ref = msg_sent
                             if not msg_sent:
                                 return Bulb_TCP_return.sent_error
@@ -2134,6 +2135,8 @@ class Klyqa_account:
                     + str(bulb.local.address)
                 )
 
+                # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
+                
                 pkgLen = data[0] * 256 + data[1]
                 pkgType = data[3]
 
@@ -2143,8 +2146,13 @@ class Klyqa_account:
                     break
 
                 data = data[4 + pkgLen :]
-
+                
                 if bulb.local.state == "WAIT_IV" and pkgType == 0:
+                    
+                    # Check identification package from device, lock the bulb object for changes,
+                    # safe the idenfication to bulb object if it is a not known device,
+                    # send the local initial vector for the encrypted communication to the device.
+                    
                     LOGGER.debug("Plain: " + str(pkg))
                     json_response = json.loads(pkg)
                     ident = KlyqaBulbResponseIdent(**json_response["ident"])
@@ -2165,6 +2173,10 @@ class Klyqa_account:
 
                     bulb_b: KlyqaBulb = self.bulbs[bulb.u_id]
                     if await bulb_b.use_lock():
+                       
+                        # Don't disconnect connection on not new bulbs, as we disconnect the connection on finished
+                        # communication.
+                        
                         # if not new_bulb:
                         #     try:
                         #         bulb_b.local.connection.shutdown(socket.SHUT_RDWR)
@@ -2223,6 +2235,9 @@ class Klyqa_account:
                         return Bulb_TCP_return.err_local_iv
 
                 if bulb.local.state == "WAIT_IV" and pkgType == 1:
+                    
+                    # Receive the remote initial vector (iv) for aes encrypted communication.
+                    
                     bulb.remoteIv = pkg
                     bulb.local.received_packages.append(pkg)
                     if not AES_KEY:
@@ -2242,6 +2257,9 @@ class Klyqa_account:
                     bulb.local.state = "CONNECTED"
 
                 elif bulb.local.state == "CONNECTED" and pkgType == 2:
+                    
+                    # Receive encrypted answer for sent message.
+                    
                     cipher = pkg
 
                     plain = bulb.local.receivingAES.decrypt(cipher)
