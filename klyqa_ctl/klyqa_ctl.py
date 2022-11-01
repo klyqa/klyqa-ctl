@@ -1296,8 +1296,8 @@ class Klyqa_account:
         self.message_queue_new: list[tuple] = []
         self.search_and_send_loop_task: asyncio.Task = None
         self.__read_tcp_task: asyncio.Task = None
-        self.tcp = data_communicator.tcp
-        self.udp = data_communicator.udp
+        self.tcp = data_communicator.tcp if data_communicator else None
+        self.udp = data_communicator.udp if data_communicator else None
         self.data_communicator = data_communicator
 
     async def bulb_handle_local_tcp(self, bulb: KlyqaBulb):
@@ -1876,6 +1876,8 @@ class Klyqa_account:
                 product_ids = set()
                 if self.acc_settings and "devices" in self.acc_settings:
                     for device in self.acc_settings["devices"]:
+                        if not device["productId"].startswith("@klyqa.lighting"):
+                            continue
                         lamp_state_req_threads.append(
                             Thread(target=lamp_request_and_print, args=(device,))
                         )
@@ -1982,6 +1984,14 @@ class Klyqa_account:
 
     def shutdown(self):
         """Logout again from klyqa account."""
+        for uid in self.bulbs:
+            try:
+                bulb = self.bulbs[uid]
+                bulb.local.connection.shutdown(socket.SHUT_RDWR)
+                bulb.local.connection.close()
+                bulb.local.connection = None
+            except Exception as excp:
+                pass
         if self.access_token:
             try:
                 response = requests.post(
