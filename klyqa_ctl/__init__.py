@@ -11,9 +11,9 @@
 #
 ###################################################################
 
-__version__ = "1.0.8"
+__version__ = "1.0.9"
 __author__ = 'Frederick Stallmeyer <fraizy@gmx.de>'
 __license__ = 'MIT'
 
-from .klyqa_ctl import Klyqa_account
+from .klyqa_ctl import Klyqa_account, Data_communicator
 
