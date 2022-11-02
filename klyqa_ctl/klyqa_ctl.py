@@ -494,7 +494,7 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
     area: int = -1 
     time: int = -1
     calibrationtime: int -1 
-    workingmode: str | None = "" | None
+    workingmode: str | None = None
     workstatus: str = ""
     suction: str = ""
     water: str = ""
@@ -526,8 +526,8 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
         carpetbooster: int = -1,
         area: int = -1 ,
         time: int = -1,
-        calibrationtime: int -1 ,
-        workingmode: str | None = "" | None,
+        calibrationtime: int = -1,
+        workingmode: str | None = None,
         workstatus: str = "",
         suction: str = "",
         water: str = "",
@@ -2020,11 +2020,13 @@ class Klyqa_account:
                     cloud_state = None
                     
                     device: KlyqaDevice
-                    if device["productId"].startswith("@klyqa.lighting"):
+                    if device_sets["productId"].find(".lighting") > -1:
                         device = KlyqaBulb()
-                    elif device["productId"].startswith("@klyqa.cleaning"):
+                    elif device_sets["productId"].find(".cleaning") > -1:
                         device = KlyqaVC()
-                    device.u_id = format_uid(device["localDeviceId"])
+                    else:
+                        return
+                    device.u_id = format_uid(device_sets["localDeviceId"])
                     device.acc_sets = device_sets
 
                     self.devices[format_uid(device_sets["localDeviceId"])] = device
