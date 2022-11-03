@@ -472,7 +472,7 @@ class KlyqaDeviceResponseStatus:
         self.type = type
         
 class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
-    """Klyqa_Bulb_Response_Status"""
+    """KlyqaVCResponseStatus"""
     
 # Decrypted:  b'{"type":"statechange","mcu":"online","power":"on",
 # "cleaning":"on","beeping":"off","battery":57,"sidebrush":10,
