@@ -99,7 +99,8 @@ AES_KEY_DEV = bytes(
     ]
 )
 
-SCENES = [
+## Bulbs ##
+BULB_SCENES = [
     {
         "id": 100,
         "colors": ["#FFECD8", "#FFAA5B"],
@@ -269,6 +270,18 @@ SCENES = [
         "commands": "5ch 65535 0 0 0 0 35535 1400;p 980;5ch 65535 37522 32639 0 0 35535 1200;p 910;5ch 61166 54741 65535 0 0 35535 1800;p 1200;5ch 35723 65535 57825 0 0 35535 1800;p 1200;5ch 55512 64250 38807 0 0 35535 1400;p 1040;5ch 65535 56796 62709 0 0 35535 1400;p 1000;",
     },
 ]
+
+## Vacuum Cleaner ##
+
+VC_WORKSTATUS = Enum(
+    "VC_WORKSTATUS",
+    "SLEEP STANDBY CLEANING CLEANING_AUTO CLEANING_RANDOM CLEANING_SROOM CLEANING_EDGE CLEANING_SPOT CLEANING_COMP DOCKING CHARGING CHARGING_DC CHARGING_COMP ERROR",
+)
+
+VC_SUCTION_STRENGTHS = Enum(
+    "VC_SUCTION_STRENGTHS",
+    "LOW MID HIGH",
+)
 
 
 class AsyncIOLock:
@@ -3194,7 +3207,7 @@ class Klyqa_account:
             #     # or args.monjito
             # ):
             if scene:
-                scene_result = [x for x in SCENES if x["label"] == scene]
+                scene_result = [x for x in BULB_SCENES if x["label"] == scene]
                 if not len(scene_result) or len(scene_result) > 1:
                     LOGGER.error(
                         f"Scene {scene} not found or more than one scene with the name found."
