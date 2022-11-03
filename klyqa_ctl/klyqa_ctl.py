@@ -727,10 +727,7 @@ class KlyqaDevice:
     recv_msg_unproc: list[Message]
     ident: KlyqaDeviceResponseIdent = None
     
-    response_classes = {
-        "ident": KlyqaDeviceResponseIdent,
-        "status": KlyqaDeviceResponseStatus,
-    }
+    response_classes = {}
 
     def __init__(self):
         self.local = LocalConnection()
@@ -742,6 +739,11 @@ class KlyqaDevice:
         self._use_lock = None
         self._use_thread = None
         self.recv_msg_unproc = []
+        
+        self.response_classes = {
+            "ident": KlyqaDeviceResponseIdent,
+            "status": KlyqaDeviceResponseStatus,
+        }
 
     def process_msgs(self):
         for msg in self.recv_msg_unproc:
@@ -1000,6 +1002,7 @@ commands_send_to_bulb = [
     "mystic",
     "cotton",
     "ice",
+    "command"
 ]
 
 S = TypeVar("S", argparse.ArgumentParser, type(None))
@@ -2382,17 +2385,16 @@ class Klyqa_account:
                     # cached client device (self.devices), incoming device object created on tcp connection acception
                     device_b: KlyqaDevice = self.devices[device.u_id]
                     if await device_b.use_lock():
-                       
-                        # Don't disconnect connection on not new devices, as we disconnect the connection on finished
-                        # communication.
                         
-                        # if not new_device:
-                        #     try:
-                        #         device_b.local.connection.shutdown(socket.SHUT_RDWR)
-                        #         device_b.local.connection.close()
-                        #         """just ensure connection is closed, so that device knows it as well"""
-                        #     except:
-                        #         pass
+                        if not new_device:
+                            try:
+                                """There shouldn't be an open connection on the already known cached devices, but if there accidently is close it."""
+                                device_b.local.connection.shutdown(socket.SHUT_RDWR)
+                                device_b.local.connection.close()
+                                """just ensure connection is closed, so that device knows it as well"""
+                            except:
+                                pass
+                            
                         device_b.local = device.local
                         device = device_b
                         r_device.ref = device_b
@@ -2416,9 +2418,9 @@ class Klyqa_account:
                     settings_device = ""
                     if self.acc_settings and "devices" in self.acc_settings:
                         settings_device = [
-                            device
-                            for device in self.acc_settings["devices"]
-                            if format_uid(device["localDeviceId"])
+                            device_sets
+                            for device_sets in self.acc_settings["devices"]
+                            if format_uid(device_sets["localDeviceId"])
                             == format_uid(device.u_id)
                         ]
                     if settings_device:
@@ -2680,7 +2682,8 @@ class Klyqa_account:
                 )
                 print("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
-            commands_to_send = [i for i in commands_send_to_bulb if getattr(args, i)]
+
+            commands_to_send = [i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)]
 
             if commands_to_send:
                 print("Commands to send to devices: " + ", ".join(commands_to_send))
@@ -2820,89 +2823,6 @@ class Klyqa_account:
 
                 args = parser.parse_args(args_in, namespace=args)
                 # args.func(args)
-            
-            if args.command is not None:
-                if args.command == "get":
-                    get_dict = {"type":"request", "action":"get",}
-                    if args.power or args.all:
-                        get_dict["power"] = None
-                    if args.cleaning or args.all:
-                        get_dict["cleaning"] = None
-                    if args.beeping or args.all:
-                        get_dict["beeping"] = None
-                    if args.battery or args.all:
-                        get_dict["battery"] = None
-                    if args.sidebrush or args.all:
-                        get_dict["sidebrush"] = None
-                    if args.rollingbrush or args.all:
-                        get_dict["rollingbrush"] = None
-                    if args.filter or args.all:
-                        get_dict["filter"] = None
-                    if args.carpetbooster or args.all:
-                        get_dict["carpetbooster"] = None
-                    if args.area or args.all:
-                        get_dict["area"] = None
-                    if args.time or args.all:
-                        get_dict["time"] = None
-                    if args.calibrationtime or args.all:
-                        get_dict["calibrationtime"] = None
-                    if args.workingmode or args.all:
-                        get_dict["workingmode"] = None
-                    if args.workstatus or args.all:
-                        get_dict["workstatus"] = None
-                    if args.suction or args.all:
-                        get_dict["suction"] = None
-                    if args.water or args.all:
-                        get_dict["water"] = None
-                    if args.direction or args.all:
-                        get_dict["direction"] = None
-                    if args.errors or args.all:
-                        get_dict["errors"] = None
-                    if args.cleaningrec or args.all:
-                        get_dict["cleaningrec"] = None
-                    if args.equipmentmodel or args.all:
-                        get_dict["equipmentmodel"] = None
-                    if args.alarmmessages or args.all:
-                        get_dict["alarmmessages"] = None
-                    if args.commissioninfo or args.all:
-                        get_dict["commissioninfo"] = None
-                    if args.mcu or args.all:
-                        get_dict["mcu"] = None
-                    local_and_cloud_command_msg(json.dumps(get_dict), 1000)
-                    
-                elif args.command == "set":
-                    set_dict = {"type":"request", "action":"set"}
-                    if args.power is not None:
-                        set_dict["power"] = args.power
-                    if args.cleaning is not None:
-                        set_dict["cleaning"] = args.cleaning
-                    if args.beeping is not None:
-                        set_dict["beeping"] = args.beeping
-                    if args.carpetbooster is not None:
-                        set_dict["carpetbooster"] = args.carpetbooster
-                    if args.workingmode is not None:
-                        set_dict["workingmode"] = args.workingmode
-                    if args.suction is not None:
-                        set_dict["suction"] = args.suction
-                    if args.water is not None:
-                        set_dict["water"] = args.water
-                    if args.direction is not None:
-                        set_dict["direction"] = args.direction
-                    if args.commissioninfo is not None:
-                        set_dict["commissioninfo"] = args.commissioninfo
-                    if args.calibrationtime is not None:
-                        set_dict["calibrationtime"] = args.calibrationtime
-                    local_and_cloud_command_msg(json.dumps(set_dict), 1000)
-                    
-                elif args.command == "reset":
-                    reset_dict = { "type" : "request","action": "reset"}
-                    if args.sidebrush:
-                        reset_dict["sidebrush"] = None
-                    if args.rollingbrush:
-                        reset_dict["rollingbrush"] = None
-                    if args.filter:
-                        reset_dict["filter"] = None
-                    local_and_cloud_command_msg(json.dumps(reset_dict), 1000)
 
             if args.aes is not None:
                 AES_KEYs["all"] = bytes.fromhex(args.aes[0])
@@ -3315,6 +3235,89 @@ class Klyqa_account:
 
             if args.reboot:
                 local_and_cloud_command_msg({"type": "reboot"}, 500)
+            
+            if args.command is not None:
+                if args.command == "get":
+                    get_dict = {"type":"request", "action":"get",}
+                    if args.power or args.all:
+                        get_dict["power"] = None
+                    if args.cleaning or args.all:
+                        get_dict["cleaning"] = None
+                    if args.beeping or args.all:
+                        get_dict["beeping"] = None
+                    if args.battery or args.all:
+                        get_dict["battery"] = None
+                    if args.sidebrush or args.all:
+                        get_dict["sidebrush"] = None
+                    if args.rollingbrush or args.all:
+                        get_dict["rollingbrush"] = None
+                    if args.filter or args.all:
+                        get_dict["filter"] = None
+                    if args.carpetbooster or args.all:
+                        get_dict["carpetbooster"] = None
+                    if args.area or args.all:
+                        get_dict["area"] = None
+                    if args.time or args.all:
+                        get_dict["time"] = None
+                    if args.calibrationtime or args.all:
+                        get_dict["calibrationtime"] = None
+                    if args.workingmode or args.all:
+                        get_dict["workingmode"] = None
+                    if args.workstatus or args.all:
+                        get_dict["workstatus"] = None
+                    if args.suction or args.all:
+                        get_dict["suction"] = None
+                    if args.water or args.all:
+                        get_dict["water"] = None
+                    if args.direction or args.all:
+                        get_dict["direction"] = None
+                    if args.errors or args.all:
+                        get_dict["errors"] = None
+                    if args.cleaningrec or args.all:
+                        get_dict["cleaningrec"] = None
+                    if args.equipmentmodel or args.all:
+                        get_dict["equipmentmodel"] = None
+                    if args.alarmmessages or args.all:
+                        get_dict["alarmmessages"] = None
+                    if args.commissioninfo or args.all:
+                        get_dict["commissioninfo"] = None
+                    if args.mcu or args.all:
+                        get_dict["mcu"] = None
+                    local_and_cloud_command_msg(json.dumps(get_dict), 1000)
+                    
+                elif args.command == "set":
+                    set_dict = {"type":"request", "action":"set"}
+                    if args.power is not None:
+                        set_dict["power"] = args.power
+                    if args.cleaning is not None:
+                        set_dict["cleaning"] = args.cleaning
+                    if args.beeping is not None:
+                        set_dict["beeping"] = args.beeping
+                    if args.carpetbooster is not None:
+                        set_dict["carpetbooster"] = args.carpetbooster
+                    if args.workingmode is not None:
+                        set_dict["workingmode"] = args.workingmode
+                    if args.suction is not None:
+                        set_dict["suction"] = args.suction
+                    if args.water is not None:
+                        set_dict["water"] = args.water
+                    if args.direction is not None:
+                        set_dict["direction"] = args.direction
+                    if args.commissioninfo is not None:
+                        set_dict["commissioninfo"] = args.commissioninfo
+                    if args.calibrationtime is not None:
+                        set_dict["calibrationtime"] = args.calibrationtime
+                    local_and_cloud_command_msg(json.dumps(set_dict), 1000)
+                    
+                elif args.command == "reset":
+                    reset_dict = { "type" : "request","action": "reset"}
+                    if args.sidebrush:
+                        reset_dict["sidebrush"] = None
+                    if args.rollingbrush:
+                        reset_dict["rollingbrush"] = None
+                    if args.filter:
+                        reset_dict["filter"] = None
+                    local_and_cloud_command_msg(json.dumps(reset_dict), 1000)
 
             success = True
             if args.local or args.tryLocalThanCloud:
@@ -3576,12 +3579,15 @@ class Klyqa_account:
                             for b in target_devices
                         ]
 
-                    state_payload_message = dict(
-                        ChainMap(*message_queue_tx_state_cloud)
-                    )
-                    command_payload_message = dict(
-                        ChainMap(*message_queue_tx_command_cloud)
-                    )
+                    # state_payload_message = dict(
+                    #     ChainMap(*message_queue_tx_state_cloud)
+                    # )
+                    state_payload_message = json.loads(*message_queue_tx_state_cloud) if message_queue_tx_state_cloud else ""
+                
+                    # command_payload_message = dict(
+                    #     ChainMap(*message_queue_tx_command_cloud)
+                    # )
+                    command_payload_message = json.loads(*message_queue_tx_command_cloud) if message_queue_tx_command_cloud else ""
                     if state_payload_message:
                         threads.extend(
                             create_post_threads(
