@@ -5,3 +5,4 @@ pycryptodomex>=3.15.0
 requests>=2.26.0
 python-slugify>=6.1.2
 singleton-decorator>=1.0.0
+strenum>=0.4.8
