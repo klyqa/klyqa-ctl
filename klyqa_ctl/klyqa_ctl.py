@@ -17,6 +17,9 @@
 #   -   Implementation for the different device config profile versions and
 #       check on send.
 #
+# # TOBEFIXED:
+#  - vc1 cloud support.
+# #
 ###################################################################
 from __future__ import annotations
 from dataclasses import dataclass
@@ -1528,6 +1531,7 @@ class Klyqa_account:
                 device.local.connection.shutdown(socket.SHUT_RDWR)
                 device.local.connection.close()
                 device.local.connection = None
+                LOGGER.debug(f"tcp closed for device.u_id.")
                 # except Exception as e:
                 #     pass
 
@@ -2391,6 +2395,7 @@ class Klyqa_account:
                                 """There shouldn't be an open connection on the already known cached devices, but if there accidently is close it."""
                                 device_b.local.connection.shutdown(socket.SHUT_RDWR)
                                 device_b.local.connection.close()
+                                LOGGER.debug(f"tcp closed for device.u_id.")
                                 """just ensure connection is closed, so that device knows it as well"""
                             except:
                                 pass
@@ -3283,7 +3288,7 @@ class Klyqa_account:
                         get_dict["commissioninfo"] = None
                     if args.mcu or args.all:
                         get_dict["mcu"] = None
-                    local_and_cloud_command_msg(json.dumps(get_dict), 1000)
+                    local_and_cloud_command_msg(get_dict, 1000)
                     
                 elif args.command == "set":
                     set_dict = {"type":"request", "action":"set"}
@@ -3307,7 +3312,7 @@ class Klyqa_account:
                         set_dict["commissioninfo"] = args.commissioninfo
                     if args.calibrationtime is not None:
                         set_dict["calibrationtime"] = args.calibrationtime
-                    local_and_cloud_command_msg(json.dumps(set_dict), 1000)
+                    local_and_cloud_command_msg(set_dict, 1000)
                     
                 elif args.command == "reset":
                     reset_dict = { "type" : "request","action": "reset"}
@@ -3317,7 +3322,7 @@ class Klyqa_account:
                         reset_dict["rollingbrush"] = None
                     if args.filter:
                         reset_dict["filter"] = None
-                    local_and_cloud_command_msg(json.dumps(reset_dict), 1000)
+                    local_and_cloud_command_msg(reset_dict, 1000)
 
             success = True
             if args.local or args.tryLocalThanCloud:
@@ -3579,15 +3584,15 @@ class Klyqa_account:
                             for b in target_devices
                         ]
 
-                    # state_payload_message = dict(
-                    #     ChainMap(*message_queue_tx_state_cloud)
-                    # )
-                    state_payload_message = json.loads(*message_queue_tx_state_cloud) if message_queue_tx_state_cloud else ""
+                    state_payload_message = dict(
+                        ChainMap(*message_queue_tx_state_cloud)
+                    )
+                    # state_payload_message = json.loads(*message_queue_tx_state_cloud) if message_queue_tx_state_cloud else ""
                 
-                    # command_payload_message = dict(
-                    #     ChainMap(*message_queue_tx_command_cloud)
-                    # )
-                    command_payload_message = json.loads(*message_queue_tx_command_cloud) if message_queue_tx_command_cloud else ""
+                    command_payload_message = dict(
+                        ChainMap(*message_queue_tx_command_cloud)
+                    )
+                    # command_payload_message = json.loads(*message_queue_tx_command_cloud) if message_queue_tx_command_cloud else ""
                     if state_payload_message:
                         threads.extend(
                             create_post_threads(
