@@ -32,6 +32,7 @@ import argparse
 import select
 import logging
 from typing import TypeVar, Any
+from strenum import StrEnum
 
 NoneType = type(None)
 import requests, uuid, json
@@ -273,12 +274,12 @@ BULB_SCENES = [
 
 ## Vacuum Cleaner ##
 
-VC_WORKSTATUS = Enum(
+VC_WORKSTATUS = StrEnum(
     "VC_WORKSTATUS",
     "SLEEP STANDBY CLEANING CLEANING_AUTO CLEANING_RANDOM CLEANING_SROOM CLEANING_EDGE CLEANING_SPOT CLEANING_COMP DOCKING CHARGING CHARGING_DC CHARGING_COMP ERROR",
 )
 
-VC_SUCTION_STRENGTHS = Enum(
+VC_SUCTION_STRENGTHS = StrEnum(
     "VC_SUCTION_STRENGTHS",
     "LOW MID HIGH",
 )
