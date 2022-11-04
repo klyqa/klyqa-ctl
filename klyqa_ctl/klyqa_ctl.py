@@ -321,7 +321,7 @@ class AsyncIOLock:
     ):
         """instance"""
         if cls._instance is None:
-            print("Creating new instance")
+            LOGGER.debug("Creating new AsyncIOLock instance")
             cls._instance = cls.__new__(cls)
             # Put any initialization here.
             cls._instance.__init__()
@@ -975,7 +975,7 @@ PRODUCT_URLS = {
     "@klyqa.lighting.cw-ww.e14": "https://klyqa.de/produkte/gu10-white-strahler",
     "@klyqa.lighting.rgb-cw-ww.e27": "https://www.klyqa.de/produkte/e27-color-lampe",
     "@klyqa.lighting.cw-ww.e27": "https://klyqa.de/produkte/e27-white-lampe",
-    "@klyqa.cleaning.vc1": "",
+    "@klyqa.cleaning.vc1": "https://klyqa.de/Alle-Produkte/Smarter-Starter",
 }
 
 commands_send_to_bulb = [
@@ -1281,6 +1281,10 @@ def add_command_args(parser):
     parser.add_argument(
         "--enable_tb", nargs=1, help="enable thingsboard connection (yes/no)"
     )
+    
+    parser.add_argument(
+        "--fade", nargs=2, help="fade in/out time in milliseconds on powering device on/off", metavar=("IN", "OUT"), default=[0]
+    )
 
     # parser.add_argument("--loop", help="loop", action="store_true")
     parser.add_argument("--WW", help="Warm White", action="store_true")
@@ -1310,24 +1314,7 @@ def add_command_args(parser):
     parser.add_argument("--cotton", help="Cotton Candy", action="store_true")
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
 
-    # Missing in scenes array
-    # parser.add_argument("--monjito", help="monjito", action="store_true")
-
     sub = parser.add_subparsers(title="subcommands", dest='command')
-    
-    # tb = sub.add_parser('thingsboard', help='change thingsboard connection permission')
-    # tb.add_argument('permission', choices=['enable', 'disable'], help='whether it should be enabled or disabled')
-
-    # pssv = sub.add_parser('passive', help='vApp will passively listen for UDP SYN from devices')
-
-    # ota = sub.add_parser('ota', help='allows over the air programming of the device')
-    # ota.add_argument('url', help='specify http URL for ota')
-
-    # ping = sub.add_parser('ping', help='send a ping and nothing else')
-
-    # frs = sub.add_parser('factory-reset', help='trigger a factory reset on the device - the device has to be onboarded again afterwards)')
-
-    # reb = sub.add_parser('reboot', help='trigger a reboot')
 
     req = sub.add_parser('get', help='send state request')
     req.add_argument('--all', help='If this flag is set, the whole state will be requested', action='store_true')
@@ -1353,7 +1340,6 @@ def add_command_args(parser):
     req.add_argument('--alarmmessages', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--commissioninfo', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--mcu', help='Ask if mcu is online', action='store_true')
-    # req.set_defaults(func=set_state_request)
 
     #device specific
     set_parser = sub.add_parser("set", help='enables use of the vc1 control arguments and will control vc1')
@@ -1367,13 +1353,11 @@ def add_command_args(parser):
     set_parser.add_argument('--direction', choices=['FORWARDS','BACKWARDS', 'TURN_LEFT', 'TURN_RIGHT', 'STOP'], help='manually control movement')
     set_parser.add_argument('--commissioninfo', type=str, help='set up to 256 characters of commisioning info')
     set_parser.add_argument('--calibrationtime', metavar='time', type=int, help='set the calibration time (1-1999999999)')
-    # set_parser.set_defaults(func=set_set)
 
     reset_parser = sub.add_parser("reset", help='enables resetting consumables')
     reset_parser.add_argument('--sidebrush', help='resets the sidebrush life counter', action='store_true')
     reset_parser.add_argument('--rollingbrush', help='resets the rollingbrush life counter', action='store_true')
     reset_parser.add_argument('--filter', help='resets the filter life counter', action='store_true')
-    # reset_parser.set_defaults(func=set_reset)
 
 
 PROD_HOST = "https://app-api.prod.qconnex.io"
@@ -3123,6 +3107,9 @@ class Klyqa_account:
 
             if args.factory_reset:
                 local_and_cloud_command_msg({"type": "factory_reset"}, 500)
+                
+            if args.fade:
+                local_and_cloud_command_msg({"type": "request","fade_out": args.fade[1],"fade_in": args.fade[0]}, 500)
 
             scene = ""
             if args.WW:
