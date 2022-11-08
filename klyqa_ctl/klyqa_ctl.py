@@ -17,24 +17,24 @@
 #   -   Implementation for the different device config profile versions and
 #       check on send.
 #
-# # TOBEFIXED:
-#  - vc1 cloud support.
-# #
+# BUGS:
+#  - vc1 interactive command selection support.
+# 
 ###################################################################
+
 from __future__ import annotations
 from dataclasses import dataclass
 import socket
 import sys
-import time
 import json
 import datetime
 import argparse
 import select
 import logging
-from typing import TypeVar, Any
+from typing import TypeVar, Any, Type
 from strenum import StrEnum
 
-NoneType = type(None)
+NoneType: Type[None] = type(None)
 import requests, uuid, json
 import os.path
 from threading import Thread
@@ -60,9 +60,9 @@ from typing import TypeVar
 # DEFAULT_SEND_TIMEOUT_MS=5000000000
 DEFAULT_SEND_TIMEOUT_MS = 5000
 
-LOGGER = logging.getLogger(__package__)
+LOGGER: logging.Logger = logging.getLogger(__package__)
 LOGGER.setLevel(level=logging.INFO)
-formatter = logging.Formatter("%(asctime)s %(levelname)-8s - %(message)s")
+formatter: logging.Formatter = logging.Formatter("%(asctime)s %(levelname)-8s - %(message)s")
 
 logging_hdl = logging.StreamHandler()
 logging_hdl.setLevel(level=logging.INFO)
@@ -70,7 +70,7 @@ logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
 
-s = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
+s: str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
 
 print(f"{s} start")
 
@@ -79,7 +79,7 @@ TypeJSON = dict[str, Any]
 """ string output separator width """
 sep_width = 0
 
-AES_KEY_DEV = bytes(
+AES_KEY_DEV: bytes = bytes(
     [
         0x00,
         0x11,
@@ -101,7 +101,8 @@ AES_KEY_DEV = bytes(
 )
 
 ## Bulbs ##
-BULB_SCENES = [
+
+BULB_SCENES: list[dict[str, Any]] = [
     {
         "id": 100,
         "colors": ["#FFECD8", "#FFAA5B"],
@@ -274,16 +275,20 @@ BULB_SCENES = [
 
 ## Vacuum Cleaner ##
 
-VC_WORKSTATUS = StrEnum(
-    "VC_WORKSTATUS",
+VC_WORKINGSTATUS: Type[Enum] = Enum(
+    "VC_WORKINGSTATUS",
     "SLEEP STANDBY CLEANING CLEANING_AUTO CLEANING_RANDOM CLEANING_SROOM CLEANING_EDGE CLEANING_SPOT CLEANING_COMP DOCKING CHARGING CHARGING_DC CHARGING_COMP ERROR",
 )
 
-VC_SUCTION_STRENGTHS = StrEnum(
+VC_SUCTION_STRENGTHS: Type[Enum] = Enum(
     "VC_SUCTION_STRENGTHS",
-    "LOW MID HIGH",
+    "NULL STRONG SMALL NORMAL MAX",
 )
 
+VC_WORKINGMODE: Type[Enum] = Enum(
+    "VC_WORKINGMODE",
+    "STANDBY RANDOM SMART WALL_FOLLOW MOP SPIRAL PARTIAL_BOW SROOM CHARGE_GO"
+)
 
 class AsyncIOLock:
     """AsyncIOLock"""
@@ -292,17 +297,17 @@ class AsyncIOLock:
     lock: asyncio.Lock
     _instance = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         """__init__"""
         self.lock = asyncio.Lock()
         self.task = None
 
-    async def acquire(self):
+    async def acquire(self) -> None:
         """acquire"""
         await self.lock.acquire()
         self.task = asyncio.current_task()
 
-    def release(self):
+    def release(self) -> None:
         """release"""
         self.lock.release()
 
@@ -321,14 +326,14 @@ class AsyncIOLock:
     ):
         """instance"""
         if cls._instance is None:
-            print("Creating new instance")
+            LOGGER.debug("Creating new AsyncIOLock instance")
             cls._instance = cls.__new__(cls)
             # Put any initialization here.
             cls._instance.__init__()
         return cls._instance
 
 
-tcp_udp_port_lock = AsyncIOLock.instance()
+tcp_udp_port_lock: AsyncIOLock = AsyncIOLock.instance()
 
 
 class RefParse:
@@ -336,7 +341,7 @@ class RefParse:
 
     ref = None
 
-    def __init__(self, ref):
+    def __init__(self, ref) -> None:
         self.ref = ref
 
 
@@ -347,7 +352,7 @@ class KlyqaBulbResponse:
     response_msg: dict = {}
     ts: datetime.datetime = datetime.datetime.now()
 
-    def __init__(self, type=type, response_msg: dict = {}):
+    def __init__(self, type=type, response_msg: dict = {}) -> None:
         self.type = type
         self.response_msg = response_msg
         self.ts = datetime.datetime.now()
@@ -375,7 +380,7 @@ class KlyqaDeviceResponseIdent(KlyqaBulbResponse):
         unit_id: dict,
         sdk_version: str = "",  # optional due to virtual devices not having sdk version
         **kwargs,
-    ):
+    ) -> None:
         super().__init__(**kwargs)
         self.type = type
         self.fw_version = fw_version
@@ -387,7 +392,7 @@ class KlyqaDeviceResponseIdent(KlyqaBulbResponse):
         self.unit_id = format_uid(unit_id)
 
 
-async def async_json_cache(json_data, json_file):
+async def async_json_cache(json_data, json_file) -> tuple [Device_config, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
@@ -453,7 +458,7 @@ def get_obj_attr_values_as_string(object) -> str:
     ]
     vals = []
     for a in attrs:
-        _str = str(getattr(object, a))
+        _str: str = str(getattr(object, a))
         vals.append(_str if _str else '""')
     return ", ".join(vals)
 
@@ -465,11 +470,11 @@ class RGBColor:
     g: int
     b: int
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "[" + ",".join([str(self.r), str(self.g), str(self.b)]) + "]"
         # return get_obj_values_as_string(self)
 
-    def __init__(self, r: int, g: int, b: int):
+    def __init__(self, r: int, g: int, b: int) -> None:
         self.r = r
         self.g = g
         self.b = b
@@ -484,7 +489,7 @@ class KlyqaDeviceResponseStatus:
     def __init__(
         self,
         type: str,
-        **kwargs,):
+        **kwargs,) -> None:
         """__init__"""
         self.type = type
         
@@ -495,11 +500,12 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
 # "cleaning":"on","beeping":"off","battery":57,"sidebrush":10,
 # "rollingbrush":30,"filter":60,"carpetbooster":200,"area":999,
 # "time":999,"calibrationtime":19999999,"workingmode":null,
-# "workstatus":"STANDBY","suction":"MID","water":"LOW","direction":"STOP",
+# "workingstatus":"STANDBY","suction":"MID","water":"LOW","direction":"STOP",
 # "errors":["COLLISION","GROUND_CHECK","LEFT_WHEEL","RIGHT_WHEEL","SIDE_SCAN","MID_SWEEP","FAN","TRASH","BATTERY","ISSUES"],
 # "cleaningrec":[],"equipmentmodel":"","alarmmessages":"","commissioninfo":"","action":"get"}    
 
-    mcu: str = ""
+    active_command: int = -1
+    mcuversion: str = ""
     power: str = ""
     cleaning: str = ""
     beeping: str = ""
@@ -507,32 +513,45 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
     sidebrush: str = ""
     rollingbrush: int = -1
     filter: int = -1
+    filter_tresh: int = -1
+    fwversion: str = ""
     carpetbooster: int = -1
     area: int = -1 
     time: int = -1
     calibrationtime: int -1 
     workingmode: str | None = None
-    workstatus: str = ""
+    workingstatus: str = ""
     suction: str = ""
-    water: str = ""
     direction: str = "" 
     errors: list[str] = []
     cleaningrec: list[str] = []
+    sdkversion: str = ""
     equipmentmodel: str = ""
     alarmmessages: str = ""
     commissioninfo: str = ""
     action: str = ""
+    open_slots: int = -1 
+    rollingbrush_tresh: int = -1
+    sidebrush_tresh: int = -1
+    watertank: str = ""
+    connected: bool = False
+    lastActivityTime: str = ""
+    id: str = ""
+    map_parameter: str = ""
   
     ts: datetime.datetime = datetime.datetime.now()
 
-    def __str__(self):
+    def __str__(self) -> str:
         """__str__"""
         return get_obj_attr_values_as_string(self)
 
     def __init__(
         self,
         type: str,
-        mcu: str = "",
+        active_command: int = -1,
+        rollingbrush_tresh: int = -1,
+        mcuversion: str = "",
+        fwversion: str = "",
         power: str = "",
         cleaning: str = "",
         beeping: str = "",
@@ -540,14 +559,15 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
         sidebrush: str = "",
         rollingbrush: int = -1,
         filter: int = -1,
+        filter_tresh: int = -1,
         carpetbooster: int = -1,
-        area: int = -1 ,
+        area: int = -1,
         time: int = -1,
         calibrationtime: int = -1,
         workingmode: str | None = None,
-        workstatus: str = "",
+        sdkversion: str = "",
+        workingstatus: str = "",
         suction: str = "",
-        water: str = "",
         direction: str = "" ,
         errors: list[str] = [],
         cleaningrec: list[str] = [],
@@ -555,30 +575,49 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
         alarmmessages: str = "",
         commissioninfo: str = "",
         action: str = "",
+        open_slots: int = -1,
+        sidebrush_tresh: int = -1,
+        watertank: str = "",
+        connected: bool = False,
+        lastActivityTime: str = "",
+        map_parameter: str = "",
+        id: str = "",
         **kwargs,
-    ):
+    ) -> None:
         """__init__"""
         super().__init__(type)
 
-        self.mcu = mcu
-        self.power = power
-        self.cleaning = cleaning
-        self.beeping = beeping
-        self.battery = battery
-        self.sidebrush = sidebrush
-        self.rollingbrush = rollingbrush
-        self.filter = filter
-        self.carpetbooster = carpetbooster
+        self.active_command = active_command
         self.area = area
-        self.time = time
-        self.calibrationtime = calibrationtime
-        self.workingmode = workingmode
-        self.workstatus = workstatus
-        self.suction = suction
-        self.water = water
+        self.battery = battery
+        self.beeping = beeping
+        self.carpetbooster = carpetbooster
+        self.cleaning = cleaning
+        self.cleaningrec = cleaningrec
         self.direction = direction
         self.errors = errors
-        self.cleaningrec = cleaningrec
+        self.filter = filter
+        self.filter_tresh = filter_tresh
+        self.fwversion = fwversion
+        self.map_parameter = map_parameter
+        self.mcuversion = mcuversion
+        self.open_slots = open_slots
+        self.power = power
+        self.rollingbrush = rollingbrush
+        self.rollingbrush_tresh = rollingbrush_tresh
+        self.sdkversion = sdkversion
+        self.sidebrush = sidebrush
+        self.sidebrush_tresh = sidebrush_tresh
+        self.suction = suction
+        self.time = time
+        self.watertank = watertank
+        self.workingmode = workingmode
+        self.workingstatus = workingstatus
+        self.lastActivityTime = lastActivityTime
+        self.connected = connected
+        self.id = id
+        
+        self.calibrationtime = calibrationtime
         self.equipmentmodel = equipmentmodel
         self.alarmmessages = alarmmessages
         self.commissioninfo = commissioninfo
@@ -600,7 +639,7 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponseStatus):
     sdkversion: str = ""
     ts: datetime.datetime = datetime.datetime.now()
 
-    def __str__(self):
+    def __str__(self) -> str:
         """__str__"""
         return get_obj_attr_values_as_string(self)
 
@@ -618,7 +657,7 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponseStatus):
         active_command: int = 0,
         active_scene: str = 0,
         **kwargs
-    ):
+    ) -> None:
         """__init__"""
         super().__init__(type, **kwargs)
         self.status = status
@@ -645,19 +684,19 @@ device_configs: dict[str, Device_config] = dict()
 class LocalConnection:
     """LocalConnection"""
 
-    state = "WAIT_IV"
-    localIv = get_random_bytes(8)
-    remoteIv = b""
+    state: str = "WAIT_IV"
+    localIv: bytes = get_random_bytes(8)
+    remoteIv: bytes = b""
 
-    sendingAES = None
-    receivingAES = None
-    address = {"ip": "", "port": -1}
+    sendingAES: bytes = None
+    receivingAES: bytes = None
+    address: dict[str, Any] = {"ip": "", "port": -1}
     connection: socket.socket = None
     received_packages = []
     sent_msg_answer = {}
-    aes_key_confirmed = False
+    aes_key_confirmed: bool = False
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.state = "WAIT_IV"
         self.localIv = get_random_bytes(8)
 
@@ -676,18 +715,18 @@ class CloudConnection:
     received_packages = []
     connected: bool
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.connected = False
         self.received_packages = []
 
 
-Device_TCP_return = Enum(
+Device_TCP_return: Type[Device_TCP_return] = Enum(
     "Device_TCP_return",
     "sent answered wrong_uid wrong_aes tcp_error unknown_error timeout nothing_done sent_error no_message_to_send device_lock_timeout err_local_iv missing_aes_key response_error",
 )
 
 
-Message_state = Enum("Message_state", "sent answered unsent")
+Message_state: Type[Message_state] = Enum("Message_state", "sent answered unsent")
 
 
 @dataclass
@@ -707,16 +746,16 @@ class Message:
     time_to_live_secs: int = -1
     msg_counter: int = -1
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         # super().__init__(self, *args, **kwargs)
         global MSG_COUNTER
         self.msg_counter = MSG_COUNTER
         MSG_COUNTER = MSG_COUNTER + 1
 
-    async def call_cb(self):
+    async def call_cb(self) -> None:
         await self.callback(self, self.target_uid)
 
-    async def check_msg_ttl(self):
+    async def check_msg_ttl(self) -> bool:
         if datetime.datetime.now() - self.started > datetime.timedelta(
             seconds=self.time_to_live_secs
         ):
@@ -746,7 +785,7 @@ class KlyqaDevice:
     
     response_classes = {}
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.local = LocalConnection()
         self.cloud = CloudConnection()
         self.ident: KlyqaDeviceResponseIdent = None
@@ -762,19 +801,19 @@ class KlyqaDevice:
             "status": KlyqaDeviceResponseStatus,
         }
 
-    def process_msgs(self):
+    def process_msgs(self) -> None:
         for msg in self.recv_msg_unproc:
             LOGGER.debug(f"updating device {self.u_id} entity with msg:")
             self.recv_msg_unproc.remove(msg)
 
-    def get_name(self):
+    def get_name(self) -> str:
         return (
             f"{self.acc_sets['name']} ({self.u_id})"
             if self.acc_sets and "name" in self.acc_sets and self.acc_sets
             else self.u_id
         )
         
-    async def use_lock(self, timeout=30, **kwargs):
+    async def use_lock(self, timeout=30, **kwargs) -> bool:
         try:
             if not self._use_lock:
                 self._use_lock = asyncio.Lock()
@@ -792,7 +831,7 @@ class KlyqaDevice:
 
         return False
 
-    async def use_unlock(self):
+    async def use_unlock(self) -> None:
         if not self._use_lock:
             self._use_lock = asyncio.Lock()
         if self._use_lock.locked() and self._use_thread == asyncio.current_task():
@@ -803,9 +842,9 @@ class KlyqaDevice:
             except:
                 pass
 
-    def save_device_message(self, msg):
+    def save_device_message(self, msg) -> None:
         """msg: json dict"""
-        if "type" in msg and msg["type"] in msg and hasattr(self, msg["type"]):
+        if "type" in msg and hasattr(self, msg["type"]): #and msg["type"] in msg:
             try:
                 LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
                 if msg["type"] == "ident":
@@ -826,7 +865,7 @@ class KlyqaVC(KlyqaDevice):
 
     status: KlyqaVCResponseStatus = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.status: KlyqaVCResponseStatus = None
         self.response_classes["status"] = KlyqaVCResponseStatus
@@ -836,7 +875,7 @@ class KlyqaBulb(KlyqaDevice):
 
     status: KlyqaBulbResponseStatus = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.status: KlyqaBulbResponseStatus = None
         self.response_classes["status"] = KlyqaBulbResponseStatus
@@ -869,7 +908,7 @@ ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
 
 
 def send_msg(msg, device: KlyqaDevice):
-    info_str = (
+    info_str: str = (
         'Sending in local network to "'
         + device.get_name()
         + '": '
@@ -895,7 +934,7 @@ def send_msg(msg, device: KlyqaDevice):
     return False
 
 
-def color_message(red, green, blue, transition, skipWait=False):
+def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, int]:
     waitTime = transition if not skipWait else 0
     return (
         json.dumps(
@@ -913,7 +952,7 @@ def color_message(red, green, blue, transition, skipWait=False):
     )
 
 
-def temperature_message(temperature, transition, skipWait=False):
+def temperature_message(temperature, transition, skipWait=False) -> tuple[str, int]:
     waitTime = transition if not skipWait else 0
     return (
         json.dumps(
@@ -927,7 +966,7 @@ def temperature_message(temperature, transition, skipWait=False):
     )
 
 
-def percent_color_message(red, green, blue, warm, cold, transition, skipWait):
+def percent_color_message(red, green, blue, warm, cold, transition, skipWait) -> tuple[str, int]:
     waitTime = transition if not skipWait else 0
     return (
         json.dumps(
@@ -948,7 +987,7 @@ def percent_color_message(red, green, blue, warm, cold, transition, skipWait):
     )
 
 
-def brightness_message(brightness, transition):
+def brightness_message(brightness, transition) -> tuple[str, int]:
     return (
         json.dumps(
             {
@@ -966,7 +1005,7 @@ def brightness_message(brightness, transition):
 AES_KEYs: dict[str, bytes] = {}
 
 
-PRODUCT_URLS = {
+PRODUCT_URLS: dict[str, str] = {
     """TODO: Make permalinks for urls."""
     "@klyqa.lighting.cw-ww.gu10": "https://klyqa.de/produkte/gu10-white-strahler",
     "@klyqa.lighting.rgb-cw-ww.gu10": "https://klyqa.de/produkte/gu10-color-strahler",
@@ -975,10 +1014,10 @@ PRODUCT_URLS = {
     "@klyqa.lighting.cw-ww.e14": "https://klyqa.de/produkte/gu10-white-strahler",
     "@klyqa.lighting.rgb-cw-ww.e27": "https://www.klyqa.de/produkte/e27-color-lampe",
     "@klyqa.lighting.cw-ww.e27": "https://klyqa.de/produkte/e27-white-lampe",
-    "@klyqa.cleaning.vc1": "",
+    "@klyqa.cleaning.vc1": "https://klyqa.de/Alle-Produkte/Smarter-Starter",
 }
 
-commands_send_to_bulb = [
+commands_send_to_bulb: list[str] = [
     "request",
     "ping",
     "color",
@@ -1028,24 +1067,24 @@ S = TypeVar("S", argparse.ArgumentParser, type(None))
 class EventQueuePrinter:
     """Single event queue printer for job printing."""
 
-    event = Event()
+    event: Event = Event()
     """event for the printer that new data is available"""
-    not_finished = True
+    not_finished: bool = True
     print_strings = []
     printer_t: Thread = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         """start printing helper thread routine"""
         self.printer_t = Thread(target=self.coroutine)
         self.printer_t.start()
 
-    def stop(self):
+    def stop(self) -> None:
         """stop printing helper thread"""
         self.not_finished = False
         self.event.set()
         self.printer_t.join(timeout=5)
 
-    def coroutine(self):
+    def coroutine(self) -> None:
         """printer thread routine, waits for data to print and/or a trigger event"""
         while self.not_finished:
             if not self.print_strings:
@@ -1053,7 +1092,7 @@ class EventQueuePrinter:
             while self.print_strings and (l_str := self.print_strings.pop(0)):
                 print(l_str, flush=True)
 
-    def print(self, str):
+    def print(self, str) -> None:
         """add string to the printer"""
         self.print_strings.append(str)
         self.event.set()
@@ -1062,14 +1101,14 @@ class EventQueuePrinter:
 def get_description_parser() -> argparse.ArgumentParser:
     """Make an argument parse object."""
 
-    parser = argparse.ArgumentParser(
+    parser: ArgumentParser = argparse.ArgumentParser(
         description="Interactive klyqa device client (local/cloud). In default the client script tries to send the commands via local connection. Therefore a broadcast on udp port 2222 for discovering the lamps is sent in the local network. When the lamp receives the broadcast it answers via tcp on socket 3333 with a new socket tcp connection. On that tcp connection the commands are sent and the replies are received. "
     )
 
     return parser
 
 
-def add_config_args(parser):
+def add_config_args(parser) -> None:
     """Add arguments to the argument parser object.
 
     Args:
@@ -1110,8 +1149,8 @@ def add_config_args(parser):
         help="give the device unit id from your account settings for the command to send to",
     )
     parser.add_argument(
-        "--all",
-        help="send commands to all lamps",
+        "--allDevices",
+        help="send commands to all devices",
         action="store_const",
         const=True,
         default=False,
@@ -1281,6 +1320,10 @@ def add_command_args(parser):
     parser.add_argument(
         "--enable_tb", nargs=1, help="enable thingsboard connection (yes/no)"
     )
+    
+    parser.add_argument(
+        "--fade", nargs=2, help="fade in/out time in milliseconds on powering device on/off", metavar=("IN", "OUT")
+    )
 
     # parser.add_argument("--loop", help="loop", action="store_true")
     parser.add_argument("--WW", help="Warm White", action="store_true")
@@ -1310,24 +1353,7 @@ def add_command_args(parser):
     parser.add_argument("--cotton", help="Cotton Candy", action="store_true")
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
 
-    # Missing in scenes array
-    # parser.add_argument("--monjito", help="monjito", action="store_true")
-
     sub = parser.add_subparsers(title="subcommands", dest='command')
-    
-    # tb = sub.add_parser('thingsboard', help='change thingsboard connection permission')
-    # tb.add_argument('permission', choices=['enable', 'disable'], help='whether it should be enabled or disabled')
-
-    # pssv = sub.add_parser('passive', help='vApp will passively listen for UDP SYN from devices')
-
-    # ota = sub.add_parser('ota', help='allows over the air programming of the device')
-    # ota.add_argument('url', help='specify http URL for ota')
-
-    # ping = sub.add_parser('ping', help='send a ping and nothing else')
-
-    # frs = sub.add_parser('factory-reset', help='trigger a factory reset on the device - the device has to be onboarded again afterwards)')
-
-    # reb = sub.add_parser('reboot', help='trigger a reboot')
 
     req = sub.add_parser('get', help='send state request')
     req.add_argument('--all', help='If this flag is set, the whole state will be requested', action='store_true')
@@ -1343,7 +1369,7 @@ def add_command_args(parser):
     req.add_argument('--time', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--calibrationtime', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--workingmode', help='If this flag is set, the state element will be requested', action='store_true')
-    req.add_argument('--workstatus', help='If this flag is set, the state element will be requested', action='store_true')
+    req.add_argument('--workingstatus', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--suction', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--water', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--direction', help='If this flag is set, the state element will be requested', action='store_true')
@@ -1353,7 +1379,6 @@ def add_command_args(parser):
     req.add_argument('--alarmmessages', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--commissioninfo', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--mcu', help='Ask if mcu is online', action='store_true')
-    # req.set_defaults(func=set_state_request)
 
     #device specific
     set_parser = sub.add_parser("set", help='enables use of the vc1 control arguments and will control vc1')
@@ -1361,19 +1386,17 @@ def add_command_args(parser):
     set_parser.add_argument('--cleaning', choices=['on', 'off'], help='turn cleaning on/off')
     set_parser.add_argument('--beeping', choices=['on', 'off'], help='enable/disable the find-vc function')
     set_parser.add_argument('--carpetbooster', metavar='strength', type=int, help='set the carpet booster strength (0-255)')
-    set_parser.add_argument('--workingmode', choices=['STANDBY', 'SMART', 'MOP', 'WALL_FOLLOW', 'PARTIAL_BOW', 'SPIRAL', 'CHARGE_GO', 'SROOM'], help='set the working mode')
+    set_parser.add_argument('--workingmode', choices=[m.name for m in VC_WORKINGMODE], help='set the working mode')
     set_parser.add_argument('--water', choices=['LOW', 'MID', 'HIGH'], help='set water quantity')
-    set_parser.add_argument('--suction', choices=['LOW', 'MID', 'HIGH'], help='set suction power')
+    set_parser.add_argument('--suction', choices=[m.name for m in VC_SUCTION_STRENGTHS], help='set suction power')
     set_parser.add_argument('--direction', choices=['FORWARDS','BACKWARDS', 'TURN_LEFT', 'TURN_RIGHT', 'STOP'], help='manually control movement')
     set_parser.add_argument('--commissioninfo', type=str, help='set up to 256 characters of commisioning info')
     set_parser.add_argument('--calibrationtime', metavar='time', type=int, help='set the calibration time (1-1999999999)')
-    # set_parser.set_defaults(func=set_set)
 
     reset_parser = sub.add_parser("reset", help='enables resetting consumables')
     reset_parser.add_argument('--sidebrush', help='resets the sidebrush life counter', action='store_true')
     reset_parser.add_argument('--rollingbrush', help='resets the rollingbrush life counter', action='store_true')
     reset_parser.add_argument('--filter', help='resets the filter life counter', action='store_true')
-    # reset_parser.set_defaults(func=set_reset)
 
 
 PROD_HOST = "https://app-api.prod.qconnex.io"
@@ -1385,12 +1408,12 @@ MSG_COUNTER = 0
 
 
 class Data_communicator:
-    def __init__(self, server_ip: str = "0.0.0.0"):
+    def __init__(self, server_ip: str = "0.0.0.0") -> None:
         self.tcp: socket.socket = None
         self.udp: socket.socket = None
         self.server_ip: str = server_ip
 
-    def shutdown(self):
+    def shutdown(self) -> None:
 
         try:
             if self.tcp:
@@ -1413,6 +1436,7 @@ class Data_communicator:
         """bind ports."""
         # await tcp_udp_port_lock.acquire()
         self.shutdown()
+        server_address: tuple[str, int]
         try:
 
             self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -1457,7 +1481,7 @@ class Klyqa_account:
 
     """
 
-    host = ""
+    host: str = ""
     access_token: str = ""
     username: str
     password: str
@@ -1503,7 +1527,8 @@ class Klyqa_account:
         self.__read_tcp_task: asyncio.Task = None
         self.tcp = data_communicator.tcp if data_communicator else None
         self.udp = data_communicator.udp if data_communicator else None
-        self.data_communicator = data_communicator
+        self.data_communicator: Data_communicator = data_communicator
+        self.search_and_send_loop_task_end_now = False
 
     async def device_handle_local_tcp(self, device: KlyqaDevice):
         """Handle the incoming tcp connection to the device."""
@@ -1549,7 +1574,7 @@ class Klyqa_account:
                 # except Exception as e:
                 #     pass
 
-                unit_id = f" Unit-ID: {device.u_id}" if device.u_id else ""
+                unit_id: str = f" Unit-ID: {device.u_id}" if device.u_id else ""
 
                 if return_state == 0:
                     """no error"""
@@ -1570,7 +1595,7 @@ class Klyqa_account:
                     #     )
 
                 if device.u_id and device.u_id in self.devices:
-                    device_b = self.devices[device.u_id]
+                    device_b: KlyqaDevice = self.devices[device.u_id]
                     if device_b._use_thread == asyncio.current_task():
                         try:
                             device_b._use_lock.release()
@@ -1607,7 +1632,7 @@ class Klyqa_account:
                 not self.data_communicator.tcp or not self.data_communicator.udp
             ):
                 await self.data_communicator.bind_ports()
-            while True:  # self.tcp:
+            while not self.search_and_send_loop_task_end_now:  # self.tcp:
                 if (
                     not self.data_communicator.tcp or not self.data_communicator.udp
                 ):
@@ -1679,7 +1704,7 @@ class Klyqa_account:
 
                     while read_broadcast_response:
 
-                        timeout_read = 1.9
+                        timeout_read: float = 1.9
                         LOGGER.debug("Read again tcp port..")
 
                         async def read_tcp_task():
@@ -1799,7 +1824,7 @@ class Klyqa_account:
 
                 if not len(self.message_queue_new) and not len(self.message_queue):
                     try:
-                        LOGGER.debug(f"sleep task create (searchandsendloop)..")
+                        LOGGER.debug(f"sleep task create2 (searchandsendloop)..")
                         self.__send_loop_sleep = loop.create_task(
                             asyncio.sleep(
                                 SEND_LOOP_MAX_SLEEP_TIME
@@ -1835,6 +1860,7 @@ class Klyqa_account:
         ):
             LOGGER.debug("stop send and search loop.")
             if self.search_and_send_loop_task:
+                self.search_and_send_loop_task_end_now = True
                 self.search_and_send_loop_task.cancel()
             try:
                 LOGGER.debug("wait for send and search loop to end.")
@@ -1845,7 +1871,7 @@ class Klyqa_account:
             LOGGER.debug("wait end for send and search loop.")
         pass
 
-    def search_and_send_loop_task_alive(self):
+    def search_and_send_loop_task_alive(self) -> None:
 
         loop = asyncio.get_event_loop()
 
@@ -1862,26 +1888,26 @@ class Klyqa_account:
     async def set_send_message(
         self,
         send_msg,
-        arget_device_uid,
+        target_device_uid,
         args,
         callback=None,
         time_to_live_secs=-1.0,
         started=datetime.datetime.now(),
-    ):
+    ) -> bool:
 
         loop = asyncio.get_event_loop()
         # self.message_queue_new.append((send_msg, target_device_uid, args, callback, time_to_live_secs, started))
 
         if not send_msg:
-            LOGGER.error(f"No message queue to send in message to {arget_device_uid}!")
-            await callback(None, arget_device_uid)
+            LOGGER.error(f"No message queue to send in message to {target_device_uid}!")
+            await callback(None, target_device_uid)
             return False
 
-        msg = Message(
+        msg: Message = Message(
             datetime.datetime.now(),
             send_msg,
             args,
-            target_uid=arget_device_uid,
+            target_uid=target_device_uid,
             callback=callback,
             time_to_live_secs=time_to_live_secs,
         )
@@ -1890,16 +1916,17 @@ class Klyqa_account:
             return False
 
         LOGGER.debug(
-            f"new message {msg.msg_counter} target {arget_device_uid} {send_msg}"
+            f"new message {msg.msg_counter} target {target_device_uid} {send_msg}"
         )
 
-        self.message_queue.setdefault(arget_device_uid, []).append(msg)
+        self.message_queue.setdefault(target_device_uid, []).append(msg)
 
         if self.__read_tcp_task:
             self.__read_tcp_task.cancel()
         self.search_and_send_loop_task_alive()
+        return True
 
-    async def load_username_cache(self):
+    async def load_username_cache(self) -> None:
         acc_settings_cache, cached = await async_json_cache(
             None, "last.acc_settings.cache.json"
         )
@@ -1950,7 +1977,7 @@ class Klyqa_account:
             try:
                 login_data = {"email": self.username, "password": self.password}
 
-                login_response = await loop.run_in_executor(
+                login_response: requests.Response = await loop.run_in_executor(
                     None,
                     functools.partial(
                         requests.post,
@@ -2058,7 +2085,7 @@ class Klyqa_account:
                                 f'device/{device_sets["cloudDeviceId"]}/state', timeout=30
                             )
                             return ret
-                        except:
+                        except Exception as e:
                             return None
 
                     try:
@@ -2149,8 +2176,8 @@ class Klyqa_account:
                 return False
         return True
 
-    def get_header_default(self):
-        header = {
+    def get_header_default(self) -> dict[str, str]:
+        header: dict[str, str] = {
             "X-Request-Id": str(uuid.uuid4()),
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -2158,7 +2185,7 @@ class Klyqa_account:
         }
         return header
 
-    def get_header(self):
+    def get_header(self) -> dict[str, str]:
         return {
             **self.get_header_default(),
             **{"Authorization": "Bearer " + self.access_token},
@@ -2253,24 +2280,24 @@ class Klyqa_account:
         device: KlyqaDevice = r_device.ref
 
         data = []
-        last_send = datetime.datetime.now()
+        last_send: datetime.datetime = datetime.datetime.now()
         device.local.connection.settimeout(0.001)
-        pause = datetime.timedelta(milliseconds=0)
-        elapsed = datetime.datetime.now() - last_send
+        pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
+        elapsed: datetime.timedelta = datetime.datetime.now() - last_send
 
         loop = asyncio.get_event_loop()
 
         return_val = Device_TCP_return.nothing_done
 
         msg_sent: Message = None
-        communication_finished = False
+        communication_finished: bool = False
         
         async def __send_msg(msg):
             nonlocal last_send, pause, return_val, device
 
             LOGGER.debug(f"Sent msg '{msg.msg_queue}' to device '{device.u_id}'.")
 
-            def rm_msg():
+            def rm_msg() -> None:
                 try:
                     LOGGER.debug(f"rm_msg()")
                     self.message_queue[device.u_id].remove(msg)
@@ -2332,7 +2359,7 @@ class Klyqa_account:
                 ## check how the answer come in and how they can be connected to the messages that has been sent.
                 i = 0
                 try:
-                    send_next = elapsed >= pause
+                    send_next: bool = elapsed >= pause
                     # if len(message_queue_tx) > 0 and :
                     while (
                         send_next
@@ -2340,7 +2367,7 @@ class Klyqa_account:
                         and i < len(self.message_queue[device.u_id])
                     ):
                         msg = self.message_queue[device.u_id][i]
-                        i = i + 1
+                        i: int = i + 1
                         if msg.state == Message_state.unsent:
                             msg_sent = await __send_msg(msg)
                             r_msg.ref = msg_sent
@@ -2362,15 +2389,15 @@ class Klyqa_account:
 
                 # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
                 
-                pkgLen = data[0] * 256 + data[1]
-                pkgType = data[3]
+                pkgLen: int = data[0] * 256 + data[1]
+                pkgType: int = data[3]
 
-                pkg = data[4 : 4 + pkgLen]
+                pkg: bytes = data[4 : 4 + pkgLen]
                 if len(pkg) < pkgLen:
                     LOGGER.debug("Incomplete packet, waiting for more...")
                     break
 
-                data = data[4 + pkgLen :]
+                data: bytes = data[4 + pkgLen :]
                 
                 if device.local.state == "WAIT_IV" and pkgType == 0:
                     
@@ -2379,7 +2406,7 @@ class Klyqa_account:
                     # send the local initial vector for the encrypted communication to the device.
                     
                     LOGGER.debug("Plain: " + str(pkg))
-                    json_response = json.loads(pkg)
+                    json_response: dict[str, Any] = json.loads(pkg)
                     ident = KlyqaDeviceResponseIdent(**json_response["ident"])
                     device.u_id = ident.unit_id
                     new_device = False
@@ -2388,8 +2415,8 @@ class Klyqa_account:
                         if self.acc_settings:
                             dev = [
                                 device
-                                for device in self.acc_settings["devices"]
-                                if format_uid(device["localDeviceId"])
+                                for device2 in self.acc_settings["devices"]
+                                if format_uid(device2["localDeviceId"])
                                 == format_uid(device.u_id)
                             ]
                             if dev:
@@ -2418,7 +2445,7 @@ class Klyqa_account:
                         device = device_b
                         r_device.ref = device_b
                     else:
-                        err = f"Couldn't get use lock for device {device_b.get_name()} {device.local.address})"
+                        err: str = f"Couldn't get use lock for device {device_b.get_name()} {device.local.address})"
                         LOGGER.error(err)
                         return Device_TCP_return.device_lock_timeout
 
@@ -2490,14 +2517,14 @@ class Klyqa_account:
                     
                     # Receive encrypted answer for sent message.
                     
-                    cipher = pkg
+                    cipher: bytes = pkg
 
-                    plain = device.local.receivingAES.decrypt(cipher)
+                    plain: bytes = device.local.receivingAES.decrypt(cipher)
                     device.local.received_packages.append(plain)
                     msg_sent.answer = plain
                     json_response = ""
                     try:
-                        plain_utf8 = plain.decode()
+                        plain_utf8: str = plain.decode()
                         json_response = json.loads(plain_utf8)
                         device.save_device_message(json_response)
                         device.local.sent_msg_answer = json_response
@@ -2542,9 +2569,9 @@ class Klyqa_account:
             self.__acc_settings_lock.release()
         return ret
 
-    async def request_account_settings(self):
+    async def request_account_settings(self) -> None:
         try:
-            self.acc_settings = await self.request("settings")
+            self.acc_settings: TypeJSON = await self.request("settings")
 
             """saving updated account settings to cache"""
 
@@ -2578,8 +2605,8 @@ class Klyqa_account:
         self,
         args,
         args_in,
-        udp = None,
-        tcp = None,
+        udp: socket = None,
+        tcp: socket = None,
         timeout_ms=5000,
         async_answer_callback: Callable[[Message, str], Any] = None,
     ):
@@ -2605,7 +2632,7 @@ class Klyqa_account:
 
             loop = asyncio.get_event_loop()
 
-            send_started = datetime.datetime.now()
+            send_started: datetime.datetime = datetime.datetime.now()
 
             if args.dev:
                 args.local = True
@@ -2629,18 +2656,18 @@ class Klyqa_account:
             if (args.local or args.tryLocalThanCloud) and (
                 not args.device_name
                 and not args.device_unitids
-                and not args.all
+                and not args.allDevices
                 and not args.discover
             ):
-                discover_local_args = [
+                discover_local_args: list[str] = [
                     "--request",
-                    "--all",
+                    "--allDevices",
                     "--selectDevice",
-                    "--discover",
+                    "--discover"
                 ]
 
-                orginal_args_parser = get_description_parser()
-                discover_local_args_parser = get_description_parser()
+                orginal_args_parser: ArgumentParser = get_description_parser()
+                discover_local_args_parser: ArgumentParser = get_description_parser()
 
                 add_config_args(parser=orginal_args_parser)
                 add_config_args(parser=discover_local_args_parser)
@@ -2662,7 +2689,8 @@ class Klyqa_account:
                     timeout_ms=3500,
                 )
                 if isinstance(uids, set) or isinstance(uids, list):
-                    args_in.extend(["--device_unitids", ",".join(list(uids))])
+                    # args_in.extend(["--device_unitids", ",".join(list(uids))])
+                    args_in = ["--device_unitids", ",".join(list(uids))] + args_in
                 elif isinstance(uids, str) and uids == "no_devices":
                     return False
                 else:
@@ -2680,7 +2708,7 @@ class Klyqa_account:
                         + '"to unit id.'
                     )
                     return 1
-                dev = [
+                dev: list[str] = [
                     format_uid(device["localDeviceId"])
                     for device in self.acc_settings["devices"]
                     if device["name"] == args.device_name
@@ -2693,7 +2721,7 @@ class Klyqa_account:
                     )
                     return 1
                 else:
-                    target_device_uids = set(format_uid(dev[0]))
+                    target_device_uids: set[str] = set(format_uid(dev[0]))
 
             if args.device_unitids is not None:
                 target_device_uids = set(
@@ -2702,7 +2730,7 @@ class Klyqa_account:
                 print("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
 
-            commands_to_send = [i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)]
+            commands_to_send: list[str] = [i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)]
 
             if commands_to_send:
                 print("Commands to send to devices: " + ", ".join(commands_to_send))
@@ -2735,17 +2763,17 @@ class Klyqa_account:
                     )
 
                 temperature_enum = []
-                color = [0, 255]
-                brightness = [0, 100]
+                color: list[int] = [0, 255]
+                brightness: list[int] = [0, 100]
                 for u_id in args.device_unitids[0].split(","):
-                    u_id = format_uid(u_id)
+                    u_id: str = format_uid(u_id)
                     if u_id not in self.devices or not self.devices[u_id].ident:
 
-                        async def send_ping():
-                            discover_local_args2 = ["--ping", "--device_unitids", u_id]
+                        async def send_ping() -> bool:
+                            discover_local_args2: list[str] = ["--ping", "--device_unitids", u_id]
 
-                            orginal_args_parser = get_description_parser()
-                            discover_local_args_parser2 = get_description_parser()
+                            orginal_args_parser: ArgumentParser = get_description_parser()
+                            discover_local_args_parser2: ArgumentParser = get_description_parser()
 
                             add_config_args(parser=orginal_args_parser)
                             add_config_args(parser=discover_local_args_parser2)
@@ -2775,9 +2803,9 @@ class Klyqa_account:
                             else:
                                 return False
 
-                        ret = await send_ping()
+                        ret: bool = await send_ping()
                         if isinstance(ret, bool) and ret:
-                            product_id = self.devices[u_id].ident.product_id
+                            product_id: str = self.devices[u_id].ident.product_id
                         else:
                             LOGGER.error(f"Device {u_id} not found.")
                             return False
@@ -2785,7 +2813,7 @@ class Klyqa_account:
                     if not temperature_enum:
                         temperature_enum = get_temp_range(product_id)
                     else:
-                        temperature_enum = get_inner_range(
+                        temperature_enum: tuple[int, int] = get_inner_range(
                             temperature_enum, get_temp_range(product_id)
                         )
                 arguments_send_to_device = {}
@@ -2798,7 +2826,7 @@ class Klyqa_account:
                         + "] (Kelvin, low: warm, high: cold)"
                     }
 
-                arguments_send_to_device = {
+                arguments_send_to_device: dict[str, str] = {
                     **arguments_send_to_device,
                     **{
                         "color": f" rgb [{color[0]}..{color[1]}] [{color[0]}..{color[1]}] [{color[0]}..{color[1]}]",
@@ -2815,13 +2843,13 @@ class Klyqa_account:
 
                 count = 1
                 for c in commands_send_to_bulb:
-                    args_to_b = (
+                    args_to_b: str = (
                         arguments_send_to_device[c] if c in arguments_send_to_device else ""
                     )
                     print(str(count) + ") " + c + args_to_b)
-                    count = count + 1
+                    count: int = count + 1
 
-                cmd_c_id = int(input("Choose command number [1-9]*: "))
+                cmd_c_id: int = int(input("Choose command number [1-9]*: "))
                 if cmd_c_id > 0 and cmd_c_id < count:
                     args_in.append("--" + commands_send_to_bulb[cmd_c_id - 1])
                 else:
@@ -2829,13 +2857,13 @@ class Klyqa_account:
                     sys.exit(1)
 
                 if commands_send_to_bulb[cmd_c_id - 1] in arguments_send_to_device:
-                    args_app = input(
+                    args_app: str = input(
                         "Set arguments (multiple arguments space separated) for command [Enter]: "
                     )
                     if args_app:
                         args_in.extend(args_app.split(" "))
 
-                parser = get_description_parser()
+                parser: ArgumentParser = get_description_parser()
 
                 add_config_args(parser=parser)
                 add_command_args(parser=parser)
@@ -2846,7 +2874,7 @@ class Klyqa_account:
             if args.aes is not None:
                 AES_KEYs["all"] = bytes.fromhex(args.aes[0])
 
-            def local_and_cloud_command_msg(json_msg, timeout):
+            def local_and_cloud_command_msg(json_msg, timeout) -> None:
                 message_queue_tx_local.append((json.dumps(json_msg), timeout))
                 message_queue_tx_command_cloud.append(json_msg)
 
@@ -2881,7 +2909,7 @@ class Klyqa_account:
                 message_queue_tx_state_cloud.append({"status": args.power[0]})
 
             if not args.selectDevice:
-                product_ids = {
+                product_ids: set[str] = {
                     device.ident.product_id
                     for uid, device in self.devices.items()
                     if device.ident and device.ident.product_id
@@ -2915,7 +2943,7 @@ class Klyqa_account:
                 "Check_device_parameter", "color brightness temperature scene"
             )
 
-            def missing_config(product_id):
+            def missing_config(product_id) -> bool:
                 if not forced_continue(
                     "Missing or faulty config values for device "
                     + " product_id: "
@@ -2926,7 +2954,7 @@ class Klyqa_account:
 
             #### Needing config profile versions implementation for checking trait ranges ###
 
-            def check_color_range(product_id, values):
+            def check_color_range(product_id, values) -> bool:
                 color_enum = []
                 try:
                     # # different device trait schematics. for now go typical range
@@ -2953,7 +2981,7 @@ class Klyqa_account:
                     return not missing_config(product_id)
                 return True
 
-            def check_brightness_range(product_id, value):
+            def check_brightness_range(product_id, value) -> bool:
                 brightness_enum = []
                 try:
                     # different device trait schematics. for now go typical range
@@ -2983,8 +3011,8 @@ class Klyqa_account:
                     return not missing_config(product_id)
                 return True
 
-            def check_temp_range(product_id, value):
-                temperature_range = []
+            def check_temp_range(product_id, value) -> bool:
+                temperature_range: list[int] = []
                 try:
                     # # different device trait schematics. for now go typical range
                     # temperature_range = [
@@ -3006,7 +3034,7 @@ class Klyqa_account:
                     return not missing_config(product_id)
                 return True
 
-            def check_scene_support(product_id, scene):
+            def check_scene_support(product_id, scene) -> bool:
                 color_enum = []
                 try:
                     # color_enum = [
@@ -3035,7 +3063,7 @@ class Klyqa_account:
 
             def check_device_parameter(
                 parameter: Check_device_parameter, values, product_id
-            ):
+            ) -> bool:
                 # if not device_configs and not forced_continue("Missing configs for devices."):
                 #     return False
 
@@ -3096,7 +3124,7 @@ class Klyqa_account:
                 #     return False
 
                 tt = args.transitionTime[0]
-                msg = brightness_message(brightness, int(tt))
+                msg: tuple[str, int] = brightness_message(brightness, int(tt))
 
                 check_brightness = functools.partial(
                     check_device_parameter, Check_device_parameter.brightness, brightness
@@ -3123,6 +3151,9 @@ class Klyqa_account:
 
             if args.factory_reset:
                 local_and_cloud_command_msg({"type": "factory_reset"}, 500)
+                
+            if args.fade is not None and len(args.fade) == 2:
+                local_and_cloud_command_msg({"type": "request","fade_out": args.fade[1],"fade_in": args.fade[0]}, 500)
 
             scene = ""
             if args.WW:
@@ -3257,7 +3288,7 @@ class Klyqa_account:
             
             if args.command is not None:
                 if args.command == "get":
-                    get_dict = {"type":"request", "action":"get",}
+                    get_dict: dict[str, Any] = {"type":"request", "action":"get",}
                     if args.power or args.all:
                         get_dict["power"] = None
                     if args.cleaning or args.all:
@@ -3282,8 +3313,8 @@ class Klyqa_account:
                         get_dict["calibrationtime"] = None
                     if args.workingmode or args.all:
                         get_dict["workingmode"] = None
-                    if args.workstatus or args.all:
-                        get_dict["workstatus"] = None
+                    if args.workingstatus or args.all:
+                        get_dict["workingstatus"] = None
                     if args.suction or args.all:
                         get_dict["suction"] = None
                     if args.water or args.all:
@@ -3305,7 +3336,7 @@ class Klyqa_account:
                     local_and_cloud_command_msg(get_dict, 1000)
                     
                 elif args.command == "set":
-                    set_dict = {"type":"request", "action":"set"}
+                    set_dict: dict[str, Any] = {"type":"request", "action":"set"}
                     if args.power is not None:
                         set_dict["power"] = args.power
                     if args.cleaning is not None:
@@ -3315,9 +3346,11 @@ class Klyqa_account:
                     if args.carpetbooster is not None:
                         set_dict["carpetbooster"] = args.carpetbooster
                     if args.workingmode is not None:
-                        set_dict["workingmode"] = args.workingmode
+                        mode: int = VC_WORKINGMODE[args.workingmode].value
+                        set_dict["workingmode"] = mode
                     if args.suction is not None:
-                        set_dict["suction"] = args.suction
+                        suction: int = VC_SUCTION_STRENGTHS[args.suction].value
+                        set_dict["suction"] = suction - 1
                     if args.water is not None:
                         set_dict["water"] = args.water
                     if args.direction is not None:
@@ -3329,7 +3362,7 @@ class Klyqa_account:
                     local_and_cloud_command_msg(set_dict, 1000)
                     
                 elif args.command == "reset":
-                    reset_dict = { "type" : "request","action": "reset"}
+                    reset_dict: dict[str, Any] = { "type" : "request","action": "reset"}
                     if args.sidebrush:
                         reset_dict["sidebrush"] = None
                     if args.rollingbrush:
@@ -3359,7 +3392,7 @@ class Klyqa_account:
                 else:
 
                     message_queue_tx_local.reverse()
-                    send_started_local = datetime.datetime.now()
+                    send_started_local: datetime.datetime = datetime.datetime.now()
 
                     if args.discover:
 
@@ -3367,10 +3400,10 @@ class Klyqa_account:
                         print("Search local network for devices ...")
                         print(sep_width * "-")
 
-                        discover_end_event = asyncio.Event()
-                        discover_timeout_secs = 2.5
+                        discover_end_event: Event = asyncio.Event()
+                        discover_timeout_secs: float = 2.5
 
-                        async def discover_answer_end(answer: TypeJSON, uid: str):
+                        async def discover_answer_end(answer: TypeJSON, uid: str) -> None:
                             LOGGER.debug(f"discover ping end")
                             discover_end_event.set()
 
@@ -3394,9 +3427,9 @@ class Klyqa_account:
                     # else:
                     msg_wait_tasks = {}
 
-                    to_send_device_uids = target_device_uids.copy()
+                    to_send_device_uids: set[str] = target_device_uids.copy()
 
-                    async def sl(uid):
+                    async def sl(uid) -> None:
                         try:
                             await asyncio.sleep(timeout_ms / 1000)
                         except CancelledError as e:
@@ -3408,10 +3441,9 @@ class Klyqa_account:
                         try:
                             msg_wait_tasks[i] = loop.create_task(sl(i))
                         except Exception as e:
-                            # print("ok")
                             pass
 
-                    async def async_answer_callback_local(msg, uid):
+                    async def async_answer_callback_local(msg, uid) -> None:
                         if msg and msg.msg_queue_sent:
                             LOGGER.debug(f"{uid} msg callback.")
                         # else:
@@ -3450,7 +3482,7 @@ class Klyqa_account:
                     if args.selectDevice:
                         print(sep_width * "-")
                         # devices_working = {k: v for k, v in self.devices.items() if v.local.aes_key_confirmed}
-                        devices_working = {
+                        devices_working: dict[str, KlyqaDevice] = {
                             u_id: device
                             for u_id, device in self.devices.items()
                             if (device.status and device.status.ts > send_started_local)
@@ -3473,7 +3505,7 @@ class Klyqa_account:
                             return "no_devices"
                         print(sep_width * "-")
                         count = 1
-                        device_items = list(devices_working.values())
+                        device_items: list[KlyqaDevice] = list(devices_working.values())
 
                         if device_items:
                             print(
@@ -3484,10 +3516,10 @@ class Klyqa_account:
                             print("")
 
                         for device in device_items:
-                            name = f"Unit ID: {device.u_id}"
+                            name: str = f"Unit ID: {device.u_id}"
                             if device.acc_sets and "name" in device.acc_sets:
                                 name = device.acc_sets["name"]
-                            address = (
+                            address: str = (
                                 f" (local {device.local.address['ip']}:{device.local.address['port']})"
                                 if device.local.address["ip"]
                                 else ""
@@ -3495,7 +3527,7 @@ class Klyqa_account:
                             cloud = (
                                 f" (cloud connected)" if device.cloud.connected else ""
                             )
-                            status = (
+                            status: str = (
                                 f" ({device.status})" if device.status else " (no status)"
                             )
                             print(f"{count}) {name}{status}{address}{cloud}")
@@ -3503,7 +3535,7 @@ class Klyqa_account:
 
                         if self.devices:
                             print("")
-                            device_num_s = input(
+                            device_num_s: str = input(
                                 "Choose bulb number(s) (comma seperated) a (all),[1-9]*{,[1-9]*}*: "
                             )
                             target_device_uids_lcl = set()
@@ -3511,7 +3543,7 @@ class Klyqa_account:
                                 return set(b.u_id for b in device_items)
                             else:
                                 for bulb_num in device_num_s.split(","):
-                                    bulb_num = int(bulb_num)
+                                    bulb_num: int = int(bulb_num)
                                     if bulb_num > 0 and bulb_num < count:
                                         target_device_uids_lcl.add(
                                             device_items[bulb_num - 1].u_id
@@ -3523,7 +3555,7 @@ class Klyqa_account:
 
                 if target_device_uids and len(to_send_device_uids) > 0:
                     """error"""
-                    sent_locally_error = (
+                    sent_locally_error: str = (
                         "The commands "
                         + "failed to send locally to the device(s): "
                         + ", ".join(to_send_device_uids)
@@ -3540,9 +3572,9 @@ class Klyqa_account:
                 queue_printer: EventQueuePrinter = EventQueuePrinter()
                 response_queue = []
 
-                async def _cloud_post(device: KlyqaDevice, json_message, target: str):
+                async def _cloud_post(device: KlyqaDevice, json_message, target: str) -> None:
                     cloud_device_id = device.acc_sets["cloudDeviceId"]
-                    unit_id = format_uid(device.acc_sets["localDeviceId"])
+                    unit_id: str = format_uid(device.acc_sets["localDeviceId"])
                     LOGGER.info(
                         f"Post {target} to the device '{cloud_device_id}' (unit_id: {unit_id}) over the cloud."
                     )
@@ -3553,10 +3585,10 @@ class Klyqa_account:
                         )
                     }
                     resp_print = ""
-                    name = device.u_id
+                    name: str = device.u_id
                     if device.acc_sets and "name" in device.acc_sets:
                         name = device.acc_sets["name"]
-                    resp_print = f'Device "{name}" cloud response:'
+                    resp_print: str = f'Device "{name}" cloud response:'
                     resp_print = json.dumps(resp, sort_keys=True, indent=4)
                     device.cloud.received_packages.append(resp)
                     response_queue.append(resp_print)
@@ -3579,13 +3611,13 @@ class Klyqa_account:
                     finally:
                         await device.use_unlock()
 
-                started = datetime.datetime.now()
+                started: datetime.datetime = datetime.datetime.now()
                 # timeout_ms = 30000
 
-                async def process_cloud_messages(target_uids):
+                async def process_cloud_messages(target_uids) -> None:
 
                     threads = []
-                    target_devices = [
+                    target_devices: list[KlyqaDevice] = [
                         b
                         for b in self.devices.values()
                         for t in target_uids
@@ -3619,9 +3651,9 @@ class Klyqa_account:
                         )
 
                     count = 0
-                    timeout = timeout_ms / 1000
+                    timeout: float = timeout_ms / 1000
                     for t, device in threads:
-                        count = count + 1
+                        count: int = count + 1
                         """wait at most timeout_ms wanted minus seconds elapsed since sending"""
                         try:
                             await asyncio.wait_for(
@@ -3646,10 +3678,10 @@ class Klyqa_account:
                     success = True
 
             if success and scene:
-                scene_start_args = ["--routine_id", "0", "--routine_start"]
+                scene_start_args: list[str] = ["--routine_id", "0", "--routine_start"]
 
                 orginal_args_parser = get_description_parser()
-                scene_start_args_parser = get_description_parser()
+                scene_start_args_parser: ArgumentParser = get_description_parser()
 
                 add_config_args(parser=orginal_args_parser)
                 add_config_args(parser=scene_start_args_parser)
@@ -3812,7 +3844,7 @@ def main():
     add_config_args(parser=parser)
 
     add_command_args(parser=parser)
-    args_in = sys.argv[1:]
+    args_in: list[str] = sys.argv[1:]
 
     if len(args_in) < 2:
         parser.print_help()
@@ -3828,14 +3860,14 @@ def main():
         logging_hdl.setLevel(level=logging.DEBUG)
     
     server_ip = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
-    data_communicator = Data_communicator(server_ip)
+    data_communicator: Data_communicator = Data_communicator(server_ip)
         
     # loop.run_until_complete(data_communicator.bind_ports())
 
-    print_onboarded_devices = (
+    print_onboarded_devices: bool = (
         not args_parsed.device_name
         and not args_parsed.device_unitids
-        and not args_parsed.all
+        and not args_parsed.allDevices
     )
 
     klyqa_acc: Klyqa_account = None
