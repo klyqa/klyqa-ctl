@@ -17,8 +17,8 @@
 #   -   Implementation for the different device config profile versions and
 #       check on send.
 #
-# # TOBEFIXED:
-#  - vc1 cloud support.
+# BUGS:
+#  - vc1 interactive command selection support.
 # 
 ###################################################################
 
@@ -275,16 +275,20 @@ BULB_SCENES: list[dict[str, Any]] = [
 
 ## Vacuum Cleaner ##
 
-VC_WORKSTATUS: Type[Enum] = StrEnum(
-    "VC_WORKSTATUS",
+VC_WORKINGSTATUS: Type[Enum] = Enum(
+    "VC_WORKINGSTATUS",
     "SLEEP STANDBY CLEANING CLEANING_AUTO CLEANING_RANDOM CLEANING_SROOM CLEANING_EDGE CLEANING_SPOT CLEANING_COMP DOCKING CHARGING CHARGING_DC CHARGING_COMP ERROR",
 )
 
-VC_SUCTION_STRENGTHS: Type[Enum] = StrEnum(
+VC_SUCTION_STRENGTHS: Type[Enum] = Enum(
     "VC_SUCTION_STRENGTHS",
-    "LOW MID HIGH",
+    "NULL STRONG SMALL NORMAL MAX",
 )
 
+VC_WORKINGMODE: Type[Enum] = Enum(
+    "VC_WORKINGMODE",
+    "STANDBY RANDOM SMART WALL_FOLLOW MOP SPIRAL PARTIAL_BOW SROOM CHARGE_GO"
+)
 
 class AsyncIOLock:
     """AsyncIOLock"""
@@ -388,7 +392,7 @@ class KlyqaDeviceResponseIdent(KlyqaBulbResponse):
         self.unit_id = format_uid(unit_id)
 
 
-async def async_json_cache(json_data, json_file):
+async def async_json_cache(json_data, json_file) -> tuple [Device_config, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
@@ -496,11 +500,12 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
 # "cleaning":"on","beeping":"off","battery":57,"sidebrush":10,
 # "rollingbrush":30,"filter":60,"carpetbooster":200,"area":999,
 # "time":999,"calibrationtime":19999999,"workingmode":null,
-# "workstatus":"STANDBY","suction":"MID","water":"LOW","direction":"STOP",
+# "workingstatus":"STANDBY","suction":"MID","water":"LOW","direction":"STOP",
 # "errors":["COLLISION","GROUND_CHECK","LEFT_WHEEL","RIGHT_WHEEL","SIDE_SCAN","MID_SWEEP","FAN","TRASH","BATTERY","ISSUES"],
 # "cleaningrec":[],"equipmentmodel":"","alarmmessages":"","commissioninfo":"","action":"get"}    
 
-    mcu: str = ""
+    active_command: int = -1
+    mcuversion: str = ""
     power: str = ""
     cleaning: str = ""
     beeping: str = ""
@@ -508,21 +513,31 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
     sidebrush: str = ""
     rollingbrush: int = -1
     filter: int = -1
+    filter_tresh: int = -1
+    fwversion: str = ""
     carpetbooster: int = -1
     area: int = -1 
     time: int = -1
     calibrationtime: int -1 
     workingmode: str | None = None
-    workstatus: str = ""
+    workingstatus: str = ""
     suction: str = ""
-    water: str = ""
     direction: str = "" 
     errors: list[str] = []
     cleaningrec: list[str] = []
+    sdkversion: str = ""
     equipmentmodel: str = ""
     alarmmessages: str = ""
     commissioninfo: str = ""
     action: str = ""
+    open_slots: int = -1 
+    rollingbrush_tresh: int = -1
+    sidebrush_tresh: int = -1
+    watertank: str = ""
+    connected: bool = False
+    lastActivityTime: str = ""
+    id: str = ""
+    map_parameter: str = ""
   
     ts: datetime.datetime = datetime.datetime.now()
 
@@ -533,7 +548,10 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
     def __init__(
         self,
         type: str,
-        mcu: str = "",
+        active_command: int = -1,
+        rollingbrush_tresh: int = -1,
+        mcuversion: str = "",
+        fwversion: str = "",
         power: str = "",
         cleaning: str = "",
         beeping: str = "",
@@ -541,14 +559,15 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
         sidebrush: str = "",
         rollingbrush: int = -1,
         filter: int = -1,
+        filter_tresh: int = -1,
         carpetbooster: int = -1,
-        area: int = -1 ,
+        area: int = -1,
         time: int = -1,
         calibrationtime: int = -1,
         workingmode: str | None = None,
-        workstatus: str = "",
+        sdkversion: str = "",
+        workingstatus: str = "",
         suction: str = "",
-        water: str = "",
         direction: str = "" ,
         errors: list[str] = [],
         cleaningrec: list[str] = [],
@@ -556,30 +575,49 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
         alarmmessages: str = "",
         commissioninfo: str = "",
         action: str = "",
+        open_slots: int = -1,
+        sidebrush_tresh: int = -1,
+        watertank: str = "",
+        connected: bool = False,
+        lastActivityTime: str = "",
+        map_parameter: str = "",
+        id: str = "",
         **kwargs,
     ) -> None:
         """__init__"""
         super().__init__(type)
 
-        self.mcu = mcu
-        self.power = power
-        self.cleaning = cleaning
-        self.beeping = beeping
-        self.battery = battery
-        self.sidebrush = sidebrush
-        self.rollingbrush = rollingbrush
-        self.filter = filter
-        self.carpetbooster = carpetbooster
+        self.active_command = active_command
         self.area = area
-        self.time = time
-        self.calibrationtime = calibrationtime
-        self.workingmode = workingmode
-        self.workstatus = workstatus
-        self.suction = suction
-        self.water = water
+        self.battery = battery
+        self.beeping = beeping
+        self.carpetbooster = carpetbooster
+        self.cleaning = cleaning
+        self.cleaningrec = cleaningrec
         self.direction = direction
         self.errors = errors
-        self.cleaningrec = cleaningrec
+        self.filter = filter
+        self.filter_tresh = filter_tresh
+        self.fwversion = fwversion
+        self.map_parameter = map_parameter
+        self.mcuversion = mcuversion
+        self.open_slots = open_slots
+        self.power = power
+        self.rollingbrush = rollingbrush
+        self.rollingbrush_tresh = rollingbrush_tresh
+        self.sdkversion = sdkversion
+        self.sidebrush = sidebrush
+        self.sidebrush_tresh = sidebrush_tresh
+        self.suction = suction
+        self.time = time
+        self.watertank = watertank
+        self.workingmode = workingmode
+        self.workingstatus = workingstatus
+        self.lastActivityTime = lastActivityTime
+        self.connected = connected
+        self.id = id
+        
+        self.calibrationtime = calibrationtime
         self.equipmentmodel = equipmentmodel
         self.alarmmessages = alarmmessages
         self.commissioninfo = commissioninfo
@@ -806,7 +844,7 @@ class KlyqaDevice:
 
     def save_device_message(self, msg) -> None:
         """msg: json dict"""
-        if "type" in msg and msg["type"] in msg and hasattr(self, msg["type"]):
+        if "type" in msg and hasattr(self, msg["type"]): #and msg["type"] in msg:
             try:
                 LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
                 if msg["type"] == "ident":
@@ -1111,8 +1149,8 @@ def add_config_args(parser) -> None:
         help="give the device unit id from your account settings for the command to send to",
     )
     parser.add_argument(
-        "--all",
-        help="send commands to all lamps",
+        "--allDevices",
+        help="send commands to all devices",
         action="store_const",
         const=True,
         default=False,
@@ -1331,7 +1369,7 @@ def add_command_args(parser):
     req.add_argument('--time', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--calibrationtime', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--workingmode', help='If this flag is set, the state element will be requested', action='store_true')
-    req.add_argument('--workstatus', help='If this flag is set, the state element will be requested', action='store_true')
+    req.add_argument('--workingstatus', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--suction', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--water', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--direction', help='If this flag is set, the state element will be requested', action='store_true')
@@ -1348,9 +1386,9 @@ def add_command_args(parser):
     set_parser.add_argument('--cleaning', choices=['on', 'off'], help='turn cleaning on/off')
     set_parser.add_argument('--beeping', choices=['on', 'off'], help='enable/disable the find-vc function')
     set_parser.add_argument('--carpetbooster', metavar='strength', type=int, help='set the carpet booster strength (0-255)')
-    set_parser.add_argument('--workingmode', choices=['STANDBY', 'SMART', 'MOP', 'WALL_FOLLOW', 'PARTIAL_BOW', 'SPIRAL', 'CHARGE_GO', 'SROOM'], help='set the working mode')
+    set_parser.add_argument('--workingmode', choices=[m.name for m in VC_WORKINGMODE], help='set the working mode')
     set_parser.add_argument('--water', choices=['LOW', 'MID', 'HIGH'], help='set water quantity')
-    set_parser.add_argument('--suction', choices=['LOW', 'MID', 'HIGH'], help='set suction power')
+    set_parser.add_argument('--suction', choices=[m.name for m in VC_SUCTION_STRENGTHS], help='set suction power')
     set_parser.add_argument('--direction', choices=['FORWARDS','BACKWARDS', 'TURN_LEFT', 'TURN_RIGHT', 'STOP'], help='manually control movement')
     set_parser.add_argument('--commissioninfo', type=str, help='set up to 256 characters of commisioning info')
     set_parser.add_argument('--calibrationtime', metavar='time', type=int, help='set the calibration time (1-1999999999)')
@@ -2047,7 +2085,7 @@ class Klyqa_account:
                                 f'device/{device_sets["cloudDeviceId"]}/state', timeout=30
                             )
                             return ret
-                        except:
+                        except Exception as e:
                             return None
 
                     try:
@@ -2138,8 +2176,8 @@ class Klyqa_account:
                 return False
         return True
 
-    def get_header_default(self):
-        header = {
+    def get_header_default(self) -> dict[str, str]:
+        header: dict[str, str] = {
             "X-Request-Id": str(uuid.uuid4()),
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -2147,7 +2185,7 @@ class Klyqa_account:
         }
         return header
 
-    def get_header(self):
+    def get_header(self) -> dict[str, str]:
         return {
             **self.get_header_default(),
             **{"Authorization": "Bearer " + self.access_token},
@@ -2377,8 +2415,8 @@ class Klyqa_account:
                         if self.acc_settings:
                             dev = [
                                 device
-                                for device in self.acc_settings["devices"]
-                                if format_uid(device["localDeviceId"])
+                                for device2 in self.acc_settings["devices"]
+                                if format_uid(device2["localDeviceId"])
                                 == format_uid(device.u_id)
                             ]
                             if dev:
@@ -2618,14 +2656,14 @@ class Klyqa_account:
             if (args.local or args.tryLocalThanCloud) and (
                 not args.device_name
                 and not args.device_unitids
-                and not args.all
+                and not args.allDevices
                 and not args.discover
             ):
                 discover_local_args: list[str] = [
                     "--request",
-                    "--all",
+                    "--allDevices",
                     "--selectDevice",
-                    "--discover",
+                    "--discover"
                 ]
 
                 orginal_args_parser: ArgumentParser = get_description_parser()
@@ -2651,7 +2689,8 @@ class Klyqa_account:
                     timeout_ms=3500,
                 )
                 if isinstance(uids, set) or isinstance(uids, list):
-                    args_in.extend(["--device_unitids", ",".join(list(uids))])
+                    # args_in.extend(["--device_unitids", ",".join(list(uids))])
+                    args_in = ["--device_unitids", ",".join(list(uids))] + args_in
                 elif isinstance(uids, str) and uids == "no_devices":
                     return False
                 else:
@@ -3085,7 +3124,7 @@ class Klyqa_account:
                 #     return False
 
                 tt = args.transitionTime[0]
-                msg = brightness_message(brightness, int(tt))
+                msg: tuple[str, int] = brightness_message(brightness, int(tt))
 
                 check_brightness = functools.partial(
                     check_device_parameter, Check_device_parameter.brightness, brightness
@@ -3274,8 +3313,8 @@ class Klyqa_account:
                         get_dict["calibrationtime"] = None
                     if args.workingmode or args.all:
                         get_dict["workingmode"] = None
-                    if args.workstatus or args.all:
-                        get_dict["workstatus"] = None
+                    if args.workingstatus or args.all:
+                        get_dict["workingstatus"] = None
                     if args.suction or args.all:
                         get_dict["suction"] = None
                     if args.water or args.all:
@@ -3307,9 +3346,11 @@ class Klyqa_account:
                     if args.carpetbooster is not None:
                         set_dict["carpetbooster"] = args.carpetbooster
                     if args.workingmode is not None:
-                        set_dict["workingmode"] = args.workingmode
+                        mode: int = VC_WORKINGMODE[args.workingmode].value
+                        set_dict["workingmode"] = mode
                     if args.suction is not None:
-                        set_dict["suction"] = args.suction
+                        suction: int = VC_SUCTION_STRENGTHS[args.suction].value
+                        set_dict["suction"] = suction - 1
                     if args.water is not None:
                         set_dict["water"] = args.water
                     if args.direction is not None:
@@ -3576,7 +3617,7 @@ class Klyqa_account:
                 async def process_cloud_messages(target_uids) -> None:
 
                     threads = []
-                    target_devices = [
+                    target_devices: list[KlyqaDevice] = [
                         b
                         for b in self.devices.values()
                         for t in target_uids
@@ -3826,7 +3867,7 @@ def main():
     print_onboarded_devices: bool = (
         not args_parsed.device_name
         and not args_parsed.device_unitids
-        and not args_parsed.all
+        and not args_parsed.allDevices
     )
 
     klyqa_acc: Klyqa_account = None
