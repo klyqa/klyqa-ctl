@@ -646,9 +646,9 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponseStatus):
     def __init__(
         self,
         type: str,
-        status: str,
-        brightness: dict[str, int],
-        mode: str,
+        status: str = "off",
+        brightness: dict[str, int] = {},
+        mode: str = "",
         open_slots: int = 0,
         fwversion: str = "",
         sdkversion: str = "",
@@ -664,7 +664,7 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponseStatus):
         self.color = (
             RGBColor(color["red"], color["green"], color["blue"]) if color else {}
         )
-        self.brightness = brightness["percentage"]
+        self.brightness = brightness["percentage"] if brightness else 0
         self.temperature = temperature
         self.active_command = active_command
         self.active_scene = active_scene
