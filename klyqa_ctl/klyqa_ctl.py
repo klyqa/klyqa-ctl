@@ -19,7 +19,7 @@
 #
 # BUGS:
 #  - vc1 interactive command selection support.
-# 
+#
 ###################################################################
 
 from __future__ import annotations
@@ -345,53 +345,6 @@ class RefParse:
         self.ref = ref
 
 
-class KlyqaBulbResponse:
-    """KlyqaBulbResponse"""
-
-    type: str = ""
-    response_msg: dict = {}
-    ts: datetime.datetime = datetime.datetime.now()
-
-    def __init__(self, type=type, response_msg: dict = {}) -> None:
-        self.type = type
-        self.response_msg = response_msg
-        self.ts = datetime.datetime.now()
-
-
-# eventually dataclass
-class KlyqaDeviceResponseIdent(KlyqaBulbResponse):
-    """KlyqaDeviceResponseIdent"""
-
-    fw_version: str = ""
-    sdk_version: str = ""
-    fw_build: str = ""
-    hw_version: str = ""
-    manufacturer_id: str = ""
-    product_id: str = ""
-    unit_id: str = ""
-
-    def __init__(
-        self,
-        fw_version: str,
-        fw_build: str,
-        hw_version: str,
-        manufacturer_id: str,
-        product_id: str,
-        unit_id: dict,
-        sdk_version: str = "",  # optional due to virtual devices not having sdk version
-        **kwargs,
-    ) -> None:
-        super().__init__(**kwargs)
-        self.type = type
-        self.fw_version = fw_version
-        self.sdk_version = sdk_version
-        self.fw_build = fw_build
-        self.hw_version = hw_version
-        self.manufacturer_id = manufacturer_id
-        self.product_id = product_id
-        self.unit_id = format_uid(unit_id)
-
-
 async def async_json_cache(json_data, json_file) -> tuple [Device_config, bool]:
     """
     If json data is given write it to cache json_file.
@@ -483,63 +436,76 @@ class RGBColor:
 def format_uid(text: str) -> str:
     return unicode_slug.slugify(text)
 
-class KlyqaDeviceResponseStatus:
-    type: str = ""
-    
+class KlyqaDeviceResponse:
+    # type: str = ""
+
     def __init__(
         self,
-        type: str,
-        **kwargs,) -> None:
+        # type: str,
+        **kwargs) -> None:
         """__init__"""
-        self.type = type
-        
-class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
+        self.type: str = ""
+        self.ts: datetime.datetime = datetime.datetime.now()
+        self.update(**kwargs)
+
+    def update(self, **kwargs) -> None:
+        # Walk through parsed kwargs dict and look if names in dict exists as attribute in class,
+        # then apply the value in kwargs to the value in class.
+        for attr in kwargs:
+            if hasattr(self, attr):
+                setattr(self, attr, kwargs[attr])
+
+# class KlyqaDeviceResponse:
+#     """KlyqaDeviceResponse"""
+
+#     type: str = ""
+#     response_msg: dict = {}
+#     ts: datetime.datetime = datetime.datetime.now()
+
+#     def __init__(self, type=type, response_msg: dict = {}) -> None:
+#         self.type = type
+#         self.response_msg = response_msg
+#         self.ts = datetime.datetime.now()
+
+
+# eventually dataclass
+class KlyqaDeviceResponseIdent(KlyqaDeviceResponse):
+    """KlyqaDeviceResponseIdent"""
+
+    def __init__(
+        self,
+        **kwargs,
+    ) -> None:
+        self.fw_version: str = ""
+        self.fw_build: str = ""
+        self.hw_version: str = ""
+        self.manufacturer_id: str = ""
+        self.product_id: str = ""
+        self.sdk_version: str = ""
+        self._unit_id: str = ""
+        super().__init__(**kwargs)
+
+    def update(self, **kwargs) -> None:
+        super().update(**kwargs)
+
+    @property
+    def unit_id(self) -> str:
+        return self._unit_id
+
+    @unit_id.setter
+    def unit_id(self, unit_id: str) -> None:
+        self._unit_id = format_uid(unit_id)
+
+class KlyqaVCResponseStatus(KlyqaDeviceResponse):
     """KlyqaVCResponseStatus"""
-    
+
 # Decrypted:  b'{"type":"statechange","mcu":"online","power":"on",
 # "cleaning":"on","beeping":"off","battery":57,"sidebrush":10,
 # "rollingbrush":30,"filter":60,"carpetbooster":200,"area":999,
 # "time":999,"calibrationtime":19999999,"workingmode":null,
 # "workingstatus":"STANDBY","suction":"MID","water":"LOW","direction":"STOP",
 # "errors":["COLLISION","GROUND_CHECK","LEFT_WHEEL","RIGHT_WHEEL","SIDE_SCAN","MID_SWEEP","FAN","TRASH","BATTERY","ISSUES"],
-# "cleaningrec":[],"equipmentmodel":"","alarmmessages":"","commissioninfo":"","action":"get"}    
-
-    active_command: int = -1
-    mcuversion: str = ""
-    power: str = ""
-    cleaning: str = ""
-    beeping: str = ""
-    battery: str = ""
-    sidebrush: str = ""
-    rollingbrush: int = -1
-    filter: int = -1
-    filter_tresh: int = -1
-    fwversion: str = ""
-    carpetbooster: int = -1
-    area: int = -1 
-    time: int = -1
-    calibrationtime: int -1 
-    workingmode: str | None = None
-    workingstatus: str = ""
-    suction: str = ""
-    direction: str = "" 
-    errors: list[str] = []
-    cleaningrec: list[str] = []
-    sdkversion: str = ""
-    equipmentmodel: str = ""
-    alarmmessages: str = ""
-    commissioninfo: str = ""
-    action: str = ""
-    open_slots: int = -1 
-    rollingbrush_tresh: int = -1
-    sidebrush_tresh: int = -1
-    watertank: str = ""
-    connected: bool = False
-    lastActivityTime: str = ""
-    id: str = ""
-    map_parameter: str = ""
-  
-    ts: datetime.datetime = datetime.datetime.now()
+# "cleaningrec":[],"equipmentmodel":"","alarmmessages":"","commissioninfo":"","action":"get"}
 
     def __str__(self) -> str:
         """__str__"""
@@ -547,97 +513,65 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponseStatus):
 
     def __init__(
         self,
-        type: str,
-        active_command: int = -1,
-        rollingbrush_tresh: int = -1,
-        mcuversion: str = "",
-        fwversion: str = "",
-        power: str = "",
-        cleaning: str = "",
-        beeping: str = "",
-        battery: str = "",
-        sidebrush: str = "",
-        rollingbrush: int = -1,
-        filter: int = -1,
-        filter_tresh: int = -1,
-        carpetbooster: int = -1,
-        area: int = -1,
-        time: int = -1,
-        calibrationtime: int = -1,
-        workingmode: str | None = None,
-        sdkversion: str = "",
-        workingstatus: str = "",
-        suction: str = "",
-        direction: str = "" ,
-        errors: list[str] = [],
-        cleaningrec: list[str] = [],
-        equipmentmodel: str = "",
-        alarmmessages: str = "",
-        commissioninfo: str = "",
-        action: str = "",
-        open_slots: int = -1,
-        sidebrush_tresh: int = -1,
-        watertank: str = "",
-        connected: bool = False,
-        lastActivityTime: str = "",
-        map_parameter: str = "",
-        id: str = "",
         **kwargs,
     ) -> None:
         """__init__"""
-        super().__init__(type)
+        self.action: str = ""
+        self.active_command: int = -1
+        self.alarmmessages: str = ""
+        self.area: int = -1
+        self.beeping: str = ""
+        self.battery: str = ""
+        self.calibrationtime: int = -1
+        self.carpetbooster: int = -1
+        self.cleaning: str = ""
+        self.cleaningrec: list[str] = []
+        self.connected: bool = False
+        self.commissioninfo: str = ""
+        self.direction: str = ""
+        self.errors: list[str] = []
+        self.equipmentmodel: str = ""
+        self.filter: int = -1
+        self.filter_tresh: int = -1
+        self.fwversion: str = ""
+        self.id: str = ""
+        self.lastActivityTime: str = ""
+        self.map_parameter: str = ""
+        self.mcuversion: str = ""
+        self.open_slots: int = -1
+        self.power: str = ""
+        self.rollingbrush_tresh: int = -1
+        self.rollingbrush: int = -1
+        self.sdkversion: str = ""
+        self.sidebrush: str = ""
+        self.sidebrush_tresh: int = -1
+        self.suction: str = ""
+        self.time: int = -1
+        self.ts: datetime.datetime = datetime.datetime.now()
+        self.watertank: str = ""
+        self.workingmode: str | None = None
+        self.workingstatus: str = ""
 
-        self.active_command = active_command
-        self.area = area
-        self.battery = battery
-        self.beeping = beeping
-        self.carpetbooster = carpetbooster
-        self.cleaning = cleaning
-        self.cleaningrec = cleaningrec
-        self.direction = direction
-        self.errors = errors
-        self.filter = filter
-        self.filter_tresh = filter_tresh
-        self.fwversion = fwversion
-        self.map_parameter = map_parameter
-        self.mcuversion = mcuversion
-        self.open_slots = open_slots
-        self.power = power
-        self.rollingbrush = rollingbrush
-        self.rollingbrush_tresh = rollingbrush_tresh
-        self.sdkversion = sdkversion
-        self.sidebrush = sidebrush
-        self.sidebrush_tresh = sidebrush_tresh
-        self.suction = suction
-        self.time = time
-        self.watertank = watertank
-        self.workingmode = workingmode
-        self.workingstatus = workingstatus
-        self.lastActivityTime = lastActivityTime
-        self.connected = connected
-        self.id = id
-        
-        self.calibrationtime = calibrationtime
-        self.equipmentmodel = equipmentmodel
-        self.alarmmessages = alarmmessages
-        self.commissioninfo = commissioninfo
-        self.action = action
         LOGGER.debug(f"save status {self}")
+        super().__init__(**kwargs)
 
-class KlyqaBulbResponseStatus(KlyqaDeviceResponseStatus):
+    def update(self, **kwargs) -> None:
+        super().update(**kwargs)
+
+class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
     """Klyqa_Bulb_Response_Status"""
 
-    status: str = ""
-    color: RGBColor = RGBColor(-1, -1, -1)
-    brightness: int = -1
-    temperature: int = -1
-    active_command: int = -1
-    active_scene: str = ""
-    open_slots: int
-    mode: str = ""
-    fwversion: str = ""
-    sdkversion: str = ""
-    ts: datetime.datetime = datetime.datetime.now()
+    # status: str = ""
+    # color: RGBColor = RGBColor(-1, -1, -1)
+    # brightness: int = -1
+    # temperature: int = -1
+    # active_command: int = -1
+    # active_scene: str = ""
+    # open_slots: int
+    # mode: str = ""
+    # fwversion: str = ""
+    # sdkversion: str = ""
+    # ts: datetime.datetime = datetime.datetime.now()
 
     def __str__(self) -> str:
         """__str__"""
@@ -645,35 +579,60 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponseStatus):
 
     def __init__(
         self,
-        type: str,
-        status: str = "off",
-        brightness: dict[str, int] = {},
-        mode: str = "",
-        open_slots: int = 0,
-        fwversion: str = "",
-        sdkversion: str = "",
-        color: dict[str, int] = {},
-        temperature: int = -1,
-        active_command: int = 0,
-        active_scene: str = 0,
+        # type: str,
+        # status: str = "off",
+        # brightness: dict[str, int] = {},
+        # mode: str = "",
+        # open_slots: int = 0,
+        # fwversion: str = "",
+        # sdkversion: str = "",
+        # color: dict[str, int] = {},
+        # temperature: int = -1,
+        # active_command: int = 0,
+        # active_scene: str = 0,
         **kwargs
     ) -> None:
         """__init__"""
-        super().__init__(type, **kwargs)
-        self.status = status
-        self.color = (
-            RGBColor(color["red"], color["green"], color["blue"]) if color else {}
-        )
-        self.brightness = brightness["percentage"] if brightness else 0
-        self.temperature = temperature
-        self.active_command = active_command
-        self.active_scene = active_scene
-        self.open_slots = open_slots
-        self.mode = mode
-        self.fwversion = fwversion
-        self.sdkversion = sdkversion
-        self.ts = datetime.datetime.now()
+        # self.status = status
+        # self.color = (
+        #     RGBColor(color["red"], color["green"], color["blue"]) if color else {}
+        # )
+        # self.brightness = brightness["percentage"] if brightness else 0
+        # self.temperature = temperature
+        # self.active_command = active_command
+        # self.active_scene = active_scene
+        # self.open_slots = open_slots
+        # self.mode = mode
+        # self.fwversion = fwversion
+        # self.sdkversion = sdkversion
+        self.active_command: int | None = None
+        self.active_scene: str | None = None
+        self._brightness: int | None = None
+        self._color: RGBColor | None = None
+        self.fwversion: str | None = None
+        self.mode: str | None = None # cmd, cct, rgb
+        self.open_slots: int | None = None
+        self.sdkversion: str | None = None
+        self.status: str | None = None
+        self.temperature: int | None = None
         LOGGER.debug(f"save status {self}")
+        super().__init__(**kwargs)
+
+    @property
+    def brightness(self) -> int:
+        return self._brightness
+
+    @brightness.setter
+    def brightness(self, brightness: dict[str, int]):
+        self._brightness = int(brightness["percentage"])
+
+    @property
+    def color(self) -> RGBColor | None:
+        return self._color
+
+    @color.setter
+    def color(self, color: dict[str, int]):
+        self._color = RGBColor(color["red"], color["green"], color["blue"]) if color else None
 
 
 Device_config = dict
@@ -782,23 +741,25 @@ class KlyqaDevice:
 
     recv_msg_unproc: list[Message]
     ident: KlyqaDeviceResponseIdent = None
-    
+
     response_classes = {}
+    status: KlyqaDeviceResponse | None
 
     def __init__(self) -> None:
         self.local = LocalConnection()
         self.cloud = CloudConnection()
-        self.ident: KlyqaDeviceResponseIdent = None
+        self.ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent()
 
         self.u_id: str = "no_uid"
         self.acc_sets = {}
         self._use_lock = None
         self._use_thread = None
         self.recv_msg_unproc = []
-        
+
+        self.status = None
         self.response_classes = {
             "ident": KlyqaDeviceResponseIdent,
-            "status": KlyqaDeviceResponseStatus,
+            "status": KlyqaDeviceResponse,
         }
 
     def process_msgs(self) -> None:
@@ -812,7 +773,7 @@ class KlyqaDevice:
             if self.acc_sets and "name" in self.acc_sets and self.acc_sets
             else self.u_id
         )
-        
+
     async def use_lock(self, timeout=30, **kwargs) -> bool:
         try:
             if not self._use_lock:
@@ -844,40 +805,51 @@ class KlyqaDevice:
 
     def save_device_message(self, msg) -> None:
         """msg: json dict"""
+
+        status_update_types: set={"status", "statechange"}
+        if msg["type"] in status_update_types:
+            msg["type"] = "status"
         if "type" in msg and hasattr(self, msg["type"]): #and msg["type"] in msg:
             try:
                 LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
                 if msg["type"] == "ident":
-                    setattr(
-                        self,
-                        msg["type"],
-                        self.response_classes[msg["type"]](**msg[msg["type"]]),
-                    )
-                elif msg["type"] == "status":
-                    setattr(self, msg["type"], self.response_classes[msg["type"]](**msg))
+                    # setattr(self, "ident", self.ident.update(**msg))
+                    # setattr(
+                    #     self,
+                    #     msg["type"],
+                    #     self.response_classes[msg["type"]](**msg[msg["type"]]),
+                    # )
+                    self.ident.update(**msg["ident"])
+                elif msg["type"] in status_update_types: # and self.status:
+                    # setattr(self, msg["type"], self.response_classes[msg["type"]](**msg))
+                    # setattr(self, "status", self.status.update(**msg))
+                    if self.status is None:
+                        self.status = self.response_classes["status"](**msg)
+                    else:
+                        self.status.update(**msg)
             except Exception as e:
                 LOGGER.error(f"{traceback.format_exc()}")
                 LOGGER.error("Could not process device response: ")
                 LOGGER.error(str(msg))
-            
+
 class KlyqaVC(KlyqaDevice):
     """Klyqa vaccum cleaner"""
 
-    status: KlyqaVCResponseStatus = None
+    # status: KlyqaVCResponseStatus = None
 
     def __init__(self) -> None:
         super().__init__()
-        self.status: KlyqaVCResponseStatus = None
+        # self.status = KlyqaVCResponseStatus()
         self.response_classes["status"] = KlyqaVCResponseStatus
 
 class KlyqaBulb(KlyqaDevice):
     """KlyqaBulb"""
 
-    status: KlyqaBulbResponseStatus = None
+    # status: KlyqaBulbResponseStatus = None
 
     def __init__(self) -> None:
         super().__init__()
-        self.status: KlyqaBulbResponseStatus = None
+        # self.status = KlyqaBulbResponseStatus()
         self.response_classes["status"] = KlyqaBulbResponseStatus
 
     def setTemp(self, temp: int):
@@ -1320,7 +1292,7 @@ def add_command_args(parser):
     parser.add_argument(
         "--enable_tb", nargs=1, help="enable thingsboard connection (yes/no)"
     )
-    
+
     parser.add_argument(
         "--fade", nargs=2, help="fade in/out time in milliseconds on powering device on/off", metavar=("IN", "OUT")
     )
@@ -1508,7 +1480,7 @@ class Klyqa_account:
     def __init__(
         self, data_communicator: Data_communicator, username="", password="", host=""
     ):
-        """Initialize the account with the login data, tcp, udp datacommunicator and tcp 
+        """Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
         self.username = username
         self.password = password
@@ -2066,7 +2038,7 @@ class Klyqa_account:
                         + f'\tType: {device_sets["productId"]}'
                     )
                     cloud_state = None
-                    
+
                     device: KlyqaDevice
                     if device_sets["productId"].find(".lighting") > -1:
                         device = KlyqaBulb()
@@ -2115,7 +2087,7 @@ class Klyqa_account:
 
                 device_state_req_threads = []
 
-                product_ids = set()
+                product_ids: set[str] = set()
                 if self.acc_settings and "devices" in self.acc_settings:
                     for device_sets in self.acc_settings["devices"]:
                         # if not device_sets["productId"].startswith("@klyqa.lighting"):
@@ -2123,6 +2095,9 @@ class Klyqa_account:
                         device_state_req_threads.append(
                             Thread(target=device_request_and_print, args=(device_sets,))
                         )
+                        t = Thread(target=device_request_and_print, args=(device_sets,))
+                        t.start()
+                        t.join()
 
                         if isinstance(AES_KEYs, dict):
                             AES_KEYs[
@@ -2130,10 +2105,10 @@ class Klyqa_account:
                             ] = bytes.fromhex(device_sets["aesKey"])
                         product_ids.add(device_sets["productId"])
 
-                for t in device_state_req_threads:
-                    t.start()
-                for t in device_state_req_threads:
-                    t.join()
+                # for t in device_state_req_threads:
+                #     t.start()
+                # for t in device_state_req_threads:
+                #     t.join()
 
                 queue_printer.stop()
 
@@ -2248,7 +2223,7 @@ class Klyqa_account:
         r_device: RefParse,
         r_msg: RefParse,
         use_dev_aes=False,
-        timeout_ms=11000,
+        timeout_ms=11000, # currently only used for pause timeout between sending messages if multiple for device in queue to send.
     ) -> ReturnTuple:
         """
 
@@ -2275,7 +2250,7 @@ class Klyqa_account:
                     7 - value not valid for device config
 
         """
-        
+
         global sep_width, LOGGER
         device: KlyqaDevice = r_device.ref
 
@@ -2291,7 +2266,7 @@ class Klyqa_account:
 
         msg_sent: Message = None
         communication_finished: bool = False
-        
+
         async def __send_msg(msg):
             nonlocal last_send, pause, return_val, device
 
@@ -2388,7 +2363,7 @@ class Klyqa_account:
                 )
 
                 # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
-                
+
                 pkgLen: int = data[0] * 256 + data[1]
                 pkgType: int = data[3]
 
@@ -2398,40 +2373,47 @@ class Klyqa_account:
                     break
 
                 data: bytes = data[4 + pkgLen :]
-                
+
                 if device.local.state == "WAIT_IV" and pkgType == 0:
-                    
+
                     # Check identification package from device, lock the device object for changes,
                     # safe the idenfication to device object if it is a not known device,
                     # send the local initial vector for the encrypted communication to the device.
-                    
+
                     LOGGER.debug("Plain: " + str(pkg))
                     json_response: dict[str, Any] = json.loads(pkg)
-                    ident = KlyqaDeviceResponseIdent(**json_response["ident"])
+                    ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent(**json_response["ident"])
                     device.u_id = ident.unit_id
-                    new_device = False
+                    is_new_device = False
                     if device.u_id != "no_uid" and device.u_id not in self.devices:
-                        new_device = True
+                        is_new_device = True
                         if self.acc_settings:
-                            dev = [
-                                device
+                            dev: list[KlyqaDevice] = [
+                                device2
                                 for device2 in self.acc_settings["devices"]
                                 if format_uid(device2["localDeviceId"])
                                 == format_uid(device.u_id)
                             ]
                             if dev:
                                 device.acc_sets = dev[0]
-                        self.devices[device.u_id] = device
-                        
+                        if ident.product_id.startswith(
+                            "@klyqa.lighting"
+                        ):
+                            self.devices[device.u_id] = KlyqaBulb()
+                        if ident.product_id.startswith(
+                            "@klyqa.cleaning"
+                        ):
+                            self.devices[device.u_id] = KlyqaVC()
+
                     # device_b: KlyqaDevice
                     # device.ident.product_id.startswith("@klyqa.cleaning"):
                     #     device_b: KlyqaDevice = self.devices[device.u_id]
-                    
+
                     # cached client device (self.devices), incoming device object created on tcp connection acception
                     device_b: KlyqaDevice = self.devices[device.u_id]
                     if await device_b.use_lock():
-                        
-                        if not new_device:
+
+                        if not is_new_device:
                             try:
                                 """There shouldn't be an open connection on the already known cached devices, but if there accidently is close it."""
                                 device_b.local.connection.shutdown(socket.SHUT_RDWR)
@@ -2440,7 +2422,7 @@ class Klyqa_account:
                                 """just ensure connection is closed, so that device knows it as well"""
                             except:
                                 pass
-                            
+
                         device_b.local = device.local
                         device = device_b
                         r_device.ref = device_b
@@ -2492,9 +2474,9 @@ class Klyqa_account:
                         return Device_TCP_return.err_local_iv
 
                 if device.local.state == "WAIT_IV" and pkgType == 1:
-                    
+
                     # Receive the remote initial vector (iv) for aes encrypted communication.
-                    
+
                     device.local.remoteIv = pkg
                     device.local.received_packages.append(pkg)
                     if not AES_KEY:
@@ -2514,9 +2496,9 @@ class Klyqa_account:
                     device.local.state = "CONNECTED"
 
                 elif device.local.state == "CONNECTED" and pkgType == 2:
-                    
+
                     # Receive encrypted answer for sent message.
-                    
+
                     cipher: bytes = pkg
 
                     plain: bytes = device.local.receivingAES.decrypt(cipher)
@@ -3151,7 +3133,7 @@ class Klyqa_account:
 
             if args.factory_reset:
                 local_and_cloud_command_msg({"type": "factory_reset"}, 500)
-                
+
             if args.fade is not None and len(args.fade) == 2:
                 local_and_cloud_command_msg({"type": "request","fade_out": args.fade[1],"fade_in": args.fade[0]}, 500)
 
@@ -3285,7 +3267,7 @@ class Klyqa_account:
 
             if args.reboot:
                 local_and_cloud_command_msg({"type": "reboot"}, 500)
-            
+
             if args.command is not None:
                 if args.command == "get":
                     get_dict: dict[str, Any] = {"type":"request", "action":"get",}
@@ -3334,7 +3316,7 @@ class Klyqa_account:
                     if args.mcu or args.all:
                         get_dict["mcu"] = None
                     local_and_cloud_command_msg(get_dict, 1000)
-                    
+
                 elif args.command == "set":
                     set_dict: dict[str, Any] = {"type":"request", "action":"set"}
                     if args.power is not None:
@@ -3360,7 +3342,7 @@ class Klyqa_account:
                     if args.calibrationtime is not None:
                         set_dict["calibrationtime"] = args.calibrationtime
                     local_and_cloud_command_msg(set_dict, 1000)
-                    
+
                 elif args.command == "reset":
                     reset_dict: dict[str, Any] = { "type" : "request","action": "reset"}
                     if args.sidebrush:
@@ -3634,7 +3616,7 @@ class Klyqa_account:
                         ChainMap(*message_queue_tx_state_cloud)
                     )
                     # state_payload_message = json.loads(*message_queue_tx_state_cloud) if message_queue_tx_state_cloud else ""
-                
+
                     command_payload_message = dict(
                         ChainMap(*message_queue_tx_command_cloud)
                     )
@@ -3851,17 +3833,17 @@ def main():
         sys.exit(1)
 
     args_parsed = parser.parse_args(args=args_in)
-    
+
     if not args_parsed:
         sys.exit(1)
 
     if args_parsed.debug:
         LOGGER.setLevel(level=logging.DEBUG)
         logging_hdl.setLevel(level=logging.DEBUG)
-    
+
     server_ip = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
     data_communicator: Data_communicator = Data_communicator(server_ip)
-        
+
     # loop.run_until_complete(data_communicator.bind_ports())
 
     print_onboarded_devices: bool = (
