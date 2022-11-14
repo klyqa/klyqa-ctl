@@ -13,7 +13,7 @@
       "justMyCode": true
     },
     {
-      "name": "Python: klyqa_ctl.py Account Cloud Reboot bulbuid",
+      "name": "Python: klyqa_ctl.py Account Cloud Reboot deviceuid",
       "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
@@ -28,8 +28,8 @@
         "--test",
         "--cloud",
         "--debug",
-        "--bulb_unitids",
-        "bulbuid",
+        "--device_unitids",
+        "deviceuid",
         // "--power",
         // "on"
         "--reboot"
@@ -57,8 +57,8 @@
         "--test",
         //   "--cloud",
         "--debug"
-        //   "--bulb_unitids",
-        //   "bulbuid",
+        //   "--device_unitids",
+        //   "deviceuid",
         // "--power",
         // "on"
         //   "--reboot"
