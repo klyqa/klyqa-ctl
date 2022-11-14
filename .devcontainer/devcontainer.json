@@ -3,10 +3,11 @@
   "build": {
     "dockerfile": "../Dockerfile.dev"
   },
+  "postCreateCommand": "bash ./.devcontainer/postCreateCommand.bash",
   "runArgs": [
     "-e",
     "GIT_EDITOR=code --wait",
-    "--network=host", // ipvlan
+    "--network=host",
     "--name=vscode-klyqa-ctl"
   ],
   // Set *default* container specific settings.json values on container create.
