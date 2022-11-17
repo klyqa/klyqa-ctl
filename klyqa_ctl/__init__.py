@@ -16,4 +16,4 @@ __author__ = 'Frederick Stallmeyer <fraizy@gmx.de>'
 __license__ = 'MIT'
 
 from .klyqa_ctl import *
-
+from .general import *
