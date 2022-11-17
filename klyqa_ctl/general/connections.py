@@ -1,7 +1,13 @@
 """Local and cloud connections"""
 
 from __future__ import annotations
+import datetime
+import json
 import socket
+from typing import Any
+from devices.device import *
+
+from general.general import *
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -23,14 +29,17 @@ def send_msg(msg, device: KlyqaDevice, connection: LocalConnection):
     while len(plain) % 16:
         plain = plain + bytes([0x20])
 
+    if connection.sendingAES is None:
+        return False
     cipher = connection.sendingAES.encrypt(plain)
 
     while True:
         try:
-            connection.socket.send(
-                bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
-            )
-            return True
+            if connection.socket:
+                connection.socket.send(
+                    bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
+                )
+                return True
         except socket.timeout:
             LOGGER.debug("Send timed out, retrying...")
             pass
@@ -44,12 +53,12 @@ class LocalConnection:
     localIv: bytes = get_random_bytes(8)
     remoteIv: bytes = b""
 
-    sendingAES: bytes = None
-    receivingAES: bytes = None
+    sendingAES = None
+    receivingAES = None
     address: dict[str, str | int] = {"ip": "", "port": -1}
-    socket: socket.socket = None
-    received_packages = []
-    sent_msg_answer = {}
+    socket: socket.socket | None = None
+    received_packages: list[Any] = []
+    sent_msg_answer: dict[str, Any] = {}
     aes_key_confirmed: bool = False
 
 
@@ -60,11 +69,11 @@ class LocalConnection:
         self.sendingAES = None
         self.receivingAES = None
         self.address = {"ip": "", "port": -1}
-        self.socket: socket.socket = None
+        self.socket = None
         self.received_packages = []
         self.sent_msg_answer = {}
         self.aes_key_confirmed = False
-        self.started: datetime = datetime.datetime.now()
+        self.started: datetime.datetime = datetime.datetime.now()
 
 
 class CloudConnection:
@@ -84,8 +93,8 @@ TEST_HOST = "https://app-api.test.qconnex.io"
 
 class Data_communicator:
     def __init__(self, server_ip: str = "0.0.0.0") -> None:
-        self.tcp: socket.socket = None
-        self.udp: socket.socket = None
+        self.tcp: socket.socket | None = None
+        self.udp: socket.socket | None = None
         self.server_ip: str = server_ip
 
     def shutdown(self) -> None:

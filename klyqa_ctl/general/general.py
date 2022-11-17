@@ -1,6 +1,9 @@
 """General types, constants, functions"""
 from __future__ import annotations
 import asyncio, aiofiles
+from enum import Enum
+
+from typing import Any, Literal
 import datetime
 import json
 import logging
@@ -39,9 +42,9 @@ PRODUCT_URLS: dict[str, str] = {
 }
 
 
-
 SEND_LOOP_MAX_SLEEP_TIME = 0.05
 
+DeviceType = Enum("DeviceType", "cleaner lighting")
 
 
 class RGBColor:
@@ -64,7 +67,7 @@ class RGBColor:
 class AsyncIOLock:
     """AsyncIOLock"""
 
-    task: asyncio.Task
+    task: asyncio.Task | None
     lock: asyncio.Lock
     _instance = None
 
@@ -85,7 +88,8 @@ class AsyncIOLock:
     def force_unlock(self) -> bool:
         """force_unlock"""
         try:
-            self.task.cancel()
+            if self.task:
+                self.task.cancel()
             self.lock.release()
         except:
             return False

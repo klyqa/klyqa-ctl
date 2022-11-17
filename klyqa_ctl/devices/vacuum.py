@@ -1,6 +1,11 @@
 """Vacuum cleaner"""
 from __future__ import annotations
-from device import *
+import argparse
+from enum import Enum
+import json
+from typing import Type, Any
+from .device import *
+from general.general import get_obj_attr_values_as_string
 
 ## Vacuum Cleaner ##
 
@@ -92,6 +97,7 @@ class KlyqaVC(KlyqaDevice):
         # self.status = KlyqaVCResponseStatus()
         self.response_classes["status"] = KlyqaVCResponseStatus
         
+CommandType = Enum("CommandType", "get set reset")
         
 def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
 
@@ -108,7 +114,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
 
     prd = sub.add_parser('productinfo', help='get product information')
 
-    req = sub.add_parser('get', help='send state request')
+    req = sub.add_parser(CommandType.get.name, help='send state request')
     req.add_argument('--all', help='If this flag is set, the whole state will be requested', action='store_true')
     req.add_argument('--power', help='If this flag is set, the state element will be requested', action='store_true')
     req.add_argument('--cleaning', help='If this flag is set, the state element will be requested', action='store_true')
@@ -134,7 +140,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     req.add_argument('--mcu', help='Ask if mcu is online', action='store_true')
 
     #device specific
-    set_parser = sub.add_parser("set", help='enables use of the vc1 control arguments and will control vc1')
+    set_parser = sub.add_parser(CommandType.set.name, help='enables use of the vc1 control arguments and will control vc1')
     set_parser.add_argument('--power', choices=['on', 'off'], help='turn power on/off')
     set_parser.add_argument('--cleaning', choices=['on', 'off'], help='turn cleaning on/off')
     set_parser.add_argument('--beeping', choices=['on', 'off'], help='enable/disable the find-vc function')
@@ -146,7 +152,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     set_parser.add_argument('--commissioninfo', type=str, help='set up to 256 characters of commisioning info')
     set_parser.add_argument('--calibrationtime', metavar='time', type=int, help='set the calibration time (1-1999999999)')
 
-    reset_parser = sub.add_parser("reset", help='enables resetting consumables')
+    reset_parser = sub.add_parser(CommandType.reset.name, help='enables resetting consumables')
     reset_parser.add_argument('--sidebrush', help='resets the sidebrush life counter', action='store_true')
     reset_parser.add_argument('--rollingbrush', help='resets the rollingbrush life counter', action='store_true')
     reset_parser.add_argument('--filter', help='resets the filter life counter', action='store_true')
@@ -161,3 +167,95 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     routine_parser.add_argument('--count', help='get the current free slots for routines', type=bool)
     routine_parser.add_argument('--commands', help='specify routine program (for put)')
     # routine_parser.set_defaults(func=routine_request)
+
+async def process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud) -> None:
+    """process_args_to_msg_cleaner"""
+    
+    def local_and_cloud_command_msg(json_msg, timeout) -> None:
+        message_queue_tx_local.append((json.dumps(json_msg), timeout))
+        message_queue_tx_command_cloud.append(json_msg)
+        
+    if args.command is not None:
+        if args.command == CommandType.get.name:
+            get_dict: dict[str, Any] = {"type":"request", "action":"get",}
+            if args.power or args.all:
+                get_dict["power"] = None
+            if args.cleaning or args.all:
+                get_dict["cleaning"] = None
+            if args.beeping or args.all:
+                get_dict["beeping"] = None
+            if args.battery or args.all:
+                get_dict["battery"] = None
+            if args.sidebrush or args.all:
+                get_dict["sidebrush"] = None
+            if args.rollingbrush or args.all:
+                get_dict["rollingbrush"] = None
+            if args.filter or args.all:
+                get_dict["filter"] = None
+            if args.carpetbooster or args.all:
+                get_dict["carpetbooster"] = None
+            if args.area or args.all:
+                get_dict["area"] = None
+            if args.time or args.all:
+                get_dict["time"] = None
+            if args.calibrationtime or args.all:
+                get_dict["calibrationtime"] = None
+            if args.workingmode or args.all:
+                get_dict["workingmode"] = None
+            if args.workingstatus or args.all:
+                get_dict["workingstatus"] = None
+            if args.suction or args.all:
+                get_dict["suction"] = None
+            if args.water or args.all:
+                get_dict["water"] = None
+            if args.direction or args.all:
+                get_dict["direction"] = None
+            if args.errors or args.all:
+                get_dict["errors"] = None
+            if args.cleaningrec or args.all:
+                get_dict["cleaningrec"] = None
+            if args.equipmentmodel or args.all:
+                get_dict["equipmentmodel"] = None
+            if args.alarmmessages or args.all:
+                get_dict["alarmmessages"] = None
+            if args.commissioninfo or args.all:
+                get_dict["commissioninfo"] = None
+            if args.mcu or args.all:
+                get_dict["mcu"] = None
+            local_and_cloud_command_msg(get_dict, 1000)
+
+        elif args.command == CommandType.set.name:
+            set_dict: dict[str, Any] = {"type":"request", "action":"set"}
+            if args.power is not None:
+                set_dict["power"] = args.power
+            if args.cleaning is not None:
+                set_dict["cleaning"] = args.cleaning
+            if args.beeping is not None:
+                set_dict["beeping"] = args.beeping
+            if args.carpetbooster is not None:
+                set_dict["carpetbooster"] = args.carpetbooster
+            if args.workingmode is not None:
+                mode: int = VC_WORKINGMODE[args.workingmode].value
+                set_dict["workingmode"] = mode
+            if args.suction is not None:
+                suction: int = VC_SUCTION_STRENGTHS[args.suction].value
+                set_dict["suction"] = suction - 1
+            if args.water is not None:
+                set_dict["water"] = args.water
+            if args.direction is not None:
+                set_dict["direction"] = args.direction
+            if args.commissioninfo is not None:
+                set_dict["commissioninfo"] = args.commissioninfo
+            if args.calibrationtime is not None:
+                set_dict["calibrationtime"] = args.calibrationtime
+            local_and_cloud_command_msg(set_dict, 1000)
+
+        elif args.command == CommandType.reset.name:
+            reset_dict: dict[str, Any] = { "type" : "request","action": "reset"}
+            if args.sidebrush:
+                reset_dict["sidebrush"] = None
+            if args.rollingbrush:
+                reset_dict["rollingbrush"] = None
+            if args.filter:
+                reset_dict["filter"] = None
+            local_and_cloud_command_msg(reset_dict, 1000)

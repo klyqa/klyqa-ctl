@@ -3,14 +3,21 @@ from __future__ import annotations
 import asyncio
 import datetime
 import traceback
+from typing import Any
 
-from klyqa_ctl.general.connections import CloudConnection
-from klyqa_ctl.general.general import LOGGER
+from general.connections import CloudConnection
+from general.general import LOGGER, Device_config
+from general.message import Message
 
+import slugify 
 
 def format_uid(text: str) -> str:
-    return unicode_slug.slugify(text)
+    return slugify.slugify(text)
 
+
+# Device profiles for limits and features (traits) for the devices.
+#
+device_configs: dict[str, Device_config] = dict()
 class KlyqaDevice:
     """KlyqaDevice"""
 
@@ -21,11 +28,11 @@ class KlyqaDevice:
     acc_sets: dict = {}
     """ account settings """
 
-    _use_lock: asyncio.Lock
-    _use_thread: asyncio.Task
+    _use_lock: asyncio.Lock | None
+    _use_thread: asyncio.Task | None
 
     recv_msg_unproc: list[Message]
-    ident: KlyqaDeviceResponseIdent = None
+    ident: KlyqaDeviceResponseIdent | None = None
 
     response_classes = {}
     status: KlyqaDeviceResponse | None
@@ -33,7 +40,7 @@ class KlyqaDevice:
     def __init__(self) -> None:
         self.local_addr = {"ip": "", "port": -1}
         self.cloud = CloudConnection()
-        self.ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent()
+        self.ident= KlyqaDeviceResponseIdent()
 
         self.u_id: str = "no_uid"
         self.acc_sets = {}
@@ -42,7 +49,7 @@ class KlyqaDevice:
         self.recv_msg_unproc = []
 
         self.status = None
-        self.response_classes = {
+        self.response_classes: dict[str, Any] = {
             "ident": KlyqaDeviceResponseIdent,
             "status": KlyqaDeviceResponse,
         }
@@ -97,7 +104,7 @@ class KlyqaDevice:
         if "type" in msg and hasattr(self, msg["type"]): #and msg["type"] in msg:
             try:
                 LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
-                if msg["type"] == "ident":
+                if msg["type"] == "ident" and self.ident:
                     # setattr(self, "ident", self.ident.update(**msg))
                     # setattr(
                     #     self,
@@ -115,16 +122,12 @@ class KlyqaDevice:
             except Exception as e:
                 LOGGER.error(f"{traceback.format_exc()}")
                 LOGGER.error("Could not process device response: ")
-                LOGGER.error(str(msg))
+                LOGGER.error(f"{msg}")
                 
                 
 class KlyqaDeviceResponse:
-    # type: str = ""
 
-    def __init__(
-        self,
-        # type: str,
-        **kwargs) -> None:
+    def __init__(self, **kwargs) -> None:
         """__init__"""
         self.type: str = ""
         self.ts: datetime.datetime = datetime.datetime.now()

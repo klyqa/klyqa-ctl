@@ -31,7 +31,10 @@ import datetime
 import argparse
 import select
 import logging
+import time
 from typing import TypeVar, Any, Type
+
+from general.parameters import get_description_parser
 
 
 NoneType: Type[None] = type(None)
@@ -46,7 +49,6 @@ import functools, traceback
 from asyncio.exceptions import CancelledError, TimeoutError
 from collections.abc import Callable
 
-import slugify as unicode_slug
 
 from devices.device import *
 from devices.light import *
@@ -70,11 +72,6 @@ print(f"{s} start")
 
 tcp_udp_port_lock: AsyncIOLock = AsyncIOLock.instance()
 
-# Device profiles for limits and features (traits) for the devices.
-#
-device_configs: dict[str, Device_config] = dict()
-
-
 
 Device_TCP_return: Type[Device_TCP_return] = Enum(
     "Device_TCP_return",
@@ -83,7 +80,6 @@ Device_TCP_return: Type[Device_TCP_return] = Enum(
 
 
 ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
-
 
 
 AES_KEYs: dict[str, bytes] = {}
@@ -98,7 +94,7 @@ class EventQueuePrinter:
     """event for the printer that new data is available"""
     not_finished: bool = True
     print_strings = []
-    printer_t: Thread = None
+    printer_t: Thread | None = None
 
     def __init__(self) -> None:
         """start printing helper thread routine"""
@@ -109,7 +105,8 @@ class EventQueuePrinter:
         """stop printing helper thread"""
         self.not_finished = False
         self.event.set()
-        self.printer_t.join(timeout=5)
+        if self.printer_t is not None:
+            self.printer_t.join(timeout=5)
 
     def coroutine(self) -> None:
         """printer thread routine, waits for data to print and/or a trigger event"""
@@ -124,137 +121,6 @@ class EventQueuePrinter:
         self.print_strings.append(str)
         self.event.set()
 
-
-def get_description_parser() -> argparse.ArgumentParser:
-    """Make an argument parse object."""
-
-    parser: ArgumentParser = argparse.ArgumentParser(
-        description="Interactive klyqa device client (local/cloud). In default the client script tries to send the commands via local connection. Therefore a broadcast on udp port 2222 for discovering the lamps is sent in the local network. When the lamp receives the broadcast it answers via tcp on socket 3333 with a new socket tcp connection. On that tcp connection the commands are sent and the replies are received. "
-    )
-
-    return parser
-
-
-def add_config_args(parser: argparse.ArgumentParser) -> None:
-    """Add arguments to the argument parser object.
-
-    Args:
-        parser: Parser object
-    """
-    parser.add_argument("--myip", nargs=1, help="specify own IP for broadcast sender")
-
-    # parser.add_argument(
-    #     "--rerun",
-    #     help="keep rerunning command",
-    #     action="store_const",
-    #     const=True,
-    #     default=False,
-    # )
-
-    parser.add_argument(
-        "--passive",
-        help="vApp will passively listen vor UDP SYN from devices",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument("--aes", nargs=1, help="give aes key for the lamp")
-    parser.add_argument("--username", nargs=1, help="give your username")
-    parser.add_argument("--password", nargs=1, help="give your klyqa password")
-    parser.add_argument(
-        "--device_name",
-        nargs=1,
-        help="give the name of the device from your account settings for the command to send to",
-    )
-    parser.add_argument(
-        "--device_unitids",
-        nargs=1,
-        help="give the device unit id from your account settings for the command to send to",
-    )
-        
-    required = parser.add_argument_group('required arguments')
-    optional = parser.add_argument_group('optional arguments')
-    required.add_argument('type', choices=['bulb', 'cleaner'], help='choose device type to control')
-    
-    parser.add_argument(
-        "--allDevices",
-        help="send commands to all devices",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--discover",
-        help="discover lamps",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--debug",
-        help="Enable debug logging messages.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--selectDevice",
-        help="Select device.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--force",
-        help="If no configs (profiles) about the device available, send the command anyway (can be dangerous).",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--test",
-        help="Test host server.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--prod",
-        help="Production host server.",
-        action="store_const",
-        const=True,
-        default=True,
-    )
-    parser.add_argument(
-        "--local",
-        help="Local connection to the devices only.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--cloud",
-        help="Cloud connection to the devices only.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--tryLocalThanCloud",
-        help="Try local if fails then cloud connection to the devices. [This is default behaviour]",
-        action="store_const",
-        const=True,
-        default=True,
-    )
-    parser.add_argument(
-        "--dev",
-        help="Developing mode. Use development AES key.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-
-
 class Klyqa_account:
     """
 
@@ -265,27 +131,27 @@ class Klyqa_account:
 
     """
 
-    host: str = ""
-    access_token: str = ""
+    host: str
+    access_token: str
     username: str
     password: str
     username_cached: bool
 
-    devices: dict[str, KlyqaDevice] = {}
+    devices: dict[str, KlyqaDevice]
 
-    acc_settings = {}
+    acc_settings: dict[str, Any]
     acc_settings_cached: bool
 
     __acc_settings_lock: asyncio.Lock
-    _settings_loaded_ts: datetime.datetime
+    _settings_loaded_ts: datetime.datetime | None
 
-    __send_loop_sleep: asyncio.Task
-    __tasks_done: asyncio.Task
-    __tasks_undone: asyncio.Task
-    __read_tcp_task: asyncio.Task
-    message_queue: dict[tuple] = {}
-    message_queue_new: list[tuple] = []
-    search_and_send_loop_task: asyncio.Task
+    __send_loop_sleep: asyncio.Task | None
+    __tasks_done: list[tuple[asyncio.Task,datetime.datetime,datetime.datetime]]
+    __tasks_undone: list[tuple[asyncio.Task,datetime.datetime]]
+    __read_tcp_task: asyncio.Task | None
+    message_queue: dict[str, list[Message]]
+    message_queue_new: list[tuple]
+    search_and_send_loop_task: asyncio.Task | None
     
     # Set of current accepted connections to an IP. One connection is most of the time
     # enough to send all messages for that device behind that connection (in the aes send message method).
@@ -301,6 +167,8 @@ class Klyqa_account:
         communication tasks."""
         self.username = username
         self.password = password
+        self.devices = {}
+        self.acc_settings = {}
         self.access_token: str = ""
         self.host = PROD_HOST if not host else host
         self.username_cached = False
@@ -310,14 +178,14 @@ class Klyqa_account:
         self.__send_loop_sleep = None
         self.__tasks_done = []
         self.__tasks_undone = []
-        self.message_queue: dict[tuple] = {}
+        self.message_queue = {}
         self.message_queue_new: list[tuple] = []
-        self.search_and_send_loop_task: asyncio.Task = None
-        self.__read_tcp_task: asyncio.Task = None
+        self.search_and_send_loop_task = None
+        self.__read_tcp_task = None
         self.data_communicator: Data_communicator = data_communicator
         self.search_and_send_loop_task_end_now = False
 
-    async def device_handle_local_tcp(self, device: KlyqaDevice, connection: LocalConnection):
+    async def device_handle_local_tcp(self, device: KlyqaDevice | None, connection: LocalConnection):
         """Handle the incoming tcp connection to the device."""
         return_state = -1
         response = ""
@@ -326,18 +194,20 @@ class Klyqa_account:
             # LOGGER.debug(f"TCP layer connected {connection.address['ip']}")
 
             r_device: RefParse = RefParse(device)
-            msg_sent: Message = None
+            msg_sent: Message | None = None
             r_msg: RefParse = RefParse(msg_sent)
+            task: asyncio.Task[Any] | None = asyncio.current_task()
 
-            LOGGER.debug(f"{asyncio.current_task().get_name()} - started tcp device {connection.address['ip']} ")
+            if task is not None:
+                LOGGER.debug(f"{task.get_name()} - started tcp device {connection.address['ip']} ")
             try:
                 return_state = await self.aes_handshake_and_send_msgs(r_device, r_msg, connection)
-                device: KlyqaDevice = r_device.ref
+                device = r_device.ref
                 msg_sent = r_msg.ref
             except CancelledError as e:
                 LOGGER.error(
                     f"Cancelled local send because send-timeout send_timeout hitted {connection.address['ip']}, "
-                    + (device.u_id if device.u_id else "")
+                    + (device.u_id if device and device.u_id else "")
                     + "."
                 )
             except Exception as e:
@@ -347,28 +217,30 @@ class Klyqa_account:
                     f"finished tcp device {connection.address['ip']}, return_state: {return_state}"
                 )
 
-                if msg_sent and not msg_sent.callback is None:
+                if msg_sent and not msg_sent.callback is None and device is not None:
                     await msg_sent.callback(msg_sent, device.u_id)
-                    LOGGER.debug(f"device {device.u_id} answered msg {msg_sent.msg_queue}")
+                    if device is not None:
+                        LOGGER.debug(f"device {device.u_id} answered msg {msg_sent.msg_queue}")
 
                 # if not device or (device and not device.u_id in self.message_queue or not self.message_queue[device.u_id]):
                 #     try:
                 # LOGGER.debug(f"no more messages to sent for device {device.u_id}, close tcp tunnel.")
-                connection.socket.shutdown(socket.SHUT_RDWR)
-                connection.socket.close()
-                connection.socket = None
-                self.current_addr_connections.remove(connection.address["ip"])
+                if connection.socket is not None:
+                    connection.socket.shutdown(socket.SHUT_RDWR)
+                    connection.socket.close()
+                    connection.socket = None
+                self.current_addr_connections.remove(str(connection.address["ip"]))
                 LOGGER.debug(f"tcp closed for device.u_id.")
                 # except Exception as e:
                 #     pass
 
-                unit_id: str = f" Unit-ID: {device.u_id}" if device.u_id else ""
+                unit_id: str = f" Unit-ID: {device.u_id}" if device and device.u_id else ""
 
                 if return_state == 0:
                     """no error"""
 
-                    def dict_values_to_list(d: dict) -> str:
-                        r = []
+                    def dict_values_to_list(d: dict) -> list[str]:
+                        r: list[str] = []
                         for i in d.values():
                             if isinstance(i, dict):
                                 i = dict_values_to_list(i)
@@ -382,11 +254,12 @@ class Klyqa_account:
                     #         + str(json.dumps(response, sort_keys=True, indent=4))
                     #     )
 
-                if device.u_id and device.u_id in self.devices:
+                if device and device.u_id in self.devices:
                     device_b: KlyqaDevice = self.devices[device.u_id]
                     if device_b._use_thread == asyncio.current_task():
                         try:
-                            device_b._use_lock.release()
+                            if device_b._use_lock is not None:
+                                device_b._use_lock.release()
                             device_b._use_thread = None
                         except:
                             pass
@@ -495,7 +368,7 @@ class Klyqa_account:
                         timeout_read: float = 1.9
                         LOGGER.debug("Read again tcp port..")
 
-                        async def read_tcp_task():
+                        async def read_tcp_task() -> tuple[list[Any], list[Any], list[Any]] | None:
                             try:
                                 return await loop.run_in_executor(
                                     None,
@@ -529,17 +402,17 @@ class Klyqa_account:
                                     "Error binding ports udp 2222 and tcp 3333."
                                 )
 
-                        result = self.__read_tcp_task.result()
+                        result: tuple[list[Any], list[Any], list[Any]] | None = self.__read_tcp_task.result() if self.__read_tcp_task else None
                         if (
                             not result
                             or not isinstance(result, tuple)
                             or not len(result) == 3
-                        ):  # or self.__read_tcp_task.cancelled():
+                        ):
                             LOGGER.debug("no tcp read result. break")
                             break
-                        readable, _, _ = self.__read_tcp_task.result()
-                        # readable, _, _ = await loop.run_in_executor(
-                        #     None, select.select, [self.data_communicator.tcp], [], [], timeout_read)
+                        readable: list[Any]
+                        readable, _, _ = result if result else ([],[],[])
+      
                         LOGGER.debug("Reading tcp port done..")
 
                         if not self.data_communicator.tcp in readable:
@@ -599,7 +472,7 @@ class Klyqa_account:
                             )
                             e = task.exception()
                             if e:
-                                LOGGER.debug(f"Exception error in {task._coro}: {e}")
+                                LOGGER.debug(f"Exception error in {task.get_coro()}: {e}")
                         else:
                             if datetime.datetime.now() - started > datetime.timedelta(
                                 milliseconds=int(timeout_ms * 1000)
@@ -674,7 +547,8 @@ class Klyqa_account:
                 self.search_and_send_to_device()
             )
         try:
-            self.__send_loop_sleep.cancel()
+            if self.__send_loop_sleep is not None:
+                self.__send_loop_sleep.cancel()
         except:
             pass
 
@@ -684,7 +558,7 @@ class Klyqa_account:
         target_device_uid,
         args,
         callback=None,
-        time_to_live_secs=-1.0,
+        time_to_live_secs: int = -1,
         started=datetime.datetime.now(),
     ) -> bool:
 
@@ -736,8 +610,8 @@ class Klyqa_account:
                 raise ValueError(e)
             else:
                 try:
-                    self.username = [list(acc_settings_cache.keys())[0]]
-                    self.password = [acc_settings_cache[self.username]["password"]]
+                    self.username = list(acc_settings_cache.keys())[0]
+                    self.password = acc_settings_cache[self.username]["password"]
                     e = f"Using cache account settings from account {self.username}."
                     LOGGER.info(e)
                 except:
@@ -761,16 +635,16 @@ class Klyqa_account:
                 async with aiofiles.open(
                     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
                 ) as f:
-                    self.username = await f.readline(self.username).strip()
+                    self.username = str(await f.readline()).strip()
             except:
                 return False
 
         if self.username is not None and self.password is not None:
-            login_response = None
+            login_response: requests.Response | None = None
             try:
                 login_data = {"email": self.username, "password": self.password}
 
-                login_response: requests.Response = await loop.run_in_executor(
+                login_response = await loop.run_in_executor(
                     None,
                     functools.partial(
                         requests.post,
@@ -947,7 +821,7 @@ class Klyqa_account:
                         device_configs[id] = device_config
 
                 if self.acc_settings and product_ids:
-                    threads = [
+                    threads: list[Thread] = [
                         Thread(target=get_conf, args=(i, device_configs))
                         for i in product_ids
                     ]
@@ -1046,7 +920,7 @@ class Klyqa_account:
         connection: LocalConnection,
         use_dev_aes=False,
         timeout_ms=11000, # currently only used for pause timeout between sending messages if multiple for device in queue to send.
-    ) -> ReturnTuple:
+    ) -> Type[Device_TCP_return.__class__]:
         """
         FIX: return type! sometimes return value sometimes tuple...
         
@@ -1075,10 +949,14 @@ class Klyqa_account:
         """
 
         global sep_width, LOGGER
-        device: KlyqaDevice = r_device.ref
-        TASK_NAME: str = asyncio.current_task().get_name()
+        device: KlyqaDevice | None = r_device.ref
+        if device is None or connection.socket is None:
+            return Device_TCP_return.unknown_error
+        task = asyncio.current_task()
+        TASK_NAME: str = task.get_name() if task is not None else ""
+        AES_KEY = ""
 
-        data = []
+        data: bytes = b""
         last_send: datetime.datetime = datetime.datetime.now()
         connection.socket.settimeout(0.001)
         pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
@@ -1088,7 +966,7 @@ class Klyqa_account:
 
         return_val = Device_TCP_return.nothing_done
 
-        msg_sent: Message = None
+        msg_sent: Message | None = None
         communication_finished: bool = False
         
         # LOGGER.debug(f"{TASK_NAME} - AES SEND: wait1 another 2 seconds ... ")
@@ -1126,7 +1004,7 @@ class Klyqa_account:
             else:
                 text, ts, check_func = msg.msg_queue.pop()
                 msg.msg_queue_sent.append(text)
-                if not check_func(product_id=device.ident.product_id):
+                if not check_func(product_id=device.ident.product_id if device.ident else ""):
                     rm_msg()
                     # return (7, "value not valid for device config")
                     return None
@@ -1224,7 +1102,7 @@ class Klyqa_account:
                     if device.u_id != "no_uid" and device.u_id not in self.devices:
                         is_new_device = True
                         if self.acc_settings:
-                            dev: list[KlyqaDevice] = [
+                            dev: list[dict] = [
                                 device2
                                 for device2 in self.acc_settings["devices"]
                                 if format_uid(device2["localDeviceId"])
@@ -1299,7 +1177,6 @@ class Klyqa_account:
                         found = found + f" {json_response['ident']['unit_id']}"
 
                     LOGGER.info(f"{TASK_NAME} - Found device {found}")
-                    AES_KEY = ""
                     if "all" in AES_KEYs:
                         AES_KEY = AES_KEYs["all"]
                     elif use_dev_aes or "dev" in AES_KEYs:
@@ -1307,9 +1184,10 @@ class Klyqa_account:
                     elif isinstance(AES_KEYs, dict) and device.u_id in AES_KEYs:
                         AES_KEY = AES_KEYs[device.u_id]
                     try:
-                        connection.socket.send(
-                            bytes([0, 8, 0, 1]) + connection.localIv
-                        )
+                        if connection.socket is not None:
+                            connection.socket.send(
+                                bytes([0, 8, 0, 1]) + connection.localIv
+                            )
                     except:
                         # return (1, "Couldn't send local IV.")
                         return Device_TCP_return.err_local_iv
@@ -1344,28 +1222,29 @@ class Klyqa_account:
 
                     plain: bytes = connection.receivingAES.decrypt(cipher)
                     connection.received_packages.append(plain)
-                    msg_sent.answer = plain
-                    json_response = ""
-                    try:
-                        plain_utf8: str = plain.decode()
-                        json_response = json.loads(plain_utf8)
-                        device.save_device_message(json_response)
-                        connection.sent_msg_answer = json_response
-                        connection.aes_key_confirmed = True
-                        LOGGER.debug(f"{TASK_NAME} - device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
-                    except:
-                        LOGGER.error(f"{TASK_NAME} - Could not load json message from device: ")
-                        LOGGER.error(f"{TASK_NAME} - {pkg}")
-                        # return (4, "Could not load json message from device.")
-                        return Device_TCP_return.response_error
+                    if msg_sent is not None:
+                        msg_sent.answer = plain
+                        json_response = None
+                        try:
+                            plain_utf8: str = plain.decode()
+                            json_response = json.loads(plain_utf8)
+                            device.save_device_message(json_response)
+                            connection.sent_msg_answer = json_response
+                            connection.aes_key_confirmed = True
+                            LOGGER.debug(f"{TASK_NAME} - device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
+                        except:
+                            LOGGER.error(f"{TASK_NAME} - Could not load json message from device: ")
+                            LOGGER.error(f"{TASK_NAME} - {pkg}")
+                            # return (4, "Could not load json message from device.")
+                            return Device_TCP_return.response_error
 
-                    msg_sent.answer_utf8 = plain_utf8
-                    msg_sent.answer_json = json_response
-                    msg_sent.state = Message_state.answered
-                    return_val = Device_TCP_return.answered
+                        msg_sent.answer_utf8 = plain_utf8
+                        msg_sent.answer_json = json_response
+                        msg_sent.state = Message_state.answered
+                        return_val = Device_TCP_return.answered
 
-                    device.recv_msg_unproc.append(msg_sent)
-                    device.process_msgs()
+                        device.recv_msg_unproc.append(msg_sent)
+                        device.process_msgs()
 
                     LOGGER.debug(f"{TASK_NAME} - Request's reply decrypted: " + str(plain))
                     # return (0, json_response)
@@ -1428,10 +1307,10 @@ class Klyqa_account:
         self,
         args,
         args_in,
-        udp: socket = None,
-        tcp: socket = None,
+        udp: socket.socket | None = None,
+        tcp: socket.socket | None = None,
         timeout_ms=5000,
-        async_answer_callback: Callable[[Message, str], Any] = None,
+        async_answer_callback: Callable[[Message, str], Any] | None = None,
     ):
         """Collect the messages for the devices to send to
 
@@ -1469,59 +1348,62 @@ class Klyqa_account:
             if args.cloud or args.local:
                 args.tryLocalThanCloud = False
 
+            if args.aes is not None:
+                AES_KEYs["all"] = bytes.fromhex(args.aes[0])
+
             target_device_uids = set()
 
             message_queue_tx_local = []
             message_queue_tx_state_cloud = []
             message_queue_tx_command_cloud = []
 
-            # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
-            if (args.local or args.tryLocalThanCloud) and (
-                not args.device_name
-                and not args.device_unitids
-                and not args.allDevices
-                and not args.discover
-            ):
-                discover_local_args: list[str] = [
-                    "--request",
-                    "--allDevices",
-                    "--selectDevice",
-                    "--discover"
-                ]
+            # # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
+            # if (args.local or args.tryLocalThanCloud) and (
+            #     not args.device_name
+            #     and not args.device_unitids
+            #     and not args.allDevices
+            #     and not args.discover
+            # ):
+            #     discover_local_args: list[str] = [
+            #         "--request",
+            #         "--allDevices",
+            #         "--selectDevice",
+            #         "--discover"
+            #     ]
 
-                orginal_args_parser: ArgumentParser = get_description_parser()
-                discover_local_args_parser: ArgumentParser = get_description_parser()
+            #     orginal_args_parser: argparse.ArgumentParser = get_description_parser()
+            #     discover_local_args_parser: argparse.ArgumentParser = get_description_parser()
 
-                add_config_args(parser=orginal_args_parser)
-                add_config_args(parser=discover_local_args_parser)
-                add_command_args(parser=discover_local_args_parser)
+            #     add_config_args(parser=orginal_args_parser)
+            #     add_config_args(parser=discover_local_args_parser)
+            #     add_command_args(parser=discover_local_args_parser)
 
-                original_config_args_parsed, _ = orginal_args_parser.parse_known_args(
-                    args=args_in
-                )
+            #     original_config_args_parsed, _ = orginal_args_parser.parse_known_args(
+            #         args=args_in
+            #     )
 
-                discover_local_args_parsed = discover_local_args_parser.parse_args(
-                    discover_local_args, namespace=original_config_args_parsed
-                )
+            #     discover_local_args_parsed = discover_local_args_parser.parse_args(
+            #         discover_local_args, namespace=original_config_args_parsed
+            #     )
 
-                uids = await self._send_to_devices(
-                    discover_local_args_parsed,
-                    args_in,
-                    udp=udp,
-                    tcp=tcp,
-                    timeout_ms=3500,
-                )
-                if isinstance(uids, set) or isinstance(uids, list):
-                    # args_in.extend(["--device_unitids", ",".join(list(uids))])
-                    args_in = ["--device_unitids", ",".join(list(uids))] + args_in
-                elif isinstance(uids, str) and uids == "no_devices":
-                    return False
-                else:
-                    LOGGER.error("Error during local discovery of the devices.")
-                    return False
+            #     uids = await self._send_to_devices(
+            #         discover_local_args_parsed,
+            #         args_in,
+            #         udp=udp,
+            #         tcp=tcp,
+            #         timeout_ms=3500,
+            #     )
+            #     if isinstance(uids, set) or isinstance(uids, list):
+            #         # args_in.extend(["--device_unitids", ",".join(list(uids))])
+            #         args_in = ["--device_unitids", ",".join(list(uids))] + args_in
+            #     elif isinstance(uids, str) and uids == "no_devices":
+            #         return False
+            #     else:
+            #         LOGGER.error("Error during local discovery of the devices.")
+            #         return False
 
-                add_command_args(parser=orginal_args_parser)
-                args = orginal_args_parser.parse_args(args=args_in, namespace=args)
+            #     add_command_args(parser=orginal_args_parser)
+            #     args = orginal_args_parser.parse_args(args=args_in, namespace=args)
 
             if args.device_name is not None:
                 if not self.acc_settings:
@@ -1552,185 +1434,6 @@ class Klyqa_account:
                 )
                 print("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
-
-            commands_to_send: list[str] = [i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)]
-
-            if commands_to_send:
-                print("Commands to send to devices: " + ", ".join(commands_to_send))
-            else:
-                print("Commands (arguments):")
-                print(sep_width * "-")
-
-                def get_temp_range(product_id):
-                    temperature_enum = []
-                    try:
-                        temperature_enum = [
-                            trait["value_schema"]["properties"]["colorTemperature"][
-                                "enum"
-                            ]
-                            if "properties" in trait["value_schema"]
-                            else trait["value_schema"]["enum"]
-                            for trait in device_configs[product_id]["deviceTraits"]
-                            if trait["trait"] == "@core/traits/color-temperature"
-                        ]
-                        if len(temperature_enum[0]) < 2:
-                            raise Exception()
-                    except:
-                        return False
-                    return temperature_enum[0]
-
-                def get_inner_range(tup1, tup2) -> tuple[int, int]:
-                    return (
-                        tup1[0] if tup1[0] > tup2[0] else tup2[0],
-                        tup1[1] if tup1[1] < tup2[1] else tup2[1],
-                    )
-
-                temperature_enum = []
-                color: list[int] = [0, 255]
-                brightness: list[int] = [0, 100]
-                for u_id in args.device_unitids[0].split(","):
-                    u_id: str = format_uid(u_id)
-                    if u_id not in self.devices or not self.devices[u_id].ident:
-
-                        async def send_ping() -> bool:
-                            discover_local_args2: list[str] = ["--ping", "--device_unitids", u_id]
-
-                            orginal_args_parser: ArgumentParser = get_description_parser()
-                            discover_local_args_parser2: ArgumentParser = get_description_parser()
-
-                            add_config_args(parser=orginal_args_parser)
-                            add_config_args(parser=discover_local_args_parser2)
-                            add_command_args(parser=discover_local_args_parser2)
-
-                            (
-                                original_config_args_parsed,
-                                _,
-                            ) = orginal_args_parser.parse_known_args(args=args_in)
-
-                            discover_local_args_parsed2 = (
-                                discover_local_args_parser2.parse_args(
-                                    discover_local_args2,
-                                    namespace=original_config_args_parsed,
-                                )
-                            )
-
-                            ret = await self._send_to_devices(
-                                discover_local_args_parsed2,
-                                args_in,
-                                udp=udp,
-                                tcp=tcp,
-                                timeout_ms=3000,
-                            )
-                            if isinstance(ret, bool) and ret:
-                                return True
-                            else:
-                                return False
-
-                        ret: bool = await send_ping()
-                        if isinstance(ret, bool) and ret:
-                            product_id: str = self.devices[u_id].ident.product_id
-                        else:
-                            LOGGER.error(f"Device {u_id} not found.")
-                            return False
-                    product_id = self.devices[u_id].ident.product_id
-                    if not temperature_enum:
-                        temperature_enum = get_temp_range(product_id)
-                    else:
-                        temperature_enum: tuple[int, int] = get_inner_range(
-                            temperature_enum, get_temp_range(product_id)
-                        )
-                arguments_send_to_device = {}
-                if temperature_enum:
-                    arguments_send_to_device = {
-                        "temperature": " ["
-                        + str(temperature_enum[0])
-                        + "-"
-                        + str(temperature_enum[1])
-                        + "] (Kelvin, low: warm, high: cold)"
-                    }
-
-                arguments_send_to_device: dict[str, str] = {
-                    **arguments_send_to_device,
-                    **{
-                        "color": f" rgb [{color[0]}..{color[1]}] [{color[0]}..{color[1]}] [{color[0]}..{color[1]}]",
-                        "brightness": " ["
-                        + str(brightness[0])
-                        + ".."
-                        + str(brightness[1])
-                        + "]",
-                        "routine_commands": " [cmd]",
-                        "routine_id": " [int]",
-                        "power": " [on/off]",
-                    },
-                }
-
-                count = 1
-                for c in commands_send_to_bulb:
-                    args_to_b: str = (
-                        arguments_send_to_device[c] if c in arguments_send_to_device else ""
-                    )
-                    print(str(count) + ") " + c + args_to_b)
-                    count: int = count + 1
-
-                cmd_c_id: int = int(input("Choose command number [1-9]*: "))
-                if cmd_c_id > 0 and cmd_c_id < count:
-                    args_in.append("--" + commands_send_to_bulb[cmd_c_id - 1])
-                else:
-                    LOGGER.error("No such command id " + str(cmd_c_id) + " available.")
-                    sys.exit(1)
-
-                if commands_send_to_bulb[cmd_c_id - 1] in arguments_send_to_device:
-                    args_app: str = input(
-                        "Set arguments (multiple arguments space separated) for command [Enter]: "
-                    )
-                    if args_app:
-                        args_in.extend(args_app.split(" "))
-
-                parser: ArgumentParser = get_description_parser()
-
-                add_config_args(parser=parser)
-                add_command_args(parser=parser)
-
-                args = parser.parse_args(args_in, namespace=args)
-                # args.func(args)
-
-            if args.aes is not None:
-                AES_KEYs["all"] = bytes.fromhex(args.aes[0])
-
-            def local_and_cloud_command_msg(json_msg, timeout) -> None:
-                message_queue_tx_local.append((json.dumps(json_msg), timeout))
-                message_queue_tx_command_cloud.append(json_msg)
-
-            if args.ota is not None:
-                local_and_cloud_command_msg(
-                    ({"type": "fw_update", "url": args.ota}, 10000)
-                )
-
-            if args.ping:
-                local_and_cloud_command_msg({"type": "ping"}, 10000)
-
-            if args.request:
-                local_and_cloud_command_msg({"type": "request"}, 10000)
-
-            if args.enable_tb is not None:
-                a = args.enable_tb[0]
-                if a != "yes" and a != "no":
-                    print("ERROR --enable_tb needs to be yes or no")
-                    sys.exit(1)
-
-                message_queue_tx_local.append(
-                    (json.dumps({"type": "backend", "link_enabled": a}), 1000)
-                )
-
-            if args.passive:
-                pass
-
-            if args.power:
-                message_queue_tx_local.append(
-                    (json.dumps({"type": "request", "status": args.power}), 500)
-                )
-                message_queue_tx_state_cloud.append({"status": args.power})
-
             if not args.selectDevice:
                 product_ids: set[str] = {
                     device.ident.product_id
@@ -1752,466 +1455,46 @@ class Klyqa_account:
                     except:
                         pass
 
-            def forced_continue(reason: str) -> bool:
-                if not args.force:
-                    LOGGER.error(reason)
-                    return False
-                else:
-                    LOGGER.info(reason)
-                    LOGGER.info("Enforced send")
-                    return True
-
-            """range"""
-            Check_device_parameter = Enum(
-                "Check_device_parameter", "color brightness temperature scene"
-            )
-
-            def missing_config(product_id) -> bool:
-                if not forced_continue(
-                    "Missing or faulty config values for device "
-                    + " product_id: "
-                    + product_id
-                ):
-                    return True
+            ### device specific commands ###
+            
+            async def send_to_devices_cb(args):
+                """Send to devices callback for discover of devices option"""
+                return await self._send_to_devices(
+                    args,
+                    args_in,
+                    udp=udp,
+                    tcp=tcp,
+                    timeout_ms=3500,
+                )
+                
+            scene: list[str] = []
+            if args.type == DeviceType.lighting.name:
+                await process_args_to_msg_lighting(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, scene)
+            elif args.type == DeviceType.cleaner.name:
+                await process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud)
+            else:
+                LOGGER.error("Missing device type.")
                 return False
-
-            #### Needing config profile versions implementation for checking trait ranges ###
-
-            def check_color_range(product_id, values) -> bool:
-                color_enum = []
-                try:
-                    # # different device trait schematics. for now go typical range
-                    # color_enum = [
-                    #     trait["value_schema"]["definitions"]["color_value"]
-                    #     for trait in device_configs[product_id]["deviceTraits"]
-                    #     if trait["trait"] == "@core/traits/color"
-                    # ]
-                    # color_range = (
-                    #     color_enum[0]["minimum"],
-                    #     color_enum[0]["maximum"],
-                    # )
-                    color_range = (
-                        0,
-                        255,
-                    )
-                    for value in values:
-                        if int(value) < color_range[0] or int(value) > color_range[1]:
-                            return forced_continue(
-                                f"Color {value} out of range [{color_range[0]}..{color_range[1]}]."
-                            )
-
-                except:
-                    return not missing_config(product_id)
-                return True
-
-            def check_brightness_range(product_id, value) -> bool:
-                brightness_enum = []
-                try:
-                    # different device trait schematics. for now go typical range
-                    # brightness_enum = [
-                    #     trait["value_schema"]["properties"]["brightness"]
-                    #     for trait in device_configs[product_id]["deviceTraits"]
-                    #     if trait["trait"] == "@core/traits/brightness"
-                    # ]
-                    # brightness_range = (
-                    #     brightness_enum[0]["minimum"],
-                    #     brightness_enum[0]["maximum"],
-                    # )
-                    brightness_range = (
-                        0,
-                        100,
-                    )
-
-                    if (
-                        int(value) < brightness_range[0]
-                        or int(value) > brightness_range[1]
-                    ):
-                        return forced_continue(
-                            f"Brightness {value} out of range [{brightness_range[0]}..{brightness_range[1]}]."
-                        )
-
-                except:
-                    return not missing_config(product_id)
-                return True
-
-            def check_temp_range(product_id, value) -> bool:
-                temperature_range: list[int] = []
-                try:
-                    # # different device trait schematics. for now go typical range
-                    # temperature_range = [
-                    #     trait["value_schema"]["properties"]["colorTemperature"]["enum"]
-                    #     if "properties" in trait["value_schema"]
-                    #     else trait["value_schema"]["enum"]
-                    #     for trait in device_configs[product_id]["deviceTraits"]
-                    #     if trait["trait"] == "@core/traits/color-temperature"
-                    # ][0]
-                    temperature_range = [2000, 6500]
-                    if (
-                        int(value) < temperature_range[0]
-                        or int(value) > temperature_range[1]
-                    ):
-                        return forced_continue(
-                            f"Temperature {value} out of range [{temperature_range[0]}..{temperature_range[1]}]."
-                        )
-                except Exception as excp:
-                    return not missing_config(product_id)
-                return True
-
-            def check_scene_support(product_id, scene) -> bool:
-                color_enum = []
-                try:
-                    # color_enum = [
-                    #     trait
-                    #     for trait in device_configs[product_id]["deviceTraits"]
-                    #     if trait["trait"] == "@core/traits/color"
-                    # ]
-                    # color_support = len(color_enum) > 0
-
-                    # if not color_support and not "cwww" in scene:
-                    #     return forced_continue(
-                    #         f"Scene {scene['label']} not supported by device product {product_id}."
-                    #     )
-                    return True
-
-                except:
-                    return not missing_config(product_id)
-                return True
-
-            check_range = {
-                Check_device_parameter.color: check_color_range,
-                Check_device_parameter.brightness: check_brightness_range,
-                Check_device_parameter.temperature: check_temp_range,
-                Check_device_parameter.scene: check_scene_support,
-            }
-
-            def check_device_parameter(
-                parameter: Check_device_parameter, values, product_id
-            ) -> bool:
-                # if not device_configs and not forced_continue("Missing configs for devices."):
-                #     return False
-
-                # for u_id in target_device_uids:
-                #     # dev = [
-                #     #     device["productId"]
-                #     #     for device in self.acc_settings["devices"]
-                #     #     if format_uid(device["localDeviceId"]) == format_uid(u_id)
-                #     # ]
-                #     # product_id = dev[0]
-                #     product_id = self.devices[u_id].ident.product_id
-
-                if not check_range[parameter](product_id, values):
-                    return False
-                return True
-
-            if args.color is not None:
-                r, g, b = args.color
-                # if not check_device_parameter(Check_device_parameter.color, [r, g, b]):
-                #     return False
-
-                tt = args.transitionTime[0]
-                msg = color_message(
-                    r, g, b, int(tt), skipWait=args.brightness is not None
-                )
-
-                check_color = functools.partial(
-                    check_device_parameter, Check_device_parameter.color, [r, g, b]
-                )
-                msg = msg + (check_color,)
-
-                message_queue_tx_local.append(msg)
-                col = json.loads(msg[0])["color"]
-                message_queue_tx_state_cloud.append({"color": col})
-
-            if args.temperature is not None:
-                temperature = args.temperature[0]
-                # if not check_device_parameter(Check_device_parameter.temperature, temperature):
-                #     return False
-
-                tt = args.transitionTime[0]
-                msg = temperature_message(
-                    temperature, int(tt), skipWait=args.brightness is not None
-                )
-
-                check_temperature = functools.partial(
-                    check_device_parameter, Check_device_parameter.temperature, temperature
-                )
-                msg = msg + (check_temperature,)
-
-                temperature = json.loads(msg[0])["temperature"]
-                message_queue_tx_local.append(msg)
-                message_queue_tx_state_cloud.append({"temperature": temperature})
-
-            if args.brightness is not None:
-                brightness = args.brightness[0]
-                # if not check_device_parameter(Check_device_parameter.brightness, brightness):
-                #     return False
-
-                tt = args.transitionTime[0]
-                msg: tuple[str, int] = brightness_message(brightness, int(tt))
-
-                check_brightness = functools.partial(
-                    check_device_parameter, Check_device_parameter.brightness, brightness
-                )
-                msg = msg + (check_brightness,)
-
-                message_queue_tx_local.append(msg)
-                brightness = json.loads(msg[0])["brightness"]
-                message_queue_tx_state_cloud.append({"brightness": brightness})
-
-            if args.percent_color is not None:
-                if not device_configs and not forced_continue(
-                    "Missing configs for devices."
-                ):
-                    return False
-                r, g, b, w, c = args.percent_color
-                tt = args.transitionTime[0]
-                msg = percent_color_message(
-                    r, g, b, w, c, int(tt), skipWait=args.brightness is not None
-                )
-                message_queue_tx_local.append(msg)
-                p_color = json.loads(msg[0])["p_color"]
-                message_queue_tx_state_cloud.append({"p_color": p_color})
-
-            if args.factory_reset:
-                local_and_cloud_command_msg({"type": "factory_reset"}, 500)
-
-            if args.fade is not None and len(args.fade) == 2:
-                local_and_cloud_command_msg({"type": "request","fade_out": args.fade[1],"fade_in": args.fade[0]}, 500)
-
-            scene = ""
-            if args.WW:
-                scene = "Warm White"
-            if args.daylight:
-                scene = "Daylight"
-            if args.CW:
-                scene = "Cold White"
-            if args.nightlight:
-                scene = "Night Light"
-            if args.relax:
-                scene = "Relax"
-            if args.TVtime:
-                scene = "TV time"
-            if args.comfort:
-                scene = "Comfort"
-            if args.focused:
-                scene = "Focused"
-            if args.fireplace:
-                scene = "Fireplace"
-            if args.club:
-                scene = "Jazz Club"
-            if args.romantic:
-                scene = "Romantic"
-            if args.gentle:
-                scene = "Gentle"
-            if args.summer:
-                scene = "Summer"
-            if args.jungle:
-                scene = "Jungle"
-            if args.ocean:
-                scene = "Ocean"
-            if args.fall:  # Autumn
-                scene = "Fall"
-            if args.sunset:
-                scene = "Sunset"
-            if args.party:
-                scene = "Party"
-            if args.spring:
-                scene = "Spring"
-            if args.forest:
-                scene = "Forest"
-            if args.deep_sea:
-                scene = "Deep Sea"
-            if args.tropical:
-                scene = "Tropical"
-            if args.magic:
-                scene = "Magic Mood"
-            if args.mystic:
-                scene = "Mystic Mountain"
-            if args.cotton:
-                scene = "Cotton Candy"
-            if args.ice:
-                scene = "Ice Cream"
-
-            # if (
-            #     args.WW
-            #     or args.daylight
-            #     or args.CW
-            #     or args.nightlight
-            #     or args.relax
-            #     or args.TVtime
-            #     or args.comfort
-            #     or args.focused
-            #     or args.fireplace
-            #     or args.club
-            #     or args.romantic
-            #     or args.gentle
-            #     or args.summer
-            #     or args.jungle
-            #     or args.ocean
-            #     or args.fall  # Autumn
-            #     or args.sunset
-            #     or args.party
-            #     or args.spring
-            #     or args.forest
-            #     or args.deep_sea
-            #     or args.tropical
-            #     or args.magic
-            #     or args.mystic
-            #     or args.cotton
-            #     or args.ice
-            #     # or args.monjito
-            # ):
-            if scene:
-                scene_result = [x for x in BULB_SCENES if x["label"] == scene]
-                if not len(scene_result) or len(scene_result) > 1:
-                    LOGGER.error(
-                        f"Scene {scene} not found or more than one scene with the name found."
-                    )
-                    return False
-                scene_obj = scene_result[0]
-
-                # check_brightness = functools.partial(check_device_parameter, Check_device_parameter.scene, scene_obj)
-                # msg = msg + (check_brightness,)
-                # if not check_device_parameter(Check_device_parameter.scene, scene_obj):
-                #     return False
-                commands = scene_obj["commands"]
-                if len(commands.split(";")) > 2:
-                    commands += "l 0;"
-                args.routine_id = 0
-                args.routine_put = True
-                args.routine_commands = commands
-                args.routine_scene = str(scene_obj["id"])
-
-            if args.routine_list:
-                local_and_cloud_command_msg({"type": "routine", "action": "list"}, 500)
-
-            if args.routine_put and args.routine_id is not None:
-                local_and_cloud_command_msg(
-                    {
-                        "type": "routine",
-                        "action": "put",
-                        "id": args.routine_id,
-                        "scene": args.routine_scene,
-                        "commands": args.routine_commands,
-                    },
-                    500,
-                )
-
-            if args.routine_delete and args.routine_id is not None:
-                local_and_cloud_command_msg(
-                    {"type": "routine", "action": "delete", "id": args.routine_id}, 500
-                )
-            if args.routine_start and args.routine_id is not None:
-                local_and_cloud_command_msg(
-                    {"type": "routine", "action": "start", "id": args.routine_id}, 500
-                )
-
-            if args.reboot:
-                local_and_cloud_command_msg({"type": "reboot"}, 500)
-
-            if args.command is not None:
-                if args.command == "get":
-                    get_dict: dict[str, Any] = {"type":"request", "action":"get",}
-                    if args.power or args.all:
-                        get_dict["power"] = None
-                    if args.cleaning or args.all:
-                        get_dict["cleaning"] = None
-                    if args.beeping or args.all:
-                        get_dict["beeping"] = None
-                    if args.battery or args.all:
-                        get_dict["battery"] = None
-                    if args.sidebrush or args.all:
-                        get_dict["sidebrush"] = None
-                    if args.rollingbrush or args.all:
-                        get_dict["rollingbrush"] = None
-                    if args.filter or args.all:
-                        get_dict["filter"] = None
-                    if args.carpetbooster or args.all:
-                        get_dict["carpetbooster"] = None
-                    if args.area or args.all:
-                        get_dict["area"] = None
-                    if args.time or args.all:
-                        get_dict["time"] = None
-                    if args.calibrationtime or args.all:
-                        get_dict["calibrationtime"] = None
-                    if args.workingmode or args.all:
-                        get_dict["workingmode"] = None
-                    if args.workingstatus or args.all:
-                        get_dict["workingstatus"] = None
-                    if args.suction or args.all:
-                        get_dict["suction"] = None
-                    if args.water or args.all:
-                        get_dict["water"] = None
-                    if args.direction or args.all:
-                        get_dict["direction"] = None
-                    if args.errors or args.all:
-                        get_dict["errors"] = None
-                    if args.cleaningrec or args.all:
-                        get_dict["cleaningrec"] = None
-                    if args.equipmentmodel or args.all:
-                        get_dict["equipmentmodel"] = None
-                    if args.alarmmessages or args.all:
-                        get_dict["alarmmessages"] = None
-                    if args.commissioninfo or args.all:
-                        get_dict["commissioninfo"] = None
-                    if args.mcu or args.all:
-                        get_dict["mcu"] = None
-                    local_and_cloud_command_msg(get_dict, 1000)
-
-                elif args.command == "set":
-                    set_dict: dict[str, Any] = {"type":"request", "action":"set"}
-                    if args.power is not None:
-                        set_dict["power"] = args.power
-                    if args.cleaning is not None:
-                        set_dict["cleaning"] = args.cleaning
-                    if args.beeping is not None:
-                        set_dict["beeping"] = args.beeping
-                    if args.carpetbooster is not None:
-                        set_dict["carpetbooster"] = args.carpetbooster
-                    if args.workingmode is not None:
-                        mode: int = VC_WORKINGMODE[args.workingmode].value
-                        set_dict["workingmode"] = mode
-                    if args.suction is not None:
-                        suction: int = VC_SUCTION_STRENGTHS[args.suction].value
-                        set_dict["suction"] = suction - 1
-                    if args.water is not None:
-                        set_dict["water"] = args.water
-                    if args.direction is not None:
-                        set_dict["direction"] = args.direction
-                    if args.commissioninfo is not None:
-                        set_dict["commissioninfo"] = args.commissioninfo
-                    if args.calibrationtime is not None:
-                        set_dict["calibrationtime"] = args.calibrationtime
-                    local_and_cloud_command_msg(set_dict, 1000)
-
-                elif args.command == "reset":
-                    reset_dict: dict[str, Any] = { "type" : "request","action": "reset"}
-                    if args.sidebrush:
-                        reset_dict["sidebrush"] = None
-                    if args.rollingbrush:
-                        reset_dict["rollingbrush"] = None
-                    if args.filter:
-                        reset_dict["filter"] = None
-                    local_and_cloud_command_msg(reset_dict, 1000)
 
             success = True
             if args.local or args.tryLocalThanCloud:
                 if args.passive:
-                    LOGGER.debug("Waiting for UDP broadcast")
-                    data, address = udp.recvfrom(4096)
-                    LOGGER.debug(
-                        "\n\n 2. UDP server received: ",
-                        data.decode("utf-8"),
-                        "from",
-                        address,
-                        "\n\n",
-                    )
+                    if udp:
+                        LOGGER.debug("Waiting for UDP broadcast")
+                        data, address = udp.recvfrom(4096)
+                        LOGGER.debug(
+                            "\n\n 2. UDP server received: ",
+                            data.decode("utf-8"),
+                            "from",
+                            address,
+                            "\n\n",
+                        )
 
-                    LOGGER.debug("3a. Sending UDP ack.\n")
-                    udp.sendto("QCX-ACK".encode("utf-8"), address)
-                    time.sleep(1)
-                    LOGGER.debug("3b. Sending UDP ack.\n")
-                    udp.sendto("QCX-ACK".encode("utf-8"), address)
+                        LOGGER.debug("3a. Sending UDP ack.\n")
+                        udp.sendto("QCX-ACK".encode("utf-8"), address)
+                        time.sleep(1)
+                        LOGGER.debug("3b. Sending UDP ack.\n")
+                        udp.sendto("QCX-ACK".encode("utf-8"), address)
                 else:
 
                     message_queue_tx_local.reverse()
@@ -2531,7 +1814,7 @@ class Klyqa_account:
                 if isinstance(ret, bool) and ret:
                     success = True
                 else:
-                    LOGGER.error(f"Couldn't start scene {scene}.")
+                    LOGGER.error(f"Couldn't start scene {scene[0]}.")
                     success = False
 
             return success
@@ -2678,9 +1961,9 @@ def main():
         _,
     ) = parser.parse_known_args(args=args_in)
 
-    if config_args_parsed.type == "cleaner":
+    if config_args_parsed.type == DeviceType.cleaner.name:
         add_command_args_cleaner(parser=parser)
-    elif config_args_parsed.type == "bulb": 
+    elif config_args_parsed.type == DeviceType.lighting.name:
         add_command_args_bulb(parser=parser)
     else:
         LOGGER.error("Unknown command type.")
@@ -2717,7 +2000,7 @@ def main():
         and not args_parsed.allDevices
     )
 
-    klyqa_acc: Klyqa_account = None
+    klyqa_acc: Klyqa_account | None = None
 
     if args_parsed.dev or args_parsed.aes:
         if args_parsed.dev:
