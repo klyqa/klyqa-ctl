@@ -168,12 +168,15 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     routine_parser.add_argument('--commands', help='specify routine program (for put)')
     # routine_parser.set_defaults(func=routine_request)
 
-async def process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud) -> None:
+async def process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, message_queue_tx_state_cloud) -> None:
     """process_args_to_msg_cleaner"""
     
     def local_and_cloud_command_msg(json_msg, timeout) -> None:
         message_queue_tx_local.append((json.dumps(json_msg), timeout))
         message_queue_tx_command_cloud.append(json_msg)
+        
+    if args.productinfo:
+        local_and_cloud_command_msg({ "type" : "request", "action" : "productinfo" }, 100)
         
     if args.command is not None:
         if args.command == CommandType.get.name:
@@ -259,3 +262,35 @@ async def process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message
             if args.filter:
                 reset_dict["filter"] = None
             local_and_cloud_command_msg(reset_dict, 1000)
+            
+    if args.routine:
+        routine_dict = {
+            "type" : "routine",
+        }
+
+        if args.count:
+            routine_dict["action"] = "count"
+
+        if args.list:
+            routine_dict["action"] = "list"
+
+        if args.put:
+            if (args.id and args.commands):
+                routine_dict["action"] = "put"
+                routine_dict["id"] = args.id
+                routine_dict["scene"] = "none"
+                routine_dict["commands"] = args.commands
+            else:
+                print("No ID and/or Commands given!")
+
+        if args.delete:
+            if args.id:
+                routine_dict["action"] = "delete"
+                routine_dict["id"] = args.id
+            else:
+                print("No ID to delete given!")
+
+        if args.start:
+            if args.id:
+                routine_dict["action"] = "start"
+                routine_dict["id"] = args.id

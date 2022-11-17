@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse
 import json
+import sys
 
 from general.parameters import add_config_args, get_description_parser
 from .device import *
@@ -502,7 +503,7 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
 
 
-async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, scene_list: list[str]) -> bool:
+async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, message_queue_tx_state_cloud, scene_list: list[str]) -> bool:
     """process_args_to_msg_lighting"""
     
     def local_and_cloud_command_msg(json_msg, timeout) -> None:
@@ -601,7 +602,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
 
                     add_config_args(parser=orginal_args_parser)
                     add_config_args(parser=discover_local_args_parser2)
-                    add_command_args_bulb()(parser=discover_local_args_parser2)
+                    add_command_args_bulb(parser=discover_local_args_parser2)
 
                     (
                         original_config_args_parsed,
@@ -615,12 +616,8 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
                         )
                     )
 
-                    ret = await self._send_to_devices(
-                        discover_local_args_parsed2,
-                        args_in,
-                        udp=udp,
-                        tcp=tcp,
-                        timeout_ms=3000,
+                    ret = send_to_devices_cb(
+                        discover_local_args_parsed2
                     )
                     if isinstance(ret, bool) and ret:
                         return True
@@ -687,17 +684,17 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
             if args_app:
                 args_in.extend(args_app.split(" "))
 
-        parser: ArgumentParser = get_description_parser()
+        parser: argparse.ArgumentParser = get_description_parser()
 
         add_config_args(parser=parser)
-        add_command_args(parser=parser)
+        add_command_args_bulb(parser=parser)
 
         args = parser.parse_args(args_in, namespace=args)
         # args.func(args)
 
     if args.ota is not None:
         local_and_cloud_command_msg(
-            ({"type": "fw_update", "url": args.ota}, 10000)
+            {"type": "fw_update", "url": args.ota}, 10000
         )
 
     if args.ping:

@@ -1469,9 +1469,9 @@ class Klyqa_account:
                 
             scene: list[str] = []
             if args.type == DeviceType.lighting.name:
-                await process_args_to_msg_lighting(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, scene)
+                await process_args_to_msg_lighting(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, message_queue_tx_state_cloud, scene)
             elif args.type == DeviceType.cleaner.name:
-                await process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud)
+                await process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, message_queue_tx_state_cloud)
             else:
                 LOGGER.error("Missing device type.")
                 return False
