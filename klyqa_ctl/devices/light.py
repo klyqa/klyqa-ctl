@@ -186,6 +186,17 @@ BULB_SCENES: list[dict[str, Any]] = [
 
 class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
     """Klyqa_Bulb_Response_Status"""
+    
+    active_command: int | None = None
+    active_scene: str | None = None
+    fwversion: str | None = None
+    mode: str | None = None
+    open_slots: int | None = None
+    sdkversion: str | None = None
+    status: str | None = None
+    temperature: int | None = None
+    _brightness: int | None
+    _color: RGBColor | None
 
     def __str__(self) -> str:
         """__str__"""
@@ -196,18 +207,18 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
         **kwargs
     ) -> None:
         """__init__"""
-        self.active_command: int | None = None
-        self.active_scene: str | None = None
-        self._brightness: int | None = None
-        self._color: RGBColor | None = None
-        self.fwversion: str | None = None
-        self.mode: str | None = None # cmd, cct, rgb
-        self.open_slots: int | None = None
-        self.sdkversion: str | None = None
-        self.status: str | None = None
-        self.temperature: int | None = None
-        LOGGER.debug(f"save status {self}")
+        self.active_command = None
+        self.active_scene = None
+        self.fwversion = None
+        self.mode = None # cmd, cct, rgb
+        self.open_slots = None
+        self.sdkversion = None
+        self.status = None
+        self.temperature = None
+        self._brightness = None
+        self._color = None
         super().__init__(**kwargs)
+        LOGGER.debug(f"save status {self}")
 
     @property
     def brightness(self) -> int | None:
