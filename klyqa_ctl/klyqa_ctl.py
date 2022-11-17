@@ -34,7 +34,7 @@ import logging
 import time
 from typing import TypeVar, Any, Type
 
-from general.parameters import get_description_parser
+from .general.parameters import get_description_parser
 
 
 NoneType: Type[None] = type(None)
@@ -50,12 +50,12 @@ from asyncio.exceptions import CancelledError, TimeoutError
 from collections.abc import Callable
 
 
-from devices.device import *
-from devices.light import *
-from devices.vacuum import *
-from general.message import *
-from general.general import *
-from general.connections import *
+from .devices.device import *
+from .devices.light import *
+from .devices.vacuum import *
+from .general.message import *
+from .general.general import *
+from .general.connections import *
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome

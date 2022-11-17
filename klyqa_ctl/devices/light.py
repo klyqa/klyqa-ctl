@@ -5,10 +5,10 @@ import argparse
 import json
 import sys
 
-from general.parameters import add_config_args, get_description_parser
+from ..general.parameters import add_config_args, get_description_parser
 from .device import *
 
-from general.general import *
+from ..general.general import *
 
 ## Bulbs ##
 
