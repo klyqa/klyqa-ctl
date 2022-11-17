@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 import argparse
+import functools
 import json
 import sys
 
