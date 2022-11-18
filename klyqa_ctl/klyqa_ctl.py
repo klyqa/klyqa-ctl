@@ -1335,6 +1335,12 @@ class Klyqa_account:
             loop = asyncio.get_event_loop()
 
             send_started: datetime.datetime = datetime.datetime.now()
+            
+            add_command_args_ch = {
+                DeviceType.lighting.name: add_command_args_bulb,
+                DeviceType.cleaner.name: add_command_args_cleaner
+            }
+            add_command_args = add_command_args_ch[args.type]
 
             if args.dev:
                 args.local = True
@@ -1784,7 +1790,7 @@ class Klyqa_account:
                     success = True
 
             if success and scene:
-                scene_start_args: list[str] = ["--routine_id", "0", "--routine_start"]
+                scene_start_args: list[str] = [args.type, "--routine_id", "0", "--routine_start"]
 
                 orginal_args_parser = get_description_parser()
                 scene_start_args_parser: ArgumentParser = get_description_parser()
@@ -1792,7 +1798,7 @@ class Klyqa_account:
                 add_config_args(parser=orginal_args_parser)
                 add_config_args(parser=scene_start_args_parser)
                 add_command_args(parser=scene_start_args_parser)
-
+                
                 original_config_args_parsed, _ = orginal_args_parser.parse_known_args(
                     args=args_in
                 )
