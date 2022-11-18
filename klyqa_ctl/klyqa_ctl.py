@@ -791,8 +791,8 @@ class Klyqa_account:
                             Thread(target=device_request_and_print, args=(device_sets,))
                         )
                         t = Thread(target=device_request_and_print, args=(device_sets,))
-                        t.start()
-                        t.join()
+                        # t.start()
+                        # t.join()
 
                         if isinstance(AES_KEYs, dict):
                             AES_KEYs[
@@ -800,10 +800,10 @@ class Klyqa_account:
                             ] = bytes.fromhex(device_sets["aesKey"])
                         product_ids.add(device_sets["productId"])
 
-                # for t in device_state_req_threads:
-                #     t.start()
-                # for t in device_state_req_threads:
-                #     t.join()
+                for t in device_state_req_threads:
+                    t.start()
+                for t in device_state_req_threads:
+                    t.join()
 
                 queue_printer.stop()
 
