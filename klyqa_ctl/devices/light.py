@@ -730,9 +730,9 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
 
     if args.power:
         message_queue_tx_local.append(
-            (json.dumps({"type": "request", "status": args.power}), 500)
+            (json.dumps({"type": "request", "status": args.power[0]}), 500)
         )
-        message_queue_tx_state_cloud.append({"status": args.power})
+        message_queue_tx_state_cloud.append({"status": args.power[0]})
 
     def forced_continue(reason: str) -> bool:
         if not args.force:
