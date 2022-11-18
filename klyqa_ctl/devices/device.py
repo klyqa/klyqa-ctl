@@ -5,9 +5,9 @@ import datetime
 import traceback
 from typing import Any
 
-from general.connections import CloudConnection
-from general.general import LOGGER, Device_config
-from general.message import Message
+from ..general.connections import CloudConnection
+from ..general.general import LOGGER, Device_config
+from ..general.message import Message
 
 import slugify 
 

@@ -34,7 +34,7 @@ import logging
 import time
 from typing import TypeVar, Any, Type
 
-from general.parameters import get_description_parser
+from .general.parameters import get_description_parser
 
 
 NoneType: Type[None] = type(None)
@@ -50,12 +50,12 @@ from asyncio.exceptions import CancelledError, TimeoutError
 from collections.abc import Callable
 
 
-from devices.device import *
-from devices.light import *
-from devices.vacuum import *
-from general.message import *
-from general.general import *
-from general.connections import *
+from .devices.device import *
+from .devices.light import *
+from .devices.vacuum import *
+from .general.message import *
+from .general.general import *
+from .general.connections import *
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -791,8 +791,8 @@ class Klyqa_account:
                             Thread(target=device_request_and_print, args=(device_sets,))
                         )
                         t = Thread(target=device_request_and_print, args=(device_sets,))
-                        t.start()
-                        t.join()
+                        # t.start()
+                        # t.join()
 
                         if isinstance(AES_KEYs, dict):
                             AES_KEYs[
@@ -800,10 +800,10 @@ class Klyqa_account:
                             ] = bytes.fromhex(device_sets["aesKey"])
                         product_ids.add(device_sets["productId"])
 
-                # for t in device_state_req_threads:
-                #     t.start()
-                # for t in device_state_req_threads:
-                #     t.join()
+                for t in device_state_req_threads:
+                    t.start()
+                for t in device_state_req_threads:
+                    t.join()
 
                 queue_printer.stop()
 

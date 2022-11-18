@@ -5,9 +5,9 @@ import datetime
 import json
 import socket
 from typing import Any
-from devices.device import *
+from ..devices.device import *
 
-from general.general import *
+from .general import *
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome

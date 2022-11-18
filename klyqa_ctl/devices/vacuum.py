@@ -5,7 +5,7 @@ from enum import Enum
 import json
 from typing import Type, Any
 from .device import *
-from general.general import get_obj_attr_values_as_string
+from ..general.general import get_obj_attr_values_as_string
 
 ## Vacuum Cleaner ##
 
@@ -102,6 +102,8 @@ CommandType = Enum("CommandType", "get set reset")
 def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
 
     sub = parser.add_subparsers(title="subcommands", dest='command')
+    
+    pssv = sub.add_parser('passive', help='vApp will passively listen for UDP SYN from devices')
 
     ota = sub.add_parser('ota', help='allows over the air programming of the device')
     ota.add_argument('url', help='specify http URL for ota')
@@ -175,10 +177,11 @@ async def process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message
         message_queue_tx_local.append((json.dumps(json_msg), timeout))
         message_queue_tx_command_cloud.append(json_msg)
         
-    if args.productinfo:
-        local_and_cloud_command_msg({ "type" : "request", "action" : "productinfo" }, 100)
-        
     if args.command is not None:
+            
+        if args.command == "productinfo":
+            local_and_cloud_command_msg({ "type" : "request", "action" : "productinfo" }, 100)
+            
         if args.command == CommandType.get.name:
             get_dict: dict[str, Any] = {"type":"request", "action":"get",}
             if args.power or args.all:
@@ -263,34 +266,34 @@ async def process_args_to_msg_cleaner(args, args_in, send_to_devices_cb, message
                 reset_dict["filter"] = None
             local_and_cloud_command_msg(reset_dict, 1000)
             
-    if args.routine:
-        routine_dict = {
-            "type" : "routine",
-        }
+        elif args.command == "routine":
+            routine_dict = {
+                "type" : "routine",
+            }
 
-        if args.count:
-            routine_dict["action"] = "count"
+            if args.count:
+                routine_dict["action"] = "count"
 
-        if args.list:
-            routine_dict["action"] = "list"
+            if args.list:
+                routine_dict["action"] = "list"
 
-        if args.put:
-            if (args.id and args.commands):
-                routine_dict["action"] = "put"
-                routine_dict["id"] = args.id
-                routine_dict["scene"] = "none"
-                routine_dict["commands"] = args.commands
-            else:
-                print("No ID and/or Commands given!")
+            if args.put:
+                if (args.id and args.commands):
+                    routine_dict["action"] = "put"
+                    routine_dict["id"] = args.id
+                    routine_dict["scene"] = "none"
+                    routine_dict["commands"] = args.commands
+                else:
+                    print("No ID and/or Commands given!")
 
-        if args.delete:
-            if args.id:
-                routine_dict["action"] = "delete"
-                routine_dict["id"] = args.id
-            else:
-                print("No ID to delete given!")
+            if args.delete:
+                if args.id:
+                    routine_dict["action"] = "delete"
+                    routine_dict["id"] = args.id
+                else:
+                    print("No ID to delete given!")
 
-        if args.start:
-            if args.id:
-                routine_dict["action"] = "start"
-                routine_dict["id"] = args.id
+            if args.start:
+                if args.id:
+                    routine_dict["action"] = "start"
+                    routine_dict["id"] = args.id

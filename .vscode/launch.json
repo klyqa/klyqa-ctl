@@ -14,7 +14,7 @@
     },
     {
       "name": "Python: klyqa_ctl.py Account Cloud Reboot deviceuid",
-      "cwd": "${fileDirname}",
+      // "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
       "module": "klyqa_ctl",
@@ -43,7 +43,7 @@
     },
     {
       "name": "Python: klyqa_ctl.py aes klyna",
-      "cwd": "${fileDirname}",
+      // "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
       "module": "klyqa_ctl",
@@ -73,7 +73,7 @@
     },
     {
       "name": "Python: klyqa_ctl.py acc lighting",
-      "cwd": "${fileDirname}",
+      // "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
       "module": "klyqa_ctl",
@@ -99,7 +99,7 @@
     },
     {
       "name": "Python: klyqa_ctl.py acc klyna",
-      "cwd": "${fileDirname}",
+      // "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
       // "program": "${workspaceFolder}/klyqa_ctl/klyqa_ctl.py",
