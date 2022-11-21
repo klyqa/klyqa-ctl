@@ -1,0 +1,17 @@
+dist.org/*
+klyqa_ctl/__pycache__/*
+klyqa_ctl/bulb.configs.json
+dist/*
+klyqa_ctl.egg-info/*
+.idea/*
+klyqa_ctl/bulb.configs.json
+klyqa_ctl/device.configs.json
+klyqa_ctl/frederick.stallmeyer@qconnex.com.acc_settings.cache.json
+get-pip.py
+install_python3.9.bash
+klyqa_ctl/last_username
+klyqa_ctl/test.py
+klyqa_ctl/klyqa_ctl_vc1.py
+klyqa_ctl/vc1_vapp.py
+build/*
+fraizy@gmx.de.asc

@@ -13,11 +13,11 @@
       "justMyCode": true
     },
     {
-      "name": "Python: klyqa_ctl.py Account Cloud Reboot bulbuid",
-      "cwd": "${fileDirname}",
+      "name": "Python: klyqa_ctl.py Account Cloud Reboot deviceuid",
+      // "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/klyqa_ctl/klyqa_ctl.py",
+      "module": "klyqa_ctl",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
@@ -28,8 +28,8 @@
         "--test",
         "--cloud",
         "--debug",
-        "--bulb_unitids",
-        "bulbuid",
+        "--device_unitids",
+        "deviceuid",
         // "--power",
         // "on"
         "--reboot"
@@ -42,32 +42,88 @@
       ]
     },
     {
-      "name": "Python: klyqa_ctl.py Account",
-      "cwd": "${fileDirname}",
+      "name": "Python: klyqa_ctl.py aes klyna",
+      // "cwd": "${fileDirname}",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/klyqa_ctl/klyqa_ctl.py",
+      "module": "klyqa_ctl",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
-        "--username",
-        "youremail@provider.com",
-        "--password",
-        "yourpassword",
-        "--test",
-        //   "--cloud",
-        "--debug"
-        //   "--bulb_unitids",
+        "cleaner",
+        "--aes",
+        "157686ede87b2f7335f10906adfb6f53",
+        // "--test",
+        // "--cloud",
+        // "--debug"
+        "--debug",
+        "--device_unitids",
+        // "286DCD7933E3",
+        "286dcd5c72ff",
         //   "bulbuid",
         // "--power",
         // "on"
         //   "--reboot"
         // "--color",
         // "255", "122", "0"
-        // "--brightness",
-        // "18",
-        // "--temperature",
-        // "5553",
+        "set",
+        "--power",
+        "off"
+      ]
+    },
+    {
+      "name": "Python: klyqa_ctl.py acc lighting",
+      // "cwd": "${fileDirname}",
+      "type": "python",
+      "request": "launch",
+      "module": "klyqa_ctl",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": [
+        "lighting",
+        "--username",
+        "youremail@provider.com",
+        "--password",
+        "yourpassword",
+        //   "--cloud",
+        "--debug",
+        "--request",
+        // "--device_unitids",
+        //   "deviceuid",
+        // "--power",
+        // "on"
+        //   "--reboot"
+        // "--color",
+        // "255", "122", "0"
+      ]
+    },
+    {
+      "name": "Python: klyqa_ctl.py acc klyna",
+      // "cwd": "${fileDirname}",
+      "type": "python",
+      "request": "launch",
+      // "program": "${workspaceFolder}/klyqa_ctl/klyqa_ctl.py",
+      "module": "klyqa_ctl",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": [
+        "cleaner",
+        "--username",
+        "youremail@provider.com",
+        "--password",
+        "yourpassword",
+        //   "--cloud",
+        "--debug",
+        // "--device_unitids",
+        "set",
+        "--power",
+        "off"
+        //   "deviceuid",
+        // "--power",
+        // "on"
+        //   "--reboot"
+        // "--color",
+        // "255", "122", "0"
       ]
     }
   ]
