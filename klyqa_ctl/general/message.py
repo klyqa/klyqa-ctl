@@ -9,14 +9,16 @@ from typing import Any, Callable, Type
 
 from .general import *
 
-Message_state: Type[Message_state] = Enum("Message_state", "sent answered unsent")
+Message_state = Enum("Message_state", "sent answered unsent")
 
 
 MSG_COUNTER = 0
 
+
 @dataclass
 class Message:
     """Message"""
+
     started: datetime.datetime
     msg_queue: list[tuple]
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
@@ -54,4 +56,3 @@ class Message:
                 await self.call_cb()
             return False
         return True
-
