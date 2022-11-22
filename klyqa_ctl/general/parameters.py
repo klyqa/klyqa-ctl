@@ -43,6 +43,11 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--username", nargs=1, help="give your username")
     parser.add_argument("--password", nargs=1, help="give your klyqa password")
     parser.add_argument(
+        "--timeout",
+        nargs=1,
+        help="give your messages to the devies a timeout for response",
+    )
+    parser.add_argument(
         "--device_name",
         nargs=1,
         help="give the name of the device from your account settings for the command to send to",
@@ -52,11 +57,15 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         nargs=1,
         help="give the device unit id from your account settings for the command to send to",
     )
-        
-    required = parser.add_argument_group('required arguments')
-    optional = parser.add_argument_group('optional arguments')
-    required.add_argument('type', choices=[m.name for m in DeviceType], help='choose device type to control')
-    
+
+    required = parser.add_argument_group("required arguments")
+    optional = parser.add_argument_group("optional arguments")
+    required.add_argument(
+        "type",
+        choices=[m.name for m in DeviceType],
+        help="choose device type to control",
+    )
+
     parser.add_argument(
         "--allDevices",
         help="send commands to all devices",

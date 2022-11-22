@@ -9,7 +9,8 @@ from ..general.connections import CloudConnection
 from ..general.general import LOGGER, Device_config
 from ..general.message import Message
 
-import slugify 
+import slugify
+
 
 def format_uid(text: str) -> str:
     return slugify.slugify(text)
@@ -18,6 +19,8 @@ def format_uid(text: str) -> str:
 # Device profiles for limits and features (traits) for the devices.
 #
 device_configs: dict[str, Device_config] = dict()
+
+
 class KlyqaDevice:
     """KlyqaDevice"""
 
@@ -40,7 +43,7 @@ class KlyqaDevice:
     def __init__(self) -> None:
         self.local_addr = {"ip": "", "port": -1}
         self.cloud = CloudConnection()
-        self.ident= KlyqaDeviceResponseIdent()
+        self.ident = KlyqaDeviceResponseIdent()
 
         self.u_id: str = "no_uid"
         self.acc_sets = {}
@@ -98,10 +101,10 @@ class KlyqaDevice:
     def save_device_message(self, msg) -> None:
         """msg: json dict"""
 
-        status_update_types: set={"status", "statechange"}
+        status_update_types: set = {"status", "statechange"}
         if msg["type"] in status_update_types:
             msg["type"] = "status"
-        if "type" in msg and hasattr(self, msg["type"]): #and msg["type"] in msg:
+        if "type" in msg and hasattr(self, msg["type"]):  # and msg["type"] in msg:
             try:
                 LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
                 if msg["type"] == "ident" and self.ident:
@@ -112,7 +115,7 @@ class KlyqaDevice:
                     #     self.response_classes[msg["type"]](**msg[msg["type"]]),
                     # )
                     self.ident.update(**msg["ident"])
-                elif msg["type"] in status_update_types: # and self.status:
+                elif msg["type"] in status_update_types:  # and self.status:
                     # setattr(self, msg["type"], self.response_classes[msg["type"]](**msg))
                     # setattr(self, "status", self.status.update(**msg))
                     if self.status is None:
@@ -123,10 +126,9 @@ class KlyqaDevice:
                 LOGGER.error(f"{traceback.format_exc()}")
                 LOGGER.error("Could not process device response: ")
                 LOGGER.error(f"{msg}")
-                
-                
-class KlyqaDeviceResponse:
 
+
+class KlyqaDeviceResponse:
     def __init__(self, **kwargs) -> None:
         """__init__"""
         self.type: str = ""
@@ -140,6 +142,7 @@ class KlyqaDeviceResponse:
         for attr in kwargs:
             if hasattr(self, attr):
                 setattr(self, attr, kwargs[attr])
+
 
 # class KlyqaDeviceResponse:
 #     """KlyqaDeviceResponse"""

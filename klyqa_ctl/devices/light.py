@@ -187,7 +187,7 @@ BULB_SCENES: list[dict[str, Any]] = [
 
 class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
     """Klyqa_Bulb_Response_Status"""
-    
+
     active_command: int | None = None
     active_scene: str | None = None
     fwversion: str | None = None
@@ -203,15 +203,12 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
         """__str__"""
         return get_obj_attr_values_as_string(self)
 
-    def __init__(
-        self,
-        **kwargs
-    ) -> None:
+    def __init__(self, **kwargs) -> None:
         """__init__"""
         self.active_command = None
         self.active_scene = None
         self.fwversion = None
-        self.mode = None # cmd, cct, rgb
+        self.mode = None  # cmd, cct, rgb
         self.open_slots = None
         self.sdkversion = None
         self.status = None
@@ -235,7 +232,9 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
 
     @color.setter
     def color(self, color: dict[str, int]) -> None:
-        self._color = RGBColor(color["red"], color["green"], color["blue"]) if color else None
+        self._color = (
+            RGBColor(color["red"], color["green"], color["blue"]) if color else None
+        )
 
 
 class KlyqaBulb(KlyqaDevice):
@@ -273,7 +272,6 @@ class KlyqaBulb(KlyqaDevice):
             return False
 
 
-
 def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, int]:
     waitTime = transition if not skipWait else 0
     return (
@@ -306,7 +304,9 @@ def temperature_message(temperature, transition, skipWait=False) -> tuple[str, i
     )
 
 
-def percent_color_message(red, green, blue, warm, cold, transition, skipWait) -> tuple[str, int]:
+def percent_color_message(
+    red, green, blue, warm, cold, transition, skipWait
+) -> tuple[str, int]:
     waitTime = transition if not skipWait else 0
     return (
         json.dumps(
@@ -340,6 +340,7 @@ def brightness_message(brightness, transition) -> tuple[str, int]:
         ),
         transition,
     )
+
 
 commands_send_to_bulb: list[str] = [
     "request",
@@ -381,8 +382,9 @@ commands_send_to_bulb: list[str] = [
     "magic",
     "mystic",
     "cotton",
-    "ice"
+    "ice",
 ]
+
 
 def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     """Add arguments to the argument parser object.
@@ -483,7 +485,10 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     )
 
     parser.add_argument(
-        "--fade", nargs=2, help="fade in/out time in milliseconds on powering device on/off", metavar=("IN", "OUT")
+        "--fade",
+        nargs=2,
+        help="fade in/out time in milliseconds on powering device on/off",
+        metavar=("IN", "OUT"),
     )
 
     # parser.add_argument("--loop", help="loop", action="store_true")
@@ -515,13 +520,21 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
 
 
-async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, message_queue_tx_local, message_queue_tx_command_cloud, message_queue_tx_state_cloud, scene_list: list[str]) -> bool:
+async def process_args_to_msg_lighting(
+    args,
+    args_in,
+    send_to_devices_cb,
+    message_queue_tx_local,
+    message_queue_tx_command_cloud,
+    message_queue_tx_state_cloud,
+    scene_list: list[str],
+) -> bool:
     """process_args_to_msg_lighting"""
-    
+
     def local_and_cloud_command_msg(json_msg, timeout) -> None:
         message_queue_tx_local.append((json.dumps(json_msg), timeout))
         message_queue_tx_command_cloud.append(json_msg)
-        
+
     # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
     if (args.local or args.tryLocalThanCloud) and (
         not args.device_name
@@ -534,7 +547,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
             "--request",
             "--allDevices",
             "--selectDevice",
-            "--discover"
+            "--discover",
         ]
 
         orginal_args_parser: argparse.ArgumentParser = get_description_parser()
@@ -552,9 +565,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
             discover_local_args, namespace=original_config_args_parsed
         )
 
-        uids = await send_to_devices_cb(
-            discover_local_args_parsed
-        )
+        uids = await send_to_devices_cb(discover_local_args_parsed)
         if isinstance(uids, set) or isinstance(uids, list):
             # args_in.extend(["--device_unitids", ",".join(list(uids))])
             args_in = ["--device_unitids", ",".join(list(uids))] + args_in
@@ -566,9 +577,11 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
 
         add_command_args_bulb(parser=orginal_args_parser)
         args = orginal_args_parser.parse_args(args=args_in, namespace=args)
-        
-    commands_to_send: list[str] = [i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)]
-        
+
+    commands_to_send: list[str] = [
+        i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)
+    ]
+
     if commands_to_send:
         print("Commands to send to devices: " + ", ".join(commands_to_send))
     else:
@@ -579,9 +592,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
             temperature_enum = []
             try:
                 temperature_enum = [
-                    trait["value_schema"]["properties"]["colorTemperature"][
-                        "enum"
-                    ]
+                    trait["value_schema"]["properties"]["colorTemperature"]["enum"]
                     if "properties" in trait["value_schema"]
                     else trait["value_schema"]["enum"]
                     for trait in device_configs[product_id]["deviceTraits"]
@@ -607,10 +618,18 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
             if u_id not in self.devices or not self.devices[u_id].ident:
 
                 async def send_ping() -> bool:
-                    discover_local_args2: list[str] = ["--ping", "--device_unitids", u_id]
+                    discover_local_args2: list[str] = [
+                        "--ping",
+                        "--device_unitids",
+                        u_id,
+                    ]
 
-                    orginal_args_parser: argparse.ArgumentParser = get_description_parser()
-                    discover_local_args_parser2: argparse.ArgumentParser = get_description_parser()
+                    orginal_args_parser: argparse.ArgumentParser = (
+                        get_description_parser()
+                    )
+                    discover_local_args_parser2: argparse.ArgumentParser = (
+                        get_description_parser()
+                    )
 
                     add_config_args(parser=orginal_args_parser)
                     add_config_args(parser=discover_local_args_parser2)
@@ -628,9 +647,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
                         )
                     )
 
-                    ret = send_to_devices_cb(
-                        discover_local_args_parsed2
-                    )
+                    ret = send_to_devices_cb(discover_local_args_parsed2)
                     if isinstance(ret, bool) and ret:
                         return True
                     else:
@@ -705,9 +722,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
         # args.func(args)
 
     if args.ota is not None:
-        local_and_cloud_command_msg(
-            {"type": "fw_update", "url": args.ota}, 10000
-        )
+        local_and_cloud_command_msg({"type": "fw_update", "url": args.ota}, 10000)
 
     if args.ping:
         local_and_cloud_command_msg({"type": "ping"}, 10000)
@@ -750,9 +765,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
 
     def missing_config(product_id) -> bool:
         if not forced_continue(
-            "Missing or faulty config values for device "
-            + " product_id: "
-            + product_id
+            "Missing or faulty config values for device " + " product_id: " + product_id
         ):
             return True
         return False
@@ -804,10 +817,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
                 100,
             )
 
-            if (
-                int(value) < brightness_range[0]
-                or int(value) > brightness_range[1]
-            ):
+            if int(value) < brightness_range[0] or int(value) > brightness_range[1]:
                 return forced_continue(
                     f"Brightness {value} out of range [{brightness_range[0]}..{brightness_range[1]}]."
                 )
@@ -828,10 +838,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
             #     if trait["trait"] == "@core/traits/color-temperature"
             # ][0]
             temperature_range = [2000, 6500]
-            if (
-                int(value) < temperature_range[0]
-                or int(value) > temperature_range[1]
-            ):
+            if int(value) < temperature_range[0] or int(value) > temperature_range[1]:
                 return forced_continue(
                     f"Temperature {value} out of range [{temperature_range[0]}..{temperature_range[1]}]."
                 )
@@ -891,9 +898,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
         #     return False
 
         tt = args.transitionTime[0]
-        msg = color_message(
-            r, g, b, int(tt), skipWait=args.brightness is not None
-        )
+        msg = color_message(r, g, b, int(tt), skipWait=args.brightness is not None)
 
         check_color = functools.partial(
             check_device_parameter, Check_device_parameter.color, [r, g, b]
@@ -941,9 +946,7 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
         message_queue_tx_state_cloud.append({"brightness": brightness})
 
     if args.percent_color is not None:
-        if not device_configs and not forced_continue(
-            "Missing configs for devices."
-        ):
+        if not device_configs and not forced_continue("Missing configs for devices."):
             return False
         r, g, b, w, c = args.percent_color
         tt = args.transitionTime[0]
@@ -958,7 +961,9 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
         local_and_cloud_command_msg({"type": "factory_reset"}, 500)
 
     if args.fade is not None and len(args.fade) == 2:
-        local_and_cloud_command_msg({"type": "request","fade_out": args.fade[1],"fade_in": args.fade[0]}, 500)
+        local_and_cloud_command_msg(
+            {"type": "request", "fade_out": args.fade[1], "fade_in": args.fade[0]}, 500
+        )
 
     scene = ""
     if args.WW:
@@ -1090,10 +1095,9 @@ async def process_args_to_msg_lighting(args, args_in, send_to_devices_cb, messag
 
     if args.reboot:
         local_and_cloud_command_msg({"type": "reboot"}, 500)
-        
+
     if scene:
         scene_list.append(scene)
 
 
 # async def discover_lightings(args, args_in, send_to_devices_cb):
-   

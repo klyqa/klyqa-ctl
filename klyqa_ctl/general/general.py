@@ -12,7 +12,9 @@ import sys
 
 LOGGER: logging.Logger = logging.getLogger(__package__)
 LOGGER.setLevel(level=logging.INFO)
-formatter: logging.Formatter = logging.Formatter("%(asctime)s %(levelname)-8s - %(message)s")
+formatter: logging.Formatter = logging.Formatter(
+    "%(asctime)s %(levelname)-8s - %(message)s"
+)
 
 logging_hdl = logging.StreamHandler()
 logging_hdl.setLevel(level=logging.INFO)
@@ -20,7 +22,6 @@ logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
 
-# DEFAULT_SEND_TIMEOUT_MS=5000000000
 DEFAULT_SEND_TIMEOUT_MS = 500000
 
 TypeJSON = dict[str, Any]
@@ -107,6 +108,7 @@ class AsyncIOLock:
             cls._instance.__init__()
         return cls._instance
 
+
 class RefParse:
     """RefParse"""
 
@@ -114,12 +116,12 @@ class RefParse:
 
     def __init__(self, ref) -> None:
         self.ref = ref
-        
+
 
 Device_config = dict
 
 
-async def async_json_cache(json_data, json_file) -> tuple [Device_config, bool]:
+async def async_json_cache(json_data, json_file) -> tuple[Device_config, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.

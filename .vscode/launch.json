@@ -86,8 +86,10 @@
         "--password",
         "yourpassword",
         //   "--cloud",
-        "--debug",
+        // "--debug",
         "--request",
+        "--timeout",
+        "120"
         // "--device_unitids",
         //   "deviceuid",
         // "--power",

@@ -6,5 +6,5 @@
 
 import klyqa_ctl.klyqa_ctl as klyqa_ctl
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     klyqa_ctl.main()

@@ -16,6 +16,7 @@ except:
     from Crypto.Cipher import AES  # provided by pycryptodome
     from Crypto.Random import get_random_bytes  # pycryptodome
 
+
 def send_msg(msg, device: KlyqaDevice, connection: LocalConnection):
     info_str: str = (
         'Sending in local network to "'
@@ -61,7 +62,6 @@ class LocalConnection:
     sent_msg_answer: dict[str, Any] = {}
     aes_key_confirmed: bool = False
 
-
     def __init__(self) -> None:
         self.state = "WAIT_IV"
         self.localIv = get_random_bytes(8)
@@ -85,11 +85,11 @@ class CloudConnection:
     def __init__(self) -> None:
         self.connected = False
         self.received_packages = []
-        
-        
+
 
 PROD_HOST = "https://app-api.prod.qconnex.io"
 TEST_HOST = "https://app-api.test.qconnex.io"
+
 
 class Data_communicator:
     def __init__(self, server_ip: str = "0.0.0.0") -> None:

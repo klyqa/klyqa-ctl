@@ -74,12 +74,12 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponse):
         self.sdkversion: str = ""
         self.sidebrush: str = ""
         self.sidebrush_tresh: int = -1
-        self.suction: str = ""
+        self.suction: int | None = None
         self.time: int = -1
         self.ts: datetime.datetime = datetime.datetime.now()
         self.watertank: str = ""
-        self.workingmode: str | None = None
-        self.workingstatus: str = ""
+        self.workingmode: int | None = None
+        self.workingstatus: int | None = None
 
         LOGGER.debug(f"save status {self}")
         super().__init__(**kwargs)

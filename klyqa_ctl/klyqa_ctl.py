@@ -1306,7 +1306,7 @@ class Klyqa_account:
                     )
         return return_val
 
-    async def request_account_settings_eco(self) -> bool:
+    async def request_account_settings_eco(self, scan_interval: int = 60) -> bool:
         if not await self.__acc_settings_lock.acquire():
             return False
         try:
@@ -1314,7 +1314,7 @@ class Klyqa_account:
             now = datetime.datetime.now()
             if not self._settings_loaded_ts or (
                 now - self._settings_loaded_ts
-                >= datetime.timedelta(seconds=self.scan_interval)
+                >= datetime.timedelta(seconds=scan_interval)
             ):
                 """look that the settings are loaded only once in the scan interval"""
                 ret = await self.request_account_settings()
@@ -1659,19 +1659,12 @@ class Klyqa_account:
                         devices_working: dict[str, KlyqaDevice] = {
                             u_id: device
                             for u_id, device in self.devices.items()
-                            if (
-                                (args.type == DeviceType.lighting.name and isinstance(device, KlyqaBulb))
-                                 or (args.type == DeviceType.cleaner.name and isinstance(device, KlyqaVC))
-                                ) and (
-                                    (device.status and device.status.ts
-                                    and isinstance(device.status.ts, datetime.datetime)
-                                    and device.status.ts > send_started_local)
-                                    or (
-                                        (args.cloud or args.tryLocalThanCloud)
-                                        and device.cloud
-                                        and device.cloud.connected
-                                    )
-                                )
+                            if (device.status and device.status.ts > send_started_local)
+                            or (
+                                (args.cloud or args.tryLocalThanCloud)
+                                and device.cloud
+                                and device.cloud.connected
+                            )
                         }
                         print(
                             "Found "
@@ -2068,6 +2061,10 @@ def main():
         LOGGER.setLevel(level=logging.DEBUG)
         logging_hdl.setLevel(level=logging.DEBUG)
 
+    timeout_ms = DEFAULT_SEND_TIMEOUT_MS
+    if args_parsed.timeout:
+        timeout_ms = int(args_parsed.timeout[0])
+
     server_ip = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
     data_communicator: Data_communicator = Data_communicator(server_ip)
 
@@ -2124,7 +2121,7 @@ def main():
     if (
         loop.run_until_complete(
             klyqa_acc.send_to_devices(
-                args_parsed, args_in.copy(), timeout_ms=DEFAULT_SEND_TIMEOUT_MS
+                args_parsed, args_in.copy(), timeout_ms=timeout_ms
             )
         )
         > 0
