@@ -341,6 +341,28 @@ def brightness_message(brightness, transition) -> tuple[str, int]:
         transition,
     )
 
+def external_source_message(protocol, port, channel):
+    if (protocol == 0):
+        protocol_str = "EXT_OFF"
+    elif (protocol == 1):
+        protocol_str = "EXT_UDP"
+    elif (protocol == 2):
+        protocol_str = "EXT_E131"
+    elif (protocol == 3):
+        protocol_str = "EXT_TPM2"
+    else:
+        protocol_str = "EXT_OFF"
+    return json.dumps(
+            {
+                "type": "request",
+                "external": {
+                    "mode": protocol_str,
+                    "port": int(port),
+                    "channel": int(channel)
+                }
+            }
+        )
+
 
 commands_send_to_bulb: list[str] = [
     "request",
@@ -489,6 +511,13 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
         nargs=2,
         help="fade in/out time in milliseconds on powering device on/off",
         metavar=("IN", "OUT"),
+    )
+
+    parser.add_argument(
+        "--external_source",
+        nargs=3,
+        metavar=("MODE", "PORT", "CHANNEL"),
+        help="set external protocol receiver 0=OFF 1=RAWUDP 2=E131 2=TMP2",
     )
 
     # parser.add_argument("--loop", help="loop", action="store_true")
@@ -729,6 +758,10 @@ async def process_args_to_msg_lighting(
 
     if args.request:
         local_and_cloud_command_msg({"type": "request"}, 10000)
+        
+    if args.external_source:
+        mode, port, channel = args.external_source
+        local_and_cloud_command_msg(external_source_message(int(mode), port, channel), 0)
 
     if args.enable_tb is not None:
         a = args.enable_tb[0]
