@@ -130,10 +130,11 @@ class KlyqaDeviceResponse:
     def __init__(self, **kwargs) -> None:
         """__init__"""
         self.type: str = ""
+        self.ts: datetime.datetime | None = None
         self.update(**kwargs)
 
     def update(self, **kwargs) -> None:
-        self.ts: datetime.datetime = datetime.datetime.now()
+        self.ts = datetime.datetime.now()
         # Walk through parsed kwargs dict and look if names in dict exists as attribute in class,
         # then apply the value in kwargs to the value in class.
         for attr in kwargs:
