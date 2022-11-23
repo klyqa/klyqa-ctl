@@ -1659,11 +1659,28 @@ class Klyqa_account:
                         devices_working: dict[str, KlyqaDevice] = {
                             u_id: device
                             for u_id, device in self.devices.items()
-                            if (device.status and device.status.ts > send_started_local)
-                            or (
-                                (args.cloud or args.tryLocalThanCloud)
-                                and device.cloud
-                                and device.cloud.connected
+                            if (
+                                (
+                                    args.type == DeviceType.lighting.name
+                                    and isinstance(device, KlyqaBulb)
+                                )
+                                or (
+                                    args.type == DeviceType.cleaner.name
+                                    and isinstance(device, KlyqaVC)
+                                )
+                            )
+                            and (
+                                (
+                                    device.status
+                                    and device.status.ts
+                                    and isinstance(device.status.ts, datetime.datetime)
+                                    and device.status.ts > send_started_local
+                                )
+                                or (
+                                    (args.cloud or args.tryLocalThanCloud)
+                                    and device.cloud
+                                    and device.cloud.connected
+                                )
                             )
                         }
                         print(
