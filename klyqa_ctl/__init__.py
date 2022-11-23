@@ -17,3 +17,4 @@ __license__ = "MIT"
 
 from .klyqa_ctl import *
 from .general import *
+from .devices.device import format_uid

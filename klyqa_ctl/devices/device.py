@@ -144,19 +144,6 @@ class KlyqaDeviceResponse:
                 setattr(self, attr, kwargs[attr])
 
 
-# class KlyqaDeviceResponse:
-#     """KlyqaDeviceResponse"""
-
-#     type: str = ""
-#     response_msg: dict = {}
-#     ts: datetime.datetime = datetime.datetime.now()
-
-#     def __init__(self, type=type, response_msg: dict = {}) -> None:
-#         self.type = type
-#         self.response_msg = response_msg
-#         self.ts = datetime.datetime.now()
-
-
 # eventually dataclass
 class KlyqaDeviceResponseIdent(KlyqaDeviceResponse):
     """KlyqaDeviceResponseIdent"""
