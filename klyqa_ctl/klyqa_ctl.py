@@ -1354,7 +1354,7 @@ class Klyqa_account:
 
         # self.acc_settings = self.acc_settings[list(self.acc_settings.keys())[0]]
 
-    async def _send_to_devices(
+    async def send_to_devices(
         self,
         args,
         args_in,
@@ -1437,7 +1437,7 @@ class Klyqa_account:
             #         discover_local_args, namespace=original_config_args_parsed
             #     )
 
-            #     uids = await self._send_to_devices(
+            #     uids = await self.send_to_devices(
             #         discover_local_args_parsed,
             #         args_in,
             #         udp=udp,
@@ -1510,7 +1510,7 @@ class Klyqa_account:
 
             async def send_to_devices_cb(args):
                 """Send to devices callback for discover of devices option"""
-                return await self._send_to_devices(
+                return await self.send_to_devices(
                     args,
                     args_in,
                     udp=udp,
@@ -1873,7 +1873,7 @@ class Klyqa_account:
                     scene_start_args, namespace=original_config_args_parsed
                 )
 
-                ret = await self._send_to_devices(
+                ret = await self.send_to_devices(
                     scene_start_args_parsed,
                     args_in,
                     udp=udp,
@@ -1893,7 +1893,7 @@ class Klyqa_account:
         except Exception as e:
             LOGGER.debug(traceback.format_exc())
 
-    async def send_to_devices(self, args_parsed, args_in, timeout_ms=5000):
+    async def send_to_devices_wrapped(self, args_parsed, args_in, timeout_ms=5000):
         """set up broadcast port and tcp reply connection port"""
 
         if args_parsed.cloud or args_parsed.local:
@@ -1962,7 +1962,7 @@ class Klyqa_account:
             else:
                 LOGGER.error(f"Error no message returned from {uid}.")
 
-        if not await self._send_to_devices(
+        if not await self.send_to_devices(
             args_parsed,
             args_in,
             udp=self.data_communicator.udp,
@@ -1981,7 +1981,7 @@ class Klyqa_account:
 
         # args_parsed = parser.parse_args(args=args)
 
-        # if not await self._send_to_devices(
+        # if not await self.send_to_devices(
         #     args_parsed, args, udp=self.data_communicator.udp, tcp=self.data_communicator.tcp, timeout_ms=timeout_ms, async_answer_callback=async_answer_callback
         # ):
         #     exit_ret = 1
@@ -2120,7 +2120,7 @@ def main():
 
     if (
         loop.run_until_complete(
-            klyqa_acc.send_to_devices(
+            klyqa_acc.send_to_devices_wrapped(
                 args_parsed, args_in.copy(), timeout_ms=timeout_ms
             )
         )
