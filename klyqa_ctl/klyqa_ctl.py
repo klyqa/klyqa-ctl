@@ -2078,6 +2078,10 @@ def main():
         sys.exit(1)
 
     args_parsed = parser.parse_args(args=args_in)
+    
+    if args_parsed.version:
+        print(KLYQA_CTL_VERSION)
+        sys.exit(0)
 
     if not args_parsed:
         sys.exit(1)

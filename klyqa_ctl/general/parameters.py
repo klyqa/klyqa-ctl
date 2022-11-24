@@ -48,6 +48,13 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         help="timeout in seconds for the response of the devices",
     )
     parser.add_argument(
+        "--version",
+        action="store_const",
+        const=True,
+        default=False,
+        help="print klyqa-ctl module version",
+    )
+    parser.add_argument(
         "--device_name",
         nargs=1,
         help="give the name of the device from your account settings for the command to send to",

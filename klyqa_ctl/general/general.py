@@ -45,6 +45,7 @@ PRODUCT_URLS: dict[str, str] = {
 
 
 SEND_LOOP_MAX_SLEEP_TIME = 0.05
+KLYQA_CTL_VERSION="1.0.17"
 
 DeviceType = Enum("DeviceType", "cleaner lighting")
 

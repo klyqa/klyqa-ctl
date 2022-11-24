@@ -20,7 +20,7 @@ source ./bin/activate
 echo "install klyqa ctl package ..."
 python3.9 -m pip install $target
 echo "test klyqa ctl package module ..."
-python3.9 -m klyqa_ctl --help
+python3.9 -m klyqa_ctl lighting --version
 echo "is working ..."
 )
 
