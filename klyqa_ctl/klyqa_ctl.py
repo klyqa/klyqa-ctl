@@ -64,8 +64,6 @@ except:
 
 from typing import TypeVar
 
-LOGGER.debug("klyqa_ctl loaded")
-
 tcp_udp_port_lock: AsyncIOLock = AsyncIOLock.instance()
 
 
@@ -292,11 +290,19 @@ class Klyqa_account:
         pass
 
     async def search_and_send_to_device(
-        self, timeout_ms=DEFAULT_SEND_TIMEOUT_MS
+        self, proc_timeout_secs=DEFAULT_COM_PROC_TIMEOUT_SECS
     ) -> bool:
-        """Send broadcast and make tasks for incoming tcp connections."""
+        """! Send broadcast and make tasks for incoming tcp connections.
+        
+        @params:
+            proc_timeout_secs:   max timeout in seconds for a device communication handle process
+            
+        @return:
+            true:  on success
+            false: on exception or error
+        """
         loop = asyncio.get_event_loop()
-
+        
         try:
             if not self.data_communicator.tcp or not self.data_communicator.udp:
                 await self.data_communicator.bind_ports()
@@ -449,7 +455,7 @@ class Klyqa_account:
                                 # timeout task for the device tcp task
                                 loop.create_task(
                                     asyncio.wait_for(
-                                        new_task, timeout=(timeout_ms / 1000)
+                                        new_task, timeout=proc_timeout_secs
                                     )
                                 )
 
@@ -493,7 +499,7 @@ class Klyqa_account:
                                 )
                         else:
                             if datetime.datetime.now() - started > datetime.timedelta(
-                                milliseconds=int(timeout_ms * 1000)
+                                seconds=proc_timeout_secs
                             ):
                                 task.cancel()
                             tasks_undone_new.append((task, started))
@@ -1382,6 +1388,12 @@ class Klyqa_account:
             loop = asyncio.get_event_loop()
 
             send_started: datetime.datetime = datetime.datetime.now()
+            
+            add_command_args_ch = {
+                DeviceType.lighting.name: add_command_args_bulb,
+                DeviceType.cleaner.name: add_command_args_cleaner
+            }
+            add_command_args = add_command_args_ch[args.type]
 
             if args.dev:
                 args.local = True
@@ -1869,7 +1881,7 @@ class Klyqa_account:
                     success = True
 
             if success and scene:
-                scene_start_args: list[str] = ["--routine_id", "0", "--routine_start"]
+                scene_start_args: list[str] = [args.type, "--routine_id", "0", "--routine_start"]
 
                 orginal_args_parser = get_description_parser()
                 scene_start_args_parser: ArgumentParser = get_description_parser()
@@ -2076,7 +2088,7 @@ def main():
 
     timeout_ms = DEFAULT_SEND_TIMEOUT_MS
     if args_parsed.timeout:
-        timeout_ms = int(args_parsed.timeout[0])
+        timeout_ms = int(args_parsed.timeout[0])*1000
 
     server_ip = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
     data_communicator: Data_communicator = Data_communicator(server_ip)
