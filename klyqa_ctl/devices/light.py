@@ -341,27 +341,29 @@ def brightness_message(brightness, transition) -> tuple[str, int]:
         transition,
     )
 
-def external_source_message(protocol, port, channel):
-    if (protocol == 0):
+
+def external_source_message(protocol, port, channel, mode_autoreset_secs):
+    if protocol == 0:
         protocol_str = "EXT_OFF"
-    elif (protocol == 1):
+    elif protocol == 1:
         protocol_str = "EXT_UDP"
-    elif (protocol == 2):
+    elif protocol == 2:
         protocol_str = "EXT_E131"
-    elif (protocol == 3):
+    elif protocol == 3:
         protocol_str = "EXT_TPM2"
     else:
         protocol_str = "EXT_OFF"
     return json.dumps(
-            {
-                "type": "request",
-                "external": {
-                    "mode": protocol_str,
-                    "port": int(port),
-                    "channel": int(channel)
-                }
-            }
-        )
+        {
+            "type": "request",
+            "external": {
+                "mode": protocol_str,
+                "port": int(port),
+                "channel": int(channel),
+                "mode_autoreset": int(mode_autoreset_secs),
+            },
+        }
+    )
 
 
 commands_send_to_bulb: list[str] = [
@@ -515,9 +517,9 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
 
     parser.add_argument(
         "--external_source",
-        nargs=3,
-        metavar=("MODE", "PORT", "CHANNEL"),
-        help="set external protocol receiver 0=OFF 1=RAWUDP 2=E131 2=TMP2",
+        nargs=4,
+        metavar=("MODE", "PORT", "CHANNEL", "MODE_AUTORESET"),
+        help="set external protocol receiver 0=OFF 1=RAWUDP 2=E131 2=TMP2 3=0 means disabled, above 0 seconds until mode reset",
     )
 
     # parser.add_argument("--loop", help="loop", action="store_true")
@@ -758,10 +760,12 @@ async def process_args_to_msg_lighting(
 
     if args.request:
         local_and_cloud_command_msg({"type": "request"}, 10000)
-        
+
     if args.external_source:
-        mode, port, channel = args.external_source
-        local_and_cloud_command_msg(external_source_message(int(mode), port, channel), 0)
+        mode, port, channel, mode_autoreset_secs = args.external_source
+        local_and_cloud_command_msg(
+            external_source_message(int(mode), port, channel, mode_autoreset_secs), 0
+        )
 
     if args.enable_tb is not None:
         a = args.enable_tb[0]
