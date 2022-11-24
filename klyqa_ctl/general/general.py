@@ -22,7 +22,7 @@ logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
 
-DEFAULT_SEND_TIMEOUT_MS = 500000
+DEFAULT_SEND_TIMEOUT_MS = 30
 
 TypeJSON = dict[str, Any]
 
