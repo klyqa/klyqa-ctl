@@ -16,3 +16,4 @@ klyqa_ctl/vc1_vapp.py
 build/*
 fraizy@gmx.de.asc
 *.pyc
+package.test.venv/*
