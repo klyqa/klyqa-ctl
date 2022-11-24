@@ -20,10 +20,11 @@ source ./bin/activate
 echo "install klyqa ctl package ..."
 python3.9 -m pip install $target
 echo "test klyqa ctl package module ..."
-python3.9 -m klyqa_ctl
+python3.9 -m klyqa_ctl --help
+echo "is working ..."
 )
 
-
+echo "continue signing and upload to test pypi and pypi "
 gpg --detach-sign -a dist/*.tar.gz
 
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz dist/*.asc --verbose
