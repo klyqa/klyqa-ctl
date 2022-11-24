@@ -45,7 +45,7 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--timeout",
         nargs=1,
-        help="give your messages to the devies a timeout for response",
+        help="timeout in seconds for the response of the devices",
     )
     parser.add_argument(
         "--device_name",
