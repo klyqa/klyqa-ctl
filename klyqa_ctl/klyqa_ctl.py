@@ -64,11 +64,7 @@ except:
 
 from typing import TypeVar
 
-
-s: str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
-
-print(f"{s} start")
-
+LOGGER.debug("klyqa_ctl loaded")
 
 tcp_udp_port_lock: AsyncIOLock = AsyncIOLock.instance()
 
