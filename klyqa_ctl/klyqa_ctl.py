@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Klyqa control client."""
+from __future__ import annotations
 
 ###################################################################
 #
@@ -22,7 +23,7 @@
 #
 ###################################################################
 
-from __future__ import annotations
+import getpass
 from dataclasses import dataclass
 import os, pwd
 import socket
@@ -34,6 +35,7 @@ import select
 import logging
 import time
 from typing import TypeVar, Any, Type
+import coloredlogs
 
 from .general.parameters import get_description_parser
 
@@ -85,11 +87,10 @@ S = TypeVar("S", argparse.ArgumentParser, type(None))
 class EventQueuePrinter:
     """Single event queue printer for job printing."""
 
-    event: Event = Event()
-    """event for the printer that new data is available"""
+    event: Event = Event() # event for the printer that new data is available
     not_finished: bool = True
     print_strings = []
-    printer_t: Thread | None = None
+    printer_t: Thread | None = None # printer thread
 
     def __init__(self) -> None:
         """start printing helper thread routine"""
@@ -182,6 +183,27 @@ class Klyqa_account:
         self.search_and_send_loop_task_end_now = False
         self.interactive_prompts = interactive_prompts
         self.offline = offline
+        
+    async def update_device_configs(self):
+        product_ids: set[str] = {
+            device.ident.product_id
+            for uid, device in self.devices.items()
+            if device.ident and device.ident.product_id
+        }
+
+        for product_id in list(product_ids):
+            if product_id in device_configs:
+                continue
+            LOGGER.debug("Try to request device config from server.")
+            try:
+                config = await self.request(
+                    "config/product/" + product_id,
+                    timeout=30,
+                )
+                device_config: Device_config = config
+                device_configs[product_id] = device_config
+            except:
+                pass
 
     async def device_handle_local_tcp(
         self, device: KlyqaDevice | None, connection: LocalConnection
@@ -504,7 +526,7 @@ class Klyqa_account:
                             if datetime.datetime.now() - started > datetime.timedelta(
                                 seconds=proc_timeout_secs
                             ):
-                                task.cancel()
+                                task.cancel(msg=f"timeout of process of {proc_timeout_secs} seconds.")
                             tasks_undone_new.append((task, started))
                     self.__tasks_undone = tasks_undone_new
 
@@ -540,7 +562,7 @@ class Klyqa_account:
             self.message_queue = {}
             self.message_queue_now = {}
             for task, started in self.__tasks_undone:
-                task.cancel()
+                task.cancel(msg=f"Search and send loop cancelled.")
         except Exception as e:
             LOGGER.debug("Exception on send and search loop. Stop loop.")
             LOGGER.debug(f"{traceback.format_exc()}")
@@ -554,7 +576,7 @@ class Klyqa_account:
             LOGGER.debug("stop send and search loop.")
             if self.search_and_send_loop_task:
                 self.search_and_send_loop_task_end_now = True
-                self.search_and_send_loop_task.cancel()
+                self.search_and_send_loop_task.cancel(msg=f"Shutdown search and send loop.")
             try:
                 LOGGER.debug("wait for send and search loop to end.")
                 await asyncio.wait_for(self.search_and_send_loop_task, timeout=0.1)
@@ -616,6 +638,8 @@ class Klyqa_account:
         self.message_queue.setdefault(target_device_uid, []).append(msg)
 
         if self.__read_tcp_task:
+            # if still waiting for incoming connections, restart the process
+            # with a new udp broadcast 
             self.__read_tcp_task.cancel()
         self.search_and_send_loop_task_alive()
         return True
@@ -677,7 +701,7 @@ class Klyqa_account:
                     LOGGER.error("Username missing, username cache empty.")
                     
                     if self.interactive_prompts:
-                        self.username = input(" Please enter your Klyqa Account username (will be cached for the next script invoke): ")
+                        self.username = input(" Please enter your Klyqa Account username (will be cached for the script invoke): ")
                     else:
                         LOGGER.info("Missing Klyqa account username. No login.")
                     return False
@@ -707,7 +731,7 @@ class Klyqa_account:
             #     self.username = str(await f.readline()).strip()
         except:
             if self.interactive_prompts:
-                self.password = input(" Please enter your Klyqa Account password (will be cached for the next script invoke): ")
+                self.password = getpass.getpass(prompt=" Please enter your Klyqa Account password (will be saved): ", stream=None)
             else:
                 LOGGER.error("Missing Klyqa account password. Login failed.")
                 return False
@@ -1282,7 +1306,7 @@ class Klyqa_account:
                     else:
                         found = found + f" {json_response['ident']['unit_id']}"
 
-                    LOGGER.info(f"{TASK_NAME} - Found device {found}")
+                    LOGGER.info(f"%sFound device {found}", "{TASK_NAME} - " if LOGGER.level == logging.DEBUG else "")
                     if "all" in AES_KEYs:
                         AES_KEY = AES_KEYs["all"]
                     elif use_dev_aes or "dev" in AES_KEYs:
@@ -1305,7 +1329,7 @@ class Klyqa_account:
                     connection.remoteIv = pkg
                     connection.received_packages.append(pkg)
                     if not AES_KEY:
-                        LOGGER.error(
+                        LOGGER.debug(
                             f"{TASK_NAME} - "
                             + "Missing AES key. Probably not in onboarded devices. Provide AES key with --aes [key]! "
                             + str(device.u_id)
@@ -1469,6 +1493,8 @@ class Klyqa_account:
             if args.debug:
                 LOGGER.setLevel(level=logging.DEBUG)
                 logging_hdl.setLevel(level=logging.DEBUG)
+                # coloredlogs.install(logging.DEBUG, logger=LOGGER, reconfigure=True)
+                # logging_hdl_clr.setLevel(level=logging.DEBUG)
 
             if args.cloud or args.local:
                 args.tryLocalThanCloud = False
@@ -1559,26 +1585,8 @@ class Klyqa_account:
                 )
                 print("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
-            if not args.selectDevice:
-                product_ids: set[str] = {
-                    device.ident.product_id
-                    for uid, device in self.devices.items()
-                    if device.ident and device.ident.product_id
-                }
-
-                for product_id in list(product_ids):
-                    if product_id in device_configs:
-                        continue
-                    LOGGER.debug("Try to request device config from server.")
-                    try:
-                        config = await self.request(
-                            "config/product/" + product_id,
-                            timeout=30,
-                        )
-                        device_config: Device_config = config
-                        device_configs[product_id] = device_config
-                    except:
-                        pass
+            if not args.selectDevice and not self.offline:
+                await self.update_device_configs()
 
             ### device specific commands ###
 
@@ -1871,7 +1879,7 @@ class Klyqa_account:
                         return 1
                     try:
                         await _cloud_post(device, json_message, target)
-                    except CancelledError:
+                    except CancelledError as e:
                         LOGGER.error(
                             f"Cancelled cloud send "
                             + (device.u_id if device.u_id else "")
@@ -1997,6 +2005,7 @@ class Klyqa_account:
             return success
         except Exception as e:
             LOGGER.debug(traceback.format_exc())
+            return False
 
     async def send_to_devices_wrapped(self, args_parsed, args_in, timeout_ms=5000):
         """set up broadcast port and tcp reply connection port"""
@@ -2007,7 +2016,9 @@ class Klyqa_account:
         if args_parsed.debug:
             LOGGER.setLevel(level=logging.DEBUG)
             logging_hdl.setLevel(level=logging.DEBUG)
-
+            # coloredlogs.install(logging.DEBUG, logger=LOGGER, reconfigure=True)
+            # logging_hdl_clr.setLevel(level=logging.DEBUG)
+            
         if args_parsed.dev:
             AES_KEYs["dev"] = AES_KEY_DEV
 
@@ -2169,6 +2180,8 @@ def main():
     if args_parsed.debug:
         LOGGER.setLevel(level=logging.DEBUG)
         logging_hdl.setLevel(level=logging.DEBUG)
+        # coloredlogs.install(logging.DEBUG, logger=LOGGER, reconfigure=True)
+        # logging_hdl_clr.setLevel(level=logging.DEBUG)
 
     timeout_ms = DEFAULT_SEND_TIMEOUT_MS
     if args_parsed.timeout:
