@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass
+import os, pwd
 import socket
 import sys
 import json
@@ -156,7 +157,7 @@ class Klyqa_account:
     current_addr_connections: set[str] = set()
 
     def __init__(
-        self, data_communicator: Data_communicator, username="", password="", host=""
+        self, data_communicator: Data_communicator, username="", password="", host="", interactive_prompts: bool = False, offline: bool = False,
     ) -> None:
         """Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
@@ -179,6 +180,8 @@ class Klyqa_account:
         self.__read_tcp_task = None
         self.data_communicator: Data_communicator = data_communicator
         self.search_and_send_loop_task_end_now = False
+        self.interactive_prompts = interactive_prompts
+        self.offline = offline
 
     async def device_handle_local_tcp(
         self, device: KlyqaDevice | None, connection: LocalConnection
@@ -290,7 +293,7 @@ class Klyqa_account:
         pass
 
     async def search_and_send_to_device(
-        self, proc_timeout_secs=DEFAULT_COM_PROC_TIMEOUT_SECS
+        self, proc_timeout_secs=DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
         """! Send broadcast and make tasks for incoming tcp connections.
         
@@ -648,22 +651,68 @@ class Klyqa_account:
             raise ValueError(e)
 
     async def login(self, print_onboarded_devices=False) -> bool:
-        """Login on klyqa account, get account settings, get onboarded device profiles,
-        print all devices if parameter set."""
+        """! Login on klyqa account, get account settings, get onboarded device profiles,
+        print all devices if parameter set.
+        
+        @params:
+            print_onboarded_devices:   print onboarded devices from the klyqa account to the stdout
+            
+        @return:
+            true:  on success of the login
+            false: on error
+        """
         global device_configs
         loop = asyncio.get_event_loop()
 
         acc_settings_cache = {}
-        if not self.username or not self.password:
+        if not self.username:
             try:
-                async with aiofiles.open(
-                    os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
-                ) as f:
-                    self.username = str(await f.readline()).strip()
+                user_name_cache, cached = await async_json_cache(
+                    None, f"last_username.json"
+                )
+                if cached:
+                    self.username = user_name_cache["username"]
+                    LOGGER.info("Using Klyqa account %s.", self.username)
+                else:
+                    LOGGER.error("Username missing, username cache empty.")
+                    
+                    if self.interactive_prompts:
+                        self.username = input(" Please enter your Klyqa Account username (will be cached for the next script invoke): ")
+                    else:
+                        LOGGER.info("Missing Klyqa account username. No login.")
+                    return False
+                    
+                # async with aiofiles.open(
+                #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
+                # ) as f:
+                #     self.username = str(await f.readline()).strip()
             except:
                 return False
+            
+        try:                
+            self.acc_settings, cached = await async_json_cache(
+                None, f"{self.username}.acc_settings.cache.json"
+            )
+            if cached:
+                # self.username, self.password = (user_acc_cache["user"], user_acc_cache["password"])
+                if not self.password:
+                    self.password = self.acc_settings["password"]
+                
+            if not self.password:
+                raise Exception()
+                
+            # async with aiofiles.open(
+            #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
+            # ) as f:
+            #     self.username = str(await f.readline()).strip()
+        except:
+            if self.interactive_prompts:
+                self.password = input(" Please enter your Klyqa Account password (will be cached for the next script invoke): ")
+            else:
+                LOGGER.error("Missing Klyqa account password. Login failed.")
+                return False
 
-        if self.username is not None and self.password is not None:
+        if not self.offline and (self.username is not None and self.password is not None):
             login_response: requests.Response | None = None
             try:
                 login_data = {"email": self.username, "password": self.password}
@@ -727,59 +776,67 @@ class Klyqa_account:
                     acc_settings_cache, f"{self.username}.acc_settings.cache.json"
                 )
 
-                async with aiofiles.open(
-                    os.path.dirname(sys.argv[0]) + f"/last_username", mode="w"
-                ) as f:
-                    await f.write(self.username)
+                # await async_json_cache(
+                #     {"user": self.username, "password": self.password}, f"last.user.account.json"
+                # )
+                # async with aiofiles.open(
+                #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="w"
+                # ) as f:
+                #     await f.write(self.username)
 
             except Exception as e:
                 pass
+        
+        await async_json_cache(
+            {"username": self.username}, f"last_username.json"
+        )
 
-            try:
-                klyqa_acc_string = (
-                    "Klyqa account " + self.username + ". Onboarded devices:"
+        try:
+            klyqa_acc_string = (
+                "Klyqa account " + self.username + ". Onboarded devices:"
+            )
+            sep_width = len(klyqa_acc_string)
+
+            if print_onboarded_devices:
+                print(sep_width * "-")
+                print(klyqa_acc_string)
+                print(sep_width * "-")
+
+            queue_printer: EventQueuePrinter = EventQueuePrinter()
+
+            def device_request_and_print(device_sets):
+                state_str = (
+                    f'Name: "{device_sets["name"]}"'
+                    + f'\tAES-KEY: {device_sets["aesKey"]}'
+                    + f'\tUnit-ID: {device_sets["localDeviceId"]}'
+                    + f'\tCloud-ID: {device_sets["cloudDeviceId"]}'
+                    + f'\tType: {device_sets["productId"]}'
                 )
-                sep_width = len(klyqa_acc_string)
+                cloud_state = None
 
-                if print_onboarded_devices:
-                    print(sep_width * "-")
-                    print(klyqa_acc_string)
-                    print(sep_width * "-")
+                device: KlyqaDevice
+                if device_sets["productId"].find(".lighting") > -1:
+                    device = KlyqaBulb()
+                elif device_sets["productId"].find(".cleaning") > -1:
+                    device = KlyqaVC()
+                else:
+                    return
+                device.u_id = format_uid(device_sets["localDeviceId"])
+                device.acc_sets = device_sets
 
-                queue_printer: EventQueuePrinter = EventQueuePrinter()
+                self.devices[format_uid(device_sets["localDeviceId"])] = device
 
-                def device_request_and_print(device_sets):
-                    state_str = (
-                        f'Name: "{device_sets["name"]}"'
-                        + f'\tAES-KEY: {device_sets["aesKey"]}'
-                        + f'\tUnit-ID: {device_sets["localDeviceId"]}'
-                        + f'\tCloud-ID: {device_sets["cloudDeviceId"]}'
-                        + f'\tType: {device_sets["productId"]}'
-                    )
-                    cloud_state = None
+                async def req():
+                    try:
+                        ret = await self.request(
+                            f'device/{device_sets["cloudDeviceId"]}/state',
+                            timeout=30,
+                        )
+                        return ret
+                    except Exception as e:
+                        return None
 
-                    device: KlyqaDevice
-                    if device_sets["productId"].find(".lighting") > -1:
-                        device = KlyqaBulb()
-                    elif device_sets["productId"].find(".cleaning") > -1:
-                        device = KlyqaVC()
-                    else:
-                        return
-                    device.u_id = format_uid(device_sets["localDeviceId"])
-                    device.acc_sets = device_sets
-
-                    self.devices[format_uid(device_sets["localDeviceId"])] = device
-
-                    async def req():
-                        try:
-                            ret = await self.request(
-                                f'device/{device_sets["cloudDeviceId"]}/state',
-                                timeout=30,
-                            )
-                            return ret
-                        except Exception as e:
-                            return None
-
+                if not self.offline:
                     try:
                         cloud_state = asyncio.run(req())
                         if cloud_state:
@@ -802,36 +859,45 @@ class Klyqa_account:
                         # else:
                         LOGGER.info(err)
 
-                    if print_onboarded_devices:
-                        queue_printer.print(state_str)
+                if print_onboarded_devices:
+                    queue_printer.print(state_str)
 
-                device_state_req_threads = []
+            device_state_req_threads = []
 
-                product_ids: set[str] = set()
-                if self.acc_settings and "devices" in self.acc_settings:
-                    for device_sets in self.acc_settings["devices"]:
-                        # if not device_sets["productId"].startswith("@klyqa.lighting"):
-                        #     continue
-                        device_state_req_threads.append(
-                            Thread(target=device_request_and_print, args=(device_sets,))
-                        )
-                        t = Thread(target=device_request_and_print, args=(device_sets,))
-                        # t.start()
-                        # t.join()
+            product_ids: set[str] = set()
+            if self.acc_settings and "devices" in self.acc_settings:
+                for device_sets in self.acc_settings["devices"]:
+                    # if not device_sets["productId"].startswith("@klyqa.lighting"):
+                    #     continue
+                    device_state_req_threads.append(
+                        Thread(target=device_request_and_print, args=(device_sets,))
+                    )
+                    t = Thread(target=device_request_and_print, args=(device_sets,))
+                    # t.start()
+                    # t.join()
 
-                        if isinstance(AES_KEYs, dict):
-                            AES_KEYs[
-                                format_uid(device_sets["localDeviceId"])
-                            ] = bytes.fromhex(device_sets["aesKey"])
-                        product_ids.add(device_sets["productId"])
+                    if isinstance(AES_KEYs, dict):
+                        AES_KEYs[
+                            format_uid(device_sets["localDeviceId"])
+                        ] = bytes.fromhex(device_sets["aesKey"])
+                    product_ids.add(device_sets["productId"])
 
-                for t in device_state_req_threads:
-                    t.start()
-                for t in device_state_req_threads:
-                    t.join()
+            for t in device_state_req_threads:
+                t.start()
+            for t in device_state_req_threads:
+                t.join()
 
-                queue_printer.stop()
+            queue_printer.stop()
 
+            if not self.offline:
+                device_configs, cached = await async_json_cache(
+                    device_configs, "device.configs.json"
+                )
+                if cached:
+                    LOGGER.info("Using devices config cache.")
+                
+            elif self.offline:
+                
                 def get_conf(id, device_configs):
                     async def req():
                         try:
@@ -866,9 +932,9 @@ class Klyqa_account:
                 if cached:
                     LOGGER.info("No server reply for device configs. Using cache.")
 
-            except Exception as e:
-                LOGGER.error("Error during login to klyqa: " + str(e))
-                return False
+        except Exception as e:
+            LOGGER.error("Error during login to klyqa: " + str(e))
+            return False
         return True
 
     def get_header_default(self) -> dict[str, str]:
@@ -1898,6 +1964,19 @@ class Klyqa_account:
                     scene_start_args, namespace=original_config_args_parsed
                 )
 
+                async def async_print_answer(msg, uid):
+                    print(f"{uid}: ")
+                    if msg:
+                        try:
+                            LOGGER.info(f"Answer received from {uid}.")
+                            print(
+                                f"{json.dumps(json.loads(msg.answer), sort_keys=True, indent=4)}"
+                            )
+                        except:
+                            pass
+                    else:
+                        LOGGER.error(f"Error no message returned from {uid}.")
+
                 ret = await self.send_to_devices(
                     scene_start_args_parsed,
                     args_in,
@@ -1906,6 +1985,7 @@ class Klyqa_account:
                     timeout_ms=timeout_ms
                     - (datetime.datetime.now() - send_started).total_seconds()
                     * 1000,  # 3000
+                    async_answer_callback=async_print_answer
                 )
 
                 if isinstance(ret, bool) and ret:
@@ -2106,45 +2186,45 @@ def main():
     )
 
     klyqa_acc: Klyqa_account | None = None
+    
+    host = PROD_HOST
+    if args_parsed.test:
+        host = TEST_HOST
 
-    if args_parsed.dev or args_parsed.aes:
+    if args_parsed.dev: #or args_parsed.aes:
         if args_parsed.dev:
             LOGGER.info("development mode. Using default aes key.")
-        elif args_parsed.aes:
-            LOGGER.info("aes key passed.")
-        klyqa_acc = Klyqa_account(data_communicator)
-
-    elif args_parsed.username is not None and args_parsed.username[0] in klyqa_accs:
-
-        klyqa_acc = klyqa_accs[args_parsed.username[0]]
-        if not klyqa_acc.access_token:
-            asyncio.run(
-                klyqa_acc.login(print_onboarded_devices=print_onboarded_devices)
-            )
-            LOGGER.debug("login finished")
+        # elif args_parsed.aes:
+        #     LOGGER.info("aes key passed.")
+        klyqa_acc = Klyqa_account(data_communicator, offline=args_parsed.local, interactive_prompts=True)
+        asyncio.run(
+            klyqa_acc.login(print_onboarded_devices=False)
+        )
 
     else:
-        try:
-            LOGGER.debug("login")
-            host = PROD_HOST
-            if args_parsed.test:
-                host = TEST_HOST
+        LOGGER.debug("login")
+        if args_parsed.username is not None and args_parsed.username[0] in klyqa_accs:
+            klyqa_acc = klyqa_accs[args_parsed.username[0]]
+        else:
             klyqa_acc = Klyqa_account(
                 data_communicator,
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
-                host,
+                host, offline=args_parsed.local, interactive_prompts=True
             )
-
-            asyncio.run(
-                klyqa_acc.login(print_onboarded_devices=print_onboarded_devices)
-            )
-            klyqa_accs[args_parsed.username[0]] = klyqa_acc
-        except:
-            LOGGER.error("Error during login.")
-            sys.exit(1)
-
-        LOGGER.debug("login finished")
+            
+        if not klyqa_acc.access_token:
+            try:
+                if asyncio.run(
+                    klyqa_acc.login(print_onboarded_devices=print_onboarded_devices)
+                ):
+                    LOGGER.debug("login finished")
+                    klyqa_accs[klyqa_acc.username] = klyqa_acc
+                else:
+                    raise Exception()
+            except:
+                LOGGER.error("Error during login.")
+                sys.exit(1)
     exit_ret = 0
 
     if (

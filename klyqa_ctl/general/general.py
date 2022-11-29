@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
 
 LOGGER: logging.Logger = logging.getLogger(__package__)
 LOGGER.setLevel(level=logging.INFO)
@@ -20,10 +21,14 @@ logging_hdl = logging.StreamHandler()
 logging_hdl.setLevel(level=logging.INFO)
 logging_hdl.setFormatter(formatter)
 
-LOGGER.addHandler(logging_hdl)
+# LOGGER.addHandler(logging_hdl)
+
+import coloredlogs
+# coloredlogs.install(level='DEBUG', logger=LOGGER)
+coloredlogs.install(level='DEBUG', logger=LOGGER,fmt='%(asctime)s,%(msecs)03d %(levelname)s %(message)s')
 
 DEFAULT_SEND_TIMEOUT_MS = 30
-DEFAULT_COM_PROC_TIMEOUT_SECS = 600
+DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600
 
 TypeJSON = dict[str, Any]
 
@@ -123,7 +128,7 @@ class RefParse:
 Device_config = dict
 
 
-async def async_json_cache(json_data, json_file) -> tuple[Device_config, bool]:
+async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
@@ -131,6 +136,18 @@ async def async_json_cache(json_data, json_file) -> tuple[Device_config, bool]:
 
     return_json: Device_config = json_data
     cached = False
+    
+    user_homedir = ""
+    try: 
+        user_homedir = os.path.expanduser('~')
+    except:
+        # use else the dirpath where the called python script lies. 
+        user_homedir = os.path.dirname(sys.argv[0])
+        
+    klyqa_data_path = user_homedir + "/.klyqa"
+    
+    Path(klyqa_data_path).mkdir(parents=True, exist_ok=True)
+    
     if json_data:
         """
         save the json for offline cache in dirpath where called script resides
@@ -145,7 +162,7 @@ async def async_json_cache(json_data, json_file) -> tuple[Device_config, bool]:
                 s = s + '"' + id + '": ' + json.dumps(sets) + ", "
             s = "{" + s[:-2] + "}"
             async with aiofiles.open(
-                os.path.dirname(sys.argv[0]) + f"/{json_file}", mode="w"
+                klyqa_data_path + f"/{json_file}", mode="w"
             ) as f:
                 await f.write(s)
         except Exception as e:
@@ -154,7 +171,7 @@ async def async_json_cache(json_data, json_file) -> tuple[Device_config, bool]:
         """no json data, take cached json from disk if available"""
         try:
             async with aiofiles.open(
-                os.path.dirname(sys.argv[0]) + f"/{json_file}", mode="r"
+                klyqa_data_path + f"/{json_file}", mode="r"
             ) as f:
                 s = await f.read()
             return_json = json.loads(s)
