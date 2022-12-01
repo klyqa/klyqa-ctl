@@ -20,6 +20,7 @@ from __future__ import annotations
 #
 # BUGS:
 #  - vc1 interactive command selection support.
+#  - interactive light selection, command not applied
 #
 ###################################################################
 
@@ -704,7 +705,7 @@ class Klyqa_account:
                         self.username = input(" Please enter your Klyqa Account username (will be cached for the script invoke): ")
                     else:
                         LOGGER.info("Missing Klyqa account username. No login.")
-                    return False
+                        return False
                     
                 # async with aiofiles.open(
                 #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
@@ -913,14 +914,16 @@ class Klyqa_account:
 
             queue_printer.stop()
 
-            if not self.offline:
-                device_configs, cached = await async_json_cache(
+            if self.offline:
+                device_configs_cache, cached = await async_json_cache(
                     device_configs, "device.configs.json"
                 )
                 if cached:
                     LOGGER.info("Using devices config cache.")
+                    if device_configs_cache:
+                        device_configs = device_configs_cache
                 
-            elif self.offline:
+            elif not self.offline:
                 
                 def get_conf(id, device_configs):
                     async def req():
@@ -1305,8 +1308,12 @@ class Klyqa_account:
                         found = found + ' "' + name + '"'
                     else:
                         found = found + f" {json_response['ident']['unit_id']}"
-
-                    LOGGER.info(f"%sFound device {found}", "{TASK_NAME} - " if LOGGER.level == logging.DEBUG else "")
+                        
+                    if is_new_device:
+                        LOGGER.info(f"%sFound device {found}", "{TASK_NAME} - " if LOGGER.level == logging.DEBUG else "")
+                    else:
+                        LOGGER.debug(f"%sFound device {found}", "{TASK_NAME} - " if LOGGER.level == logging.DEBUG else "")
+                        
                     if "all" in AES_KEYs:
                         AES_KEY = AES_KEYs["all"]
                     elif use_dev_aes or "dev" in AES_KEYs:
