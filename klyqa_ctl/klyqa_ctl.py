@@ -2242,8 +2242,9 @@ def main():
                     klyqa_accs[klyqa_acc.username] = klyqa_acc
                 else:
                     raise Exception()
-            except:
+            except Exception as e:
                 LOGGER.error("Error during login.")
+                LOGGER.debug(f"{traceback.format_exc()}")
                 sys.exit(1)
     exit_ret = 0
 
