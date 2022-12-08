@@ -16,11 +16,6 @@ def format_uid(text: str) -> str:
     return slugify.slugify(text)
 
 
-# Device profiles for limits and features (traits) for the devices.
-#
-device_configs: dict[str, Device_config] = dict()
-
-
 class KlyqaDevice:
     """KlyqaDevice"""
 
@@ -39,6 +34,7 @@ class KlyqaDevice:
 
     response_classes = {}
     status: KlyqaDeviceResponse | None
+    device_config: dict[str, Any]
 
     def __init__(self) -> None:
         self.local_addr = {"ip": "", "port": -1}
@@ -56,6 +52,7 @@ class KlyqaDevice:
             "ident": KlyqaDeviceResponseIdent,
             "status": KlyqaDeviceResponse,
         }
+        self.device_config = {}
 
     def process_msgs(self) -> None:
         for msg in self.recv_msg_unproc:

@@ -248,12 +248,14 @@ class KlyqaBulb(KlyqaDevice):
         self.response_classes["status"] = KlyqaBulbResponseStatus
 
     def setTemp(self, temp: int):
+        if not self.device_config:
+            return False
         temperature_enum = []
         try:
             if self.ident:
                 temperature_enum = [
                     trait["value_schema"]["properties"]["colorTemperature"]["enum"]
-                    for trait in device_configs[self.ident.product_id]["deviceTraits"]
+                    for trait in self.device_config["deviceTraits"]
                     if trait["trait"] == "@core/traits/color-temperature"
                 ]
                 if len(temperature_enum) < 2:
@@ -341,27 +343,28 @@ def brightness_message(brightness, transition) -> tuple[str, int]:
         transition,
     )
 
+
 def external_source_message(protocol, port, channel):
-    if (protocol == 0):
+    if protocol == 0:
         protocol_str = "EXT_OFF"
-    elif (protocol == 1):
+    elif protocol == 1:
         protocol_str = "EXT_UDP"
-    elif (protocol == 2):
+    elif protocol == 2:
         protocol_str = "EXT_E131"
-    elif (protocol == 3):
+    elif protocol == 3:
         protocol_str = "EXT_TPM2"
     else:
         protocol_str = "EXT_OFF"
     return json.dumps(
-            {
-                "type": "request",
-                "external": {
-                    "mode": protocol_str,
-                    "port": int(port),
-                    "channel": int(channel)
-                }
-            }
-        )
+        {
+            "type": "request",
+            "external": {
+                "mode": protocol_str,
+                "port": int(port),
+                "channel": int(channel),
+            },
+        }
+    )
 
 
 commands_send_to_bulb: list[str] = [
@@ -619,12 +622,14 @@ async def process_args_to_msg_lighting(
 
         def get_temp_range(product_id):
             temperature_enum = []
+            if not self.device_config:
+                return False
             try:
                 temperature_enum = [
                     trait["value_schema"]["properties"]["colorTemperature"]["enum"]
                     if "properties" in trait["value_schema"]
                     else trait["value_schema"]["enum"]
-                    for trait in device_configs[product_id]["deviceTraits"]
+                    for trait in self.device_config["deviceTraits"]
                     if trait["trait"] == "@core/traits/color-temperature"
                 ]
                 if len(temperature_enum[0]) < 2:
@@ -758,10 +763,12 @@ async def process_args_to_msg_lighting(
 
     if args.request:
         local_and_cloud_command_msg({"type": "request"}, 10000)
-        
+
     if args.external_source:
         mode, port, channel = args.external_source
-        local_and_cloud_command_msg(external_source_message(int(mode), port, channel), 0)
+        local_and_cloud_command_msg(
+            external_source_message(int(mode), port, channel), 0
+        )
 
     if args.enable_tb is not None:
         a = args.enable_tb[0]
@@ -806,12 +813,14 @@ async def process_args_to_msg_lighting(
     #### Needing config profile versions implementation for checking trait ranges ###
 
     def check_color_range(product_id, values) -> bool:
+        if not self.device_config:
+            return False
         color_enum = []
         try:
             # # different device trait schematics. for now go typical range
             # color_enum = [
             #     trait["value_schema"]["definitions"]["color_value"]
-            #     for trait in device_configs[product_id]["deviceTraits"]
+            #     for trait in self.device_config["deviceTraits"]
             #     if trait["trait"] == "@core/traits/color"
             # ]
             # color_range = (
@@ -833,12 +842,14 @@ async def process_args_to_msg_lighting(
         return True
 
     def check_brightness_range(product_id, value) -> bool:
+        if not self.device_config:
+            return False
         brightness_enum = []
         try:
             # different device trait schematics. for now go typical range
             # brightness_enum = [
             #     trait["value_schema"]["properties"]["brightness"]
-            #     for trait in device_configs[product_id]["deviceTraits"]
+            #     for trait in self.device_config["deviceTraits"]
             #     if trait["trait"] == "@core/traits/brightness"
             # ]
             # brightness_range = (
@@ -867,7 +878,7 @@ async def process_args_to_msg_lighting(
             #     trait["value_schema"]["properties"]["colorTemperature"]["enum"]
             #     if "properties" in trait["value_schema"]
             #     else trait["value_schema"]["enum"]
-            #     for trait in device_configs[product_id]["deviceTraits"]
+            #     for trait in self.device_config["deviceTraits"]
             #     if trait["trait"] == "@core/traits/color-temperature"
             # ][0]
             temperature_range = [2000, 6500]
@@ -880,11 +891,13 @@ async def process_args_to_msg_lighting(
         return True
 
     def check_scene_support(product_id, scene) -> bool:
+        if not self.device_config:
+            return False
         color_enum = []
         try:
             # color_enum = [
             #     trait
-            #     for trait in device_configs[product_id]["deviceTraits"]
+            #     for trait in self.device_config["deviceTraits"]
             #     if trait["trait"] == "@core/traits/color"
             # ]
             # color_support = len(color_enum) > 0
@@ -909,7 +922,7 @@ async def process_args_to_msg_lighting(
     def check_device_parameter(
         parameter: Check_device_parameter, values, product_id
     ) -> bool:
-        # if not device_configs and not forced_continue("Missing configs for devices."):
+        # if not self.device_config and not forced_continue("Missing configs for devices."):
         #     return False
 
         # for u_id in target_device_uids:
@@ -979,7 +992,7 @@ async def process_args_to_msg_lighting(
         message_queue_tx_state_cloud.append({"brightness": brightness})
 
     if args.percent_color is not None:
-        if not device_configs and not forced_continue("Missing configs for devices."):
+        if not self.device_config and not forced_continue("Missing configs for devices."):
             return False
         r, g, b, w, c = args.percent_color
         tt = args.transitionTime[0]
