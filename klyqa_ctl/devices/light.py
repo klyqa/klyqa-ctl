@@ -425,7 +425,7 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--temperature",
         nargs=1,
-        help="set temperature command (kelvin range depends on lamp profile) (lower: warm, higher: cold)",
+        help="set temperature command (in kelvin, range depends on lamp profile) (lower: warm, higher: cold)",
     )
     parser.add_argument("--brightness", nargs=1, help="set brightness in percent 0-100")
     parser.add_argument(
@@ -563,8 +563,15 @@ async def process_args_to_msg_lighting(
 ) -> bool:
     """process_args_to_msg_lighting"""
 
-    def local_and_cloud_command_msg(json_msg, timeout) -> None:
-        message_queue_tx_local.append((json.dumps(json_msg), timeout))
+    def local_and_cloud_command_msg(json_msg, timeout, check_func = None) -> None:
+        """ Add message to local and cloud queue. Give a timeout after the message
+        was sent. Give also a check function for the values that are send to be in
+        limits (device config).
+        """
+        msg = (json.dumps(json_msg), timeout)
+        if check_func:
+            msg = msg + (check_func,)
+        message_queue_tx_local.append(msg)
         message_queue_tx_command_cloud.append(json_msg)
 
     # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
@@ -812,25 +819,37 @@ async def process_args_to_msg_lighting(
 
     #### Needing config profile versions implementation for checking trait ranges ###
 
-    def check_color_range(product_id, values) -> bool:
-        if not self.device_config:
-            return False
+    def check_color_range(device, values) -> bool:
         color_enum = []
         try:
-            # # different device trait schematics. for now go typical range
-            # color_enum = [
-            #     trait["value_schema"]["definitions"]["color_value"]
-            #     for trait in self.device_config["deviceTraits"]
-            #     if trait["trait"] == "@core/traits/color"
-            # ]
-            # color_range = (
-            #     color_enum[0]["minimum"],
-            #     color_enum[0]["maximum"],
-            # )
-            color_range = (
-                0,
-                255,
-            )
+            if device.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+                # different device trait schematics. for now go typical range
+                color_enum = [
+                    trait["value_schema"]["definitions"]["color_value"]
+                    for trait in device.device_config["deviceTraits"]
+                    if trait["trait"] == "@core/traits/color"
+                ]
+                color_range = (
+                    color_enum[0]["minimum"],
+                    color_enum[0]["maximum"],
+                )
+            else:
+                try:
+                    # different device trait schematics. for now go typical range
+                    color_enum = [
+                        trait["value_schema"]["definitions"]["color_value"]
+                        for trait in device.device_config["deviceTraits"]
+                        if trait["trait"] == "@core/traits/color"
+                    ]
+                    color_range = (
+                        color_enum[0]["minimum"],
+                        color_enum[0]["maximum"],
+                    )
+                except:
+                    color_range = (
+                        0,
+                        255,
+                    )
             for value in values:
                 if int(value) < color_range[0] or int(value) > color_range[1]:
                     return forced_continue(
@@ -838,28 +857,40 @@ async def process_args_to_msg_lighting(
                     )
 
         except:
-            return not missing_config(product_id)
+            return not missing_config(device.acc_sets["productId"])
         return True
 
-    def check_brightness_range(product_id, value) -> bool:
-        if not self.device_config:
-            return False
+    def check_brightness_range(device, value) -> bool:
         brightness_enum = []
         try:
-            # different device trait schematics. for now go typical range
-            # brightness_enum = [
-            #     trait["value_schema"]["properties"]["brightness"]
-            #     for trait in self.device_config["deviceTraits"]
-            #     if trait["trait"] == "@core/traits/brightness"
-            # ]
-            # brightness_range = (
-            #     brightness_enum[0]["minimum"],
-            #     brightness_enum[0]["maximum"],
-            # )
-            brightness_range = (
-                0,
-                100,
-            )
+            if device.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+                # different device trait schematics. for now go typical range
+                brightness_enum = [
+                    trait["value_schema"]["properties"]["brightness"]
+                    for trait in device.device_config["deviceTraits"]
+                    if trait["trait"] == "@core/traits/brightness"
+                ]
+                brightness_range = (
+                    brightness_enum[0]["minimum"],
+                    brightness_enum[0]["maximum"],
+                )
+            else:
+                try:
+                    # different device trait schematics. for now go typical range
+                    brightness_enum = [
+                        trait["value_schema"]["properties"]["brightness"]
+                        for trait in device.device_config["deviceTraits"]
+                        if trait["trait"] == "@core/traits/brightness"
+                    ]
+                    brightness_range = (
+                        brightness_enum[0]["minimum"],
+                        brightness_enum[0]["maximum"],
+                    )
+                except:
+                    brightness_range = (
+                        0,
+                        100,
+                    )
 
             if int(value) < brightness_range[0] or int(value) > brightness_range[1]:
                 return forced_continue(
@@ -867,49 +898,61 @@ async def process_args_to_msg_lighting(
                 )
 
         except:
-            return not missing_config(product_id)
+            return not missing_config(device.acc_sets["productId"])
         return True
 
-    def check_temp_range(product_id, value) -> bool:
+    def check_temp_range(device, value) -> bool:
         temperature_range: list[int] = []
         try:
-            # # different device trait schematics. for now go typical range
-            # temperature_range = [
-            #     trait["value_schema"]["properties"]["colorTemperature"]["enum"]
-            #     if "properties" in trait["value_schema"]
-            #     else trait["value_schema"]["enum"]
-            #     for trait in self.device_config["deviceTraits"]
-            #     if trait["trait"] == "@core/traits/color-temperature"
-            # ][0]
-            temperature_range = [2000, 6500]
+            if device.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+                temperature_range = [
+                    trait["value_schema"]["properties"]["colorTemperature"]["enum"]
+                    for trait in device.device_config["deviceTraits"]
+                    if trait["trait"] == "@core/traits/color-temperature"
+                ][0]
+            else:
+                # different device trait schematics. for now go typical range
+                try:
+                    LOGGER.debug("Not known product id try default trait search.")
+                    temperature_range = [
+                        trait["value_schema"]["properties"]["colorTemperature"]["enum"]
+                        if "properties" in trait["value_schema"]
+                        else trait["value_schema"]["enum"]
+                        for trait in device.device_config["deviceTraits"]
+                        if trait["trait"] == "@core/traits/color-temperature"
+                    ][0]
+                except:
+                    LOGGER.debug("Product id trait search failed using default temperature numbers.")
+                    temperature_range = [2000, 6500]
+                    
             if int(value) < temperature_range[0] or int(value) > temperature_range[1]:
                 return forced_continue(
                     f"Temperature {value} out of range [{temperature_range[0]}..{temperature_range[1]}]."
                 )
         except Exception as excp:
-            return not missing_config(product_id)
+            return not missing_config(device.acc_sets["productId"])
         return True
 
-    def check_scene_support(product_id, scene) -> bool:
-        if not self.device_config:
-            return False
+    def check_scene_support(device, scene_id) -> bool:
         color_enum = []
         try:
-            # color_enum = [
-            #     trait
-            #     for trait in self.device_config["deviceTraits"]
-            #     if trait["trait"] == "@core/traits/color"
-            # ]
-            # color_support = len(color_enum) > 0
+            scene_result = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
+            scene = scene_result[0]
+            color_enum = [
+                trait
+                for trait in device.device_config["deviceTraits"]
+                if trait["trait"] == "@core/traits/color"
+            ]
+            color_support = len(color_enum) > 0
 
-            # if not color_support and not "cwww" in scene:
-            #     return forced_continue(
-            #         f"Scene {scene['label']} not supported by device product {product_id}."
-            #     )
+            if not color_support and not "cwww" in scene: # bulb has no colors, therefore only cwww scenes are allowed
+                return forced_continue(
+                    f"Scene {scene['label']} not supported by device product {device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
+                )
             return True
 
-        except:
-            return not missing_config(product_id)
+        except Exception as excp:
+            return not missing_config(device.acc_sets["productId"])
         return True
 
     check_range = {
@@ -920,10 +963,10 @@ async def process_args_to_msg_lighting(
     }
 
     def check_device_parameter(
-        parameter: Check_device_parameter, values, product_id
+        parameter: Check_device_parameter, values, device
     ) -> bool:
-        # if not self.device_config and not forced_continue("Missing configs for devices."):
-        #     return False
+        if not device.device_config and not forced_continue("Missing configs for devices."):
+            return False
 
         # for u_id in target_device_uids:
         #     # dev = [
@@ -934,7 +977,7 @@ async def process_args_to_msg_lighting(
         #     # product_id = dev[0]
         #     product_id = self.devices[u_id].ident.product_id
 
-        if not check_range[parameter](product_id, values):
+        if not check_range[parameter](device, values):
             return False
         return True
 
@@ -1107,6 +1150,7 @@ async def process_args_to_msg_lighting(
         # msg = msg + (check_brightness,)
         # if not check_device_parameter(Check_device_parameter.scene, scene_obj):
         #     return False
+        
         commands = scene_obj["commands"]
         if len(commands.split(";")) > 2:
             commands += "l 0;"
@@ -1119,6 +1163,11 @@ async def process_args_to_msg_lighting(
         local_and_cloud_command_msg({"type": "routine", "action": "list"}, 500)
 
     if args.routine_put and args.routine_id is not None:
+        
+        check_scene = functools.partial(
+            check_device_parameter, Check_device_parameter.scene, args.routine_scene
+        )
+        # msg = msg + (check_scene,)
         local_and_cloud_command_msg(
             {
                 "type": "routine",
@@ -1128,6 +1177,7 @@ async def process_args_to_msg_lighting(
                 "commands": args.routine_commands,
             },
             500,
+            check_scene
         )
 
     if args.routine_delete and args.routine_id is not None:

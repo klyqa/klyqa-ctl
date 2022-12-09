@@ -130,6 +130,13 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         default=False,
     )
     parser.add_argument(
+        "--offline",
+        help="Use cached account settings and device configs, don't connect to the cloud backend.",
+        action="store_const",
+        const=True,
+        default=False,
+    )
+    parser.add_argument(
         "--cloud",
         help="Cloud connection to the devices only.",
         action="store_const",

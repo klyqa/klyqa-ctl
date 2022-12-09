@@ -721,7 +721,7 @@ class Klyqa_account:
                 #     self.username = str(await f.readline()).strip()
             except:
                 return False
-
+            
         try:
             acc_settings: dict
             cached: bool
@@ -955,7 +955,7 @@ class Klyqa_account:
             if not self.backend_connected():
                 if not self.device_configs:
                     device_configs_cache, cached = await async_json_cache(
-                        self.device_configs, "device.configs.json"
+                        None, "device.configs.json"
                     )
                     if (
                         cached and not self.device_configs
@@ -1188,7 +1188,8 @@ class Klyqa_account:
                 text, ts, check_func = msg.msg_queue.pop()
                 msg.msg_queue_sent.append(text)
                 if not check_func(
-                    product_id=device.ident.product_id if device.ident else ""
+                    # product_id=device.ident.product_id if device.ident else "",
+                    device=device
                 ):
                     rm_msg()
                     # return (7, "value not valid for device config")
@@ -2281,7 +2282,7 @@ def main():
         # elif args_parsed.aes:
         #     LOGGER.info("aes key passed.")
         klyqa_acc = Klyqa_account(
-            data_communicator, offline=args_parsed.local, interactive_prompts=True
+            data_communicator, offline=args_parsed.offline, interactive_prompts=True
         )
         asyncio.run(klyqa_acc.login(print_onboarded_devices=False))
 
@@ -2295,7 +2296,7 @@ def main():
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
                 host,
-                offline=args_parsed.local,
+                offline=args_parsed.offline,
                 interactive_prompts=True,
             )
 
