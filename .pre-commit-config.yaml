@@ -1,0 +1,92 @@
+---
+repos:
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.1.0
+    hooks:
+      - id: pyupgrade
+        args: [--py39-plus]
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v1.7.7
+    hooks:
+      - id: autoflake
+        args:
+          - --in-place
+          - --remove-all-unused-imports
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        args:
+          - --safe
+          - --quiet
+        files: ^((klyqa_ctl|tests)/.+)?[^/]+\.py$
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
+        args:
+          - --ignore-words-list=alot,ba,bre,datas,dof,dur,ether,farenheit,haa,hass,hist,iam,iff,iif,incomfort,ines,ist,lightsensor,mut,nd,pres,pullrequests,referer,rime,ser,serie,sur,te,technik,ue,uint,visability,wan,wanna,withing
+          - --skip="./.*,*.csv,*.json"
+          - --quiet-level=2
+        exclude_types: [csv, json]
+  - repo: https://github.com/PyCQA/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - pycodestyle==2.8.0
+          - pyflakes==2.4.0
+          - flake8-docstrings==1.6.0
+          - pydocstyle==6.1.1
+          - flake8-comprehensions==3.10.0
+          - flake8-noqa==1.2.8
+          - mccabe==0.6.1
+        files: ^(homeassistant|script|tests)/.+\.py$
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.4
+    hooks:
+      - id: bandit
+        args:
+          - --quiet
+          - --format=custom
+          - --configfile=tests/bandit.yaml
+        files: ^(klyqa_ctl|script|tests)/.+\.py$
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: check-executables-have-shebangs
+        stages: [manual]
+      - id: check-json
+        exclude: (.vscode|.devcontainer)
+      - id: no-commit-to-branch
+        args:
+          - --branch=dev
+          - --branch=master
+          - --branch=rc
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.28.0
+    hooks:
+      - id: yamllint
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: script
+        types: [python]
+        require_serial: true
+        files: ^klyqa_ctl/.+\.py$
+      - id: pylint
+        name: pylint
+        entry: pylint -j 0 --ignore-missing-annotations=y
+        language: script
+        types: [python]
+        files: ^klyqa_ctl/.+\.py$
