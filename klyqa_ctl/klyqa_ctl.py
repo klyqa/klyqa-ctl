@@ -2195,6 +2195,75 @@ class Klyqa_account:
 
         return exit_ret
 
+async def tests(klyqa_acc):
+    
+    # local_communication = args_parsed.local or args_parsed.tryLocalThanCloud
+       
+    # if local_communication:
+        # await tcp_udp_port_lock.acquire()
+        
+    if not await klyqa_acc.data_communicator.bind_ports(
+        # args_parsed.myip[0] if args_parsed.myip is not None else None
+    ):
+        return 1
+    
+    uids = [
+        "29daa5a4439969f57934",
+        "00ac629de9ad2f4409dc",
+        "04256291add6f1b414d1",
+        "cd992e921b3646b8c18a",
+        "1a8379e585321fdb8778"
+        ]
+    
+    tasks = []
+    for u_id in uids:
+        args = ["--color", "23", "21", "255"]
+        args = ["--debug", "--request"]
+        
+        async def send_answer_cb(msg: Message, uid: str) -> None:
+
+            LOGGER.debug("huhu Send_answer_cb %s", str(uid))
+            LOGGER.info("Message answer %s: %s",msg.target_uid, msg.answer_utf8 if msg else "empty msg")
+            if uid != u_id:
+                return
+
+            LOGGER.debug("Send_answer_cb %s", str(uid))
+
+        parser = get_description_parser()
+        
+        args.extend(["--local", "--device_unitids", f"{u_id}"]) # "--debug", 
+
+        args.insert(0, DeviceType.lighting.name)
+        add_config_args(parser=parser)
+        add_command_args_bulb(parser=parser)
+
+        args_parsed = parser.parse_args(args=args)
+
+        new_task = asyncio.create_task(
+            klyqa_acc.send_to_devices(
+                args_parsed,
+                args,
+                async_answer_callback=send_answer_cb,
+                timeout_ms=10 * 1000,
+            )
+        )
+        await asyncio.sleep(0.1)
+        tasks.append(new_task)
+        
+    for task in tasks:
+        try:
+            await asyncio.wait([task], timeout=0.1)
+        except asyncio.TimeoutError:
+            print("toe")
+        
+    for task in tasks:
+        try:
+            await asyncio.wait([task])
+        except asyncio.TimeoutError:
+            pass
+    LOGGER.info("End")
+    return 
+
 
 def main():
     # global klyqa_accs
@@ -2236,7 +2305,7 @@ def main():
     #     )
     # )
 
-    if len(args_in) < 2:
+    if len(args_in) < 2 or config_args_parsed.help:
         parser.print_help()
         sys.exit(1)
 
@@ -2315,20 +2384,22 @@ def main():
                 sys.exit(1)
     exit_ret = 0
 
-    if (
-        loop.run_until_complete(
-            klyqa_acc.send_to_devices_wrapped(
-                args_parsed, args_in.copy(), timeout_ms=timeout_ms
+    if True:
+        loop.run_until_complete(tests(klyqa_acc))
+    else:
+        if (
+            loop.run_until_complete(
+                klyqa_acc.send_to_devices_wrapped(
+                    args_parsed, args_in.copy(), timeout_ms=timeout_ms
+                )
             )
-        )
-        > 0
-    ):
-        exit_ret = 1
+            > 0
+        ):
+            exit_ret = 1
 
     klyqa_acc.shutdown()
 
     sys.exit(exit_ret)
-
 
 if __name__ == "__main__":
     main()
