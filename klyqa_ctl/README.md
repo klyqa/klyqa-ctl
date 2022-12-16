@@ -108,7 +108,7 @@ Setting color rgb
 --color r g b
 ```
 
-Selecting bulbs directly by unit ids seperated by commas ","
+Selecting bulbs directly by unit ids separated by commas ","
 
 ```
 --bulb_unitids <bulb-unitid1>,<bulb-unitid2>,...
