@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 import argparse
+from dataclasses import dataclass
 import functools
 import json
 import sys
@@ -235,7 +236,11 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
         self._color = (
             RGBColor(color["red"], color["green"], color["blue"]) if color else None
         )
-
+        
+@dataclass
+class Range:
+    min: int
+    max: int
 
 class KlyqaBulb(KlyqaDevice):
     """KlyqaBulb"""
@@ -246,8 +251,103 @@ class KlyqaBulb(KlyqaDevice):
         super().__init__()
         # self.status = KlyqaBulbResponseStatus()
         self.response_classes["status"] = KlyqaBulbResponseStatus
+        self.brightness_range: Range = Range(0, 100)
+        self.temperature_range: Range = Range(2000, 6500)
+        self.color_range: Range = Range(0, 255)
+        
+    def set_brightness_range(self, device_config) -> None:
+        brightness_enum = []
+        try:
+            if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+                brightness_enum = [
+                    trait["value_schema"]["properties"]["brightness"]
+                    for trait in device_config["deviceTraits"]
+                    if trait["trait"] == "@core/traits/brightness"
+                ]
+                self.brightness_range = Range(
+                    brightness_enum[0]["minimum"],
+                    brightness_enum[0]["maximum"],
+                )
+            else:
+                try:
+                    brightness_enum = [
+                        trait["value_schema"]["properties"]["brightness"]
+                        for trait in device_config["deviceTraits"]
+                        if trait["trait"] == "@core/traits/brightness"
+                    ]
+                    self.brightness_range = Range(
+                        brightness_enum[0]["minimum"],
+                        brightness_enum[0]["maximum"],
+                    )
+                except:
+                    self.brightness_range = Range(0, 100)
+        except Exception as e:
+            LOGGER.error("Error during setting brightness range for klyqa bulb!")
+            LOGGER.debug(f"{traceback.format_exc()}")
+        
+    def set_temperature_range(self, device_config) -> None:
+        try:
+            if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+                self.temperature_range = Range(*[
+                    trait["value_schema"]["properties"]["colorTemperature"]["enum"]
+                    for trait in device_config["deviceTraits"]
+                    if trait["trait"] == "@core/traits/color-temperature"
+                ][0])
+            else:
+                try:
+                    LOGGER.debug("Not known product id try default trait search.")
+                    self.temperature_range = Range(*[
+                        trait["value_schema"]["properties"]["colorTemperature"]["enum"]
+                        if "properties" in trait["value_schema"]
+                        else trait["value_schema"]["enum"]
+                        for trait in device_config["deviceTraits"]
+                        if trait["trait"] == "@core/traits/color-temperature"
+                    ][0])
+                except:
+                    LOGGER.debug("Bulb product id trait search failed using default temperature numbers.")
+                    self.temperature_range = Range(2000, 6500)
+        except Exception as e:
+            LOGGER.error("Error during setting temperature range for klyqa bulb!")
+            LOGGER.debug(f"{traceback.format_exc()}")
+        
+    def set_color_range(self, device_config) -> None:  
+        color_enum = []
+        try:
+            if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+                color_enum = [
+                    trait["value_schema"]["definitions"]["color_value"]
+                    for trait in device_config["deviceTraits"]
+                    if trait["trait"] == "@core/traits/color"
+                ]
+                self.color_range = Range(
+                    color_enum[0]["minimum"],
+                    color_enum[0]["maximum"],
+                )
+            else:
+                try:
+                    color_enum: list[Any] = [
+                        trait["value_schema"]["definitions"]["color_value"]
+                        for trait in device_config["deviceTraits"]
+                        if trait["trait"] == "@core/traits/color"
+                    ]
+                    self.color_range = Range(
+                        color_enum[0]["minimum"],
+                        color_enum[0]["maximum"],
+                    )
+                except:
+                    self.color_range = Range(0, 255)
+        except Exception as e:
+            LOGGER.error("Error during setting color range for klyqa bulb!")
+            LOGGER.debug(f"{traceback.format_exc()}")
+        
+    def read_device_config(self, device_config) -> None:
+        super().read_device_config(device_config)
+        self.set_brightness_range(device_config)
+        self.set_temperature(device_config)
+        if self.acc_sets["productId"].find(".rgb") != -1:
+            self.set_color_range(device_config)
 
-    def setTemp(self, temp: int):
+    def set_temperature(self, temp: int) -> bool:
         if not self.device_config:
             return False
         temperature_enum = []
@@ -272,6 +372,7 @@ class KlyqaBulb(KlyqaDevice):
                 + "]."
             )
             return False
+        return True
 
 
 def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, int]:
@@ -820,117 +921,34 @@ async def process_args_to_msg_lighting(
     #### Needing config profile versions implementation for checking trait ranges ###
 
     def check_color_range(device, values) -> bool:
-        color_enum = []
-        try:
-            if device.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
-                # different device trait schematics. for now go typical range
-                color_enum = [
-                    trait["value_schema"]["definitions"]["color_value"]
-                    for trait in device.device_config["deviceTraits"]
-                    if trait["trait"] == "@core/traits/color"
-                ]
-                color_range = (
-                    color_enum[0]["minimum"],
-                    color_enum[0]["maximum"],
-                )
-            else:
-                try:
-                    # different device trait schematics. for now go typical range
-                    color_enum = [
-                        trait["value_schema"]["definitions"]["color_value"]
-                        for trait in device.device_config["deviceTraits"]
-                        if trait["trait"] == "@core/traits/color"
-                    ]
-                    color_range = (
-                        color_enum[0]["minimum"],
-                        color_enum[0]["maximum"],
-                    )
-                except:
-                    color_range = (
-                        0,
-                        255,
-                    )
+        if not device.color_range:
+            missing_config(device.acc_sets["productId"])
+        else:
             for value in values:
-                if int(value) < color_range[0] or int(value) > color_range[1]:
+                if int(value) < device.color_range.min or int(value) > device.color_range.max:
                     return forced_continue(
-                        f"Color {value} out of range [{color_range[0]}..{color_range[1]}]."
+                        f"Color {value} out of range [{device.color_range.min}..{device.color_range.max}]."
                     )
-
-        except:
-            return not missing_config(device.acc_sets["productId"])
         return True
 
     def check_brightness_range(device, value) -> bool:
-        brightness_enum = []
-        try:
-            if device.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
-                # different device trait schematics. for now go typical range
-                brightness_enum = [
-                    trait["value_schema"]["properties"]["brightness"]
-                    for trait in device.device_config["deviceTraits"]
-                    if trait["trait"] == "@core/traits/brightness"
-                ]
-                brightness_range = (
-                    brightness_enum[0]["minimum"],
-                    brightness_enum[0]["maximum"],
-                )
-            else:
-                try:
-                    # different device trait schematics. for now go typical range
-                    brightness_enum = [
-                        trait["value_schema"]["properties"]["brightness"]
-                        for trait in device.device_config["deviceTraits"]
-                        if trait["trait"] == "@core/traits/brightness"
-                    ]
-                    brightness_range = (
-                        brightness_enum[0]["minimum"],
-                        brightness_enum[0]["maximum"],
-                    )
-                except:
-                    brightness_range = (
-                        0,
-                        100,
-                    )
-
-            if int(value) < brightness_range[0] or int(value) > brightness_range[1]:
+        if not device.color_range:
+            missing_config(device.acc_sets["productId"])
+        else:
+            if int(value) < device.brightness_range.min or int(value) > device.brightness_range.max:
                 return forced_continue(
-                    f"Brightness {value} out of range [{brightness_range[0]}..{brightness_range[1]}]."
+                    f"Brightness {value} out of range [{device.brightness_range.min}..{device.brightness_range.max}]."
                 )
-
-        except:
-            return not missing_config(device.acc_sets["productId"])
         return True
 
     def check_temp_range(device, value) -> bool:
-        temperature_range: list[int] = []
-        try:
-            if device.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
-                temperature_range = [
-                    trait["value_schema"]["properties"]["colorTemperature"]["enum"]
-                    for trait in device.device_config["deviceTraits"]
-                    if trait["trait"] == "@core/traits/color-temperature"
-                ][0]
-            else:
-                # different device trait schematics. for now go typical range
-                try:
-                    LOGGER.debug("Not known product id try default trait search.")
-                    temperature_range = [
-                        trait["value_schema"]["properties"]["colorTemperature"]["enum"]
-                        if "properties" in trait["value_schema"]
-                        else trait["value_schema"]["enum"]
-                        for trait in device.device_config["deviceTraits"]
-                        if trait["trait"] == "@core/traits/color-temperature"
-                    ][0]
-                except:
-                    LOGGER.debug("Product id trait search failed using default temperature numbers.")
-                    temperature_range = [2000, 6500]
-                    
-            if int(value) < temperature_range[0] or int(value) > temperature_range[1]:
+        if not device.color_range:
+            missing_config(device.acc_sets["productId"])
+        else:
+            if int(value) < device.temperature_range.min or int(value) > device.temperature_range.max:
                 return forced_continue(
-                    f"Temperature {value} out of range [{temperature_range[0]}..{temperature_range[1]}]."
+                    f"Temperature {value} out of range [{device.temperature_range.min}..{device.temperature_range.max}]."
                 )
-        except Exception as excp:
-            return not missing_config(device.acc_sets["productId"])
         return True
 
     def check_scene_support(device, scene_id) -> bool:

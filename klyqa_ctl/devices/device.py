@@ -123,6 +123,9 @@ class KlyqaDevice:
                 LOGGER.error(f"{traceback.format_exc()}")
                 LOGGER.error("Could not process device response: ")
                 LOGGER.error(f"{msg}")
+                
+    def read_device_config(self, device_config) -> None:
+        self.device_config = device_config
 
 
 class KlyqaDeviceResponse:

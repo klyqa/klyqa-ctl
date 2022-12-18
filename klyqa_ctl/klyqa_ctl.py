@@ -998,7 +998,7 @@ class Klyqa_account:
                     self.device_configs, "device.configs.json"
                 )
                 if cached:
-                    self.device_configs = self.device_configs_cache
+                    self.device_configs = device_configs_cache
                     LOGGER.info("No server reply for device configs. Using cache.")
 
             for uid in self.devices:
@@ -1006,10 +1006,9 @@ class Klyqa_account:
                     "productId" in self.devices[uid].acc_sets
                     and self.devices[uid].acc_sets["productId"] in self.device_configs
                 ):
-                    self.devices[uid].device_config = self.device_configs[
+                    self.devices[uid].read_device_config(device_config = self.device_configs[
                         self.devices[uid].acc_sets["productId"]
-                    ]
-
+                    ])
         except Exception as e:
             LOGGER.error("Error during login to klyqa: " + str(e))
             LOGGER.debug(f"{traceback.format_exc()}")
