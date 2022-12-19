@@ -3,16 +3,16 @@
 # FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 FROM mcr.microsoft.com/vscode/devcontainers/python:0-3.9
 
-
 # ADD klyqa_ctl/*.py /
 # ADD .git /
 # ADD klyqa_ctl/requirements.txt /
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Berlin
 
 # RUN dpkg --add-architecture i386 && \
 RUN apt-get update && apt-get -y --no-install-recommends install \
-    nmap iputils-ping
+    nmap iputils-ping doxygen && \
     # ca-certificates \
     # bzip2 \
     # git \
@@ -30,14 +30,12 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     # pip install pycryptodome && \
     # pip install requests && \
     # apt-get clean
-RUN type -p curl >/dev/null || sudo apt install curl -y; \     
+type -p curl >/dev/null || sudo apt install curl -y; \     
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
 && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
 && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
 && sudo apt update \
 && sudo apt install gh -y
-
-ENV TZ=Europe/Berlin
 
 # RUN pip3 install --no-cache-dir -r requirements.txt
 # RUN pip3 install --no-cache-dir -r klyqa_ctl/requirements.txt
