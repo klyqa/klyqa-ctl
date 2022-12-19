@@ -1,0 +1,133 @@
+A commandline client for controlling your Klyqa devices.
+
+Using your klyqa account or dev mode for bulbs onboarded in dev mode.
+
+It is written in python.
+
+You can run the python script directly with
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./klyqa-\/ctl.py}
+
+\end{DoxyCode}
+
+
+Use pip for installation of required dependency packages.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pip install -\/r requirements.txt}
+
+\end{DoxyCode}
+
+
+Tested and developed with Python v3.\+9.
+
+or build it as docker container.\hypertarget{md_README_autotoc_md1}{}\doxysection{Build docker python script container}\label{md_README_autotoc_md1}
+Build docker container for automatic required dependency download and easy handling from within the project folder.
+
+{\ttfamily docker build -\/t klyqa-\/ctl .}\hypertarget{md_README_autotoc_md2}{}\doxysection{Run docker python script container}\label{md_README_autotoc_md2}
+{\ttfamily docker run -\/-\/net=host -\/-\/rm -\/it klyqa-\/ctl}
+
+or to keep the container running\+:
+
+{\ttfamily docker run -\/-\/net=host -\/-\/name=klyqa-\/ctl -\/-\/entrypoint=python3 -\/itd klyqa-\/ctl}
+
+and then do a\+:
+
+{\ttfamily docker exec klyqa-\/ctl python3 /bulb\+\_\+cli.py}\hypertarget{md_README_autotoc_md3}{}\doxysection{Debug mode}\label{md_README_autotoc_md3}
+If you want more logging verbosity
+
+{\ttfamily -\/-\/debug}\hypertarget{md_README_autotoc_md4}{}\doxysection{Help with all commands}\label{md_README_autotoc_md4}
+{\ttfamily -\/-\/help}\hypertarget{md_README_autotoc_md5}{}\doxysection{Interactive client}\label{md_README_autotoc_md5}
+If you provide no bulb unit id and/or a command to send, the bulb discovery and selection will be shown and afterwards a command prompt.\hypertarget{md_README_autotoc_md6}{}\doxysubsection{Use klyqa user account}\label{md_README_autotoc_md6}
+Add username and password to the arguments
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/username <emailaddress> -\/-\/password <password>}
+
+\end{DoxyCode}
+\hypertarget{md_README_autotoc_md7}{}\doxysubsection{Hosts}\label{md_README_autotoc_md7}
+Use production (default) or test host.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/prod or -\/-\/test}
+
+\end{DoxyCode}
+\hypertarget{md_README_autotoc_md8}{}\doxysubsection{Connection types}\label{md_README_autotoc_md8}
+try\+Local\+Than\+Cloud (Default) for sending the command
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/tryLocalThanCloud}
+
+\end{DoxyCode}
+
+
+Use
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/local}
+
+\end{DoxyCode}
+
+
+for local only connection
+
+Use
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/cloud}
+
+\end{DoxyCode}
+
+
+for cloud only connection\hypertarget{md_README_autotoc_md9}{}\doxysubsection{Examples commands}\label{md_README_autotoc_md9}
+Send request
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/request}
+
+\end{DoxyCode}
+
+
+Setting color rgb
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/color r g b}
+
+\end{DoxyCode}
+
+
+Selecting bulbs directly by unit ids separated by commas \char`\"{},\char`\"{}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/bulb\_unitids <bulb-\/unitid1>,<bulb-\/unitid2>,...}
+
+\end{DoxyCode}
+
+
+Scenes
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/party, -\/-\/TVtime, -\/-\/fireplace, ...}
+
+\end{DoxyCode}
+\hypertarget{md_README_autotoc_md10}{}\doxysubsection{Use dev env}\label{md_README_autotoc_md10}
+For running the bulbs in the development configuration locally without a klyqa account and with the default development AES key.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/dev}
+
+\end{DoxyCode}
+ 
