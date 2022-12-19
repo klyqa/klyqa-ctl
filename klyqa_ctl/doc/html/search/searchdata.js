@@ -1,10 +1,11 @@
 var indexSectionsWithContent =
 {
-  0: "_acdeklps",
-  1: "ek",
+  0: "_abcdefgiklmprsv",
+  1: "acdeklmr",
   2: "k",
-  3: "_acdlps",
-  4: "k"
+  3: "_abcdfgilprs",
+  4: "v",
+  5: "k"
 };
 
 var indexSectionNames =
@@ -13,7 +14,8 @@ var indexSectionNames =
   1: "classes",
   2: "namespaces",
   3: "functions",
-  4: "pages"
+  4: "variables",
+  5: "pages"
 };
 
 var indexSectionLabels =
@@ -22,6 +24,7 @@ var indexSectionLabels =
   1: "Classes",
   2: "Namespaces",
   3: "Functions",
-  4: "Pages"
+  4: "Variables",
+  5: "Pages"
 };
 

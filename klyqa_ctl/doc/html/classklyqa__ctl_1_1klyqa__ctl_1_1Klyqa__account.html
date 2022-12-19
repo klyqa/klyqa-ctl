@@ -22,7 +22,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klyqa-CTL
+   &#160;<span id="projectnumber">1.0.17</span>
    </div>
+   <div id="projectbrief">Commandline client and python library to control and communicate with Klyqa devices.</div>
   </td>
  </tr>
  </tbody>
@@ -76,15 +78,15 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8c6c4aec844e5fc2552009adb41aa973"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a8c6c4aec844e5fc2552009adb41aa973">__init__</a> (self, Data_communicator data_communicator, username=&quot;&quot;, password=&quot;&quot;, host=&quot;&quot;, bool interactive_prompts=False, bool offline=False, device_configs={})</td></tr>
-<tr class="separator:a8c6c4aec844e5fc2552009adb41aa973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a379954abb7aca3867ef71e6b8166bf37"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a379954abb7aca3867ef71e6b8166bf37">__init__</a> (self, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator.html">Data_communicator</a> data_communicator, str username=&quot;&quot;, str password=&quot;&quot;, str host=&quot;&quot;, bool interactive_prompts=False, bool offline=False, dict device_configs={})</td></tr>
+<tr class="separator:a379954abb7aca3867ef71e6b8166bf37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae32011f8bd5979c4392ea18a64823439"><td class="memItemLeft" align="right" valign="top"><a id="ae32011f8bd5979c4392ea18a64823439"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>backend_connected</b> (self)</td></tr>
 <tr class="separator:ae32011f8bd5979c4392ea18a64823439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2798e79439ab8b9a617bbd895f9de98"><td class="memItemLeft" align="right" valign="top"><a id="aa2798e79439ab8b9a617bbd895f9de98"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>update_device_configs</b> (self)</td></tr>
 <tr class="separator:aa2798e79439ab8b9a617bbd895f9de98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac88026acc264d52f1df916795a3a41d4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ac88026acc264d52f1df916795a3a41d4">device_handle_local_tcp</a> (self, KlyqaDevice|None device, LocalConnection connection)</td></tr>
+<tr class="memitem:ac88026acc264d52f1df916795a3a41d4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ac88026acc264d52f1df916795a3a41d4">device_handle_local_tcp</a> (self, <a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html">KlyqaDevice</a>|None device, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a> connection)</td></tr>
 <tr class="separator:ac88026acc264d52f1df916795a3a41d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d8fe4c2c0444ad70fc331b2d0b42754"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a6d8fe4c2c0444ad70fc331b2d0b42754">search_and_send_to_device</a> (self, proc_timeout_secs=DEFAULT_MAX_COM_PROC_TIMEOUT_SECS)</td></tr>
 <tr class="memdesc:a6d8fe4c2c0444ad70fc331b2d0b42754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send broadcast and make tasks for incoming tcp connections.  <a href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a6d8fe4c2c0444ad70fc331b2d0b42754">More...</a><br /></td></tr>
@@ -121,15 +123,15 @@ TypeJSON|None&#160;</td><td class="memItemRight" valign="bottom"><b>post</b> (se
 <tr class="separator:a41564448fcfef0ca46d5185db69b48b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7986a859a2a34e701c7c061dab8965a"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af7986a859a2a34e701c7c061dab8965a">shutdown</a> (self)</td></tr>
 <tr class="separator:af7986a859a2a34e701c7c061dab8965a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb60367225ac0129d510fe41423ef225"><td class="memItemLeft" align="right" valign="top">Type[Device_TCP_return.__class__]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#abb60367225ac0129d510fe41423ef225">aes_handshake_and_send_msgs</a> (self, RefParse r_device, RefParse r_msg, LocalConnection connection, use_dev_aes=False, timeout_ms=11000)</td></tr>
-<tr class="separator:abb60367225ac0129d510fe41423ef225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af360efc672efc880519137f9814702bd"><td class="memItemLeft" align="right" valign="top">Type[Device_TCP_return.__class__]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af360efc672efc880519137f9814702bd">aes_handshake_and_send_msgs</a> (self, <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1RefParse.html">RefParse</a> r_device, <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1RefParse.html">RefParse</a> r_msg, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a> connection, bool use_dev_aes=False, int timeout_ms=11000)</td></tr>
+<tr class="separator:af360efc672efc880519137f9814702bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6a2cb36928cbcba10c1a5a0998fa2c2"><td class="memItemLeft" align="right" valign="top"><a id="af6a2cb36928cbcba10c1a5a0998fa2c2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>request_account_settings_eco</b> (self, int scan_interval=60)</td></tr>
 <tr class="separator:af6a2cb36928cbcba10c1a5a0998fa2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a0b9e59b2d6ec990f2fd8c6873eb8b8"><td class="memItemLeft" align="right" valign="top"><a id="a3a0b9e59b2d6ec990f2fd8c6873eb8b8"></a>
 None&#160;</td><td class="memItemRight" valign="bottom"><b>request_account_settings</b> (self)</td></tr>
 <tr class="separator:a3a0b9e59b2d6ec990f2fd8c6873eb8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13f9543a910eefb806d27e49c78a8e61"><td class="memItemLeft" align="right" valign="top">str|bool|int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a13f9543a910eefb806d27e49c78a8e61">send_to_devices</a> (self, args, args_in, socket.socket|None udp=None, socket.socket|None tcp=None, timeout_ms=5000, Callable[[Message, str], Any]|None async_answer_callback=None)</td></tr>
+<tr class="memitem:a13f9543a910eefb806d27e49c78a8e61"><td class="memItemLeft" align="right" valign="top">str|bool|int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a13f9543a910eefb806d27e49c78a8e61">send_to_devices</a> (self, args, args_in, socket.socket|None udp=None, socket.socket|None tcp=None, timeout_ms=5000, Callable[[<a class="el" href="classklyqa__ctl_1_1general_1_1message_1_1Message.html">Message</a>, str], Any]|None async_answer_callback=None)</td></tr>
 <tr class="separator:a13f9543a910eefb806d27e49c78a8e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af38871d34880500b54fe5d27f509c861"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af38871d34880500b54fe5d27f509c861">send_to_devices_wrapped</a> (self, args_parsed, args_in, timeout_ms=5000)</td></tr>
 <tr class="separator:af38871d34880500b54fe5d27f509c861"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,8 +189,8 @@ Public Attributes</h2></td></tr>
 * rest access token
 * devices
 * account settings</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8c6c4aec844e5fc2552009adb41aa973"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c6c4aec844e5fc2552009adb41aa973">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="a379954abb7aca3867ef71e6b8166bf37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a379954abb7aca3867ef71e6b8166bf37">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,25 +204,25 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Data_communicator&#160;</td>
+          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator.html">Data_communicator</a>&#160;</td>
           <td class="paramname"><em>data_communicator</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>username</em> = <code>&quot;&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>password</em> = <code>&quot;&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str &#160;</td>
           <td class="paramname"><em>host</em> = <code>&quot;&quot;</code>, </td>
         </tr>
         <tr>
@@ -238,7 +240,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">dict &#160;</td>
           <td class="paramname"><em>device_configs</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
@@ -253,8 +255,8 @@ communication tasks.</pre>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abb60367225ac0129d510fe41423ef225"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb60367225ac0129d510fe41423ef225">&#9670;&nbsp;</a></span>aes_handshake_and_send_msgs()</h2>
+<a id="af360efc672efc880519137f9814702bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af360efc672efc880519137f9814702bd">&#9670;&nbsp;</a></span>aes_handshake_and_send_msgs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,31 +270,31 @@ communication tasks.</pre>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RefParse&#160;</td>
+          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1RefParse.html">RefParse</a>&#160;</td>
           <td class="paramname"><em>r_device</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RefParse&#160;</td>
+          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1RefParse.html">RefParse</a>&#160;</td>
           <td class="paramname"><em>r_msg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LocalConnection&#160;</td>
+          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a>&#160;</td>
           <td class="paramname"><em>connection</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">bool &#160;</td>
           <td class="paramname"><em>use_dev_aes</em> = <code>False</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">int &#160;</td>
           <td class="paramname"><em>timeout_ms</em> = <code>11000</code>&#160;</td>
         </tr>
         <tr>
@@ -308,12 +310,12 @@ Finish AES handshake.
 Getting the identity of the device.
 Send the commands in message queue to the device with the device u_id or to any device.
 
-params:
+Params:
     device: Device - (initial) device object with the tcp connection
     target_device_uid - If given device_uid only send commands when the device unit id equals the target_device_uid
     discover_mode - if True do the process to any device unit id.
 
-returns: tuple[int, dict] or tuple[int, str]
+Returns: tuple[int, dict] or tuple[int, str]
         dict: Json response of the device
         str: Error string message
         int: Error type
@@ -342,13 +344,13 @@ returns: tuple[int, dict] or tuple[int, str]
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">KlyqaDevice | None&#160;</td>
+          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html">KlyqaDevice</a> | None&#160;</td>
           <td class="paramname"><em>device</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LocalConnection
+          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a>
     &#160;</td>
           <td class="paramname"><em>connection</em>&#160;</td>
         </tr>
@@ -389,8 +391,8 @@ returns: tuple[int, dict] or tuple[int, str]
 </div><div class="memdoc">
 
 <p>Login on klyqa account, get account settings, get onboarded device profiles, print all devices if parameter set. </p>
-<p>@params: print_onboarded_devices: print onboarded devices from the klyqa account to the stdout</p>
-<dl class="section return"><dt>Returns</dt><dd>: true: on success of the login false: on error </dd></dl>
+<p>Params: print_onboarded_devices: print onboarded devices from the klyqa account to the stdout</p>
+<p>Returns: true: on success of the login false: on error </p>
 
 </div>
 </div>
@@ -421,10 +423,10 @@ returns: tuple[int, dict] or tuple[int, str]
 </div><div class="memdoc">
 
 <p>Send broadcast and make tasks for incoming tcp connections. </p>
-<pre class="fragment">   @params:
+<pre class="fragment">   Params:
        proc_timeout_secs:   max timeout in seconds for a device communication handle process
 
-   @return:
+   Returns:
        true:  on success
        false: on exception or error
 </pre> 
@@ -475,7 +477,7 @@ returns: tuple[int, dict] or tuple[int, str]
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Callable[[Message, str], Any] | None &#160;</td>
+          <td class="paramtype">Callable[[<a class="el" href="classklyqa__ctl_1_1general_1_1message_1_1Message.html">Message</a>, str], Any] | None &#160;</td>
           <td class="paramname"><em>async_answer_callback</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>

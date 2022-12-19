@@ -22,7 +22,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klyqa-CTL
+   &#160;<span id="projectnumber">1.0.17</span>
    </div>
+   <div id="projectbrief">Commandline client and python library to control and communicate with Klyqa devices.</div>
   </td>
  </tr>
  </tbody>
@@ -72,11 +74,11 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a8c6c4aec844e5fc2552009adb41aa973">__init__</a>(self, Data_communicator data_communicator, username=&quot;&quot;, password=&quot;&quot;, host=&quot;&quot;, bool interactive_prompts=False, bool offline=False, device_configs={})</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a379954abb7aca3867ef71e6b8166bf37">__init__</a>(self, Data_communicator data_communicator, str username=&quot;&quot;, str password=&quot;&quot;, str host=&quot;&quot;, bool interactive_prompts=False, bool offline=False, dict device_configs={})</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>acc_settings</b> (defined in <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a>)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>acc_settings_cached</b> (defined in <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a>)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>access_token</b> (defined in <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a>)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#abb60367225ac0129d510fe41423ef225">aes_handshake_and_send_msgs</a>(self, RefParse r_device, RefParse r_msg, LocalConnection connection, use_dev_aes=False, timeout_ms=11000)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af360efc672efc880519137f9814702bd">aes_handshake_and_send_msgs</a>(self, RefParse r_device, RefParse r_msg, LocalConnection connection, bool use_dev_aes=False, int timeout_ms=11000)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>backend_connected</b>(self) (defined in <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a>)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>device_configs</b> (defined in <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a>)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ac88026acc264d52f1df916795a3a41d4">device_handle_local_tcp</a>(self, KlyqaDevice|None device, LocalConnection connection)</td><td class="entry"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html">klyqa_ctl.klyqa_ctl.Klyqa_account</a></td><td class="entry"></td></tr>

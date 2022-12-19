@@ -1,0 +1,5 @@
+<map id="klyqa_ctl.devices.device.KlyqaDevice" name="klyqa_ctl.devices.device.KlyqaDevice">
+<area shape="rect" id="node1" title=" " alt="" coords="102,5,289,47"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1devices_1_1light_1_1KlyqaBulb.html" title=" " alt="" coords="5,95,177,136"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1KlyqaVC.html" title=" " alt="" coords="202,95,397,136"/>
+</map>

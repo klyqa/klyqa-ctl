@@ -22,7 +22,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klyqa-CTL
+   &#160;<span id="projectnumber">1.0.17</span>
    </div>
+   <div id="projectbrief">Commandline client and python library to control and communicate with Klyqa devices.</div>
   </td>
  </tr>
  </tbody>
@@ -63,11 +65,29 @@ $(function() {
 <div class="contents">
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div><ul>
 <li>__init__()
-: <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1EventQueuePrinter.html#ac1db3936003eae874f27469f121f2e06">klyqa_ctl.klyqa_ctl.EventQueuePrinter</a>
-, <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a8c6c4aec844e5fc2552009adb41aa973">klyqa_ctl.klyqa_ctl.Klyqa_account</a>
+: <a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDeviceResponse.html#acc3e6f3159877dd6415870de6cd84c74">klyqa_ctl.devices.device.KlyqaDeviceResponse</a>
+, <a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDeviceResponseIdent.html#aad0b92042634665548cfcdcae74dfb94">klyqa_ctl.devices.device.KlyqaDeviceResponseIdent</a>
+, <a class="el" href="classklyqa__ctl_1_1devices_1_1light_1_1KlyqaBulbResponseStatus.html#aa89c0b8cd0ab3adb6d1af0860c998d73">klyqa_ctl.devices.light.KlyqaBulbResponseStatus</a>
+, <a class="el" href="classklyqa__ctl_1_1devices_1_1vacuum_1_1KlyqaVCResponseStatus.html#a127740a8524ed313e972174afe08a6a0">klyqa_ctl.devices.vacuum.KlyqaVCResponseStatus</a>
+, <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1AsyncIOLock.html#aefd3fd25531799ccc9898d43fef16e88">klyqa_ctl.general.general.AsyncIOLock</a>
+, <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1EventQueuePrinter.html#ac1db3936003eae874f27469f121f2e06">klyqa_ctl.klyqa_ctl.EventQueuePrinter</a>
+, <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a379954abb7aca3867ef71e6b8166bf37">klyqa_ctl.klyqa_ctl.Klyqa_account</a>
+</li>
+<li>__str__()
+: <a class="el" href="classklyqa__ctl_1_1devices_1_1light_1_1KlyqaBulbResponseStatus.html#a84091a3771d4541bdcd118004d4e0add">klyqa_ctl.devices.light.KlyqaBulbResponseStatus</a>
+, <a class="el" href="classklyqa__ctl_1_1devices_1_1vacuum_1_1KlyqaVCResponseStatus.html#a04499286aea6781c24cd608a5ddc4f91">klyqa_ctl.devices.vacuum.KlyqaVCResponseStatus</a>
+</li>
+<li>acquire()
+: <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1AsyncIOLock.html#a6bd142538b13171cef4b3e661282f012">klyqa_ctl.general.general.AsyncIOLock</a>
 </li>
 <li>aes_handshake_and_send_msgs()
-: <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#abb60367225ac0129d510fe41423ef225">klyqa_ctl.klyqa_ctl.Klyqa_account</a>
+: <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af360efc672efc880519137f9814702bd">klyqa_ctl.klyqa_ctl.Klyqa_account</a>
+</li>
+<li>bind_ports()
+: <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator.html#a5ee791173eb66df38a358f4f0b0df262">klyqa_ctl.general.connections.Data_communicator</a>
+</li>
+<li>check_msg_ttl()
+: <a class="el" href="classklyqa__ctl_1_1general_1_1message_1_1Message.html#a670561cf07691d77ef03db5705ddea75">klyqa_ctl.general.message.Message</a>
 </li>
 <li>coroutine()
 : <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1EventQueuePrinter.html#a635535f53a67fc5d56f9af15e0da46d0">klyqa_ctl.klyqa_ctl.EventQueuePrinter</a>
@@ -75,11 +95,23 @@ $(function() {
 <li>device_handle_local_tcp()
 : <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ac88026acc264d52f1df916795a3a41d4">klyqa_ctl.klyqa_ctl.Klyqa_account</a>
 </li>
+<li>force_unlock()
+: <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1AsyncIOLock.html#afd9eb2b0e4951ca25151b552e8327fed">klyqa_ctl.general.general.AsyncIOLock</a>
+</li>
+<li>instance()
+: <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1AsyncIOLock.html#ac15192d864391b859c651d9734f2d63e">klyqa_ctl.general.general.AsyncIOLock</a>
+</li>
 <li>login()
 : <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ab2497d252dd45dc89a26ce1e3c494b0e">klyqa_ctl.klyqa_ctl.Klyqa_account</a>
 </li>
 <li>print()
 : <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1EventQueuePrinter.html#afe9617dcf747ed426530aa3207040221">klyqa_ctl.klyqa_ctl.EventQueuePrinter</a>
+</li>
+<li>release()
+: <a class="el" href="classklyqa__ctl_1_1general_1_1general_1_1AsyncIOLock.html#a4749754e1a4b2ec64552090d09fbac4f">klyqa_ctl.general.general.AsyncIOLock</a>
+</li>
+<li>save_device_message()
+: <a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html#ac5e0bd363c3145b0be4ec26afc2975d3">klyqa_ctl.devices.device.KlyqaDevice</a>
 </li>
 <li>search_and_send_to_device()
 : <a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a6d8fe4c2c0444ad70fc331b2d0b42754">klyqa_ctl.klyqa_ctl.Klyqa_account</a>

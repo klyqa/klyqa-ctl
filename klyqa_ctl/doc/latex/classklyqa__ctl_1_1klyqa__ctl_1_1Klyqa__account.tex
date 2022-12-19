@@ -3,7 +3,7 @@
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-None \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a8c6c4aec844e5fc2552009adb41aa973}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, Data\+\_\+communicator data\+\_\+communicator, username=\char`\"{}\char`\"{}, password=\char`\"{}\char`\"{}, host=\char`\"{}\char`\"{}, bool interactive\+\_\+prompts=False, bool offline=False, device\+\_\+configs=\{\})
+None \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a379954abb7aca3867ef71e6b8166bf37}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator}{Data\+\_\+communicator}} data\+\_\+communicator, str username=\char`\"{}\char`\"{}, str password=\char`\"{}\char`\"{}, str host=\char`\"{}\char`\"{}, bool interactive\+\_\+prompts=False, bool offline=False, dict device\+\_\+configs=\{\})
 \item 
 \mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_ae32011f8bd5979c4392ea18a64823439}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_ae32011f8bd5979c4392ea18a64823439}} 
 bool {\bfseries backend\+\_\+connected} (self)
@@ -11,7 +11,7 @@ bool {\bfseries backend\+\_\+connected} (self)
 \mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_aa2798e79439ab8b9a617bbd895f9de98}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_aa2798e79439ab8b9a617bbd895f9de98}} 
 def {\bfseries update\+\_\+device\+\_\+configs} (self)
 \item 
-def \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_ac88026acc264d52f1df916795a3a41d4}{device\+\_\+handle\+\_\+local\+\_\+tcp}} (self, Klyqa\+Device$\vert$None device, Local\+Connection connection)
+def \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_ac88026acc264d52f1df916795a3a41d4}{device\+\_\+handle\+\_\+local\+\_\+tcp}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice}{Klyqa\+Device}}$\vert$None device, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection}{Local\+Connection}} connection)
 \item 
 bool \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a6d8fe4c2c0444ad70fc331b2d0b42754}{search\+\_\+and\+\_\+send\+\_\+to\+\_\+device}} (self, proc\+\_\+timeout\+\_\+secs=DEFAULT\+\_\+\+MAX\+\_\+\+COM\+\_\+\+PROC\+\_\+\+TIMEOUT\+\_\+\+SECS)
 \begin{DoxyCompactList}\small\item\em Send broadcast and make tasks for incoming tcp connections. \end{DoxyCompactList}\item 
@@ -46,7 +46,7 @@ Type\+JSON$\vert$None {\bfseries post} (self, url, $\ast$$\ast$kwargs)
 \item 
 None \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af7986a859a2a34e701c7c061dab8965a}{shutdown}} (self)
 \item 
-Type\mbox{[}Device\+\_\+\+TCP\+\_\+return.\+\_\+\+\_\+class\+\_\+\+\_\+\mbox{]} \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_abb60367225ac0129d510fe41423ef225}{aes\+\_\+handshake\+\_\+and\+\_\+send\+\_\+msgs}} (self, Ref\+Parse r\+\_\+device, Ref\+Parse r\+\_\+msg, Local\+Connection connection, use\+\_\+dev\+\_\+aes=False, timeout\+\_\+ms=11000)
+Type\mbox{[}Device\+\_\+\+TCP\+\_\+return.\+\_\+\+\_\+class\+\_\+\+\_\+\mbox{]} \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af360efc672efc880519137f9814702bd}{aes\+\_\+handshake\+\_\+and\+\_\+send\+\_\+msgs}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RefParse}{Ref\+Parse}} r\+\_\+device, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RefParse}{Ref\+Parse}} r\+\_\+msg, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection}{Local\+Connection}} connection, bool use\+\_\+dev\+\_\+aes=False, int timeout\+\_\+ms=11000)
 \item 
 \mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af6a2cb36928cbcba10c1a5a0998fa2c2}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af6a2cb36928cbcba10c1a5a0998fa2c2}} 
 bool {\bfseries request\+\_\+account\+\_\+settings\+\_\+eco} (self, int scan\+\_\+interval=60)
@@ -54,7 +54,7 @@ bool {\bfseries request\+\_\+account\+\_\+settings\+\_\+eco} (self, int scan\+\_
 \mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a3a0b9e59b2d6ec990f2fd8c6873eb8b8}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a3a0b9e59b2d6ec990f2fd8c6873eb8b8}} 
 None {\bfseries request\+\_\+account\+\_\+settings} (self)
 \item 
-str$\vert$bool$\vert$int \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a13f9543a910eefb806d27e49c78a8e61}{send\+\_\+to\+\_\+devices}} (self, args, args\+\_\+in, socket.\+socket$\vert$None udp=None, socket.\+socket$\vert$None tcp=None, timeout\+\_\+ms=5000, Callable\mbox{[}\mbox{[}Message, str\mbox{]}, Any\mbox{]}$\vert$None async\+\_\+answer\+\_\+callback=None)
+str$\vert$bool$\vert$int \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a13f9543a910eefb806d27e49c78a8e61}{send\+\_\+to\+\_\+devices}} (self, args, args\+\_\+in, socket.\+socket$\vert$None udp=None, socket.\+socket$\vert$None tcp=None, timeout\+\_\+ms=5000, Callable\mbox{[}\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1message_1_1Message}{Message}}, str\mbox{]}, Any\mbox{]}$\vert$None async\+\_\+answer\+\_\+callback=None)
 \item 
 def \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af38871d34880500b54fe5d27f509c861}{send\+\_\+to\+\_\+devices\+\_\+wrapped}} (self, args\+\_\+parsed, args\+\_\+in, timeout\+\_\+ms=5000)
 \end{DoxyCompactItemize}
@@ -116,22 +116,22 @@ def \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af38871d348
  
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a8c6c4aec844e5fc2552009adb41aa973}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a8c6c4aec844e5fc2552009adb41aa973}} 
+\mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a379954abb7aca3867ef71e6b8166bf37}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a379954abb7aca3867ef71e6b8166bf37}} 
 \index{klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}!\_\_init\_\_@{\_\_init\_\_}}
 \index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}}
 \doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
-{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Data\+\_\+communicator}]{data\+\_\+communicator,  }\item[{}]{username = {\ttfamily \char`\"{}\char`\"{}},  }\item[{}]{password = {\ttfamily \char`\"{}\char`\"{}},  }\item[{}]{host = {\ttfamily \char`\"{}\char`\"{}},  }\item[{bool }]{interactive\+\_\+prompts = {\ttfamily False},  }\item[{bool }]{offline = {\ttfamily False},  }\item[{}]{device\+\_\+configs = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator}{Data\+\_\+communicator}}}]{data\+\_\+communicator,  }\item[{str }]{username = {\ttfamily \char`\"{}\char`\"{}},  }\item[{str }]{password = {\ttfamily \char`\"{}\char`\"{}},  }\item[{str }]{host = {\ttfamily \char`\"{}\char`\"{}},  }\item[{bool }]{interactive\+\_\+prompts = {\ttfamily False},  }\item[{bool }]{offline = {\ttfamily False},  }\item[{dict }]{device\+\_\+configs = {\ttfamily \{\}} }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}Initialize the account with the login data, tcp, udp datacommunicator and tcp
 communication tasks.\end{DoxyVerb}
  
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_abb60367225ac0129d510fe41423ef225}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_abb60367225ac0129d510fe41423ef225}} 
+\mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af360efc672efc880519137f9814702bd}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_af360efc672efc880519137f9814702bd}} 
 \index{klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}!aes\_handshake\_and\_send\_msgs@{aes\_handshake\_and\_send\_msgs}}
 \index{aes\_handshake\_and\_send\_msgs@{aes\_handshake\_and\_send\_msgs}!klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}}
 \doxysubsubsection{\texorpdfstring{aes\_handshake\_and\_send\_msgs()}{aes\_handshake\_and\_send\_msgs()}}
-{\footnotesize\ttfamily  Type\mbox{[}Device\+\_\+\+TCP\+\_\+return.\+\_\+\+\_\+class\+\_\+\+\_\+\mbox{]} klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+aes\+\_\+handshake\+\_\+and\+\_\+send\+\_\+msgs (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Ref\+Parse}]{r\+\_\+device,  }\item[{Ref\+Parse}]{r\+\_\+msg,  }\item[{Local\+Connection}]{connection,  }\item[{}]{use\+\_\+dev\+\_\+aes = {\ttfamily False},  }\item[{}]{timeout\+\_\+ms = {\ttfamily 11000} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  Type\mbox{[}Device\+\_\+\+TCP\+\_\+return.\+\_\+\+\_\+class\+\_\+\+\_\+\mbox{]} klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+aes\+\_\+handshake\+\_\+and\+\_\+send\+\_\+msgs (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RefParse}{Ref\+Parse}}}]{r\+\_\+device,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RefParse}{Ref\+Parse}}}]{r\+\_\+msg,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection}{Local\+Connection}}}]{connection,  }\item[{bool }]{use\+\_\+dev\+\_\+aes = {\ttfamily False},  }\item[{int }]{timeout\+\_\+ms = {\ttfamily 11000} }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}FIX: return type! sometimes return value sometimes tuple...
 
@@ -139,12 +139,12 @@ Finish AES handshake.
 Getting the identity of the device.
 Send the commands in message queue to the device with the device u_id or to any device.
 
-params:
+Params:
     device: Device - (initial) device object with the tcp connection
     target_device_uid - If given device_uid only send commands when the device unit id equals the target_device_uid
     discover_mode - if True do the process to any device unit id.
 
-returns: tuple[int, dict] or tuple[int, str]
+Returns: tuple[int, dict] or tuple[int, str]
         dict: Json response of the device
         str: Error string message
         int: Error type
@@ -160,7 +160,7 @@ returns: tuple[int, dict] or tuple[int, str]
 \index{klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}!device\_handle\_local\_tcp@{device\_handle\_local\_tcp}}
 \index{device\_handle\_local\_tcp@{device\_handle\_local\_tcp}!klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}}
 \doxysubsubsection{\texorpdfstring{device\_handle\_local\_tcp()}{device\_handle\_local\_tcp()}}
-{\footnotesize\ttfamily def klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+device\+\_\+handle\+\_\+local\+\_\+tcp (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Klyqa\+Device $\vert$ None}]{device,  }\item[{Local\+Connection     }]{connection }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily def klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+device\+\_\+handle\+\_\+local\+\_\+tcp (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice}{Klyqa\+Device}} $\vert$ None}]{device,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection}{Local\+Connection}}     }]{connection }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}Handle the incoming tcp connection to the device.\end{DoxyVerb}
  \mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_ab2497d252dd45dc89a26ce1e3c494b0e}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_ab2497d252dd45dc89a26ce1e3c494b0e}} 
@@ -173,12 +173,9 @@ returns: tuple[int, dict] or tuple[int, str]
 
 Login on klyqa account, get account settings, get onboarded device profiles, print all devices if parameter set. 
 
-@params\+: print\+\_\+onboarded\+\_\+devices\+: print onboarded devices from the klyqa account to the stdout
+Params\+: print\+\_\+onboarded\+\_\+devices\+: print onboarded devices from the klyqa account to the stdout
 
-\begin{DoxyReturn}{Returns}
-\+: true\+: on success of the login false\+: on error 
-\end{DoxyReturn}
-\mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a6d8fe4c2c0444ad70fc331b2d0b42754}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a6d8fe4c2c0444ad70fc331b2d0b42754}} 
+Returns\+: true\+: on success of the login false\+: on error \mbox{\Hypertarget{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a6d8fe4c2c0444ad70fc331b2d0b42754}\label{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account_a6d8fe4c2c0444ad70fc331b2d0b42754}} 
 \index{klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}!search\_and\_send\_to\_device@{search\_and\_send\_to\_device}}
 \index{search\_and\_send\_to\_device@{search\_and\_send\_to\_device}!klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}}
 \doxysubsubsection{\texorpdfstring{search\_and\_send\_to\_device()}{search\_and\_send\_to\_device()}}
@@ -188,10 +185,10 @@ Login on klyqa account, get account settings, get onboarded device profiles, pri
 
 Send broadcast and make tasks for incoming tcp connections. 
 
-\begin{DoxyVerb}   @params:
+\begin{DoxyVerb}   Params:
        proc_timeout_secs:   max timeout in seconds for a device communication handle process
 
-   @return:
+   Returns:
        true:  on success
        false: on exception or error
 \end{DoxyVerb}
@@ -199,7 +196,7 @@ Send broadcast and make tasks for incoming tcp connections.
 \index{klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}!send\_to\_devices@{send\_to\_devices}}
 \index{send\_to\_devices@{send\_to\_devices}!klyqa\_ctl.klyqa\_ctl.Klyqa\_account@{klyqa\_ctl.klyqa\_ctl.Klyqa\_account}}
 \doxysubsubsection{\texorpdfstring{send\_to\_devices()}{send\_to\_devices()}}
-{\footnotesize\ttfamily  str $\vert$ bool $\vert$ int klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+send\+\_\+to\+\_\+devices (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{args,  }\item[{}]{args\+\_\+in,  }\item[{socket.\+socket $\vert$ None }]{udp = {\ttfamily None},  }\item[{socket.\+socket $\vert$ None }]{tcp = {\ttfamily None},  }\item[{}]{timeout\+\_\+ms = {\ttfamily 5000},  }\item[{Callable\mbox{[}\mbox{[}Message, str\mbox{]}, Any\mbox{]} $\vert$ None }]{async\+\_\+answer\+\_\+callback = {\ttfamily None} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  str $\vert$ bool $\vert$ int klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Klyqa\+\_\+account.\+send\+\_\+to\+\_\+devices (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{args,  }\item[{}]{args\+\_\+in,  }\item[{socket.\+socket $\vert$ None }]{udp = {\ttfamily None},  }\item[{socket.\+socket $\vert$ None }]{tcp = {\ttfamily None},  }\item[{}]{timeout\+\_\+ms = {\ttfamily 5000},  }\item[{Callable\mbox{[}\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1message_1_1Message}{Message}}, str\mbox{]}, Any\mbox{]} $\vert$ None }]{async\+\_\+answer\+\_\+callback = {\ttfamily None} }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}Collect the messages for the devices to send to
 
