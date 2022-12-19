@@ -1520,7 +1520,7 @@ class Klyqa_account:
         tcp: socket.socket | None = None,
         timeout_ms=5000,
         async_answer_callback: Callable[[Message, str], Any] | None = None,
-    ):
+    ) -> str | bool | int:
         """Collect the messages for the devices to send to
 
         Args:
@@ -1656,7 +1656,7 @@ class Klyqa_account:
 
             ### device specific commands ###
 
-            async def send_to_devices_cb(args):
+            async def send_to_devices_cb(args: argparse.Namespace):
                 """Send to devices callback for discover of devices option"""
                 return await self.send_to_devices(
                     args,

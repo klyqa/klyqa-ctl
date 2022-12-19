@@ -1,6 +1,9 @@
 """Lighting"""
-
 from __future__ import annotations
+from typing import Callable, List
+"""! @brief Contains all functions, constants and classes regarding lighting."""
+
+# Imports
 import argparse
 from dataclasses import dataclass
 import functools
@@ -12,8 +15,7 @@ from .device import *
 
 from ..general.general import *
 
-## Bulbs ##
-
+# Global Constants
 BULB_SCENES: list[dict[str, Any]] = [
     {
         "id": 100,
@@ -185,7 +187,7 @@ BULB_SCENES: list[dict[str, Any]] = [
     },
 ]
 
-
+# Classes
 class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
     """Klyqa_Bulb_Response_Status"""
 
@@ -374,7 +376,7 @@ class KlyqaBulb(KlyqaDevice):
             return False
         return True
 
-
+# Functions
 def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, int]:
     waitTime = transition if not skipWait else 0
     return (
@@ -653,16 +655,90 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
 
 
+async def discover_devices(
+    args: argparse.Namespace,
+    args_in: List[Any],
+    send_to_devices_cb: Callable[[argparse.Namespace], Any]) -> argparse.Namespace | None:
+        
+    """Send out klyqa broadcast to discover all devices. Tries to set 
+    device_unitids in args parse. The user can select them.
+
+    Args:
+        args (Argsparse): Parsed args object
+        args_in (list): List of arguments parsed to the script call
+        timeout_ms (int, optional): Timeout to send. Defaults to 5000.
+
+    Raises:
+        Exception: Network or file errors
+
+    Returns:
+        bool: True if succeeded.
+    """
+    
+    discover_local_args: list[str] = [
+        DeviceType.lighting.name,
+        "--request",
+        "--allDevices",
+        "--selectDevice",
+        "--discover",
+    ]
+
+    orginal_args_parser: argparse.ArgumentParser = get_description_parser()
+    discover_local_args_parser: argparse.ArgumentParser = get_description_parser()
+
+    add_config_args(parser=orginal_args_parser)
+    add_config_args(parser=discover_local_args_parser)
+    add_command_args_bulb(parser=discover_local_args_parser)
+
+    original_config_args_parsed, _ = orginal_args_parser.parse_known_args(
+        args=args_in
+    )
+
+    discover_local_args_parsed = discover_local_args_parser.parse_args(
+        discover_local_args, namespace=original_config_args_parsed
+    )
+
+    uids = await send_to_devices_cb(discover_local_args_parsed)
+    if isinstance(uids, set) or isinstance(uids, list):
+        # args_in.extend(["--device_unitids", ",".join(list(uids))])
+        args_in = ["--device_unitids", ",".join(list(uids))] + args_in
+    elif isinstance(uids, str) and uids == "no_devices":
+        return None
+    else:
+        LOGGER.error("Error during local discovery of the devices.")
+        return None
+
+    add_command_args_bulb(parser=orginal_args_parser)
+    args = orginal_args_parser.parse_args(args=args_in, namespace=args)
+    return args
+
+
 async def process_args_to_msg_lighting(
-    args,
-    args_in,
-    send_to_devices_cb,
-    message_queue_tx_local,
-    message_queue_tx_command_cloud,
-    message_queue_tx_state_cloud,
+    args: argparse.Namespace,
+    args_in: list[Any],
+    send_to_devices_callable: Callable[[argparse.Namespace], Any],
+    message_queue_tx_local: list[Any],
+    message_queue_tx_command_cloud: list[Any],
+    message_queue_tx_state_cloud: list[Any],
     scene_list: list[str],
-) -> bool:
-    """process_args_to_msg_lighting"""
+) -> bool | None:
+    """
+    Process arguments for communicating with lights. Fill message queues for local
+    and cloud communication. Discover devices to communicate with.
+    
+    Params:
+        args: Parsed arguments to be processed.
+        args_in: Original arguments as a list, if we want to reparse and add arguments.
+        send_to_devices_callable: If we need to send something to the lamps,
+            use this callable.
+        message_queue_tx_local: Queue to be filled with messages for local
+            communication.
+        message_queue_tx_command_cloud: Queue for cloud command messages.
+        message_queue_tx_state_cloud: Queue for cloud state messages.
+        scene_list: If a scene is applied, add it to the scene list, so the
+            klyqa-ctl send function can process it.
+
+    """
 
     def local_and_cloud_command_msg(json_msg, timeout, check_func = None) -> None:
         """ Add message to local and cloud queue. Give a timeout after the message
@@ -682,41 +758,10 @@ async def process_args_to_msg_lighting(
         and not args.allDevices
         and not args.discover
     ):
-        discover_local_args: list[str] = [
-            DeviceType.lighting.name,
-            "--request",
-            "--allDevices",
-            "--selectDevice",
-            "--discover",
-        ]
-
-        orginal_args_parser: argparse.ArgumentParser = get_description_parser()
-        discover_local_args_parser: argparse.ArgumentParser = get_description_parser()
-
-        add_config_args(parser=orginal_args_parser)
-        add_config_args(parser=discover_local_args_parser)
-        add_command_args_bulb(parser=discover_local_args_parser)
-
-        original_config_args_parsed, _ = orginal_args_parser.parse_known_args(
-            args=args_in
-        )
-
-        discover_local_args_parsed = discover_local_args_parser.parse_args(
-            discover_local_args, namespace=original_config_args_parsed
-        )
-
-        uids = await send_to_devices_cb(discover_local_args_parsed)
-        if isinstance(uids, set) or isinstance(uids, list):
-            # args_in.extend(["--device_unitids", ",".join(list(uids))])
-            args_in = ["--device_unitids", ",".join(list(uids))] + args_in
-        elif isinstance(uids, str) and uids == "no_devices":
-            return False
-        else:
-            LOGGER.error("Error during local discovery of the devices.")
-            return False
-
-        add_command_args_bulb(parser=orginal_args_parser)
-        args = orginal_args_parser.parse_args(args=args_in, namespace=args)
+        args_ret: argparse.Namespace | None = await discover_devices(args, args_in, send_to_devices_callable)
+        
+        if isinstance(args_ret, argparse.Namespace):
+            args = args_ret
 
     commands_to_send: list[str] = [
         i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)
@@ -789,7 +834,7 @@ async def process_args_to_msg_lighting(
                         )
                     )
 
-                    ret = send_to_devices_cb(discover_local_args_parsed2)
+                    ret = send_to_devices_callable(discover_local_args_parsed2)
                     if isinstance(ret, bool) and ret:
                         return True
                     else:
