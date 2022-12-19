@@ -31,7 +31,7 @@ class Message:
     answer_json = {}
     # callback on error event or answer
     callback: Callable[[Message, str], None] | None = None
-    time_to_live_secs: int = -1
+    time_to_live_secs: float = -1
     msg_counter: int = -1
 
     def __post_init__(self) -> None:

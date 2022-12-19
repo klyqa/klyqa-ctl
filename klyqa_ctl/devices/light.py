@@ -1,9 +1,9 @@
 """Lighting"""
 from __future__ import annotations
-from typing import Callable, List
 """! @brief Contains all functions, constants and classes regarding lighting."""
 
 # Imports
+from typing import Callable, List
 import argparse
 from dataclasses import dataclass
 import functools
@@ -185,6 +185,50 @@ BULB_SCENES: list[dict[str, Any]] = [
         "label": "Ice Cream",
         "commands": "5ch 65535 0 0 0 0 35535 1400;p 980;5ch 65535 37522 32639 0 0 35535 1200;p 910;5ch 61166 54741 65535 0 0 35535 1800;p 1200;5ch 35723 65535 57825 0 0 35535 1800;p 1200;5ch 55512 64250 38807 0 0 35535 1400;p 1040;5ch 65535 56796 62709 0 0 35535 1400;p 1000;",
     },
+]
+
+
+commands_send_to_bulb: list[str] = [
+    "request",
+    "ping",
+    "color",
+    "temperature",
+    "brightness",
+    "routine_list",
+    "routine_put",
+    "routine_id",
+    "routine_commands",
+    "routine_delete",
+    "routine_start",
+    "power",
+    "reboot",
+    "factory_reset",
+    "WW",
+    "daylight",
+    "CW",
+    "nightlight",
+    "relax",
+    "TVtime",
+    "comfort",
+    "focused",
+    "fireplace",
+    "club",
+    "romantic",
+    "gentle",
+    "summer",
+    "jungle",
+    "ocean",
+    "fall",
+    "sunset",
+    "party",
+    "spring",
+    "forest",
+    "deep_sea",
+    "tropical",
+    "magic",
+    "mystic",
+    "cotton",
+    "ice",
 ]
 
 # Classes
@@ -470,50 +514,6 @@ def external_source_message(protocol, port, channel):
     )
 
 
-commands_send_to_bulb: list[str] = [
-    "request",
-    "ping",
-    "color",
-    "temperature",
-    "brightness",
-    "routine_list",
-    "routine_put",
-    "routine_id",
-    "routine_commands",
-    "routine_delete",
-    "routine_start",
-    "power",
-    "reboot",
-    "factory_reset",
-    "WW",
-    "daylight",
-    "CW",
-    "nightlight",
-    "relax",
-    "TVtime",
-    "comfort",
-    "focused",
-    "fireplace",
-    "club",
-    "romantic",
-    "gentle",
-    "summer",
-    "jungle",
-    "ocean",
-    "fall",
-    "sunset",
-    "party",
-    "spring",
-    "forest",
-    "deep_sea",
-    "tropical",
-    "magic",
-    "mystic",
-    "cotton",
-    "ice",
-]
-
-
 def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     """Add arguments to the argument parser object.
 
@@ -657,7 +657,7 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
 
 async def discover_devices(
     args: argparse.Namespace,
-    args_in: List[Any],
+    args_in: list[Any],
     send_to_devices_cb: Callable[[argparse.Namespace], Any]) -> argparse.Namespace | None:
         
     """Send out klyqa broadcast to discover all devices. Tries to set 
@@ -698,9 +698,8 @@ async def discover_devices(
         discover_local_args, namespace=original_config_args_parsed
     )
 
-    uids = await send_to_devices_cb(discover_local_args_parsed)
+    uids: set | list | str = await send_to_devices_cb(discover_local_args_parsed)
     if isinstance(uids, set) or isinstance(uids, list):
-        # args_in.extend(["--device_unitids", ",".join(list(uids))])
         args_in = ["--device_unitids", ",".join(list(uids))] + args_in
     elif isinstance(uids, str) and uids == "no_devices":
         return None
@@ -965,32 +964,32 @@ async def process_args_to_msg_lighting(
 
     #### Needing config profile versions implementation for checking trait ranges ###
 
-    def check_color_range(device, values) -> bool:
+    def check_color_range(device: KlyqaBulb, values: list[int]) -> bool:
         if not device.color_range:
             missing_config(device.acc_sets["productId"])
         else:
             for value in values:
-                if int(value) < device.color_range.min or int(value) > device.color_range.max:
+                if value < device.color_range.min or value > device.color_range.max:
                     return forced_continue(
                         f"Color {value} out of range [{device.color_range.min}..{device.color_range.max}]."
                     )
         return True
 
-    def check_brightness_range(device, value) -> bool:
-        if not device.color_range:
+    def check_brightness_range(device: KlyqaBulb, value: int) -> bool:
+        if not device.brightness_range:
             missing_config(device.acc_sets["productId"])
         else:
-            if int(value) < device.brightness_range.min or int(value) > device.brightness_range.max:
+            if value < device.brightness_range.min or value > device.brightness_range.max:
                 return forced_continue(
                     f"Brightness {value} out of range [{device.brightness_range.min}..{device.brightness_range.max}]."
                 )
         return True
 
-    def check_temp_range(device, value) -> bool:
-        if not device.color_range:
+    def check_temp_range(device: KlyqaBulb, value: int) -> bool:
+        if not device.temperature_range:
             missing_config(device.acc_sets["productId"])
         else:
-            if int(value) < device.temperature_range.min or int(value) > device.temperature_range.max:
+            if value < device.temperature_range.min or value > device.temperature_range.max:
                 return forced_continue(
                     f"Temperature {value} out of range [{device.temperature_range.min}..{device.temperature_range.max}]."
                 )
@@ -1012,7 +1011,6 @@ async def process_args_to_msg_lighting(
                 return forced_continue(
                     f"Scene {scene['label']} not supported by device product {device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
                 )
-            return True
 
         except Exception as excp:
             return not missing_config(device.acc_sets["productId"])
@@ -1171,35 +1169,6 @@ async def process_args_to_msg_lighting(
     if args.ice:
         scene = "Ice Cream"
 
-    # if (
-    #     args.WW
-    #     or args.daylight
-    #     or args.CW
-    #     or args.nightlight
-    #     or args.relax
-    #     or args.TVtime
-    #     or args.comfort
-    #     or args.focused
-    #     or args.fireplace
-    #     or args.club
-    #     or args.romantic
-    #     or args.gentle
-    #     or args.summer
-    #     or args.jungle
-    #     or args.ocean
-    #     or args.fall  # Autumn
-    #     or args.sunset
-    #     or args.party
-    #     or args.spring
-    #     or args.forest
-    #     or args.deep_sea
-    #     or args.tropical
-    #     or args.magic
-    #     or args.mystic
-    #     or args.cotton
-    #     or args.ice
-    #     # or args.monjito
-    # ):
     if scene:
         scene_result = [x for x in BULB_SCENES if x["label"] == scene]
         if not len(scene_result) or len(scene_result) > 1:
@@ -1257,6 +1226,3 @@ async def process_args_to_msg_lighting(
 
     if scene:
         scene_list.append(scene)
-
-
-# async def discover_lightings(args, args_in, send_to_devices_cb):

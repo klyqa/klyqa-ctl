@@ -625,14 +625,14 @@ class Klyqa_account:
         target_device_uid,
         args,
         callback=None,
-        time_to_live_secs: int = -1,
+        time_to_live_secs: float = -1.0,
         started=datetime.datetime.now(),
     ) -> bool:
 
         loop = asyncio.get_event_loop()
         # self.message_queue_new.append((send_msg, target_device_uid, args, callback, time_to_live_secs, started))
 
-        if not send_msg:
+        if not send_msg and callback is not None:
             LOGGER.error(f"No message queue to send in message to {target_device_uid}!")
             await callback(None, target_device_uid)
             return False
@@ -1570,57 +1570,9 @@ class Klyqa_account:
 
             target_device_uids = set()
 
-            message_queue_tx_local = []
-            message_queue_tx_state_cloud = []
-            message_queue_tx_command_cloud = []
-
-            # # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
-            # if (args.local or args.tryLocalThanCloud) and (
-            #     not args.device_name
-            #     and not args.device_unitids
-            #     and not args.allDevices
-            #     and not args.discover
-            # ):
-            #     discover_local_args: list[str] = [
-            #         "--request",
-            #         "--allDevices",
-            #         "--selectDevice",
-            #         "--discover"
-            #     ]
-
-            #     orginal_args_parser: argparse.ArgumentParser = get_description_parser()
-            #     discover_local_args_parser: argparse.ArgumentParser = get_description_parser()
-
-            #     add_config_args(parser=orginal_args_parser)
-            #     add_config_args(parser=discover_local_args_parser)
-            #     add_command_args(parser=discover_local_args_parser)
-
-            #     original_config_args_parsed, _ = orginal_args_parser.parse_known_args(
-            #         args=args_in
-            #     )
-
-            #     discover_local_args_parsed = discover_local_args_parser.parse_args(
-            #         discover_local_args, namespace=original_config_args_parsed
-            #     )
-
-            #     uids = await self.send_to_devices(
-            #         discover_local_args_parsed,
-            #         args_in,
-            #         udp=udp,
-            #         tcp=tcp,
-            #         timeout_ms=3500,
-            #     )
-            #     if isinstance(uids, set) or isinstance(uids, list):
-            #         # args_in.extend(["--device_unitids", ",".join(list(uids))])
-            #         args_in = ["--device_unitids", ",".join(list(uids))] + args_in
-            #     elif isinstance(uids, str) and uids == "no_devices":
-            #         return False
-            #     else:
-            #         LOGGER.error("Error during local discovery of the devices.")
-            #         return False
-
-            #     add_command_args(parser=orginal_args_parser)
-            #     args = orginal_args_parser.parse_args(args=args_in, namespace=args)
+            message_queue_tx_local: list[Any] = []
+            message_queue_tx_state_cloud: list[Any] = []
+            message_queue_tx_command_cloud: list[Any] = []
 
             if args.device_name is not None:
                 if not self.acc_settings:
@@ -1656,7 +1608,7 @@ class Klyqa_account:
 
             ### device specific commands ###
 
-            async def send_to_devices_cb(args: argparse.Namespace):
+            async def send_to_devices_cb(args: argparse.Namespace) -> str | bool | int:
                 """Send to devices callback for discover of devices option"""
                 return await self.send_to_devices(
                     args,
@@ -1690,7 +1642,9 @@ class Klyqa_account:
                 LOGGER.error("Missing device type.")
                 return False
 
-            success = True
+            success: bool = True
+            to_send_device_uids: set[str] = set()
+            
             if args.local or args.tryLocalThanCloud:
                 if args.passive:
                     if udp:
@@ -1749,7 +1703,7 @@ class Klyqa_account:
                     # else:
                     msg_wait_tasks = {}
 
-                    to_send_device_uids: set[str] = target_device_uids.copy()
+                    to_send_device_uids = target_device_uids.copy()
 
                     async def sl(uid) -> None:
                         try:
@@ -2028,8 +1982,8 @@ class Klyqa_account:
                     "--routine_start",
                 ]
 
-                orginal_args_parser = get_description_parser()
-                scene_start_args_parser: ArgumentParser = get_description_parser()
+                orginal_args_parser: argparse.ArgumentParser = get_description_parser()
+                scene_start_args_parser: argparse.ArgumentParser = get_description_parser()
 
                 add_config_args(parser=orginal_args_parser)
                 add_config_args(parser=scene_start_args_parser)
@@ -2043,7 +1997,7 @@ class Klyqa_account:
                     scene_start_args, namespace=original_config_args_parsed
                 )
 
-                async def async_print_answer(msg, uid):
+                async def async_print_answer(msg: Message, uid: str) -> None:
                     print(f"{uid}: ")
                     if msg:
                         try:
@@ -2056,7 +2010,7 @@ class Klyqa_account:
                     else:
                         LOGGER.error(f"Error no message returned from {uid}.")
 
-                ret = await self.send_to_devices(
+                ret: str | bool | int = await self.send_to_devices(
                     scene_start_args_parsed,
                     args_in,
                     udp=udp,
