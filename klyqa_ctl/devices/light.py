@@ -297,9 +297,9 @@ class KlyqaBulb(KlyqaDevice):
         super().__init__()
         # self.status = KlyqaBulbResponseStatus()
         self.response_classes["status"] = KlyqaBulbResponseStatus
-        self.brightness_range: Range = Range(0, 100)
-        self.temperature_range: Range = Range(2000, 6500)
-        self.color_range: Range = Range(0, 255)
+        self.brightness_range: Range | None = None
+        self.temperature_range: Range | None = None
+        self.color_range: Range | None = None
         
     def set_brightness_range(self, device_config) -> None:
         brightness_enum = []
@@ -390,7 +390,7 @@ class KlyqaBulb(KlyqaDevice):
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
         self.set_temperature(device_config)
-        if self.acc_sets["productId"].find(".rgb") != -1:
+        if ".rgb" in self.acc_sets["productId"]:
             self.set_color_range(device_config)
 
     def set_temperature(self, temp: int) -> bool:
@@ -950,7 +950,6 @@ async def process_args_to_msg_lighting(
             LOGGER.info("Enforced send")
             return True
 
-    """range"""
     Check_device_parameter = Enum(
         "Check_device_parameter", "color brightness temperature scene"
     )
@@ -1000,14 +999,8 @@ async def process_args_to_msg_lighting(
         try:
             scene_result = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
             scene = scene_result[0]
-            color_enum = [
-                trait
-                for trait in device.device_config["deviceTraits"]
-                if trait["trait"] == "@core/traits/color"
-            ]
-            color_support = len(color_enum) > 0
 
-            if not color_support and not "cwww" in scene: # bulb has no colors, therefore only cwww scenes are allowed
+            if not ".rgb" in device.acc_sets["productId"] and not "cwww" in scene: # bulb has no colors, therefore only cwww scenes are allowed
                 return forced_continue(
                     f"Scene {scene['label']} not supported by device product {device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
                 )
@@ -1029,23 +1022,12 @@ async def process_args_to_msg_lighting(
         if not device.device_config and not forced_continue("Missing configs for devices."):
             return False
 
-        # for u_id in target_device_uids:
-        #     # dev = [
-        #     #     device["productId"]
-        #     #     for device in self.acc_settings["devices"]
-        #     #     if format_uid(device["localDeviceId"]) == format_uid(u_id)
-        #     # ]
-        #     # product_id = dev[0]
-        #     product_id = self.devices[u_id].ident.product_id
-
         if not check_range[parameter](device, values):
             return False
         return True
 
     if args.color is not None:
         r, g, b = args.color
-        # if not check_device_parameter(Check_device_parameter.color, [r, g, b]):
-        #     return False
 
         tt = args.transitionTime[0]
         msg = color_message(r, g, b, int(tt), skipWait=args.brightness is not None)
@@ -1061,8 +1043,6 @@ async def process_args_to_msg_lighting(
 
     if args.temperature is not None:
         temperature = args.temperature[0]
-        # if not check_device_parameter(Check_device_parameter.temperature, temperature):
-        #     return False
 
         tt = args.transitionTime[0]
         msg = temperature_message(
@@ -1080,8 +1060,6 @@ async def process_args_to_msg_lighting(
 
     if args.brightness is not None:
         brightness = args.brightness[0]
-        # if not check_device_parameter(Check_device_parameter.brightness, brightness):
-        #     return False
 
         tt = args.transitionTime[0]
         msg: tuple[str, int] = brightness_message(brightness, int(tt))
