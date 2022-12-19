@@ -12,7 +12,7 @@ ENV TZ=Europe/Berlin
 
 # RUN dpkg --add-architecture i386 && \
 RUN apt-get update && apt-get -y --no-install-recommends install \
-    nmap iputils-ping doxygen && \
+    nmap iputils-ping doxygen graphviz && \
     # ca-certificates \
     # bzip2 \
     # git \
