@@ -47,7 +47,7 @@ class Message:
     async def check_msg_ttl(self) -> bool:
         """Verify time to live, if exceeded call the callback"""
         if datetime.datetime.now() - self.started > datetime.timedelta(
-            seconds=self.time_to_live_secs
+            seconds = self.time_to_live_secs
         ):
             LOGGER.debug(
                 f"time to live {self.time_to_live_secs} seconds for message {self.msg_counter} {self.msg_queue} ended."
