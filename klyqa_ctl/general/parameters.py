@@ -10,6 +10,7 @@ def get_description_parser() -> argparse.ArgumentParser:
     """Make an argument parse object."""
 
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
+        add_help = False,
         description="Interactive klyqa device client (local/cloud). In default the client script tries to send the commands via local connection. Therefore a broadcast on udp port 2222 for discovering the lamps is sent in the local network. When the lamp receives the broadcast it answers via tcp on socket 3333 with a new socket tcp connection. On that tcp connection the commands are sent and the replies are received. "
     )
 
@@ -31,13 +32,20 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
     #     const=True,
     #     default=False,
     # )
+    
+    parser.add_argument("--help", 
+        help="Show this help.",
+        action="store_const",
+        const=True,
+        default=False
+    )
 
     parser.add_argument(
         "--passive",
         help="vApp will passively listen vor UDP SYN from devices",
         action="store_const",
         const=True,
-        default=False,
+        default=False
     )
     parser.add_argument("--aes", nargs=1, help="give aes key for the lamp")
     parser.add_argument("--username", nargs=1, help="give your username")
