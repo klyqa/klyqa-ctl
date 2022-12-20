@@ -78,7 +78,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a379954abb7aca3867ef71e6b8166bf37"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a379954abb7aca3867ef71e6b8166bf37">__init__</a> (self, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator.html">Data_communicator</a> data_communicator, str username=&quot;&quot;, str password=&quot;&quot;, str host=&quot;&quot;, bool interactive_prompts=False, bool offline=False, dict device_configs={})</td></tr>
+<tr class="memitem:a379954abb7aca3867ef71e6b8166bf37"><td class="memItemLeft" align="right" valign="top"><a id="a379954abb7aca3867ef71e6b8166bf37"></a>
+None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a379954abb7aca3867ef71e6b8166bf37">__init__</a> (self, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator.html">Data_communicator</a> data_communicator, str username=&quot;&quot;, str password=&quot;&quot;, str host=&quot;&quot;, bool interactive_prompts=False, bool offline=False, dict device_configs={})</td></tr>
+<tr class="memdesc:a379954abb7aca3867ef71e6b8166bf37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the account with the login data, tcp, udp datacommunicator and tcp communication tasks. <br /></td></tr>
 <tr class="separator:a379954abb7aca3867ef71e6b8166bf37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae32011f8bd5979c4392ea18a64823439"><td class="memItemLeft" align="right" valign="top"><a id="ae32011f8bd5979c4392ea18a64823439"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>backend_connected</b> (self)</td></tr>
@@ -86,7 +88,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>backend_connected</b>
 <tr class="memitem:aa2798e79439ab8b9a617bbd895f9de98"><td class="memItemLeft" align="right" valign="top"><a id="aa2798e79439ab8b9a617bbd895f9de98"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>update_device_configs</b> (self)</td></tr>
 <tr class="separator:aa2798e79439ab8b9a617bbd895f9de98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac88026acc264d52f1df916795a3a41d4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ac88026acc264d52f1df916795a3a41d4">device_handle_local_tcp</a> (self, <a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html">KlyqaDevice</a>|None device, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a> connection)</td></tr>
+<tr class="memitem:ac88026acc264d52f1df916795a3a41d4"><td class="memItemLeft" align="right" valign="top"><a id="ac88026acc264d52f1df916795a3a41d4"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#ac88026acc264d52f1df916795a3a41d4">device_handle_local_tcp</a> (self, <a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html">KlyqaDevice</a>|None device, <a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a> connection)</td></tr>
+<tr class="memdesc:ac88026acc264d52f1df916795a3a41d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle the incoming tcp connection to the device. <br /></td></tr>
 <tr class="separator:ac88026acc264d52f1df916795a3a41d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d8fe4c2c0444ad70fc331b2d0b42754"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a6d8fe4c2c0444ad70fc331b2d0b42754">search_and_send_to_device</a> (self, proc_timeout_secs=DEFAULT_MAX_COM_PROC_TIMEOUT_SECS)</td></tr>
 <tr class="memdesc:a6d8fe4c2c0444ad70fc331b2d0b42754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send broadcast and make tasks for incoming tcp connections.  <a href="classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a6d8fe4c2c0444ad70fc331b2d0b42754">More...</a><br /></td></tr>
@@ -188,73 +192,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><pre class="fragment">Klyqa account
 * rest access token
 * devices
-* account settings</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a379954abb7aca3867ef71e6b8166bf37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a379954abb7aca3867ef71e6b8166bf37">&#9670;&nbsp;</a></span>__init__()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> None klyqa_ctl.klyqa_ctl.Klyqa_account.__init__ </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1Data__communicator.html">Data_communicator</a>&#160;</td>
-          <td class="paramname"><em>data_communicator</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>username</em> = <code>&quot;&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>password</em> = <code>&quot;&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>host</em> = <code>&quot;&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &#160;</td>
-          <td class="paramname"><em>interactive_prompts</em> = <code>False</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &#160;</td>
-          <td class="paramname"><em>offline</em> = <code>False</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">dict &#160;</td>
-          <td class="paramname"><em>device_configs</em> = <code>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Initialize the account with the login data, tcp, udp datacommunicator and tcp
-communication tasks.</pre> 
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+* account settings</pre> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af360efc672efc880519137f9814702bd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af360efc672efc880519137f9814702bd">&#9670;&nbsp;</a></span>aes_handshake_and_send_msgs()</h2>
 
@@ -316,52 +254,17 @@ Params:
     discover_mode - if True do the process to any device unit id.
 
 Returns: tuple[int, dict] or tuple[int, str]
-        dict: Json response of the device
-        str: Error string message
-        int: Error type
-            0 - success - no error
-            1 - on error
-            2 - not correct device uid
-            3 - tcp connection ended, shall retry
-            4 - error on reading response message from device, shall retry
-            5 - error getting lock for device, shall retry
-            6 - missing aes key
-            7 - value not valid for device config</pre> 
-</div>
-</div>
-<a id="ac88026acc264d52f1df916795a3a41d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac88026acc264d52f1df916795a3a41d4">&#9670;&nbsp;</a></span>device_handle_local_tcp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def klyqa_ctl.klyqa_ctl.Klyqa_account.device_handle_local_tcp </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html">KlyqaDevice</a> | None&#160;</td>
-          <td class="paramname"><em>device</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classklyqa__ctl_1_1general_1_1connections_1_1LocalConnection.html">LocalConnection</a>
-    &#160;</td>
-          <td class="paramname"><em>connection</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Handle the incoming tcp connection to the device.</pre> 
+    dict: Json response of the device
+    str: Error string message
+    int: Error type
+        0 - success - no error
+        1 - on error
+        2 - not correct device uid
+        3 - tcp connection ended, shall retry
+        4 - error on reading response message from device, shall retry
+        5 - error getting lock for device, shall retry
+        6 - missing aes key
+        7 - value not valid for device config</pre> 
 </div>
 </div>
 <a id="ab2497d252dd45dc89a26ce1e3c494b0e"></a>

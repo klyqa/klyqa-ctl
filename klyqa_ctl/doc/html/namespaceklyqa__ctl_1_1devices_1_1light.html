@@ -105,8 +105,8 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>external_source_messag
 <tr class="separator:a51466fa9adfc392c35234f5ccd9879b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35c05116f6c6975b2f53f62d7cb9a273"><td class="memItemLeft" align="right" valign="top">argparse.Namespace|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklyqa__ctl_1_1devices_1_1light.html#a35c05116f6c6975b2f53f62d7cb9a273">discover_devices</a> (argparse.Namespace args, list[Any] args_in, Callable[[argparse.Namespace], Any] send_to_devices_cb)</td></tr>
 <tr class="separator:a35c05116f6c6975b2f53f62d7cb9a273"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6f37dc3e920830783a253f17f896e06"><td class="memItemLeft" align="right" valign="top">bool|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklyqa__ctl_1_1devices_1_1light.html#ad6f37dc3e920830783a253f17f896e06">process_args_to_msg_lighting</a> (argparse.Namespace args, list[Any] args_in, Callable[[argparse.Namespace], Any] send_to_devices_callable, list[Any] message_queue_tx_local, list[Any] message_queue_tx_command_cloud, list[Any] message_queue_tx_state_cloud, list[str] scene_list)</td></tr>
-<tr class="separator:ad6f37dc3e920830783a253f17f896e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fb122be5fed945b0730e3a42f9c5fd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceklyqa__ctl_1_1devices_1_1light.html#a1fb122be5fed945b0730e3a42f9c5fd6">process_args_to_msg_lighting</a> (argparse.Namespace args, list[Any] args_in, Callable[[argparse.Namespace], Any] send_to_devices_callable, list[Any] message_queue_tx_local, list[Any] message_queue_tx_command_cloud, list[Any] message_queue_tx_state_cloud, list[str] scene_list)</td></tr>
+<tr class="separator:a1fb122be5fed945b0730e3a42f9c5fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Lighting</pre> </div><h2 class="groupheader">Function Documentation</h2>
@@ -166,7 +166,7 @@ Args:
 <pre class="fragment">Send out klyqa broadcast to discover all devices. Tries to set 
 device_unitids in args parse. The user can select them.
 
-Args:
+Params:
     args (Argsparse): Parsed args object
     args_in (list): List of arguments parsed to the script call
     timeout_ms (int, optional): Timeout to send. Defaults to 5000.
@@ -179,14 +179,14 @@ Returns:
 </pre> 
 </div>
 </div>
-<a id="ad6f37dc3e920830783a253f17f896e06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6f37dc3e920830783a253f17f896e06">&#9670;&nbsp;</a></span>process_args_to_msg_lighting()</h2>
+<a id="a1fb122be5fed945b0730e3a42f9c5fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fb122be5fed945b0730e3a42f9c5fd6">&#9670;&nbsp;</a></span>process_args_to_msg_lighting()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> bool | None klyqa_ctl.devices.light.process_args_to_msg_lighting </td>
+          <td class="memname"> bool klyqa_ctl.devices.light.process_args_to_msg_lighting </td>
           <td>(</td>
           <td class="paramtype">argparse.Namespace&#160;</td>
           <td class="paramname"><em>args</em>, </td>

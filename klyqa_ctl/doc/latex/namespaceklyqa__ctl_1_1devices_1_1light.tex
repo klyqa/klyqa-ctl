@@ -31,7 +31,7 @@ None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_a51466fa9adfc392c3
 \item 
 argparse.\+Namespace$\vert$None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_a35c05116f6c6975b2f53f62d7cb9a273}{discover\+\_\+devices}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+cb)
 \item 
-bool$\vert$None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_ad6f37dc3e920830783a253f17f896e06}{process\+\_\+args\+\_\+to\+\_\+msg\+\_\+lighting}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+callable, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+local, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud, list\mbox{[}str\mbox{]} scene\+\_\+list)
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_a1fb122be5fed945b0730e3a42f9c5fd6}{process\+\_\+args\+\_\+to\+\_\+msg\+\_\+lighting}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+callable, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+local, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud, list\mbox{[}str\mbox{]} scene\+\_\+list)
 \end{DoxyCompactItemize}
 
 
@@ -60,7 +60,7 @@ Args:
 \begin{DoxyVerb}Send out klyqa broadcast to discover all devices. Tries to set 
 device_unitids in args parse. The user can select them.
 
-Args:
+Params:
     args (Argsparse): Parsed args object
     args_in (list): List of arguments parsed to the script call
     timeout_ms (int, optional): Timeout to send. Defaults to 5000.
@@ -71,11 +71,11 @@ Raises:
 Returns:
     bool: True if succeeded.
 \end{DoxyVerb}
- \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_ad6f37dc3e920830783a253f17f896e06}\label{namespaceklyqa__ctl_1_1devices_1_1light_ad6f37dc3e920830783a253f17f896e06}} 
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_a1fb122be5fed945b0730e3a42f9c5fd6}\label{namespaceklyqa__ctl_1_1devices_1_1light_a1fb122be5fed945b0730e3a42f9c5fd6}} 
 \index{klyqa\_ctl.devices.light@{klyqa\_ctl.devices.light}!process\_args\_to\_msg\_lighting@{process\_args\_to\_msg\_lighting}}
 \index{process\_args\_to\_msg\_lighting@{process\_args\_to\_msg\_lighting}!klyqa\_ctl.devices.light@{klyqa\_ctl.devices.light}}
 \doxysubsubsection{\texorpdfstring{process\_args\_to\_msg\_lighting()}{process\_args\_to\_msg\_lighting()}}
-{\footnotesize\ttfamily  bool $\vert$ None klyqa\+\_\+ctl.\+devices.\+light.\+process\+\_\+args\+\_\+to\+\_\+msg\+\_\+lighting (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}Any\mbox{]}}]{args\+\_\+in,  }\item[{Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]}}]{send\+\_\+to\+\_\+devices\+\_\+callable,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud,  }\item[{list\mbox{[}str\mbox{]}}]{scene\+\_\+list }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+process\+\_\+args\+\_\+to\+\_\+msg\+\_\+lighting (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}Any\mbox{]}}]{args\+\_\+in,  }\item[{Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]}}]{send\+\_\+to\+\_\+devices\+\_\+callable,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud,  }\item[{list\mbox{[}str\mbox{]}}]{scene\+\_\+list }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}Process arguments for communicating with lights. Fill message queues for local
 and cloud communication. Discover devices to communicate with.
