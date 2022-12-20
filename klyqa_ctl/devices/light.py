@@ -663,7 +663,7 @@ async def discover_devices(
     """Send out klyqa broadcast to discover all devices. Tries to set 
     device_unitids in args parse. The user can select them.
 
-    Args:
+    Params:
         args (Argsparse): Parsed args object
         args_in (list): List of arguments parsed to the script call
         timeout_ms (int, optional): Timeout to send. Defaults to 5000.
@@ -720,8 +720,9 @@ async def process_args_to_msg_lighting(
     message_queue_tx_command_cloud: list[Any],
     message_queue_tx_state_cloud: list[Any],
     scene_list: list[str],
-) -> bool | None:
+) -> bool:
     """
+    
     Process arguments for communicating with lights. Fill message queues for local
     and cloud communication. Discover devices to communicate with.
     
@@ -1000,9 +1001,11 @@ async def process_args_to_msg_lighting(
             scene_result = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
             scene = scene_result[0]
 
-            if not ".rgb" in device.acc_sets["productId"] and not "cwww" in scene: # bulb has no colors, therefore only cwww scenes are allowed
+            # bulb has no colors, therefore only cwww scenes are allowed
+            if not ".rgb" in device.acc_sets["productId"] and not "cwww" in scene:
                 return forced_continue(
-                    f"Scene {scene['label']} not supported by device product {device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
+                    f"Scene {scene['label']} not supported by device product" +
+                    f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
                 )
 
         except Exception as excp:
@@ -1204,3 +1207,5 @@ async def process_args_to_msg_lighting(
 
     if scene:
         scene_list.append(scene)
+    
+    return True
