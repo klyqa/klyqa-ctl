@@ -17,7 +17,7 @@ except:
     from Crypto.Random import get_random_bytes  # pycryptodome
 
 
-def send_msg(msg, device: KlyqaDevice, connection: LocalConnection):
+def send_msg(msg, device: KlyqaDevice, connection: LocalConnection) -> bool:
     info_str: str = (
         'Sending in local network to "'
         + device.get_name()
@@ -26,21 +26,20 @@ def send_msg(msg, device: KlyqaDevice, connection: LocalConnection):
     )
 
     LOGGER.info(info_str)
-    plain = msg.encode("utf-8")
+    plain: bytes = msg.encode("utf-8")
     while len(plain) % 16:
         plain = plain + bytes([0x20])
 
     if connection.sendingAES is None:
         return False
-    cipher = connection.sendingAES.encrypt(plain)
+    cipher: bytes = connection.sendingAES.encrypt(plain)
 
-    while True:
+    while connection.socket:
         try:
-            if connection.socket:
-                connection.socket.send(
-                    bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
-                )
-                return True
+            connection.socket.send(
+                bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
+            )
+            return True
         except socket.timeout:
             LOGGER.debug("Send timed out, retrying...")
             pass
@@ -87,8 +86,8 @@ class CloudConnection:
         self.received_packages = []
 
 
-PROD_HOST = "https://app-api.prod.qconnex.io"
-TEST_HOST = "https://app-api.test.qconnex.io"
+PROD_HOST: str = "https://app-api.prod.qconnex.io"
+TEST_HOST: str = "https://app-api.test.qconnex.io"
 
 
 class Data_communicator:
@@ -118,7 +117,6 @@ class Data_communicator:
 
     async def bind_ports(self) -> bool:
         """bind ports."""
-        # await tcp_udp_port_lock.acquire()
         self.shutdown()
         server_address: tuple[str, int]
         try:
@@ -133,10 +131,11 @@ class Data_communicator:
             self.udp.bind(server_address)
             LOGGER.debug("Bound UDP port 2222")
 
-        except Exception as e:
+        except:
             LOGGER.error(
                 "Error on opening and binding the udp port 2222 on host for initiating the device communication."
             )
+            LOGGER.debug(f"{traceback.format_exc()}")
             return False
 
         try:
@@ -147,9 +146,10 @@ class Data_communicator:
             LOGGER.debug("Bound TCP port 3333")
             self.tcp.listen(1)
 
-        except Exception as e:
+        except:
             LOGGER.error(
                 "Error on opening and binding the tcp port 3333 on host for initiating the device communication."
             )
+            LOGGER.debug(f"{traceback.format_exc()}")
             return False
         return True
