@@ -389,7 +389,7 @@ class KlyqaBulb(KlyqaDevice):
     def read_device_config(self, device_config) -> None:
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
-        self.set_temperature(device_config)
+        self.set_temperature_range(device_config)
         if ".rgb" in self.acc_sets["productId"]:
             self.set_color_range(device_config)
 

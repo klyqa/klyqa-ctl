@@ -25,7 +25,8 @@ class Message:
     args: list[str]
     target_uid: str
     state: Type[Message_state] = Message_state.unsent
-    finished: datetime.datetime | None = None
+    answered_datetime: datetime.datetime | None = None
+    local_pause_after_answer_secs: float | None = None
     answer: str = ""
     answer_utf8: str = ""
     answer_json = {}
@@ -33,6 +34,7 @@ class Message:
     callback: Callable[[Message, str], None] | None = None
     time_to_live_secs: float = -1
     msg_counter: int = -1
+    send_try: int = 0
 
     def __post_init__(self) -> None:
         # super().__init__(self, *args, **kwargs)
