@@ -287,6 +287,10 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
 class Range:
     min: int
     max: int
+    
+    def __post_init__(self) -> None:
+        self.min = int(self.min)
+        self.max = int(self.max)
 
 class KlyqaBulb(KlyqaDevice):
     """KlyqaBulb"""
@@ -302,7 +306,7 @@ class KlyqaBulb(KlyqaDevice):
         self.color_range: Range | None = None
         
     def set_brightness_range(self, device_config) -> None:
-        brightness_enum = []
+        brightness_enum: list[Any] = []
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
                 brightness_enum = [
@@ -421,8 +425,8 @@ class KlyqaBulb(KlyqaDevice):
         return True
 
 # Functions
-def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, int]:
-    waitTime = transition if not skipWait else 0
+def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, str]:
+    waitTime: str = transition if not skipWait else "0"
     return (
         json.dumps(
             {
@@ -439,8 +443,8 @@ def color_message(red, green, blue, transition, skipWait=False) -> tuple[str, in
     )
 
 
-def temperature_message(temperature, transition, skipWait=False) -> tuple[str, int]:
-    waitTime = transition if not skipWait else 0
+def temperature_message(temperature: str, transition: str, skipWait: bool = False) -> tuple[str, str]:
+    waitTime: str = transition if not skipWait else "0"
     return (
         json.dumps(
             {
@@ -454,9 +458,9 @@ def temperature_message(temperature, transition, skipWait=False) -> tuple[str, i
 
 
 def percent_color_message(
-    red, green, blue, warm, cold, transition, skipWait
-) -> tuple[str, int]:
-    waitTime = transition if not skipWait else 0
+    red: str, green: str, blue: str, warm: str, cold: str, transition: str, skipWait: bool = False
+) -> tuple[str, str]:
+    waitTime: str = transition if not skipWait else "0"
     return (
         json.dumps(
             {
@@ -476,7 +480,7 @@ def percent_color_message(
     )
 
 
-def brightness_message(brightness, transition) -> tuple[str, int]:
+def brightness_message(brightness: str, transition: str) -> tuple[str, str]:
     return (
         json.dumps(
             {
@@ -969,7 +973,7 @@ async def process_args_to_msg_lighting(
             missing_config(device.acc_sets["productId"])
         else:
             for value in values:
-                if value < device.color_range.min or value > device.color_range.max:
+                if int(value) < device.color_range.min or int(value) > device.color_range.max:
                     return forced_continue(
                         f"Color {value} out of range [{device.color_range.min}..{device.color_range.max}]."
                     )
@@ -979,7 +983,7 @@ async def process_args_to_msg_lighting(
         if not device.brightness_range:
             missing_config(device.acc_sets["productId"])
         else:
-            if value < device.brightness_range.min or value > device.brightness_range.max:
+            if int(value) < device.brightness_range.min or int(value) > device.brightness_range.max:
                 return forced_continue(
                     f"Brightness {value} out of range [{device.brightness_range.min}..{device.brightness_range.max}]."
                 )
@@ -989,17 +993,16 @@ async def process_args_to_msg_lighting(
         if not device.temperature_range:
             missing_config(device.acc_sets["productId"])
         else:
-            if value < device.temperature_range.min or value > device.temperature_range.max:
+            if int(value) < device.temperature_range.min or int(value) > device.temperature_range.max:
                 return forced_continue(
                     f"Temperature {value} out of range [{device.temperature_range.min}..{device.temperature_range.max}]."
                 )
         return True
 
     def check_scene_support(device, scene_id) -> bool:
-        color_enum = []
         try:
-            scene_result = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
-            scene = scene_result[0]
+            scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
+            scene: dict[str, Any] = scene_result[0]
 
             # bulb has no colors, therefore only cwww scenes are allowed
             if not ".rgb" in device.acc_sets["productId"] and not "cwww" in scene:
@@ -1012,7 +1015,7 @@ async def process_args_to_msg_lighting(
             return not missing_config(device.acc_sets["productId"])
         return True
 
-    check_range = {
+    check_range: dict[Any, Any] = {
         Check_device_parameter.color: check_color_range,
         Check_device_parameter.brightness: check_brightness_range,
         Check_device_parameter.temperature: check_temp_range,
@@ -1030,13 +1033,14 @@ async def process_args_to_msg_lighting(
         return True
 
     if args.color is not None:
+        r: str; g: str; b: str;
         r, g, b = args.color
 
         tt = args.transitionTime[0]
         msg = color_message(r, g, b, int(tt), skipWait=args.brightness is not None)
 
         check_color = functools.partial(
-            check_device_parameter, Check_device_parameter.color, [r, g, b]
+            check_device_parameter, Check_device_parameter.color, [int(r), int(g), int(b)]
         )
         msg = msg + (check_color,)
 
@@ -1049,26 +1053,26 @@ async def process_args_to_msg_lighting(
 
         tt = args.transitionTime[0]
         msg = temperature_message(
-            temperature, int(tt), skipWait=args.brightness is not None
+            temperature, tt, skipWait=args.brightness is not None
         )
 
         check_temperature = functools.partial(
-            check_device_parameter, Check_device_parameter.temperature, temperature
+            check_device_parameter, Check_device_parameter.temperature, int(temperature)
         )
         msg = msg + (check_temperature,)
 
-        temperature = json.loads(msg[0])["temperature"]
+        temperature: str = json.loads(msg[0])["temperature"]
         message_queue_tx_local.append(msg)
         message_queue_tx_state_cloud.append({"temperature": temperature})
 
     if args.brightness is not None:
-        brightness = args.brightness[0]
+        brightness: str = args.brightness[0]
 
-        tt = args.transitionTime[0]
-        msg: tuple[str, int] = brightness_message(brightness, int(tt))
+        tt: str = args.transitionTime[0]
+        msg: tuple[str, str] = brightness_message(brightness, tt)
 
         check_brightness = functools.partial(
-            check_device_parameter, Check_device_parameter.brightness, brightness
+            check_device_parameter, Check_device_parameter.brightness, int(brightness)
         )
         msg = msg + (check_brightness,)
 
@@ -1082,7 +1086,7 @@ async def process_args_to_msg_lighting(
         r, g, b, w, c = args.percent_color
         tt = args.transitionTime[0]
         msg = percent_color_message(
-            r, g, b, w, c, int(tt), skipWait=args.brightness is not None
+            r, g, b, w, c, tt, skipWait=args.brightness is not None
         )
         message_queue_tx_local.append(msg)
         p_color = json.loads(msg[0])["p_color"]
@@ -1096,7 +1100,7 @@ async def process_args_to_msg_lighting(
             {"type": "request", "fade_out": args.fade[1], "fade_in": args.fade[0]}, 500
         )
 
-    scene = ""
+    scene: str = ""
     if args.WW:
         scene = "Warm White"
     if args.daylight:
