@@ -41,9 +41,8 @@ from .general.parameters import get_description_parser
 
 NoneType: Type[None] = type(None)
 import requests, uuid, json
-from threading import Thread
+from threading import Thread, Event
 from collections import ChainMap
-from threading import Event
 from enum import Enum
 import asyncio, aiofiles
 import functools, traceback
@@ -594,8 +593,8 @@ class Klyqa_account:
     async def set_send_message(
         self,
         send_msgs: list[tuple[Any]],
-        target_device_uid: list[str],
-        args: list[Any],
+        target_device_uid: str,
+        args: argparse.Namespace,
         callback: Callable | None = None,
         time_to_live_secs: float = -1.0,
         started: datetime.datetime = datetime.datetime.now(),
@@ -1218,6 +1217,8 @@ class Klyqa_account:
                                 # j = j + 1
                                 # msg_sent.msg_queue.remove(msg.msg_queue[j])
                                 del msg.msg_queue[j]
+                                # don't process the next message, but if
+                                # still elements in the msg_queue send them as well
                                 send_next = False
                                 # break
                             else:
@@ -1444,9 +1445,9 @@ class Klyqa_account:
 
                     plain: bytes = connection.receivingAES.decrypt(cipher)
                     connection.received_packages.append(plain)
-                    if msg_sent is not None and not msg.state == Message_state.answered:
+                    if msg_sent is not None and not msg_sent.state == Message_state.answered:
                         msg_sent.answer = plain
-                        json_response = None
+                        json_response = {}
                         try:
                             plain_utf8: str = plain.decode()
                             json_response = json.loads(plain_utf8)
@@ -1676,7 +1677,7 @@ class Klyqa_account:
                         print("Search local network for devices ...")
                         print(sep_width * "-")
 
-                        discover_end_event: Event = asyncio.Event()
+                        discover_end_event: asyncio.Event = asyncio.Event()
                         discover_timeout_secs: float = 2.5
 
                         async def discover_answer_end(
@@ -1868,12 +1869,12 @@ class Klyqa_account:
                 """cloud processing"""
 
                 queue_printer: EventQueuePrinter = EventQueuePrinter()
-                response_queue = []
+                response_queue: list[Any] = []
 
                 async def _cloud_post(
                     device: KlyqaDevice, json_message, target: str
                 ) -> None:
-                    cloud_device_id = device.acc_sets["cloudDeviceId"]
+                    cloud_device_id: str = device.acc_sets["cloudDeviceId"]
                     unit_id: str = format_uid(device.acc_sets["localDeviceId"])
                     LOGGER.info(
                         f"Post {target} to the device '{cloud_device_id}' (unit_id: {unit_id}) over the cloud."
@@ -1894,7 +1895,7 @@ class Klyqa_account:
                     response_queue.append(resp_print)
                     queue_printer.print(resp_print)
 
-                async def cloud_post(device: KlyqaDevice, json_message, target: str):
+                async def cloud_post(device: KlyqaDevice, json_message, target: str) -> int:
                     if not await device.use_lock():
                         LOGGER.error(
                             f"Couldn't get use lock for device {device.get_name()})"
@@ -1910,6 +1911,7 @@ class Klyqa_account:
                         )
                     finally:
                         await device.use_unlock()
+                    return 0
 
                 started: datetime.datetime = datetime.datetime.now()
                 # timeout_ms = 30000

@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio, aiofiles
 from enum import Enum
 
-from typing import Any, Literal
+from typing import Any
 import datetime
 import json
 import logging
@@ -124,9 +124,9 @@ class AsyncIOLock:
 class RefParse:
     """RefParse"""
 
-    ref = None
+    ref: Any = None
 
-    def __init__(self, ref) -> None:
+    def __init__(self, ref: Any) -> None:
         self.ref = ref
 
 
@@ -142,14 +142,14 @@ async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
     return_json: Device_config = json_data
     cached = False
     
-    user_homedir = ""
+    user_homedir: str = ""
     try: 
         user_homedir = os.path.expanduser('~')
     except:
         # use else the dirpath where the called python script lies. 
         user_homedir = os.path.dirname(sys.argv[0])
         
-    klyqa_data_path = user_homedir + "/.klyqa"
+    klyqa_data_path: str = user_homedir + "/.klyqa"
     
     Path(klyqa_data_path).mkdir(parents=True, exist_ok=True)
     
@@ -180,7 +180,7 @@ async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
             ) as f:
                 s = await f.read()
             return_json = json.loads(s)
-            cached = True
+            cached: bool = True
         except:
             LOGGER.warning(f'No cache from json file "{json_file}" available.')
     return (return_json, cached)

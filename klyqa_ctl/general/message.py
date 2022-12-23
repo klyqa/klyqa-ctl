@@ -1,6 +1,7 @@
 """Message"""
 
 from __future__ import annotations
+import argparse
 from dataclasses import dataclass
 
 import datetime
@@ -22,7 +23,7 @@ class Message:
     started: datetime.datetime
     msg_queue: list[tuple]
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
-    args: list[str]
+    args: argparse.Namespace
     target_uid: str
     state: Type[Message_state] = Message_state.unsent
     answered_datetime: datetime.datetime | None = None
