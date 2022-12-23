@@ -6,7 +6,7 @@ import traceback
 from typing import Any
 
 from ..general.connections import CloudConnection
-from ..general.general import LOGGER, Device_config
+from ..general.general import LOGGER
 from ..general.message import Message
 
 import slugify
@@ -67,20 +67,25 @@ class KlyqaDevice:
         )
 
     async def use_lock(self, timeout=30, **kwargs) -> bool:
+        task  = asyncio.current_task()
+        TASK_NAME: str = task.get_name() if task is not None else ""
         try:
             if not self._use_lock:
                 self._use_lock = asyncio.Lock()
 
             LOGGER.debug(f"wait for lock... {self.get_name()}")
 
-            if await self._use_lock.acquire():
-                self._use_thread = asyncio.current_task()
-                LOGGER.debug(f"got lock... {self.get_name()}")
-                return True
+            await asyncio.wait_for(self._use_lock.acquire(), timeout)
+            
+            self._use_thread = task
+
+            LOGGER.debug(f"{TASK_NAME} got lock... {self.get_name()}")
+            return True
         except asyncio.TimeoutError:
             LOGGER.error(f'Timeout for getting the lock for device "{self.get_name()}"')
-        except Exception as excp:
-            LOGGER.debug(f"different error while trying to lock.")
+        except Exception:
+            LOGGER.debug(f"{TASK_NAME} Error while trying to get device lock.")
+            LOGGER.debug(f"{traceback.format_exc()}")
 
         return False
 
@@ -119,7 +124,7 @@ class KlyqaDevice:
                         self.status = self.response_classes["status"](**msg)
                     else:
                         self.status.update(**msg)
-            except Exception as e:
+            except:
                 LOGGER.error(f"{traceback.format_exc()}")
                 LOGGER.error("Could not process device response: ")
                 LOGGER.error(f"{msg}")

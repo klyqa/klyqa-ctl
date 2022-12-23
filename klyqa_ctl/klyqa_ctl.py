@@ -122,6 +122,8 @@ class Klyqa_account:
     * rest access token
     * devices
     * account settings
+    * local communication
+    * cloud communication
 
     """
 
@@ -220,14 +222,13 @@ class Klyqa_account:
     ):
         """! Handle the incoming tcp connection to the device."""
         return_state = -1
-        response = ""
+        
+        task: asyncio.Task[Any] | None = asyncio.current_task()
+        TASK_NAME: str = task.get_name() if task is not None else ""
 
         try:
-            # LOGGER.debug(f"TCP layer connected {connection.address['ip']}")
-
             r_device: RefParse = RefParse(device)
-            # msg_sent: Message | None = None
-            # r_msg: RefParse = RefParse(msg_sent)
+  
             task: asyncio.Task[Any] | None = asyncio.current_task()
 
             if task is not None:
@@ -236,10 +237,9 @@ class Klyqa_account:
                 )
             try:
                 return_state = await self.aes_handshake_and_send_msgs(
-                    r_device, connection = connection # , r_msg = r_msg
+                    r_device, connection = connection
                 )
                 device = r_device.ref
-                # msg_sent = r_msg.ref
             except CancelledError as e:
                 LOGGER.error(
                     f"Cancelled local send because send-timeout send_timeout hitted {connection.address['ip']}, "
@@ -250,20 +250,15 @@ class Klyqa_account:
                 LOGGER.debug(f"{traceback.format_exc()}")
             finally:
                 LOGGER.debug(
-                    f"finished tcp device {connection.address['ip']}, return_state: {return_state}"
+                    f"{TASK_NAME} finished tcp device {connection.address['ip']}, return_state: {return_state}"
                 )
 
-                # if not device or (device and not device.u_id in self.message_queue or not self.message_queue[device.u_id]):
-                #     try:
-                # LOGGER.debug(f"no more messages to sent for device {device.u_id}, close tcp tunnel.")
                 if connection.socket is not None:
                     connection.socket.shutdown(socket.SHUT_RDWR)
                     connection.socket.close()
                     connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
                 LOGGER.debug(f"tcp closed for device.u_id.")
-                # except Exception as e:
-                #     pass
 
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device and device.u_id else ""
@@ -279,13 +274,6 @@ class Klyqa_account:
                                 i = dict_values_to_list(i)
                             r.append(str(i))
                         return r
-
-                    # if not args.selectDevice:
-                    #     name = f' "{device.get_name()}"' if device.get_name() else ""
-                    #     LOGGER.info(
-                    #         f"device{name} response (local network): "
-                    #         + str(json.dumps(response, sort_keys=True, indent=4))
-                    #     )
 
                 if device and device.u_id in self.devices:
                     device_b: KlyqaDevice = self.devices[device.u_id]
@@ -315,7 +303,6 @@ class Klyqa_account:
             LOGGER.debug(f"{e}")
             pass
         return return_state
-        pass
 
     async def search_and_send_to_device(
         self, proc_timeout_secs=DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
@@ -351,7 +338,7 @@ class Klyqa_account:
                             "QCX-SYN".encode("utf-8"), ("255.255.255.255", 2222)
                         )
 
-                    except Exception as exception:
+                    except:
                         LOGGER.debug("Broadcasting QCX-SYN Burst Exception")
                         LOGGER.debug(f"{traceback.format_exc()}")
                         read_broadcast_response = False
@@ -474,7 +461,7 @@ class Klyqa_account:
                                 )
                                 self.__tasks_undone.append(
                                     (new_task, datetime.datetime.now())
-                                )  # device.u_id
+                                )
                             else:
                                 LOGGER.debug(f"{addr[0]} already in connection.")
 
@@ -1016,7 +1003,7 @@ class Klyqa_account:
         }
 
     async def request(self, url, **kwargs) -> TypeJSON | None:
-        loop = asyncio.get_event_loop()
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         answer: TypeJSON | None = None
         try:
             response = await loop.run_in_executor(
@@ -1033,7 +1020,7 @@ class Klyqa_account:
             if response.status_code != 200:
                 raise Exception(response.text)
             answer = json.loads(response.text)
-        except Exception as e:
+        except Exception:
             LOGGER.debug(f"{traceback.format_exc()}")
             answer = None
         return answer
@@ -1132,10 +1119,11 @@ class Klyqa_account:
         return_val: Type[Device_TCP_return.__class__] = Device_TCP_return.nothing_done
 
         msg_sent: Message | None = None
-        communication_finished: bool = False
+        communication_finished: bool = False        
+        pause_after_send: int
 
         async def __send_msg() -> Message | None:
-            nonlocal last_send, pause, return_val, device, msg_sent
+            nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
             
             def rm_msg(msg) -> None:
                 try:
@@ -1154,54 +1142,34 @@ class Klyqa_account:
             return_val = Device_TCP_return.sent
             
             send_next: bool = elapsed >= pause
+            sleep: float = (pause - elapsed).total_seconds()
+            if sleep > 0:
+                await asyncio.sleep(sleep)
         
             ## check how the answer come in and how they can be connected to the messages that has been sent.
-            i: int = 0
-            
-            # if msg_sent is not None and msg_sent.state == Message_state.answered and
-            #     msg_sent.answered_datetime - datetime.datetime.now()
-            # if len(message_queue_tx) > 0 and :
-            # msg_queue = self.message_queue.copy()
-                        
-            # if not send_next and pause:
-            #     await asyncio.sleep(delay = pause.total_seconds())
-            #     pause = datetime.timedelta(seconds=0)
-            #     send_next = True
                 
-            while (
+            if (
                 send_next
                 and device.u_id in self.message_queue
-                # and 0 in self.message_queue[device.u_id]
+                and len(self.message_queue[device.u_id]) > 0
             ):
                 msg: Message = self.message_queue[device.u_id][0]
                 
                 LOGGER.debug(
                     f"{TASK_NAME} - Process msg to send '{msg.msg_queue}' to device '{device.u_id}'."
                 )
+                j: int = 0
                 
                 if msg.state == Message_state.unsent:
-                  
-                    # if not msg_sent:
-                    #     return Device_TCP_return.sent_error
-                    # else:
-                    #     break
-               
-                    j: int = 0
                     
                     while len(msg.msg_queue):
-                        # if j not in msg.msg_queue:
-                        #     if j == 0:
-                        #         return Device_TCP_return.sent_error
-                        #     j = 0
-                        #     continue
                             
                         text: str
-                        pause_after_send: int
                         if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
-                            text, pause_after_send = msg.msg_queue[j] #msg.msg_queue.pop()
+                            text, pause_after_send = msg.msg_queue[j]
                             msg.msg_queue_sent.append(text)
                         else:
-                            text, pause_after_send, check_func = msg.msg_queue[j] #msg.msg_queue.pop()
+                            text, pause_after_send, check_func = msg.msg_queue[j]
                             msg.msg_queue_sent.append(text)
                             if not check_func(device = device):
                                 # some parameter check in the message failed, remove message from the queue
@@ -1214,38 +1182,27 @@ class Klyqa_account:
                             if await loop.run_in_executor(None, send_msg, text, device, connection):
                                 msg_sent = msg 
                                 last_send = datetime.datetime.now()
-                                # j = j + 1
-                                # msg_sent.msg_queue.remove(msg.msg_queue[j])
-                                del msg.msg_queue[j]
+                                j = j + 1
                                 # don't process the next message, but if
                                 # still elements in the msg_queue send them as well
                                 send_next = False
                                 # break
                             else:
-                                if connection.socket:
-                                    continue
-                                else:
-                                    raise Exception("Connection to tcp socket is missing!")
+                                raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
                         except:
                             LOGGER.debug(f"{TASK_NAME} - {traceback.format_exc()}")
                             break
-                        # await asyncio.sleep(delay = msg.local_pause_after_answer_secs if msg.local_pause_after_answer_secs else 0.0)
-                        # return None
-                        # j += 1
+       
                     if len(msg.msg_queue) == 0:
                         msg.state = Message_state.sent
                         # all messages sent to devices, break now for reading response
                         rm_msg(msg)
-                        break
                 else:
                     rm_msg(msg)
                     
-                if msg.state != Message_state.unsent:
-                    i = i + 1
 
-        while (device.u_id == "no_uid" or type(device) == KlyqaDevice or device.u_id in self.message_queue) and not communication_finished:
-            #len(self.message_queue) > 0 or elapsed < pause
-        #)):
+        while (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
+               device.u_id in self.message_queue) and not communication_finished:
             try:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
                 if len(data) == 0:
@@ -1326,10 +1283,6 @@ class Klyqa_account:
                         elif ".cleaning" in ident.product_id:
                             self.devices[device.u_id] = KlyqaVC()
 
-                    # device_b: KlyqaDevice
-                    # device.ident.product_id.startswith("@klyqa.cleaning"):
-                    #     device_b: KlyqaDevice = self.devices[device.u_id]
-
                     # cached client device (self.devices), incoming device object created on tcp connection acception
                     if not device.u_id in self.devices:
                         return -1
@@ -1369,7 +1322,7 @@ class Klyqa_account:
                             del self.message_queue[device.u_id]
                         return Device_TCP_return.no_message_to_send
 
-                    found = ""
+                    found: str = ""
                     settings_device = ""
                     if self.acc_settings and "devices" in self.acc_settings:
                         settings_device = [
@@ -1405,9 +1358,10 @@ class Klyqa_account:
                         if connection.socket is not None:
                             # for prod do in executor for more asyncio schedule task executions
                             # await loop.run_in_executor(None, connection.socket.send, bytes([0, 8, 0, 1]) + connection.localIv)
-                            connection.socket.send(
+                            if not connection.socket.send(
                                 bytes([0, 8, 0, 1]) + connection.localIv
-                            )
+                            ):
+                                return Device_TCP_return.err_local_iv
                     except:
                         return Device_TCP_return.err_local_iv
 
@@ -1483,7 +1437,7 @@ class Klyqa_account:
                     LOGGER.debug(
                         f"{TASK_NAME} - Request's reply decrypted: " + str(plain)
                     )
-                    # communication_finished = True
+                    communication_finished = True
                     break
                 else:
                     LOGGER.debug(
@@ -2129,10 +2083,10 @@ async def tests(klyqa_acc) -> int:
         
         async def send_answer_cb(msg: Message, uid: str) -> None:
 
-            LOGGER.debug("Send_answer_cb %s", str(uid))
-            LOGGER.info("Message answer %s: %s",msg.target_uid, msg.answer_utf8 if msg else "empty msg")
             if uid != u_id:
                 return
+            LOGGER.debug("Send_answer_cb %s", str(uid))
+            LOGGER.info("Message answer %s: %s",msg.target_uid, msg.answer_utf8 if msg else "empty msg")
         
         for args in args_all:
 
@@ -2154,6 +2108,7 @@ async def tests(klyqa_acc) -> int:
                     timeout_ms=9000 * 1000,
                 )
             )
+            await asyncio.wait([new_task]) # single task debug
             await asyncio.sleep(0.1)
             tasks.append(new_task)
         
