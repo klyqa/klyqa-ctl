@@ -4,7 +4,8 @@
 # Execute with:
 # $ python -m klyqa_ctl (3.9+)
 
+import asyncio
 import klyqa_ctl.klyqa_ctl as klyqa_ctl
 
 if __name__ == "__main__":
-    klyqa_ctl.main()
+    asyncio.run(klyqa_ctl.main())

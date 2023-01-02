@@ -18,7 +18,7 @@ from __future__ import annotations
 #   -   Implementation for the different device config profile versions and
 #       check on send.
 #
-# BUGS:
+# current bugs:
 #  - vc1 interactive command selection support.
 #  - interactive light selection, command not applied
 #
@@ -221,7 +221,7 @@ class Klyqa_account:
         self, device: KlyqaDevice | None, connection: LocalConnection
     ):
         """! Handle the incoming tcp connection to the device."""
-        return_state = -1
+        return_state: Type[Device_TCP_return] = Device_TCP_return.nothing_done
         
         task: asyncio.Task[Any] | None = asyncio.current_task()
         TASK_NAME: str = task.get_name() if task is not None else ""
@@ -1026,6 +1026,7 @@ class Klyqa_account:
         return answer
 
     async def post(self, url, **kwargs) -> TypeJSON | None:
+        """Post requests."""
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         answer: TypeJSON | None = None
         try:
@@ -1046,8 +1047,9 @@ class Klyqa_account:
             answer = None
         return answer
 
-    def shutdown(self) -> None:
+    async def shutdown(self) -> None:
         """Logout again from klyqa account."""
+        # loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         # for uid in self.devices:
         #     try:
         #         device = self.devices[uid]
@@ -1064,6 +1066,10 @@ class Klyqa_account:
                 self.access_token = ""
             except Exception:
                 LOGGER.warning("Couldn't logout.")
+                
+        # asyncio.run_until_complete(self.search_and_send_loop_task_stop())
+        # asyncio.run(self.search_and_send_loop_task_stop())
+        await self.search_and_send_loop_task_stop()
 
     async def aes_handshake_and_send_msgs(
         self,
@@ -1162,7 +1168,7 @@ class Klyqa_account:
                 
                 if msg.state == Message_state.unsent:
                     
-                    while len(msg.msg_queue):
+                    while j < len(msg.msg_queue):
                             
                         text: str
                         if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
@@ -1193,7 +1199,7 @@ class Klyqa_account:
                             LOGGER.debug(f"{TASK_NAME} - {traceback.format_exc()}")
                             break
        
-                    if len(msg.msg_queue) == 0:
+                    if len(msg.msg_queue) == len(msg.msg_queue_sent):
                         msg.state = Message_state.sent
                         # all messages sent to devices, break now for reading response
                         rm_msg(msg)
@@ -1202,7 +1208,7 @@ class Klyqa_account:
                     
 
         while (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
-               device.u_id in self.message_queue) and not communication_finished:
+               device.u_id in self.message_queue or msg_sent) and not communication_finished:
             try:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
                 if len(data) == 0:
@@ -2064,6 +2070,8 @@ async def tests(klyqa_acc) -> int:
     if not await klyqa_acc.data_communicator.bind_ports():
         return 1
     
+    started: datetime = datetime.datetime.now()
+    
     uids: list[str] = [
         "29daa5a4439969f57934",
         "00ac629de9ad2f4409dc",
@@ -2072,21 +2080,30 @@ async def tests(klyqa_acc) -> int:
         "1a8379e585321fdb8778"
         ]
     
+    messages_answered: int = 0
+    messages_sent: int = 0
+    
     tasks: list[asyncio.Task] = []
     for u_id in uids:
         args_all: list[list[str]] = []
         args_all.append(["--color", str(random.randrange(0, 255)), "21", "255"])
-        args_all.append(["--debug", "--request"])
+        args_all.append(["--request"])
         args_all.append(["--temperature", str(random.randrange(2000, 6500))])
         args_all.append(["--brightness", str(random.randrange(0, 100))])
         args_all.append(["--WW"])
         
         async def send_answer_cb(msg: Message, uid: str) -> None:
-
+            nonlocal messages_answered
             if uid != u_id:
                 return
-            LOGGER.debug("Send_answer_cb %s", str(uid))
-            LOGGER.info("Message answer %s: %s",msg.target_uid, msg.answer_utf8 if msg else "empty msg")
+            if msg.answer_utf8:
+                messages_answered = messages_answered + 1
+                LOGGER.debug("Send_answer_cb %s", str(uid))
+                LOGGER.info("Message answer %s: %s",msg.target_uid, 
+                            json.dumps(json.loads(msg.answer_utf8), sort_keys=True, indent=4)
+                            if msg else "empty msg")
+            else:
+                LOGGER.info("MSG-TTL: No answer from %s", uid)
         
         for args in args_all:
 
@@ -2105,11 +2122,12 @@ async def tests(klyqa_acc) -> int:
                     args_parsed,
                     args,
                     async_answer_callback=send_answer_cb,
-                    timeout_ms=9000 * 1000,
+                    timeout_ms=4 * 1000,
                 )
             )
+            messages_sent = messages_sent + 1
             await asyncio.wait([new_task]) # single task debug
-            await asyncio.sleep(0.1)
+            # await asyncio.sleep(0.1)
             tasks.append(new_task)
         
     for task in tasks:
@@ -2123,16 +2141,19 @@ async def tests(klyqa_acc) -> int:
             await asyncio.wait([task])
         except asyncio.TimeoutError:
             pass
-    LOGGER.info("End")
+    
+    LOGGER.info("End. Messages sent: %s, Messages answered: %s", messages_sent, messages_answered)
+    time_run: datetime.timedelta = datetime.datetime.now() - started
+    LOGGER.info("Time diff run: %s", time_run)
     return 0
 
 
-def main() -> None:
+async def main() -> None:
     klyqa_accs: dict[str, Klyqa_account] | None = None
     if not klyqa_accs:
         klyqa_accs = dict()
 
-    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    # loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
     parser: argparse.ArgumentParser = get_description_parser()
 
@@ -2197,7 +2218,8 @@ def main() -> None:
         klyqa_acc = Klyqa_account(
             data_communicator, offline = args_parsed.offline, interactive_prompts = True
         )
-        asyncio.run(klyqa_acc.login(print_onboarded_devices=False))
+        # asyncio.run(klyqa_acc.login(print_onboarded_devices=False))
+        await klyqa_acc.login(print_onboarded_devices=False)
 
     else:
         LOGGER.debug("login")
@@ -2215,9 +2237,10 @@ def main() -> None:
 
         if not klyqa_acc.access_token:
             try:
-                if asyncio.run(
-                    klyqa_acc.login(print_onboarded_devices=print_onboarded_devices)
-                ):
+                # if asyncio.run(
+                #     klyqa_acc.login(print_onboarded_devices=print_onboarded_devices)
+                # ):
+                if await klyqa_acc.login(print_onboarded_devices=print_onboarded_devices):
                     LOGGER.debug("login finished")
                     klyqa_accs[klyqa_acc.username] = klyqa_acc
                 else:
@@ -2229,21 +2252,29 @@ def main() -> None:
     exit_ret = 0
 
     if True:
-        loop.run_until_complete(tests(klyqa_acc))
+        # loop.run_until_complete(tests(klyqa_acc))
+        await tests(klyqa_acc)
     else:
         if (
-            loop.run_until_complete(
-                klyqa_acc.send_to_devices_wrapped(
-                    args_parsed, args_in.copy(), timeout_ms=timeout_ms
-                )
-            )
+            # loop.run_until_complete(
+            #     klyqa_acc.send_to_devices_wrapped(
+            #         args_parsed, args_in.copy(), timeout_ms=timeout_ms
+            #     )
+            # )
+            await klyqa_acc.send_to_devices_wrapped(
+                args_parsed, args_in.copy(), timeout_ms=timeout_ms)
             > 0
         ):
             exit_ret = 1
 
-    klyqa_acc.shutdown()
+    # loop.run_until_complete(klyqa_acc.shutdown())
+    await klyqa_acc.shutdown()
+
+    LOGGER.debug("Closing ports")
+    if klyqa_acc.data_communicator:
+        klyqa_acc.data_communicator.shutdown()
 
     sys.exit(exit_ret)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
