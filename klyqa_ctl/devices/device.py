@@ -6,7 +6,7 @@ import traceback
 from typing import Any
 
 from klyqa_ctl.general.connections import CloudConnection
-from klyqa_ctl.general.general import LOGGER
+from klyqa_ctl.general.general import LOGGER, task_name
 from klyqa_ctl.general.message import Message
 
 import slugify
@@ -67,8 +67,9 @@ class KlyqaDevice:
         )
 
     async def use_lock(self, timeout=30, **kwargs) -> bool:
+        """Get device lock."""
         task  = asyncio.current_task()
-        TASK_NAME: str = task.get_name() if task is not None else ""
+        
         try:
             if not self._use_lock:
                 self._use_lock = asyncio.Lock()
@@ -79,12 +80,12 @@ class KlyqaDevice:
             
             self._use_thread = task
 
-            LOGGER.debug(f"{TASK_NAME} got lock... {self.get_name()}")
+            LOGGER.debug(f"{task_name()} got lock... {self.get_name()}")
             return True
         except asyncio.TimeoutError:
             LOGGER.error(f'Timeout for getting the lock for device "{self.get_name()}"')
         except Exception:
-            LOGGER.debug(f"{TASK_NAME} Error while trying to get device lock.")
+            LOGGER.debug(f"{task_name()} Error while trying to get device lock.")
             LOGGER.debug(f"{traceback.format_exc()}")
 
         return False

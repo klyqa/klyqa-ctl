@@ -190,12 +190,9 @@ class Klyqa_account:
         return_state: Type[Device_TCP_return] = Device_TCP_return.nothing_done
         
         task: asyncio.Task[Any] | None = asyncio.current_task()
-        TASK_NAME: str = task.get_name() if task is not None else ""
 
         try:
             r_device: RefParse = RefParse(device)
-  
-            task: asyncio.Task[Any] | None = asyncio.current_task()
 
             if task is not None:
                 LOGGER.debug(
@@ -216,7 +213,7 @@ class Klyqa_account:
                 LOGGER.debug(f"{traceback.format_exc()}")
             finally:
                 LOGGER.debug(
-                    f"{TASK_NAME} finished tcp device {connection.address['ip']}, return_state: {return_state}"
+                    f"{task_name()} finished tcp device {connection.address['ip']}, return_state: {return_state}"
                 )
 
                 if connection.socket is not None:
@@ -225,7 +222,7 @@ class Klyqa_account:
                     connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
                 if device:
-                    LOGGER.debug(f"{TASK_NAME} tcp closed for {device.u_id}. Return state: {return_state}")
+                    LOGGER.debug(f"{task_name()} tcp closed for {device.u_id}. Return state: {return_state}")
 
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device and device.u_id else ""
@@ -1153,8 +1150,6 @@ class Klyqa_account:
         device: KlyqaDevice | None = r_device.ref
         if device is None or connection.socket is None:
             return Device_TCP_return.unknown_error
-        task: asyncio.Task[Any] | None = asyncio.current_task()
-        TASK_NAME: str = task.get_name() if task is not None else ""
 
         data: bytes = b""
         last_send: datetime.datetime = datetime.datetime.now()
@@ -1177,7 +1172,7 @@ class Klyqa_account:
                 if not device:
                     return
                 try:
-                    LOGGER.debug(f"{TASK_NAME} - rm_msg()")
+                    LOGGER.debug(f"{task_name()} - rm_msg()")
                     self.message_queue[device.u_id].remove(msg)
                     msg.state = Message_state.sent
 
@@ -1187,7 +1182,7 @@ class Klyqa_account:
                     ):
                         del self.message_queue[device.u_id]
                 except:
-                    LOGGER.debug(f"{TASK_NAME} - {traceback.format_exc()}")
+                    LOGGER.debug(f"{task_name()} - {traceback.format_exc()}")
 
             return_val = Device_TCP_return.sent
             
@@ -1206,7 +1201,7 @@ class Klyqa_account:
                 msg: Message = self.message_queue[device.u_id][0]
                 
                 LOGGER.debug(
-                    f"{TASK_NAME} - Process msg to send '{msg.msg_queue}' to device '{device.u_id}'."
+                    f"{task_name()} - Process msg to send '{msg.msg_queue}' to device '{device.u_id}'."
                 )
                 j: int = 0
                 
@@ -1227,7 +1222,7 @@ class Klyqa_account:
                                 # stop processing further the message
                                 break
 
-                        pause = datetime.timedelta(milliseconds = pause_after_send)
+                        pause = datetime.timedelta(milliseconds = float(pause_after_send))
                         try:
                             if await loop.run_in_executor(None, send_msg, text, device, connection):
                                 msg_sent = msg 
@@ -1240,7 +1235,7 @@ class Klyqa_account:
                             else:
                                 raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
                         except:
-                            LOGGER.debug(f"{TASK_NAME} - {traceback.format_exc()}")
+                            LOGGER.debug(f"{task_name()} - {traceback.format_exc()}")
                             break
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
@@ -1251,18 +1246,18 @@ class Klyqa_account:
                     rm_msg(msg)
                     
         connection.socket.settimeout(1)
-        while (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
-               device.u_id in self.message_queue or msg_sent) and not communication_finished:
+        while not communication_finished and (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
+               device.u_id in self.message_queue or msg_sent):
             try:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
                 if len(data) == 0:
-                    LOGGER.debug(f"{TASK_NAME} - EOF")
+                    LOGGER.debug(f"{task_name()} - EOF")
                     return Device_TCP_return.tcp_error
             except socket.timeout:
-                LOGGER.debug(f"{TASK_NAME} - aes_send_recv timeout")
+                LOGGER.debug(f"{task_name()} - aes_send_recv timeout")
                 await asyncio.sleep(0.01)
             except:
-                LOGGER.debug(f"{TASK_NAME} - {traceback.format_exc()}")
+                LOGGER.debug(f"{task_name()} - {traceback.format_exc()}")
                 return Device_TCP_return.unknown_error
 
             elapsed = datetime.datetime.now() - last_send
@@ -1279,7 +1274,7 @@ class Klyqa_account:
 
             while not communication_finished and (len(data)):
                 LOGGER.debug(
-                    f"{TASK_NAME} - "
+                    f"{task_name()} - "
                     + "TCP server received "
                     + str(len(data))
                     + " bytes from "
@@ -1294,7 +1289,7 @@ class Klyqa_account:
                 pkg: bytes = data[4 : 4 + pkgLen]
                 if len(pkg) < pkgLen:
                     LOGGER.debug(
-                        f"{TASK_NAME} - Incomplete packet, waiting for more..."
+                        f"{task_name()} - Incomplete packet, waiting for more..."
                     )
                     break
 
@@ -1306,7 +1301,7 @@ class Klyqa_account:
                     # safe the idenfication to device object if it is a not known device,
                     # send the local initial vector for the encrypted communication to the device.
 
-                    LOGGER.debug(f"{TASK_NAME} - Plain: {pkg}")
+                    LOGGER.debug(f"{task_name()} - Plain: {pkg}")
                     json_response: dict[str, Any] = json.loads(pkg)
                     try:
                         ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent(
@@ -1345,7 +1340,7 @@ class Klyqa_account:
                         #         """There shouldn't be an open connection on the already known devices, but if there is close it."""
                         #         device_b.local.socket.shutdown(socket.SHUT_RDWR)
                         #         device_b.local.socket.close()
-                        #         LOGGER.debug(f"{TASK_NAME} - tcp closed for device.u_id.")
+                        #         LOGGER.debug(f"{task_name()} - tcp closed for device.u_id.")
                         #         """just ensure connection is closed, so that device knows it as well"""
                         #     except:
                         #         pass
@@ -1357,7 +1352,7 @@ class Klyqa_account:
                         device = device_b
                         r_device.ref = device_b
                     else:
-                        err: str = f"{TASK_NAME} - Couldn't get use lock for device {device_b.get_name()} {connection.address})"
+                        err: str = f"{task_name()} - Couldn't get use lock for device {device_b.get_name()} {connection.address})"
                         LOGGER.error(err)
                         return Device_TCP_return.device_lock_timeout
 
@@ -1390,12 +1385,12 @@ class Klyqa_account:
                     if is_new_device:
                         LOGGER.info(
                             f"%sFound device {found}",
-                            f"{TASK_NAME} - " if LOGGER.level == logging.DEBUG else "",
+                            f"{task_name()} - " if LOGGER.level == logging.DEBUG else "",
                         )
                     else:
                         LOGGER.debug(
                             f"%sFound device {found}",
-                            f"{TASK_NAME} - " if LOGGER.level == logging.DEBUG else "",
+                            f"{task_name()} - " if LOGGER.level == logging.DEBUG else "",
                         )
 
                     if "all" in AES_KEYs:
@@ -1427,7 +1422,7 @@ class Klyqa_account:
                     break
                 else:
                     LOGGER.debug(
-                        f"{TASK_NAME} - No answer to process. Waiting on answer of the device ... "
+                        f"{task_name()} - No answer to process. Waiting on answer of the device ... "
                     )
         return return_val
 
