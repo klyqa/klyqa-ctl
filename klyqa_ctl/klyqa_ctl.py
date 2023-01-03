@@ -212,9 +212,7 @@ class Klyqa_account:
             except Exception as e:
                 LOGGER.debug(f"{traceback.format_exc()}")
             finally:
-                LOGGER.debug(
-                    f"{task_name()} finished tcp device {connection.address['ip']}, return_state: {return_state}"
-                )
+                logger_debug_task(f"finished tcp device {connection.address['ip']}, return_state: {return_state}")
 
                 if connection.socket is not None:
                     connection.socket.shutdown(socket.SHUT_RDWR)
@@ -222,7 +220,7 @@ class Klyqa_account:
                     connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
                 if device:
-                    LOGGER.debug(f"{task_name()} tcp closed for {device.u_id}. Return state: {return_state}")
+                    logger_debug_task(f"tcp closed for {device.u_id}. Return state: {return_state}")
 
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device and device.u_id else ""
@@ -1042,8 +1040,7 @@ class Klyqa_account:
         connection.remoteIv = pkg
         connection.received_packages.append(pkg)
         if not connection.aes_key:
-            LOGGER.debug(
-                f"{task_name()} - "
+           logger_debug_task(
                 + "Missing AES key. Probably not in onboarded devices. Provide AES key with --aes [key]! "
                 + str(device.u_id)
             )
@@ -1080,14 +1077,10 @@ class Klyqa_account:
                 device.save_device_message(json_response)
                 connection.sent_msg_answer = json_response
                 connection.aes_key_confirmed = True
-                LOGGER.debug(
-                    f"{task_name()} - device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}"
-                )
+                logger_debug_task(f"device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
             except:
-                LOGGER.error(
-                    f"{task_name()} - Could not load json message from device: "
-                )
-                LOGGER.error(f"{task_name()} - {pkg}")
+                logger_debug_task("Could not load json message from device: ")
+                logger_debug_task(f"{pkg}")
                 return Device_TCP_return.response_error
 
             msg_sent.answer_utf8 = plain_utf8
@@ -1106,9 +1099,7 @@ class Klyqa_account:
                 )
             msg_sent = None
 
-        LOGGER.debug(
-            f"{task_name()} - Request's reply decrypted: " + str(plain)
-        )
+        logger_debug_task(f" Request's reply decrypted: " + str(plain))
         return return_val
 
     async def aes_handshake_and_send_msgs(
@@ -1200,9 +1191,7 @@ class Klyqa_account:
             ):
                 msg: Message = self.message_queue[device.u_id][0]
                 
-                LOGGER.debug(
-                    f"{task_name()} - Process msg to send '{msg.msg_queue}' to device '{device.u_id}'."
-                )
+                logger_debug_task(f"Process msg to send '{msg.msg_queue}' to device '{device.u_id}'.")
                 j: int = 0
                 
                 if msg.state == Message_state.unsent:
@@ -1273,9 +1262,8 @@ class Klyqa_account:
                     return Device_TCP_return.unknown_error
 
             while not communication_finished and (len(data)):
-                LOGGER.debug(
-                    f"{task_name()} - "
-                    + "TCP server received "
+                logger_debug_task(
+                    "TCP server received "
                     + str(len(data))
                     + " bytes from "
                     + str(connection.address)
@@ -1288,9 +1276,7 @@ class Klyqa_account:
 
                 pkg: bytes = data[4 : 4 + pkgLen]
                 if len(pkg) < pkgLen:
-                    LOGGER.debug(
-                        f"{task_name()} - Incomplete packet, waiting for more..."
-                    )
+                    logger_debug_task(f"Incomplete packet, waiting for more...")
                     break
 
                 data: bytes = data[4 + pkgLen :]
@@ -1388,10 +1374,7 @@ class Klyqa_account:
                             f"{task_name()} - " if LOGGER.level == logging.DEBUG else "",
                         )
                     else:
-                        LOGGER.debug(
-                            f"%sFound device {found}",
-                            f"{task_name()} - " if LOGGER.level == logging.DEBUG else "",
-                        )
+                        logger_debug_task(f"Found device {found}")
 
                     if "all" in AES_KEYs:
                         connection.aes_key = AES_KEYs["all"]
@@ -1415,15 +1398,13 @@ class Klyqa_account:
 
                 elif connection.state == "CONNECTED" and pkgType == 2:
                     ret: Device_TCP_return | int = await self.message_answer_package(connection, pkg, device, msg_sent)
-                    if type(ret) == Device_TCP_return: # != 0:
+                    if type(ret) == Device_TCP_return:
                         return_val = ret # type: ignore
                         if return_val == Device_TCP_return.answered:
                             communication_finished = True
                     break
                 else:
-                    LOGGER.debug(
-                        f"{task_name()} - No answer to process. Waiting on answer of the device ... "
-                    )
+                    logger_debug_task("No answer to process. Waiting on answer of the device ... ")
         return return_val
 
     async def request_account_settings_eco(self, scan_interval: int = 60) -> bool:
