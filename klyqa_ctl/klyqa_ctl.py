@@ -1040,8 +1040,8 @@ class Klyqa_account:
         connection.remoteIv = pkg
         connection.received_packages.append(pkg)
         if not connection.aes_key:
-           logger_debug_task(
-                + "Missing AES key. Probably not in onboarded devices. Provide AES key with --aes [key]! "
+            logger_debug_task(
+                "Missing AES key. Probably not in onboarded devices. Provide AES key with --aes [key]! "
                 + str(device.u_id)
             )
             return Device_TCP_return.missing_aes_key
