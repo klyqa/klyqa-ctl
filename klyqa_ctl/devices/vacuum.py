@@ -4,8 +4,8 @@ import argparse
 from enum import Enum
 import json
 from typing import Type, Any
-from .device import *
-from ..general.general import get_obj_attr_values_as_string
+from klyqa_ctl.devices.device import *
+from klyqa_ctl.general.general import get_obj_attr_values_as_string
 
 ## Vacuum Cleaner ##
 

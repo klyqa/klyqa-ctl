@@ -644,7 +644,7 @@ def command_color(args: argparse.Namespace, message_queue_tx_local, message_queu
     message_queue_tx_local.append(msg)
     col = json.loads(msg[0])["color"]
     message_queue_tx_state_cloud.append({"color": col})
-        
+
 def command_color_percent(args, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
     """Command for color in percentage numbers."""
     r, g, b, w, c = args.percent_color
@@ -671,7 +671,7 @@ def command_brightness(args, message_queue_tx_local, message_queue_tx_state_clou
     message_queue_tx_local.append(msg)
     brightness = json.loads(msg[0])["brightness"]
     message_queue_tx_state_cloud.append({"brightness": brightness})
-        
+
 def command_temperature(args, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
     """Command for temperature."""
     temperature = args.temperature[0]
@@ -692,6 +692,7 @@ def command_temperature(args, message_queue_tx_local, message_queue_tx_state_clo
 
 def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
     """Command for select scene."""
+    
     scene: str = ""
     if args.WW:
         scene = "Warm White"
@@ -800,7 +801,7 @@ def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable,
         500,
         check_scene
     )
-        
+
 def forced_continue(args: argparse.Namespace, reason: str) -> bool:
     """Force argument."""
     if not args.force:

@@ -51,7 +51,7 @@ from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
 from klyqa_ctl.devices.light.commands import add_command_args_bulb, process_args_to_msg_lighting
 from klyqa_ctl.devices.vacuum import *
-from klyqa_ctl.devices.vacuum import process_args_to_msg_cleaner
+from klyqa_ctl.devices.vacuum.commands import process_args_to_msg_cleaner
 from klyqa_ctl.general.connections import *
 from klyqa_ctl.general.general import *
 from klyqa_ctl.general.message import *

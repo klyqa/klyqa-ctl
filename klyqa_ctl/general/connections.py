@@ -93,6 +93,8 @@ TEST_HOST: str = "https://app-api.test.qconnex.io"
 
 
 class Data_communicator:
+    """Data communicator for local connection"""
+    
     def __init__(self, server_ip: str = "0.0.0.0") -> None:
         self.tcp: socket.socket | None = None
         self.udp: socket.socket | None = None
