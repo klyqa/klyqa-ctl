@@ -1172,7 +1172,7 @@ class Klyqa_account:
                 if not device:
                     return
                 try:
-                    LOGGER.debug(f"{task_name()} - rm_msg()")
+                    logger_debug_task(f"rm_msg()")
                     self.message_queue[device.u_id].remove(msg)
                     msg.state = Message_state.sent
 
@@ -1182,7 +1182,7 @@ class Klyqa_account:
                     ):
                         del self.message_queue[device.u_id]
                 except:
-                    LOGGER.debug(f"{task_name()} - {traceback.format_exc()}")
+                    logger_debug_task(f"{traceback.format_exc()}")
 
             return_val = Device_TCP_return.sent
             
@@ -1235,7 +1235,7 @@ class Klyqa_account:
                             else:
                                 raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
                         except:
-                            LOGGER.debug(f"{task_name()} - {traceback.format_exc()}")
+                            logger_debug_task(f"{traceback.format_exc()}")
                             break
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
@@ -1251,13 +1251,13 @@ class Klyqa_account:
             try:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
                 if len(data) == 0:
-                    LOGGER.debug(f"{task_name()} - EOF")
+                    logger_debug_task("EOF")
                     return Device_TCP_return.tcp_error
             except socket.timeout:
-                LOGGER.debug(f"{task_name()} - aes_send_recv timeout")
+                logger_debug_task("aes_send_recv timeout")
                 await asyncio.sleep(0.01)
             except:
-                LOGGER.debug(f"{task_name()} - {traceback.format_exc()}")
+                logger_debug_task(f"{traceback.format_exc()}")
                 return Device_TCP_return.unknown_error
 
             elapsed = datetime.datetime.now() - last_send
@@ -1301,7 +1301,7 @@ class Klyqa_account:
                     # safe the idenfication to device object if it is a not known device,
                     # send the local initial vector for the encrypted communication to the device.
 
-                    LOGGER.debug(f"{task_name()} - Plain: {pkg}")
+                    logger_debug_task(f"Plain: {pkg}")
                     json_response: dict[str, Any] = json.loads(pkg)
                     try:
                         ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent(
@@ -1340,7 +1340,7 @@ class Klyqa_account:
                         #         """There shouldn't be an open connection on the already known devices, but if there is close it."""
                         #         device_b.local.socket.shutdown(socket.SHUT_RDWR)
                         #         device_b.local.socket.close()
-                        #         LOGGER.debug(f"{task_name()} - tcp closed for device.u_id.")
+                        #         logger_debug_task(f"tcp closed for device.u_id.")
                         #         """just ensure connection is closed, so that device knows it as well"""
                         #     except:
                         #         pass

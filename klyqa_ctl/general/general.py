@@ -286,3 +286,5 @@ def task_name() -> str:
     task_name: str = task.get_name() if task is not None else ""
     return task_name
     
+def logger_debug_task(log) -> None:
+    logger_debug_task(f"{log}")
