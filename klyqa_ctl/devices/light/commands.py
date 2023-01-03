@@ -470,7 +470,7 @@ async def process_args_to_msg_lighting(
         local_and_cloud_command_msg({"type": "routine", "action": "list"}, 500)
 
     if args.routine_put and args.routine_id is not None:
-        routine_put(args, local_and_cloud_command_msg, Check_device_parameter)
+        routine_put(args, local_and_cloud_command_msg)
 
     if args.routine_delete and args.routine_id is not None:
         local_and_cloud_command_msg(
@@ -784,10 +784,10 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
         (json.dumps({"type": "backend", "link_enabled": a}), 1000)
     )
 
-def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable, check_device_parameter) -> None:
+def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Put routine to device."""
     check_scene: functools.partial[Any] = functools.partial(
-        check_device_parameter, Check_device_parameter.scene, args.routine_scene
+        check_device_parameter, args, Check_device_parameter.scene, args.routine_scene
     )
     # msg = msg + (check_scene,) # fix check routine before putting
     local_and_cloud_command_msg(
@@ -891,6 +891,6 @@ def check_device_parameter(args: argparse.Namespace,
     if not device.device_config and not forced_continue(args, "Missing configs for devices."):
         return False
 
-    if not check_range[parameter](device, values):
+    if not check_range[parameter](args, device, values):
         return False
     return True
