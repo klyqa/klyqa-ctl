@@ -5,9 +5,9 @@ import datetime
 import traceback
 from typing import Any
 
-from ..general.connections import CloudConnection
-from ..general.general import LOGGER
-from ..general.message import Message
+from klyqa_ctl.general.connections import CloudConnection
+from klyqa_ctl.general.general import LOGGER
+from klyqa_ctl.general.message import Message
 
 import slugify
 

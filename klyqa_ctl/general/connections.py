@@ -5,9 +5,9 @@ import datetime
 import json
 import socket
 from typing import Any
-from ..devices.device import *
 
-from .general import *
+from klyqa_ctl.devices.device import *
+from klyqa_ctl.general.general import *
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -60,18 +60,20 @@ class LocalConnection:
     received_packages: list[Any] = []
     sent_msg_answer: dict[str, Any] = {}
     aes_key_confirmed: bool = False
+    aes_key: bytes = b""
 
     def __init__(self) -> None:
         self.state = "WAIT_IV"
         self.localIv = get_random_bytes(8)
 
-        self.sendingAES = None
-        self.receivingAES = None
+        self.sendingAES: Any = None
+        self.receivingAES: Any = None
         self.address = {"ip": "", "port": -1}
         self.socket = None
         self.received_packages = []
         self.sent_msg_answer = {}
         self.aes_key_confirmed = False
+        self.aes_key = b""
         self.started: datetime.datetime = datetime.datetime.now()
 
 

@@ -3,7 +3,7 @@
 from __future__ import annotations
 import argparse
 
-from .general import DeviceType
+from klyqa_ctl.general.general import DeviceType
 
 
 def get_description_parser() -> argparse.ArgumentParser:

@@ -1,6 +1,8 @@
 """General types, constants, functions"""
 from __future__ import annotations
 import asyncio, aiofiles
+from threading import Event, Thread
+from dataclasses import dataclass
 from enum import Enum
 
 from typing import Any
@@ -38,7 +40,7 @@ DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600 # 600 secs = 10 min
 TypeJSON = dict[str, Any]
 
 """ string output separator width """
-sep_width = 0
+sep_width: int = 0
 
 
 PRODUCT_URLS: dict[str, str] = {
@@ -59,6 +61,68 @@ KLYQA_CTL_VERSION="1.0.17"
 
 DeviceType = Enum("DeviceType", "cleaner lighting")
 
+AES_KEY_DEV: bytes = bytes(
+    [
+        0x00,
+        0x11,
+        0x22,
+        0x33,
+        0x44,
+        0x55,
+        0x66,
+        0x77,
+        0x88,
+        0x99,
+        0xAA,
+        0xBB,
+        0xCC,
+        0xDD,
+        0xEE,
+        0xFF,
+    ]
+)
+        
+class EventQueuePrinter:
+    """Single event queue printer for job printing."""
+
+    event: Event = Event()  # event for the printer that new data is available
+    not_finished: bool = True
+    print_strings = []
+    printer_t: Thread | None = None  # printer thread
+
+    def __init__(self) -> None:
+        """start printing helper thread routine"""
+        self.printer_t = Thread(target=self.coroutine)
+        self.printer_t.start()
+
+    def stop(self) -> None:
+        """stop printing helper thread"""
+        self.not_finished = False
+        self.event.set()
+        if self.printer_t is not None:
+            self.printer_t.join(timeout=5)
+
+    def coroutine(self) -> None:
+        """printer thread routine, waits for data to print and/or a trigger event"""
+        while self.not_finished:
+            if not self.print_strings:
+                self.event.wait()
+            while self.print_strings and (l_str := self.print_strings.pop(0)):
+                print(l_str, flush=True)
+
+    def print(self, str) -> None:
+        """add string to the printer"""
+        self.print_strings.append(str)
+        self.event.set()
+        
+@dataclass
+class Range:
+    min: int
+    max: int
+    
+    def __post_init__(self) -> None:
+        self.min = int(self.min)
+        self.max = int(self.max)
 
 class RGBColor:
     """RGBColor"""
@@ -216,23 +280,9 @@ def get_obj_attr_values_as_string(object) -> str:
     return ", ".join(vals)
 
 
-AES_KEY_DEV: bytes = bytes(
-    [
-        0x00,
-        0x11,
-        0x22,
-        0x33,
-        0x44,
-        0x55,
-        0x66,
-        0x77,
-        0x88,
-        0x99,
-        0xAA,
-        0xBB,
-        0xCC,
-        0xDD,
-        0xEE,
-        0xFF,
-    ]
-)
+def task_name() -> str:
+    """Return asyncio task name."""
+    task: asyncio.Task[Any] | None = asyncio.current_task()
+    task_name: str = task.get_name() if task is not None else ""
+    return task_name
+    

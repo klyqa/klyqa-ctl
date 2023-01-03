@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 import argparse
+from asyncio import coroutines
 from dataclasses import dataclass
 
 import datetime
 from enum import Enum
-from typing import Any, Callable, Type
+from typing import Any, Type
 
-from .general import *
+from klyqa_ctl.general import *
+from klyqa_ctl.general.general import LOGGER
 
 Message_state = Enum("Message_state", "sent answered unsent")
 
@@ -32,7 +34,7 @@ class Message:
     answer_utf8: str = ""
     answer_json = {}
     # callback on error event or answer
-    callback: Callable[[Message, str], None] | None = None
+    callback: Any | None = None
     time_to_live_secs: float = -1
     msg_counter: int = -1
     send_try: int = 0
