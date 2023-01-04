@@ -25,15 +25,6 @@ logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
 
-# import coloredlogs
-# # coloredlogs.install(reconfigure=True, level='INFO', logger=LOGGER,fmt='%(asctime)s,%(msecs)03d %(levelname)s %(message)s')
-# formatter = coloredlogs.ColoredFormatter(fmt="%(asctime)s,%(msecs)03d %(levelname)s %(message)s")
-
-# logging_hdl_clr = logging.StreamHandler() #stream=sys.stdout)
-# logging_hdl_clr.setLevel(logging.INFO)
-# logging_hdl_clr.setFormatter(formatter)
-# LOGGER.addHandler(logging_hdl_clr)
-
 DEFAULT_SEND_TIMEOUT_MS = 30
 DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600 # 600 secs = 10 min
 

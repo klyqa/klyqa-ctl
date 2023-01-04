@@ -1256,7 +1256,7 @@ class Klyqa_account:
                 except:
                     LOGGER.debug(traceback.format_exc())
                     return Device_TCP_return.unknown_error
-
+                
             while not communication_finished and (len(data)):
                 logger_debug_task(
                     "TCP server received "
@@ -1266,7 +1266,7 @@ class Klyqa_account:
                 )
 
                 # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
-
+                
                 pkgLen: int = data[0] * 256 + data[1]
                 pkgType: int = data[3]
 
@@ -1633,8 +1633,6 @@ class Klyqa_account:
             if args.debug:
                 LOGGER.setLevel(level=logging.DEBUG)
                 logging_hdl.setLevel(level=logging.DEBUG)
-                # coloredlogs.install(logging.DEBUG, logger=LOGGER, reconfigure=True)
-                # logging_hdl_clr.setLevel(level=logging.DEBUG)
 
             if args.cloud or args.local:
                 args.tryLocalThanCloud = False
@@ -2041,8 +2039,8 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
         "29daa5a4439969f57934",
         "00ac629de9ad2f4409dc",
         "04256291add6f1b414d1",
-        "cd992e921b3646b8c18a",
-        "1a8379e585321fdb8778"
+        # "cd992e921b3646b8c18a",
+        # "1a8379e585321fdb8778"
         ]
     
     messages_answered: int = 0
@@ -2062,9 +2060,10 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
             if msg.answer_utf8:
                 messages_answered = messages_answered + 1
                 LOGGER.debug("Send_answer_cb %s", str(uid))
-                LOGGER.info("Message answer %s: %s",msg.target_uid, 
-                            json.dumps(json.loads(msg.answer_utf8), sort_keys=True, indent=4)
-                            if msg else "empty msg")
+                LOGGER.info((f"{task_name()} - " if LOGGER.level == 10 else "")
+                    + "Message answer %s: %s",msg.target_uid, 
+                    json.dumps(json.loads(msg.answer_utf8), sort_keys=True, indent=4)
+                    if msg else "empty msg")
             else:
                 LOGGER.info("MSG-TTL: No answer from %s", uid)
         
@@ -2072,7 +2071,7 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
 
             parser: argparse.ArgumentParser = get_description_parser()
             
-            args.extend(["--local", "--device_unitids", f"{u_id}"])
+            args.extend(["--debug", "--local", "--device_unitids", f"{u_id}"])
 
             args.insert(0, DeviceType.lighting.name)
             add_config_args(parser=parser)
@@ -2085,7 +2084,7 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
                     args_parsed,
                     args,
                     async_answer_callback=send_answer_cb,
-                    timeout_ms=1 * 1000,
+                    timeout_ms=100000 * 1000,
                 )
             )
             messages_sent = messages_sent + 1
@@ -2154,8 +2153,6 @@ async def main() -> None:
     if args_parsed.debug:
         LOGGER.setLevel(level=logging.DEBUG)
         logging_hdl.setLevel(level=logging.DEBUG)
-        # coloredlogs.install(logging.DEBUG, logger=LOGGER, reconfigure=True)
-        # logging_hdl_clr.setLevel(level=logging.DEBUG)
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
     if args_parsed.timeout:
@@ -2182,7 +2179,6 @@ async def main() -> None:
         klyqa_acc = Klyqa_account(
             data_communicator, offline = args_parsed.offline, interactive_prompts = True
         )
-        # asyncio.run(klyqa_acc.login(print_onboarded_devices=False))
         await klyqa_acc.login(print_onboarded_devices=False)
 
     else:
@@ -2201,9 +2197,6 @@ async def main() -> None:
 
         if not klyqa_acc.access_token:
             try:
-                # if asyncio.run(
-                #     klyqa_acc.login(print_onboarded_devices=print_onboarded_devices)
-                # ):
                 if await klyqa_acc.login(print_onboarded_devices=print_onboarded_devices):
                     LOGGER.debug("login finished")
                     klyqa_accs[klyqa_acc.username] = klyqa_acc
@@ -2216,7 +2209,6 @@ async def main() -> None:
     exit_ret = 0
 
     if True:
-        # loop.run_until_complete(tests(klyqa_acc))
         await tests(klyqa_acc)
     else:
         if (
@@ -2231,7 +2223,6 @@ async def main() -> None:
         ):
             exit_ret = 1
 
-    # loop.run_until_complete(klyqa_acc.shutdown())
     await klyqa_acc.shutdown()
 
     LOGGER.debug("Closing ports")

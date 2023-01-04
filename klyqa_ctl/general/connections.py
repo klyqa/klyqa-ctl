@@ -19,7 +19,8 @@ except:
 
 def send_msg(msg, device: KlyqaDevice, connection: LocalConnection) -> bool:
     info_str: str = (
-        'Sending in local network to "'
+        (f"{task_name()} - " if LOGGER.level == 10 else "")
+        + 'Sending in local network to "'
         + device.get_name()
         + '": '
         + json.dumps(json.loads(msg), sort_keys=True, indent=4)
