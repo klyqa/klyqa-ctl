@@ -282,8 +282,13 @@ def get_obj_attr_values_as_string(object) -> str:
 
 def task_name() -> str:
     """Return asyncio task name."""
-    task: asyncio.Task[Any] | None = asyncio.current_task()
-    task_name: str = task.get_name() if task is not None else ""
+    task_name: str = ""
+    try:
+        task: asyncio.Task[Any] | None = asyncio.current_task()
+        task_name = task.get_name() if task is not None else ""
+    except RuntimeError:
+        # if no current async loop running skip
+        return ""
     return task_name
     
 def logger_debug_task(log) -> None:
