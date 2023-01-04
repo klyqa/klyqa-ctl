@@ -287,4 +287,5 @@ def task_name() -> str:
     return task_name
     
 def logger_debug_task(log) -> None:
-    LOGGER.debug(f"{task_name()} - {log}")
+    task_name_str: str = task_name()
+    LOGGER.debug(f"{task_name_str} - {log}" if task_name_str else f"{log}")
