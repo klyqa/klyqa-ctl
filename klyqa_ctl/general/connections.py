@@ -109,7 +109,7 @@ class Data_communicator:
                 LOGGER.debug("Closed TCP port 3333")
                 self.tcp = None
         except:
-            pass
+            LOGGER.debug(f"{traceback.format_exc()}")
 
         try:
             if self.udp:
@@ -117,7 +117,7 @@ class Data_communicator:
                 LOGGER.debug("Closed UDP port 2222")
                 self.udp = None
         except:
-            pass
+            LOGGER.debug(f"{traceback.format_exc()}")
 
     async def bind_ports(self) -> bool:
         """bind ports."""

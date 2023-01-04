@@ -181,7 +181,7 @@ class Klyqa_account:
                     self.device_configs = {}
                 self.device_configs[product_id] = device_config
             except:
-                pass
+                LOGGER.debug(f"{traceback.format_exc()}")
 
     async def device_handle_local_tcp(
         self, device: KlyqaDevice | None, connection: LocalConnection
@@ -245,7 +245,7 @@ class Klyqa_account:
                                 device_b._use_lock.release()
                             device_b._use_thread = None
                         except:
-                            pass
+                            LOGGER.debug(f"{traceback.format_exc()}")
 
                 elif return_state == 1:
                     LOGGER.error(
@@ -253,7 +253,6 @@ class Klyqa_account:
                     )
                 elif return_state == 2:
                     pass
-                    # LOGGER.debug(f"Wrong device unit id.{unit_id}")
                 elif return_state == 3:
                     LOGGER.debug(
                         f"End of tcp stream. ({connection.address['ip']}:{connection.address['port']})"
@@ -335,7 +334,7 @@ class Klyqa_account:
 
                     while read_broadcast_response:
 
-                        timeout_read: float = 1.9
+                        timeout_read: float = 0.01
                         LOGGER.debug("Read again tcp port..")
 
                         async def read_tcp_task() -> tuple[
@@ -440,9 +439,8 @@ class Klyqa_account:
                                     break
                         for uid in to_del:
                             del self.message_queue[uid]
-                    except Exception as e:
+                    except Exception:
                         LOGGER.debug(f"{traceback.format_exc()}")
-                        pass
 
                 try:
                     tasks_undone_new = []
@@ -537,7 +535,7 @@ class Klyqa_account:
             if self.__send_loop_sleep is not None:
                 self.__send_loop_sleep.cancel()
         except:
-            pass
+            LOGGER.debug(f"{traceback.format_exc()}")
 
     async def set_send_message(
         self,
@@ -1234,7 +1232,6 @@ class Klyqa_account:
                 else:
                     rm_msg(msg)
                     
-        connection.socket.settimeout(1)
         while not communication_finished and (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
                device.u_id in self.message_queue or msg_sent):
             try:
@@ -1243,8 +1240,7 @@ class Klyqa_account:
                     logger_debug_task("EOF")
                     return Device_TCP_return.tcp_error
             except socket.timeout:
-                logger_debug_task("aes_send_recv timeout")
-                await asyncio.sleep(0.01)
+                LOGGER.debug(f"{traceback.format_exc()}")
             except:
                 logger_debug_task(f"{traceback.format_exc()}")
                 return Device_TCP_return.unknown_error
@@ -1429,7 +1425,7 @@ class Klyqa_account:
             if acc_settings:
                 self.acc_settings = acc_settings
         except:
-            pass
+            LOGGER.debug(f"{traceback.format_exc()}")
         
         
     async def discover_devices(self, args, message_queue_tx_local, target_device_uids) -> None:
@@ -1759,7 +1755,7 @@ class Klyqa_account:
                         try:
                             msg_wait_tasks[uid].cancel()
                         except:
-                            pass
+                            LOGGER.debug(f"{traceback.format_exc()}")
                         if async_answer_callback:
                             await async_answer_callback(msg, uid)
 
@@ -1837,7 +1833,7 @@ class Klyqa_account:
                                 f"{json.dumps(json.loads(msg.answer), sort_keys=True, indent=4)}"
                             )
                         except:
-                            pass
+                            LOGGER.debug(f"{traceback.format_exc()}")
                     else:
                         LOGGER.error(f"Error no message returned from {uid}.")
 
@@ -1848,7 +1844,7 @@ class Klyqa_account:
                     tcp = tcp,
                     timeout_ms = timeout_ms
                     - int((datetime.datetime.now() - send_started).total_seconds())
-                    * 1000,  # 3000
+                    * 1000,
                     async_answer_callback=async_print_answer,
                 )
 
@@ -1967,7 +1963,7 @@ class Klyqa_account:
                     LOGGER.error(f'Timeout for "{device.get_name()}"!')
                     t.cancel()
                 except:
-                    pass
+                    LOGGER.debug(f"{traceback.format_exc()}")
 
         await process_cloud_messages(
             target_device_uids if args.cloud else to_send_device_uids
@@ -2012,33 +2008,19 @@ class Klyqa_account:
                         f"{json.dumps(json.loads(msg.answer), sort_keys=True, indent=4)}"
                     )
                 except:
-                    pass
+                    LOGGER.debug(f"{traceback.format_exc()}")
             else:
                 LOGGER.error(f"Error no message returned from {uid}.")
 
         if not await self.send_to_devices(
             args_parsed,
-            args_in ,
+            args_in,
             udp = self.data_communicator.udp,
             tcp = self.data_communicator.tcp,
             timeout_ms = timeout_ms,
             async_answer_callback = async_answer_callback,
         ):
             exit_ret = 1
-
-        # parser = get_description_parser()
-        # args = ["--request"]
-        # args.extend(["--local", "--debug", "--device_unitids", f"c4172283e5da92730bb5"])
-
-        # add_config_args(parser=parser)
-        # add_command_args(parser=parser)
-
-        # args_parsed = parser.parse_args(args=args)
-
-        # if not await self.send_to_devices(
-        #     args_parsed, args, udp=self.data_communicator.udp, tcp=self.data_communicator.tcp, timeout_ms=timeout_ms, async_answer_callback=async_answer_callback
-        # ):
-        #     exit_ret = 1
 
         await self.search_and_send_loop_task_stop()
 
@@ -2057,10 +2039,10 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
     
     uids: list[str] = [
         "29daa5a4439969f57934",
-        # "00ac629de9ad2f4409dc",
-        # "04256291add6f1b414d1",
-        # "cd992e921b3646b8c18a",
-        # "1a8379e585321fdb8778"
+        "00ac629de9ad2f4409dc",
+        "04256291add6f1b414d1",
+        "cd992e921b3646b8c18a",
+        "1a8379e585321fdb8778"
         ]
     
     messages_answered: int = 0
@@ -2069,11 +2051,11 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
     tasks: list[asyncio.Task] = []
     for u_id in uids:
         args_all: list[list[str]] = []
-        # args_all.append(["--request"])
+        args_all.append(["--request"])
         args_all.append(["--color", str(random.randrange(0, 255)), str(random.randrange(0, 255)), str(random.randrange(0, 255))])
-        # args_all.append(["--temperature", str(random.randrange(2000, 6500))])
-        # args_all.append(["--brightness", str(random.randrange(0, 100))])
-        # args_all.append(["--WW"])
+        args_all.append(["--temperature", str(random.randrange(2000, 6500))])
+        args_all.append(["--brightness", str(random.randrange(0, 100))])
+        args_all.append(["--WW"])
         
         async def send_answer_cb(msg: Message, uid: str) -> None:
             nonlocal messages_answered
@@ -2090,7 +2072,7 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
 
             parser: argparse.ArgumentParser = get_description_parser()
             
-            args.extend(["--debug", "--local", "--device_unitids", f"{u_id}"])
+            args.extend(["--local", "--device_unitids", f"{u_id}"])
 
             args.insert(0, DeviceType.lighting.name)
             add_config_args(parser=parser)
@@ -2103,7 +2085,7 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
                     args_parsed,
                     args,
                     async_answer_callback=send_answer_cb,
-                    timeout_ms=4111 * 1000,
+                    timeout_ms=1 * 1000,
                 )
             )
             messages_sent = messages_sent + 1

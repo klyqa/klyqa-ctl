@@ -99,7 +99,7 @@ class KlyqaDevice:
                 self._use_thread = None
                 LOGGER.debug(f"got unlock... {self.get_name()}")
             except:
-                pass
+                LOGGER.debug(f"{traceback.format_exc()}")
 
     def save_device_message(self, msg) -> None:
         """msg: json dict"""
