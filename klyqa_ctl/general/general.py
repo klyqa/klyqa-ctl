@@ -5,7 +5,7 @@ from threading import Event, Thread
 from dataclasses import dataclass
 from enum import Enum
 
-from typing import Any
+from typing import Any, Type, TypeVar
 import datetime
 import json
 import logging
@@ -187,6 +187,9 @@ class RefParse:
 
 Device_config = dict
 
+ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
+
+NoneType: Type[None] = type(None)
 
 async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
     """
