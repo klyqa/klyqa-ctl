@@ -1571,7 +1571,7 @@ class Klyqa_account:
         if not tcp:
             tcp = self.data_communicator.tcp
         try:
-            global sep_width  # , device_configs
+            global sep_width
 
             loop = asyncio.get_event_loop()
 
