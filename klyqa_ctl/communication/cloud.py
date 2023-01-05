@@ -69,13 +69,13 @@ class CloudBackend:
         acc_settings_cache: dict = {}
 
         if not self.offline and (
-            self.username is not None and self.password is not None
+            self.account.username is not None and self.account.password is not None
         ):
             login_response: requests.Response | None = None
             try:
                 login_data: dict[str, str] = {
-                    "email": self.username,
-                    "password": self.password,
+                    "email": self.account.username,
+                    "password": self.account.password,
                 }
 
                 login_response = await loop.run_in_executor(
@@ -109,11 +109,11 @@ class CloudBackend:
 
             except Exception as e:
                 LOGGER.error(
-                    f"Error during login. Try reading account settings for account {self.username} from cache."
+                    f"Error during login. Try reading account settings for account {self.account.username} from cache."
                 )
                 try:
                     acc_settings_cache, cached = await async_json_cache(
-                        None, f"{self.username}.acc_settings.cache.json"
+                        None, f"{self.account.username}.acc_settings.cache.json"
                     )
                 except:
                     return False
@@ -130,30 +130,30 @@ class CloudBackend:
                     **self.acc_settings,
                     **{
                         "time_cached": datetime.datetime.now(),
-                        "password": self.password,
+                        "password": self.account.password,
                     },
                 }
 
                 """save current account settings in cache"""
                 await async_json_cache(
-                    acc_settings_cache, f"{self.username}.acc_settings.cache.json"
+                    acc_settings_cache, f"{self.account.username}.acc_settings.cache.json"
                 )
 
                 # await async_json_cache(
-                #     {"user": self.username, "password": self.password}, f"last.user.account.json"
+                #     {"user": self.account.username, "password": self.account.password}, f"last.user.account.json"
                 # )
                 # async with aiofiles.open(
                 #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="w"
                 # ) as f:
-                #     await f.write(self.username)
+                #     await f.write(self.account.username)
 
             except Exception as e:
                 pass
 
-        await async_json_cache({"username": self.username}, f"last_username.json")
+        await async_json_cache({"username": self.account.username}, f"last_username.json")
 
         try:
-            klyqa_acc_string: str = "Klyqa account " + self.username + ". Onboarded devices:"
+            klyqa_acc_string: str = "Klyqa account " + self.account.username + ". Onboarded devices:"
             sep_width: int = len(klyqa_acc_string)
 
             if print_onboarded_devices:

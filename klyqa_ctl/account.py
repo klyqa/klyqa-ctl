@@ -22,7 +22,7 @@ import asyncio, aiofiles
 import functools, traceback
 from asyncio.exceptions import CancelledError, TimeoutError
 from collections.abc import Callable
-from klyqa_ctl.communication.local import AES_KEYs, Local_communicator, LocalConnection, send_msg
+from klyqa_ctl.communication.local import AES_KEYs, LocalCommunication, LocalConnection, send_msg
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
@@ -72,7 +72,7 @@ class Account:
 
     def __init__(
         self,
-        local_communicator: Local_communicator,
+        local_communicator: LocalCommunication,
         username: str = "",
         password: str = "",
         offline: bool = False,
@@ -89,7 +89,7 @@ class Account:
         self.settings_cached = False
         self._settings_loaded_ts = None
         
-        self.local_communicator: Local_communicator = local_communicator
+        self.local_communicator: LocalCommunication = local_communicator
         self.offline = offline
         self.device_configs = device_configs
         
