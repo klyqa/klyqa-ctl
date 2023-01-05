@@ -11,11 +11,13 @@ import getpass
 import json
 from typing import Any
 import requests, uuid, json
+from klyqa_ctl.account import Account
 from klyqa_ctl.communication.local import AES_KEYs
 
 from klyqa_ctl.devices.device import KlyqaDevice, format_uid
 from klyqa_ctl.devices.light import KlyqaBulb
 from klyqa_ctl.devices.vacuum import KlyqaVC
+from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import LOGGER, EventQueuePrinter
 
 from klyqa_ctl.devices.device import *
@@ -25,7 +27,7 @@ from klyqa_ctl.general.general import *
 class CloudConnection:
     """CloudConnection"""
 
-    received_packages = []
+    received_packages: list[Any]
     connected: bool
 
     def __init__(self) -> None:
@@ -34,76 +36,16 @@ class CloudConnection:
         
         
 class CloudBackend:
+    """Cloud backend"""
     
-    
-    def __init__(self, devices):
-        self.username: str = username
-        self.password: str = password
-        self.offline = offline
-        self.host: str = host
+    def __init__(self, devices, account: Account,
+        host: str = "", offline: bool = False) -> None:
+        self.offline: bool = offline
+        self.host: str = PROD_HOST if not host else host
         self.devices: dict[str, KlyqaDevice] = devices
-        self.access_token = ""
+        self.access_token: str = ""
+        self.account: Account = account
 
-    async def login_cache(self) -> bool:
-
-        if not self.username:
-            try:
-                user_name_cache: dict
-                cached: bool
-                user_name_cache, cached = await async_json_cache(
-                    None, f"last_username.json"
-                )
-                if cached:
-                    self.username = user_name_cache["username"]
-                    LOGGER.info("Using Klyqa account %s.", self.username)
-                else:
-                    LOGGER.error("Username missing, username cache empty.")
-
-                    if self.interactive_prompts:
-                        self.username = input(
-                            " Please enter your Klyqa Account username (will be cached for the script invoke): "
-                        )
-                    else:
-                        LOGGER.info("Missing Klyqa account username. No login.")
-                        return False
-
-                # async with aiofiles.open(
-                #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
-                # ) as f:
-                #     self.username = str(await f.readline()).strip()
-            except:
-                return False
-            
-        try:
-            acc_settings: dict
-            cached: bool
-            acc_settings, cached = await async_json_cache(
-                None, f"{self.username}.acc_settings.cache.json"
-            )
-            if cached:
-                self.acc_settings = acc_settings
-                # self.username, self.password = (user_acc_cache["user"], user_acc_cache["password"])
-                if not self.password:
-                    self.password = self.acc_settings["password"]
-
-            if not self.password:
-                raise Exception()
-
-            # async with aiofiles.open(
-            #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
-            # ) as f:
-            #     self.username = str(await f.readline()).strip()
-        except:
-            if self.interactive_prompts:
-                self.password = getpass.getpass(
-                    prompt=" Please enter your Klyqa Account password (will be saved): ",
-                    stream=None,
-                )
-            else:
-                LOGGER.error("Missing Klyqa account password. Login failed.")
-                return False
-
-        return True
     
     def backend_connected(self) -> bool:
         return self.access_token != ""
