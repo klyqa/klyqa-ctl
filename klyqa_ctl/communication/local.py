@@ -1,11 +1,13 @@
 """Local communication"""
 
 from __future__ import annotations
+import argparse
 from asyncio import CancelledError
 import datetime
 import json
+import select
 import socket
-from typing import Any
+from typing import Any, Callable
 from klyqa_ctl.devices import device
 
 from klyqa_ctl.devices.device import *
@@ -92,7 +94,7 @@ class LocalConnection:
         self.started: datetime.datetime = datetime.datetime.now()
         
 
-class Local_communicator:
+class LocalCommunication:
     """Data communicator for local connection"""
 
     # Set of current accepted connections to an IP. One connection is most of the time
@@ -179,7 +181,8 @@ class Local_communicator:
     
     
     async def aes_wait_iv_pkg_zero(
-        self, connection, pkg: bytes, device: KlyqaDevice, r_device: RefParse, use_dev_aes: bool) -> Device_TCP_return:
+        self, connection, pkg: bytes, device: KlyqaDevice, r_device: RefParse,
+        use_dev_aes: bool) -> Device_TCP_return:
         # Check identification package from device, lock the device object for changes,
         # safe the idenfication to device object if it is a not known device,
         # send the local initial vector for the encrypted communication to the device.
@@ -354,9 +357,9 @@ class Local_communicator:
 
     async def device_handle_local_tcp(
         self, device: KlyqaDevice, connection: LocalConnection
-    ) -> Type[Device_TCP_return]:
+    ) -> Device_TCP_return:
         """! Handle the incoming tcp connection to the device."""
-        return_state: Type[Device_TCP_return] = Device_TCP_return.nothing_done
+        return_state: Device_TCP_return = Device_TCP_return.nothing_done
         
         task: asyncio.Task[Any] | None = asyncio.current_task()
 
@@ -483,7 +486,6 @@ class Local_communicator:
                                     SEND_LOOP_MAX_SLEEP_TIME
                                     if (
                                         len(self.message_queue) > 0
-                                        or len(self.message_queue_new) > 0
                                     )
                                     else 1000000000
                                 )
@@ -639,7 +641,7 @@ class Local_communicator:
                     pass
                 pass
 
-                if not len(self.message_queue_new) and not len(self.message_queue):
+                if not len(self.message_queue):
                     try:
                         LOGGER.debug(f"sleep task create2 (searchandsendloop)..")
                         self.__send_loop_sleep = loop.create_task(
@@ -749,7 +751,7 @@ class Local_communicator:
         # r_msg: RefParse,
         connection: LocalConnection,
         use_dev_aes: bool = False,
-    ) -> Type[Device_TCP_return.__class__]:
+    ) -> Device_TCP_return:
         """
         FIX: return type! sometimes return value sometimes tuple...
 
@@ -790,7 +792,7 @@ class Local_communicator:
 
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
-        return_val: Type[Device_TCP_return.__class__] = Device_TCP_return.nothing_done
+        return_val: Device_TCP_return = Device_TCP_return.nothing_done
 
         msg_sent: Message | None = None
         communication_finished: bool = False        

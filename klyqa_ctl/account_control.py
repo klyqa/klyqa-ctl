@@ -7,7 +7,7 @@ import getpass
 from typing import Any
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local import Local_communicator
+from klyqa_ctl.communication.local import LocalCommunication
 
 from klyqa_ctl.devices.device import KlyqaDevice
 from klyqa_ctl.general.general import LOGGER
@@ -16,16 +16,16 @@ from klyqa_ctl.devices.device import *
 from klyqa_ctl.general.general import *
 
 
-class Account_control:
-    """Cloud backend"""
+class AccountControl:
+    """Account control"""
     
-    def __init__(self, devices, account: Account, cloud_backend: CloudBackend, local_communicator: Local_communicator,
+    def __init__(self, devices, account: Account, cloud_backend: CloudBackend, local_communicator: LocalCommunication,
                  interactive_prompts: bool) -> None:
         # self.offline = offline
         self.devices: dict[str, KlyqaDevice] = devices
         self.account: Account = account
         self.cloud_backend: CloudBackend = cloud_backend
-        self.local_communicator: Local_communicator = local_communicator
+        self.local_communicator: LocalCommunication = local_communicator
         self.interactive_prompts: bool = interactive_prompts
 
 

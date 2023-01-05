@@ -47,7 +47,7 @@ import functools, traceback
 from asyncio.exceptions import CancelledError, TimeoutError
 from collections.abc import Callable
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local import AES_KEYs, Local_communicator, LocalConnection, send_msg
+from klyqa_ctl.communication.local import AES_KEYs, LocalCommunication, LocalConnection, send_msg
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
@@ -70,7 +70,7 @@ class Client:
 
     def __init__(
         self,
-        local_communicator: Local_communicator,
+        local_communicator: LocalCommunication,
         account: Account,
         interactive_prompts: bool = False,
         offline: bool = False,
@@ -78,10 +78,10 @@ class Client:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
 
-        self.local_communicator: Local_communicator = local_communicator
+        self.local_communicator: LocalCommunication = local_communicator
         self.account = account
-        self.interactive_prompts = interactive_prompts
-        self.offline = offline
+        self.interactive_prompts: bool = interactive_prompts
+        self.offline: bool = offline
         self.devices: dict[str, KlyqaDevice] = dict()
         self.cloud_backend: CloudBackend = CloudBackend(self.devices, self.account)
 
@@ -736,7 +736,7 @@ async def main() -> None:
 
     server_ip: str = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
 
-    local_communicator: Local_communicator = Local_communicator(server_ip)
+    local_communicator: LocalCommunication = LocalCommunication(devices, acc_settings,server_ip)
 
     print_onboarded_devices: bool = (
         not args_parsed.device_name
