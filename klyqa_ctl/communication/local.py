@@ -92,7 +92,7 @@ class LocalConnection:
         self.started: datetime.datetime = datetime.datetime.now()
         
 
-class Data_communicator:
+class Local_communicator:
     """Data communicator for local connection"""
 
     # Set of current accepted connections to an IP. One connection is most of the time
