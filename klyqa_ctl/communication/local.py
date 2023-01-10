@@ -442,7 +442,7 @@ class LocalCommunication:
         """! Send broadcast and make tasks for incoming tcp connections.
 
         Params:
-            proc_timeout_secs:   max timeout in seconds for a device communication handle process
+            proc_timeout_secs: max timeout in seconds for a device communication handle process
 
         Returns:
             true:  on success
