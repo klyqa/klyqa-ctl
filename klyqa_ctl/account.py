@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Klyqa account."""
+"""Klyqa account"""
 from __future__ import annotations
 
 import getpass
