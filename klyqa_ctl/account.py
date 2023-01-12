@@ -1,38 +1,10 @@
 #!/usr/bin/env python3
 """Klyqa account"""
 from __future__ import annotations
-
-import getpass
-import socket
-import sys
-import json
+import asyncio
 import datetime
-import argparse
-import select
-import logging
-import time
-from typing import TypeVar, Any, TypedDict
-from xml.dom.pulldom import default_bufsize
-
-import requests, uuid, json
-from threading import Thread, Event
-from collections import ChainMap
-from enum import Enum
-import asyncio, aiofiles
-import functools, traceback
-from asyncio.exceptions import CancelledError, TimeoutError
-from collections.abc import Callable
-from klyqa_ctl.communication.local import AES_KEYs, LocalCommunication, LocalConnection, send_msg
-
-from klyqa_ctl.devices.device import *
-from klyqa_ctl.devices.light import *
-from klyqa_ctl.devices.light.commands import add_command_args_bulb, process_args_to_msg_lighting
-from klyqa_ctl.devices.vacuum import *
-from klyqa_ctl.devices.vacuum.commands import process_args_to_msg_cleaner
-from klyqa_ctl.general.connections import *
-from klyqa_ctl.general.general import *
-from klyqa_ctl.general.message import *
-from klyqa_ctl.general.parameters import get_description_parser
+from klyqa_ctl.devices.device import KlyqaDevice
+from klyqa_ctl.general.general import TypeJSON
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -72,7 +44,6 @@ class Account:
 
     def __init__(
         self,
-        local_communicator: LocalCommunication,
         username: str = "",
         password: str = "",
         offline: bool = False,
@@ -89,7 +60,6 @@ class Account:
         self.settings_cached = False
         self._settings_loaded_ts = None
         
-        self.local_communicator: LocalCommunication = local_communicator
         self.offline = offline
         self.device_configs = device_configs
         
