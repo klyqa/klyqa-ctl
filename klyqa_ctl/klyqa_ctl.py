@@ -1612,7 +1612,7 @@ class Klyqa_account:
                 target_device_uids = set(
                     map(format_uid, set(args.device_unitids[0].split(",")))
                 )
-                print("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
+                LOGGER.info("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
             if not args.selectDevice and self.backend_connected():
                 await self.update_device_configs()
@@ -1781,11 +1781,11 @@ class Klyqa_account:
                 )
 
                 async def async_print_answer(msg: Message, uid: str) -> None:
-                    print(f"{uid}: ")
+                    LOGGER.debug(f"{uid}: ")
                     if msg:
                         try:
                             LOGGER.info(f"Answer received from {uid}.")
-                            print(
+                            LOGGER.info(
                                 f"{json.dumps(json.loads(msg.answer), sort_keys=True, indent=4)}"
                             )
                         except:
@@ -1947,7 +1947,7 @@ class Klyqa_account:
         if args_parsed.dev:
             AES_KEYs["dev"] = AES_KEY_DEV
 
-        local_communication = args_parsed.local or args_parsed.tryLocalThanCloud
+        local_communication: bool = args_parsed.local or args_parsed.tryLocalThanCloud
 
         if local_communication:
             if not await self.data_communicator.bind_ports():
@@ -1956,11 +1956,11 @@ class Klyqa_account:
         exit_ret: int = 0
 
         async def async_answer_callback(msg, uid) -> None:
-            print(f"{uid}: ")
+            LOGGER.debug(f"{uid}: ")
             if msg:
                 try:
                     LOGGER.info(f"Answer received from {uid}.")
-                    print(
+                    LOGGER.info(
                         f"{json.dumps(json.loads(msg.answer), sort_keys=True, indent=4)}"
                     )
                 except:
@@ -1995,8 +1995,8 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
     
     uids: list[str] = [
         "29daa5a4439969f57934",
-        "00ac629de9ad2f4409dc",
-        "04256291add6f1b414d1",
+        # "00ac629de9ad2f4409dc",
+        # "04256291add6f1b414d1",
         # "cd992e921b3646b8c18a",
         # "1a8379e585321fdb8778"
         ]
@@ -2028,8 +2028,8 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
         for args in args_all:
 
             parser: argparse.ArgumentParser = get_description_parser()
-            
-            args.extend(["--debug", "--local", "--device_unitids", f"{u_id}"])
+
+            args.extend(["--local", "--device_unitids", f"{u_id}"])
 
             args.insert(0, DeviceType.lighting.name)
             add_config_args(parser=parser)
@@ -2111,6 +2111,10 @@ async def main() -> None:
     if args_parsed.debug:
         LOGGER.setLevel(level=logging.DEBUG)
         logging_hdl.setLevel(level=logging.DEBUG)
+    
+    if args_parsed.quiet:
+        LOGGER.setLevel(level=logging.CRITICAL)
+        logging_hdl.setLevel(level=logging.CRITICAL)
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
     if args_parsed.timeout:
@@ -2123,6 +2127,7 @@ async def main() -> None:
         not args_parsed.device_name
         and not args_parsed.device_unitids
         and not args_parsed.allDevices
+        and not args_parsed.quiet
     )
 
     klyqa_acc: Klyqa_account | None = None

@@ -39,6 +39,13 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         const=True,
         default=False
     )
+    
+    parser.add_argument("--quiet", 
+        help="Try to keep the logger to only critical messages.",
+        action="store_const",
+        const=True,
+        default=False
+    )
 
     parser.add_argument(
         "--passive",

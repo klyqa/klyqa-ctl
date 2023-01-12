@@ -411,7 +411,7 @@ async def process_args_to_msg_lighting(
     ]
 
     if commands_to_send:
-        print("Commands to send to devices: " + ", ".join(commands_to_send))
+        LOGGER.info("Commands to send to devices: " + ", ".join(commands_to_send))
     else:
         if not await commands_select(args, args_in, send_to_devices_callable):
             return False
@@ -597,13 +597,13 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
         },
     }
 
-    count = 1
+    count: int = 1
     for c in commands_send_to_bulb:
         args_to_b: str = (
             arguments_send_to_device[c] if c in arguments_send_to_device else ""
         )
-        print(str(count) + ") " + c + args_to_b)
-        count: int = count + 1
+        LOGGER.info(str(count) + ") " + c + args_to_b)
+        count = count + 1
 
     cmd_c_id: int = int(input("Choose command number [1-9]*: "))
     if cmd_c_id > 0 and cmd_c_id < count:
@@ -624,11 +624,11 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
     add_config_args(parser=parser)
     add_command_args_bulb(parser=parser)
 
-    args = parser.parse_args(args_in, namespace=args)
+    args: argparse.Namespace = parser.parse_args(args_in, namespace=args)
     # args.func(args)
     return True
 
-def command_color(args: argparse.Namespace, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
+def command_color(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
     """Command for setting the color."""
     r: str; g: str; b: str;
     r, g, b = args.color
@@ -674,7 +674,7 @@ def command_brightness(args, message_queue_tx_local, message_queue_tx_state_clou
 
 def command_temperature(args, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
     """Command for temperature."""
-    temperature = args.temperature[0]
+    temperature: str = args.temperature[0]
 
     tt = args.transitionTime[0]
     msg: tuple[str, str] | tuple[str, str, Callable] = temperature_message(
@@ -686,7 +686,7 @@ def command_temperature(args, message_queue_tx_local, message_queue_tx_state_clo
     )
     msg = msg + (check_temperature,)
 
-    temperature: str = json.loads(msg[0])["temperature"]
+    temperature= json.loads(msg[0])["temperature"]
     message_queue_tx_local.append(msg)
     message_queue_tx_state_cloud.append({"temperature": temperature})
 

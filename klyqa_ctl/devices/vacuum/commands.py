@@ -5,6 +5,7 @@ import json
 from typing import Any, Callable
 
 from klyqa_ctl.devices.vacuum import VC_SUCTION_STRENGTHS, VC_WORKINGMODE, CommandType
+from klyqa_ctl.general.general import LOGGER
 
 async def process_args_to_msg_cleaner(
     args,
@@ -157,14 +158,14 @@ def routine(args: argparse.Namespace) -> None:
             routine_dict["scene"] = "none"
             routine_dict["commands"] = args.commands
         else:
-            print("No ID and/or Commands given!")
+            LOGGER.error("No ID and/or Commands given!")
 
     if args.delete:
         if args.id:
             routine_dict["action"] = "delete"
             routine_dict["id"] = args.id
         else:
-            print("No ID to delete given!")
+            LOGGER.error("No ID to delete given!")
 
     if args.start:
         if args.id:
