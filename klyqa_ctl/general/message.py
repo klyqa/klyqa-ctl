@@ -27,10 +27,10 @@ class Message:
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
     args: argparse.Namespace
     target_uid: str
-    state: Type[Message_state] = Message_state.unsent
+    state: Message_state = Message_state.unsent
     answered_datetime: datetime.datetime | None = None
     local_pause_after_answer_secs: float | None = None
-    answer: str = ""
+    answer: bytes = b""
     answer_utf8: str = ""
     answer_json = {}
     # callback on error event or answer
@@ -40,7 +40,6 @@ class Message:
     send_try: int = 0
 
     def __post_init__(self) -> None:
-        # super().__init__(self, *args, **kwargs)
         global MSG_COUNTER
         self.msg_counter = MSG_COUNTER
         MSG_COUNTER = MSG_COUNTER + 1
