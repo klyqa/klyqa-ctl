@@ -1994,7 +1994,8 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
     started: datetime.datetime = datetime.datetime.now()
     
     uids: list[str] = [
-        "29daa5a4439969f57934",
+        # "29daa5a4439969f57934",
+        "286DCD5C6BDA",
         # "00ac629de9ad2f4409dc",
         # "04256291add6f1b414d1",
         # "cd992e921b3646b8c18a",
@@ -2009,9 +2010,9 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
         args_all: list[list[str]] = []
         args_all.append(["--request"])
         args_all.append(["--color", str(random.randrange(0, 255)), str(random.randrange(0, 255)), str(random.randrange(0, 255))])
-        args_all.append(["--temperature", str(random.randrange(2000, 6500))])
-        args_all.append(["--brightness", str(random.randrange(0, 100))])
-        args_all.append(["--WW"])
+        # args_all.append(["--temperature", str(random.randrange(2000, 6500))])
+        # args_all.append(["--brightness", str(random.randrange(0, 100))])
+        # args_all.append(["--WW"])
         
         async def send_answer_cb(msg: Message, uid: str) -> None:
             nonlocal messages_answered
@@ -2042,7 +2043,7 @@ async def tests(klyqa_acc: Klyqa_account) -> int:
                     args_parsed,
                     args,
                     async_answer_callback=send_answer_cb,
-                    timeout_ms=100000 * 1000,
+                    timeout_ms=10 * 1000,
                 )
             )
             messages_sent = messages_sent + 1
@@ -2171,7 +2172,7 @@ async def main() -> None:
                 sys.exit(1)
     exit_ret = 0
 
-    if True:
+    if False:
         await tests(klyqa_acc)
     else:
         if (
