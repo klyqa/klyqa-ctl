@@ -43,7 +43,7 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponse):
 
     def __init__(
         self,
-        **kwargs,
+        **kwargs: Any,
     ) -> None:
         """__init__"""
         self.action: str = ""
@@ -85,7 +85,7 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponse):
         LOGGER.debug(f"save status {self}")
         super().__init__(**kwargs)
 
-    def update(self, **kwargs) -> None:
+    def update(self, **kwargs: Any) -> None:
         super().update(**kwargs)
 
 
