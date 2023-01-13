@@ -11,7 +11,7 @@ try:
 except:
     from Crypto.Cipher import AES  # provided by pycryptodome
 
-from typing import TypeVar
+from typing import Any, TypeVar
 
 class Account:
     """
@@ -21,10 +21,6 @@ class Account:
     * account settings
 
     """
-
-    _settings_loaded_ts: datetime.datetime | None
-    
-    interactive_prompts: bool
 
     # Set of current accepted connections to an IP. One connection is most of the time
     # enough to send all messages for that device behind that connection (in the aes send message method).
@@ -36,9 +32,7 @@ class Account:
         self,
         username: str = "",
         password: str = "",
-        offline: bool = False,
         device_configs: dict = {},
-        interactive_prompts: bool = False
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
@@ -49,13 +43,11 @@ class Account:
         self.access_token: str = ""
         self.username_cached: bool = False
         self.settings_cached: bool = False
-        self._settings_loaded_ts = None
+        self._settings_loaded_ts: datetime.datetime | None = None
         
-        self.offline = offline
-        self.device_configs = device_configs
+        self.device_configs: dict[Any, Any] = device_configs
         
         self._attr_settings_lock: asyncio.Lock = asyncio.Lock()
-        self.interactive_prompts = interactive_prompts
 
 
     @property

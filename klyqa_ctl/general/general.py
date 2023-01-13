@@ -191,13 +191,13 @@ ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
 
 NoneType: Type[None] = type(None)
 
-async def async_json_cache(json_data: TypeJSON | None, json_file: str) -> tuple[Device_config | None, bool]:
+async def async_json_cache(json_data: TypeJSON | None, json_file: str) -> tuple[dict | None, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
     """
 
-    return_json: Device_config | None = json_data
+    return_json: dict | None = json_data
     cached: bool = False
     
     user_homedir: str = ""

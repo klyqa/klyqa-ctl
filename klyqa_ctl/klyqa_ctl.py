@@ -37,10 +37,11 @@ from typing import Any
 import json
 import asyncio
 import traceback
-from asyncio.exceptions import CancelledError, TimeoutError
+from asyncio.exceptions import CancelledError
 from collections.abc import Callable
+from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local import AES_KEYs, LocalCommunication
+from klyqa_ctl.communication.local import LocalCommunication
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
@@ -55,25 +56,23 @@ from klyqa_ctl.account import Account
 
 
 class Client:
-    """Klyqa client"""
+    """Client"""
 
     account: Account | None
+    controller_data: ControllerData
 
     def __init__(
         self,
+        controller_data: ControllerData,
         local_communicator: LocalCommunication | None,
         cloud_backend: CloudBackend | None, 
         account: Account | None,
-        interactive_prompts: bool = False,
-        offline: bool = False
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
-
+        self.controller_data = controller_data
         self.local_communicator: LocalCommunication | None = local_communicator 
         self.account = account
-        self.interactive_prompts: bool = interactive_prompts
-        self.offline: bool = offline
         self.devices: dict[str, KlyqaDevice] = dict()
         self.cloud_backend: CloudBackend | None = cloud_backend
 
@@ -300,7 +299,7 @@ class Client:
                 args.tryLocalThanCloud = False
 
             if args.aes is not None:
-                AES_KEYs["all"] = bytes.fromhex(args.aes[0])
+                self.controller_data.aes_keys["all"] = bytes.fromhex(args.aes[0])
 
             target_device_uids: set[str] = set()
 
@@ -524,7 +523,7 @@ class Client:
             logging_hdl.setLevel(level=logging.DEBUG)
 
         if args_parsed.dev:
-            AES_KEYs["dev"] = AES_KEY_DEV
+            self.controller_data.aes_keys["dev"] = AES_KEY_DEV
 
         local_communication: bool = args_parsed.local or args_parsed.tryLocalThanCloud
 
@@ -714,9 +713,7 @@ async def main() -> None:
     if args_parsed.dev:
         if args_parsed.dev:
             LOGGER.info("development mode. Using default aes key.")
-        account = Account(
-            offline = args_parsed.offline, interactive_prompts = True
-        )
+        account = Account()
         print_onboarded_devices=False
 
     else:
@@ -726,18 +723,16 @@ async def main() -> None:
         else:
             account = Account(
                 args_parsed.username[0] if args_parsed.username else "",
-                args_parsed.password[0] if args_parsed.password else "",
-                offline=args_parsed.offline,
-                interactive_prompts = True
+                args_parsed.password[0] if args_parsed.password else ""
             )
 
     exit_ret = 0
         
-    
-    local_communicator: LocalCommunication = LocalCommunication(account, server_ip)
-    cloud_backend: CloudBackend = CloudBackend(account, host, args_parsed.offline)
-    
-    client: Client = Client(local_communicator, cloud_backend, account, interactive_prompts = True, offline = args_parsed.offline)
+    controller_data: ControllerData = ControllerData(interactive_prompts = True, offline = args_parsed.offline)    
+    local_communicator: LocalCommunication = LocalCommunication(controller_data, account, server_ip)
+    cloud_backend: CloudBackend = CloudBackend(controller_data, account, host, args_parsed.offline)
+
+    client: Client = Client(controller_data, local_communicator, cloud_backend, account)
     
     if cloud_backend and not account.access_token:
         try:
@@ -751,7 +746,8 @@ async def main() -> None:
             LOGGER.debug(f"{traceback.format_exc()}")
             sys.exit(1)
 
-    if True:
+    if False:
+        # bring load test in separate python file
         await tests(client)
     else:
         if (

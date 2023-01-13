@@ -9,6 +9,7 @@ import select
 import socket
 from typing import Any, Callable
 from klyqa_ctl.account import Account
+from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices import device
 
 from klyqa_ctl.devices.device import *
@@ -23,8 +24,6 @@ try:
 except:
     from Crypto.Cipher import AES  # provided by pycryptodome
     from Crypto.Random import get_random_bytes  # pycryptodome
-
-AES_KEYs: dict[str, bytes] = {}
 
 Device_TCP_return = Enum(
     "Device_TCP_return",
@@ -100,7 +99,9 @@ class LocalCommunication:
     #
     current_addr_connections: set[str]
     
-    def __init__(self, account: Account, server_ip: str = "0.0.0.0") -> None:
+    def __init__(self, controller_data: ControllerData, account: Account, server_ip: str = "0.0.0.0") -> None:
+        self.controller_data: ControllerData = controller_data
+        self.account: Account = account
         self.devices: dict[str, KlyqaDevice] = account.devices
         self.tcp: socket.socket | None = None
         self.udp: socket.socket | None = None
@@ -112,7 +113,6 @@ class LocalCommunication:
         self.search_and_send_loop_task: Task | None = None
         self.search_and_send_loop_task_end_now: bool = False
         self.__read_tcp_task: Task | None = None
-        self.account: Account = account
         self.acc_settings: TypeJSON | None = account.settings
         self.current_addr_connections: set[str] = set()
 
@@ -264,12 +264,12 @@ class LocalCommunication:
         else:
             logger_debug_task(f"Found device {found}")
 
-        if "all" in AES_KEYs:
-            connection.aes_key = AES_KEYs["all"]
-        elif use_dev_aes or "dev" in AES_KEYs:
+        if "all" in self.controller_data.aes_keys:
+            connection.aes_key = self.controller_data.aes_keys["all"]
+        elif use_dev_aes or "dev" in self.controller_data.aes_keys:
             connection.aes_key = AES_KEY_DEV
-        elif isinstance(AES_KEYs, dict) and device.u_id in AES_KEYs:
-            connection.aes_key = AES_KEYs[device.u_id]
+        elif isinstance(self.controller_data.aes_keys, dict) and device.u_id in self.controller_data.aes_keys:
+            connection.aes_key = self.controller_data.aes_keys[device.u_id]
         try:
             if connection.socket is not None:
                 # for prod do in executor for more asyncio schedule task executions
@@ -355,6 +355,208 @@ class LocalCommunication:
         logger_debug_task(f" Request's reply decrypted: " + str(plain))
         return return_val
 
+   
+    async def aes_handshake_and_send_msgs(
+        self,
+        r_device: RefParse,
+        # r_msg: RefParse,
+        connection: LocalConnection,
+        use_dev_aes: bool = False,
+    ) -> Device_TCP_return:
+        """
+        FIX: return type! sometimes return value sometimes tuple...
+
+        Finish AES handshake.
+        Getting the identity of the device.
+        Send the commands in message queue to the device with the device u_id or to any device.
+
+        Params:
+            device: Device - (initial) device object with the tcp connection
+            target_device_uid - If given device_uid only send commands when the device unit id equals the target_device_uid
+            discover_mode - if True do the process to any device unit id.
+
+        Returns: tuple[int, dict] or tuple[int, str]
+            dict: Json response of the device
+            str: Error string message
+            int: Error type
+                0 - success - no error
+                1 - on error
+                2 - not correct device uid
+                3 - tcp connection ended, shall retry
+                4 - error on reading response message from device, shall retry
+                5 - error getting lock for device, shall retry
+                6 - missing aes key
+                7 - value not valid for device config
+
+        """
+
+        global sep_width, LOGGER
+        device: KlyqaDevice = r_device.ref
+        if device is None or connection.socket is None:
+            return Device_TCP_return.unknown_error
+
+        data: bytes = b""
+        last_send: datetime.datetime = datetime.datetime.now()
+        connection.socket.settimeout(0.001)
+        pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
+        elapsed: datetime.timedelta = datetime.datetime.now() - last_send
+
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+
+        return_val: Device_TCP_return = Device_TCP_return.nothing_done
+
+        msg_sent: Message | None = None
+        communication_finished: bool = False        
+        pause_after_send: int
+
+        async def __send_msg() -> Message | None:
+            nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
+            
+            def rm_msg(msg: Message) -> None:
+                if not device:
+                    return
+                try:
+                    logger_debug_task(f"rm_msg()")
+                    self.message_queue[device.u_id].remove(msg)
+                    msg.state = Message_state.sent
+
+                    if (
+                        device.u_id in self.message_queue
+                        and not self.message_queue[device.u_id]
+                    ):
+                        del self.message_queue[device.u_id]
+                except:
+                    logger_debug_task(f"{traceback.format_exc()}")
+
+            return_val = Device_TCP_return.sent
+            
+            send_next: bool = elapsed >= pause
+            sleep: float = (pause - elapsed).total_seconds()
+            if sleep > 0:
+                await asyncio.sleep(sleep)
+        
+            ## check how the answer come in and how they can be connected to the messages that has been sent.
+                
+            if (
+                send_next and device
+                and device.u_id in self.message_queue
+                and len(self.message_queue[device.u_id]) > 0
+            ):
+                msg: Message = self.message_queue[device.u_id][0]
+                
+                logger_debug_task(f"Process msg to send '{msg.msg_queue}' to device '{device.u_id}'.")
+                j: int = 0
+                
+                if msg.state == Message_state.unsent:
+                    
+                    while j < len(msg.msg_queue):
+                            
+                        text: str
+                        if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
+                            text, pause_after_send = msg.msg_queue[j]
+                            msg.msg_queue_sent.append(text)
+                        else:
+                            text, pause_after_send, check_func = msg.msg_queue[j]
+                            msg.msg_queue_sent.append(text)
+                            if not check_func(device = device):
+                                # some parameter check in the message failed, remove message from the queue
+                                rm_msg(msg)
+                                # stop processing further the message
+                                break
+
+                        pause = datetime.timedelta(milliseconds = float(pause_after_send))
+                        try:
+                            if await loop.run_in_executor(None, send_msg, text, device, connection):
+                                msg_sent = msg 
+                                last_send = datetime.datetime.now()
+                                j = j + 1
+                                # don't process the next message, but if
+                                # still elements in the msg_queue send them as well
+                                send_next = False
+                                # break
+                            else:
+                                raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
+                        except:
+                            logger_debug_task(f"{traceback.format_exc()}")
+                            break
+       
+                    if len(msg.msg_queue) == len(msg.msg_queue_sent):
+                        msg.state = Message_state.sent
+                        # all messages sent to devices, break now for reading response
+                        rm_msg(msg)
+                else:
+                    rm_msg(msg)
+            return None
+        
+        if msg_sent and msg_sent.state == Message_state.answered:
+            msg_sent = None
+                    
+        while not communication_finished and (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
+               device.u_id in self.message_queue or msg_sent):
+            try:
+                data = await loop.run_in_executor(None, connection.socket.recv, 4096)
+                if len(data) == 0:
+                    logger_debug_task("EOF")
+                    return Device_TCP_return.tcp_error
+            except socket.timeout:
+                LOGGER.debug(f"{traceback.format_exc()}")
+            except:
+                logger_debug_task(f"{traceback.format_exc()}")
+                return Device_TCP_return.unknown_error
+
+            elapsed = datetime.datetime.now() - last_send
+            
+            if msg_sent and msg_sent.state == Message_state.answered:
+                msg_sent = None
+
+            if connection.state == "CONNECTED" and msg_sent is None:
+                try:
+                    await __send_msg()
+                except:
+                    logger_debug_task(f"{traceback.format_exc()}")
+                    return Device_TCP_return.send_error
+                
+            while not communication_finished and (len(data)):
+                logger_debug_task(
+                    f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
+                )
+
+                # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
+                
+                pkgLen: int = data[0] * 256 + data[1]
+                pkgType: int = data[3]
+
+                pkg: bytes = data[4 : 4 + pkgLen]
+                if len(pkg) < pkgLen:
+                    logger_debug_task(f"Incomplete packet, waiting for more...")
+                    break
+
+                data = data[4 + pkgLen :]
+                ret: Device_TCP_return | int 
+                if connection.state == "WAIT_IV" and pkgType == 0:
+
+                    ret = await self.aes_wait_iv_pkg_zero(connection, pkg, device, r_device, use_dev_aes)
+                    device = r_device.ref
+                    if ret != Device_TCP_return.no_error:
+                        return ret
+
+                if connection.state == "WAIT_IV" and pkgType == 1:
+                    ret = await self.aes_wait_iv_pkg_one(connection, pkg, device)
+                    if ret != Device_TCP_return.no_error:
+                        return ret
+
+                elif connection.state == "CONNECTED" and pkgType == 2:
+                    ret = await self.message_answer_package(connection, pkg, device, msg_sent)
+                    if type(ret) == Device_TCP_return:
+                        return_val = ret # type: ignore
+                        if return_val == Device_TCP_return.answered:
+                            msg_sent = None
+                            communication_finished = True
+                    break
+                else:
+                    logger_debug_task("No answer to process. Waiting on answer of the device ... ")
+        return return_val
+    
 
     async def device_handle_local_tcp(
         self, device: KlyqaDevice, connection: LocalConnection
@@ -744,209 +946,6 @@ class LocalCommunication:
             self.__read_tcp_task.cancel()
         self.search_and_send_loop_task_alive()
         return True
-   
-   
-    async def aes_handshake_and_send_msgs(
-        self,
-        r_device: RefParse,
-        # r_msg: RefParse,
-        connection: LocalConnection,
-        use_dev_aes: bool = False,
-    ) -> Device_TCP_return:
-        """
-        FIX: return type! sometimes return value sometimes tuple...
-
-        Finish AES handshake.
-        Getting the identity of the device.
-        Send the commands in message queue to the device with the device u_id or to any device.
-
-        Params:
-            device: Device - (initial) device object with the tcp connection
-            target_device_uid - If given device_uid only send commands when the device unit id equals the target_device_uid
-            discover_mode - if True do the process to any device unit id.
-
-        Returns: tuple[int, dict] or tuple[int, str]
-            dict: Json response of the device
-            str: Error string message
-            int: Error type
-                0 - success - no error
-                1 - on error
-                2 - not correct device uid
-                3 - tcp connection ended, shall retry
-                4 - error on reading response message from device, shall retry
-                5 - error getting lock for device, shall retry
-                6 - missing aes key
-                7 - value not valid for device config
-
-        """
-
-        global sep_width, LOGGER
-        device: KlyqaDevice = r_device.ref
-        if device is None or connection.socket is None:
-            return Device_TCP_return.unknown_error
-
-        data: bytes = b""
-        last_send: datetime.datetime = datetime.datetime.now()
-        connection.socket.settimeout(0.001)
-        pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
-        elapsed: datetime.timedelta = datetime.datetime.now() - last_send
-
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-
-        return_val: Device_TCP_return = Device_TCP_return.nothing_done
-
-        msg_sent: Message | None = None
-        communication_finished: bool = False        
-        pause_after_send: int
-
-        async def __send_msg() -> Message | None:
-            nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
-            
-            def rm_msg(msg: Message) -> None:
-                if not device:
-                    return
-                try:
-                    logger_debug_task(f"rm_msg()")
-                    self.message_queue[device.u_id].remove(msg)
-                    msg.state = Message_state.sent
-
-                    if (
-                        device.u_id in self.message_queue
-                        and not self.message_queue[device.u_id]
-                    ):
-                        del self.message_queue[device.u_id]
-                except:
-                    logger_debug_task(f"{traceback.format_exc()}")
-
-            return_val = Device_TCP_return.sent
-            
-            send_next: bool = elapsed >= pause
-            sleep: float = (pause - elapsed).total_seconds()
-            if sleep > 0:
-                await asyncio.sleep(sleep)
-        
-            ## check how the answer come in and how they can be connected to the messages that has been sent.
-                
-            if (
-                send_next and device
-                and device.u_id in self.message_queue
-                and len(self.message_queue[device.u_id]) > 0
-            ):
-                msg: Message = self.message_queue[device.u_id][0]
-                
-                logger_debug_task(f"Process msg to send '{msg.msg_queue}' to device '{device.u_id}'.")
-                j: int = 0
-                
-                if msg.state == Message_state.unsent:
-                    
-                    while j < len(msg.msg_queue):
-                            
-                        text: str
-                        if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
-                            text, pause_after_send = msg.msg_queue[j]
-                            msg.msg_queue_sent.append(text)
-                        else:
-                            text, pause_after_send, check_func = msg.msg_queue[j]
-                            msg.msg_queue_sent.append(text)
-                            if not check_func(device = device):
-                                # some parameter check in the message failed, remove message from the queue
-                                rm_msg(msg)
-                                # stop processing further the message
-                                break
-
-                        pause = datetime.timedelta(milliseconds = float(pause_after_send))
-                        try:
-                            if await loop.run_in_executor(None, send_msg, text, device, connection):
-                                msg_sent = msg 
-                                last_send = datetime.datetime.now()
-                                j = j + 1
-                                # don't process the next message, but if
-                                # still elements in the msg_queue send them as well
-                                send_next = False
-                                # break
-                            else:
-                                raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
-                        except:
-                            logger_debug_task(f"{traceback.format_exc()}")
-                            break
-       
-                    if len(msg.msg_queue) == len(msg.msg_queue_sent):
-                        msg.state = Message_state.sent
-                        # all messages sent to devices, break now for reading response
-                        rm_msg(msg)
-                else:
-                    rm_msg(msg)
-            return None
-        
-        if msg_sent and msg_sent.state == Message_state.answered:
-            msg_sent = None
-                    
-        while not communication_finished and (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
-               device.u_id in self.message_queue or msg_sent):
-            try:
-                data = await loop.run_in_executor(None, connection.socket.recv, 4096)
-                if len(data) == 0:
-                    logger_debug_task("EOF")
-                    return Device_TCP_return.tcp_error
-            except socket.timeout:
-                LOGGER.debug(f"{traceback.format_exc()}")
-            except:
-                logger_debug_task(f"{traceback.format_exc()}")
-                return Device_TCP_return.unknown_error
-
-            elapsed = datetime.datetime.now() - last_send
-            
-            if msg_sent and msg_sent.state == Message_state.answered:
-                msg_sent = None
-
-            if connection.state == "CONNECTED" and msg_sent is None:
-                try:
-                    await __send_msg()
-                except:
-                    logger_debug_task(f"{traceback.format_exc()}")
-                    return Device_TCP_return.send_error
-                
-            while not communication_finished and (len(data)):
-                logger_debug_task(
-                    f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
-                )
-
-                # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
-                
-                pkgLen: int = data[0] * 256 + data[1]
-                pkgType: int = data[3]
-
-                pkg: bytes = data[4 : 4 + pkgLen]
-                if len(pkg) < pkgLen:
-                    logger_debug_task(f"Incomplete packet, waiting for more...")
-                    break
-
-                data = data[4 + pkgLen :]
-                ret: Device_TCP_return | int 
-                if connection.state == "WAIT_IV" and pkgType == 0:
-
-                    ret = await self.aes_wait_iv_pkg_zero(connection, pkg, device, r_device, use_dev_aes)
-                    device = r_device.ref
-                    if ret != Device_TCP_return.no_error:
-                        return ret
-
-                if connection.state == "WAIT_IV" and pkgType == 1:
-                    ret = await self.aes_wait_iv_pkg_one(connection, pkg, device)
-                    if ret != Device_TCP_return.no_error:
-                        return ret
-
-                elif connection.state == "CONNECTED" and pkgType == 2:
-                    ret = await self.message_answer_package(connection, pkg, device, msg_sent)
-                    if type(ret) == Device_TCP_return:
-                        return_val = ret # type: ignore
-                        if return_val == Device_TCP_return.answered:
-                            msg_sent = None
-                            communication_finished = True
-                    break
-                else:
-                    logger_debug_task("No answer to process. Waiting on answer of the device ... ")
-        return return_val
-    
         
     async def discover_devices(self, args: argparse.Namespace,
         message_queue_tx_local: list, target_device_uids: set) -> None:

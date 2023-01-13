@@ -12,7 +12,7 @@ import json
 from typing import Any
 import requests, uuid, json
 from klyqa_ctl.account import Account
-from klyqa_ctl.communication.local import AES_KEYs
+from klyqa_ctl.controller_data import ControllerData
 
 from klyqa_ctl.devices.device import KlyqaDevice, format_uid
 from klyqa_ctl.devices.light import KlyqaBulb
@@ -27,12 +27,13 @@ from klyqa_ctl.general.general import *
 class CloudBackend:
     """Cloud backend"""
     
-    def __init__(self, account: Account,
+    def __init__(self, controller_data: ControllerData, account: Account,
         host: str = "", offline: bool = False) -> None:
+        self.controller_data: ControllerData = controller_data
+        self.account: Account = account
         self.offline: bool = offline
         self.host: str = PROD_HOST if not host else host
         self.access_token: str = ""
-        self.account: Account = account
         self.devices: dict[str, KlyqaDevice] = account.devices
 
     
@@ -41,38 +42,33 @@ class CloudBackend:
     
     
     async def login_cache(self) -> bool:
-        """Login cache."""
+        """Get cached account data for login and check existing username and password."""
 
         cached: bool
         if not self.account.username:
             try:
-                user_name_cache: dict
+                user_name_cache: dict | None
                 user_name_cache, cached = await async_json_cache(
                     None, f"last_username.json"
                 )
-                if cached:
+                if cached and user_name_cache:
                     self.account.username = user_name_cache["username"]
                     LOGGER.info("Using Klyqa account %s.", self.account.username)
                 else:
                     LOGGER.error("Username missing, username cache empty.")
 
-                    if self.account.interactive_prompts:
+                    if self.controller_data and self.controller_data.interactive_prompts:
                         self.account.username = input(
                             " Please enter your Klyqa Account username (will be cached for the script invoke): "
                         )
                     else:
                         LOGGER.info("Missing Klyqa account username. No login.")
                         return False
-
-                # async with aiofiles.open(
-                #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
-                # ) as f:
-                #     self.account.username = str(await f.readline()).strip()
             except:
                 return False
             
         try:
-            acc_settings: dict
+            acc_settings: dict | None
             acc_settings, cached = await async_json_cache(
                 None, f"{self.account.username}.acc_settings.cache.json"
             )
@@ -85,12 +81,8 @@ class CloudBackend:
             if not self.account.password:
                 raise Exception()
 
-            # async with aiofiles.open(
-            #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="r"
-            # ) as f:
-            #     self.account.username = str(await f.readline()).strip()
         except:
-            if self.account.interactive_prompts:
+            if self.controller_data and self.controller_data.interactive_prompts:
                 self.account.password = getpass.getpass(
                     prompt=" Please enter your Klyqa Account password (will be saved): ",
                     stream=None,
@@ -101,6 +93,7 @@ class CloudBackend:
 
         return True
     
+    # async def _run_login
     
     async def login(self, print_onboarded_devices: bool = False) -> bool:
         """! Login on klyqa account, get account settings, get onboarded device profiles,
@@ -125,11 +118,11 @@ class CloudBackend:
         ):
             login_response: requests.Response | None = None
             cached: bool
+            login_data: dict[str, str] = {
+                "email": self.account.username,
+                "password": self.account.password,
+            }
             try:
-                login_data: dict[str, str] = {
-                    "email": self.account.username,
-                    "password": self.account.password,
-                }
 
                 login_response = await loop.run_in_executor(
                     None,
@@ -157,27 +150,19 @@ class CloudBackend:
                     
                 login_json: dict = json.loads(login_response.text)
                 self.access_token = str(login_json.get("accessToken"))
-                # self.acc_settings = await loop.run_in_executor(
-                #     None, functools.partial(self.request, "settings", timeout=30)
-                # )
-                acc_settings: dict[str, Any] | None = await self.request("settings", timeout=30)
+                
+                acc_settings: dict[str, Any] | None = await self.request_beared("settings", timeout=30)
                 if acc_settings:
                     self.account.settings = acc_settings
 
             except Exception as e:
-                LOGGER.error(
-                    f"Error during login. Try reading account settings for account {self.account.username} from cache."
-                )
-                try:
-                    acc_settings_cache, cached = await async_json_cache(
-                        None, f"{self.account.username}.acc_settings.cache.json"
+                if self.account.settings:
+                    LOGGER.info(
+                        f"Error during login. Using account settings for account {self.account.username} from cache."
                     )
-                except:
-                    return False
-                if not cached:
-                    return False
                 else:
-                    self.account.settings = acc_settings_cache
+                    LOGGER.error(f"Unable to login into account {self.account.username}.")
+                    return False
 
             if not self.account.settings:
                 return False
@@ -209,7 +194,7 @@ class CloudBackend:
 
         await async_json_cache({"username": self.account.username}, f"last_username.json")
 
-        device_configs_cache: dict[Any, Any]
+        device_configs_cache: dict[Any, Any] | None
 
         try:
             klyqa_acc_string: str = "Klyqa account " + self.account.username + ". Onboarded devices:"
@@ -246,7 +231,7 @@ class CloudBackend:
 
                 async def req() -> dict[str, Any] | None:
                     try:
-                        ret: dict[str, Any] | None = await self.request(
+                        ret: dict[str, Any] | None = await self.request_beared(
                             f'device/{device_settings["cloudDeviceId"]}/state',
                             timeout=30,
                         )
@@ -286,8 +271,8 @@ class CloudBackend:
                     thread: Thread = Thread(target=device_request_and_print, args=(device_sets,))
                     device_state_req_threads.append(thread)
 
-                    if isinstance(AES_KEYs, dict):
-                        AES_KEYs[
+                    if isinstance(self.controller_data.aes_keys, dict):
+                        self.controller_data.aes_keys[
                             format_uid(device_sets["localDeviceId"])
                         ] = bytes.fromhex(device_sets["aesKey"])
                     product_ids.add(device_sets["productId"])
@@ -317,7 +302,7 @@ class CloudBackend:
                 def get_conf(id: str, device_configs: dict[str, Any]) -> None:
                     async def req() -> dict[str, Any] | None:
                         try:
-                            ret: dict[str, Any] | None = await self.request("config/product/" + id, timeout=30)
+                            ret: dict[str, Any] | None = await self.request_beared("config/product/" + id, timeout=30)
                             return ret
                         except:
                             return None
@@ -345,7 +330,7 @@ class CloudBackend:
                 device_configs_cache, cached = await async_json_cache(
                     self.account.device_configs, "device.configs.json"
                 )
-                if cached:
+                if cached and device_configs_cache:
                     self.account.device_configs = device_configs_cache
                     LOGGER.info("No server reply for device configs. Using cache.")
 
@@ -364,6 +349,7 @@ class CloudBackend:
         return True
 
     def get_header_default(self) -> dict[str, str]:
+        """Get default request header for cloud request."""
         header: dict[str, str] = {
             "X-Request-Id": str(uuid.uuid4()),
             "Accept": "application/json",
@@ -372,32 +358,115 @@ class CloudBackend:
         }
         return header
 
-    def get_header(self) -> dict[str, str]:
+    def get_beared_request_header(self) -> dict[str, str]:
+        """Set default request header with cloud access token."""
         return {
             **self.get_header_default(),
             **{"Authorization": "Bearer " + self.access_token},
         }
-
-    async def request(self, url: str, **kwargs: Any) -> TypeJSON | None:
+        
+    async def request(self, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> requests.Response | None:
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-        answer: TypeJSON | None = None
+        response: requests.Response | None = None
         try:
-            response: requests.Response = await loop.run_in_executor(
+            # https://stackoverflow.com/questions/22190403/how-could-i-use-requests-in-asyncio
+            # httpx light weight asyncio request framework compared to aiohttp
+            # https://www.python-httpx.org/
+            response = await loop.run_in_executor(
                 None,
                 functools.partial(
                     requests.get,
                     self.host + "/" + url,
-                    headers=self.get_header()
-                    if self.access_token
-                    else self.get_header_default(),
+                    headers=headers,
                     **kwargs,
                 ),
             )
-            if response.status_code != 200:
-                raise Exception(response.text)
+        
+        except requests.RequestException:
+            LOGGER.error("There was an ambiguous exception that occurred while handling your request.")
+            return None
+        
+        # except requests.HTTPError:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.URLRequired:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.TooManyRedirects:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.ConnectTimeout:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.ReadTimeout:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.Timeout:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.JSONDecodeError:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+        
+        # except requests.Timeout:
+        #     LOGGER.error("An HTTP error occurred.")
+        #     return None
+
+        # exception requests.ConnectionError(*args, **kwargs)[source]
+        
+
+        # exception requests.HTTPError(*args, **kwargs)[source]
+        
+
+        # exception requests.URLRequired(*args, **kwargs)[source]
+        # A valid URL is required to make a request.
+
+        # exception requests.TooManyRedirects(*args, **kwargs)[source]
+        # Too many redirects.
+
+        # exception requests.ConnectTimeout(*args, **kwargs)[source]
+        # The request timed out while trying to connect to the remote server.
+
+        # Requests that produced this error are safe to retry.
+
+        # exception requests.ReadTimeout(*args, **kwargs)[source]
+        # The server did not send any data in the allotted amount of time.
+
+        # exception requests.Timeout(*args, **kwargs)[source]
+        # The request timed out.
+
+        # Catching this error will catch both ConnectTimeout and ReadTimeout errors.
+
+        # exception requests.JSONDecodeError(*args, **kwargs)[source]
+        # Couldn’t decode the text into json
+            
+            
+        return response
+        
+
+    async def request_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        answer: TypeJSON | None = None
+        response: requests.Response | None = await self.request(self.host + "/" + url,
+            self.get_beared_request_header() if self.access_token else self.get_header_default(), **kwargs)
+        
+        if not response:
+            LOGGER.debug("No response from cloud request.")
+            return None
+        if response.status_code != 200:
+            LOGGER.debug("Unvalid response from cloud request.")
+            raise Exception(response.text)
+        try:
             answer = json.loads(response.text)
-        except Exception:
-            LOGGER.debug(f"{traceback.format_exc()}")
+        except json.JSONDecodeError as err:
+            LOGGER.error(f"{err.msg}")
+            LOGGER.debug(f"{traceback.format_exc()} {err.msg}")
             answer = None
         return answer
         
@@ -419,7 +488,7 @@ class CloudBackend:
 
     async def request_account_settings(self) -> None:
         try:
-            acc_settings: dict[str, Any] | None = await self.request("settings")
+            acc_settings: dict[str, Any] | None = await self.request_beared("settings")
             if acc_settings:
                 self.account.settings = acc_settings
         except:
@@ -440,7 +509,7 @@ class CloudBackend:
                 continue
             LOGGER.debug("Try to request device config from server.")
             try:
-                config: TypeJSON | None = await self.request(
+                config: TypeJSON | None = await self.request_beared(
                     "config/product/" + product_id,
                     timeout=30,
                 )
@@ -451,8 +520,8 @@ class CloudBackend:
             except:
                 LOGGER.debug(f"{traceback.format_exc()}")
 
-    async def post(self, url: str, **kwargs: Any) -> TypeJSON | None:
-        """Post requests."""
+    async def request_post_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
+        """Post requests with."""
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         answer: TypeJSON | None = None
         try:
@@ -461,7 +530,7 @@ class CloudBackend:
                 functools.partial(
                     requests.post,
                     self.host + "/" + url,
-                    headers=self.get_header(),
+                    headers=self.get_beared_request_header(),
                     **kwargs,
                 ),
             )
@@ -495,7 +564,7 @@ class CloudBackend:
                 f"Post {target} to the device '{cloud_device_id}' (unit_id: {unit_id}) over the cloud."
             )
             resp = {
-                cloud_device_id: await self.post(
+                cloud_device_id: await self.request_post_beared(
                     url=f"device/{cloud_device_id}/{target}",
                     json=json_message,
                 )
