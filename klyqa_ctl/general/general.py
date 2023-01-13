@@ -191,13 +191,13 @@ ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
 
 NoneType: Type[None] = type(None)
 
-async def async_json_cache(json_data: TypeJSON, json_file: str) -> tuple[dict, bool]:
+async def async_json_cache(json_data: TypeJSON | None, json_file: str) -> tuple[Device_config | None, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
     """
 
-    return_json: Device_config = json_data
+    return_json: Device_config | None = json_data
     cached: bool = False
     
     user_homedir: str = ""
@@ -219,9 +219,10 @@ async def async_json_cache(json_data: TypeJSON, json_file: str) -> tuple[dict, b
         return_json = json_data
         try:
             s: str = ""
+            sets: str | datetime.datetime | datetime.date
             for id, sets in json_data.items():
                 if isinstance(sets, (datetime.datetime, datetime.date)):
-                    sets: str = sets.isoformat()
+                    sets = sets.isoformat()
                 s = s + '"' + id + '": ' + json.dumps(sets) + ", "
             s = "{" + s[:-2] + "}"
             async with aiofiles.open(
