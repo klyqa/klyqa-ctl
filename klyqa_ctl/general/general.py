@@ -78,7 +78,7 @@ class EventQueuePrinter:
 
     event: Event = Event()  # event for the printer that new data is available
     not_finished: bool = True
-    print_strings = []
+    print_strings: list[str] = []
     printer_t: Thread | None = None  # printer thread
 
     def __init__(self) -> None:
@@ -101,7 +101,7 @@ class EventQueuePrinter:
             while self.print_strings and (l_str := self.print_strings.pop(0)):
                 print(l_str, flush=True)
 
-    def print(self, str) -> None:
+    def print(self, str: str) -> None:
         """add string to the printer"""
         self.print_strings.append(str)
         self.event.set()
@@ -165,8 +165,8 @@ class AsyncIOLock:
 
     @classmethod
     def instance(
-        cls,
-    ):
+        cls: Any,
+    ) -> Any:
         """instance"""
         if cls._instance is None:
             LOGGER.debug("Creating new AsyncIOLock instance")
@@ -191,14 +191,14 @@ ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
 
 NoneType: Type[None] = type(None)
 
-async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
+async def async_json_cache(json_data: TypeJSON, json_file: str) -> tuple[dict, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
     """
 
     return_json: Device_config = json_data
-    cached = False
+    cached: bool = False
     
     user_homedir: str = ""
     try: 
@@ -218,10 +218,10 @@ async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
         """
         return_json = json_data
         try:
-            s = ""
+            s: str = ""
             for id, sets in json_data.items():
                 if isinstance(sets, (datetime.datetime, datetime.date)):
-                    sets = sets.isoformat()
+                    sets: str = sets.isoformat()
                 s = s + '"' + id + '": ' + json.dumps(sets) + ", "
             s = "{" + s[:-2] + "}"
             async with aiofiles.open(
@@ -238,13 +238,13 @@ async def async_json_cache(json_data, json_file) -> tuple[dict, bool]:
             ) as f:
                 s = await f.read()
             return_json = json.loads(s)
-            cached: bool = True
+            cached = True
         except:
             LOGGER.warning(f'No cache from json file "{json_file}" available.')
     return (return_json, cached)
 
 
-def get_fields(object):
+def get_fields(object: Any) -> Any | list[str]:
     """get_fields"""
     if hasattr(object, "__dict__"):
         return object.__dict__.keys()
@@ -252,22 +252,22 @@ def get_fields(object):
         return dir(object)
 
 
-def get_obj_attrs_as_string(object) -> str:
+def get_obj_attrs_as_string(object: Any) -> str:
     """get_obj_attrs_as_string"""
-    fields = get_fields(object)
-    attrs = [
+    fields: Any | list[str] = get_fields(object)
+    attrs: list[Any | str] = [
         a for a in fields if not a.startswith("__") and not callable(getattr(object, a))
     ]
     return ", ".join(attrs)
 
 
-def get_obj_attr_values_as_string(object) -> str:
+def get_obj_attr_values_as_string(object: Any) -> str:
     """get_obj_attr_values_as_string"""
-    fields = get_fields(object)
-    attrs = [
+    fields: Any | list[str] = get_fields(object)
+    attrs: list[Any | str] = [
         a for a in fields if not a.startswith("__") and not callable(getattr(object, a))
     ]
-    vals = []
+    vals: list[str] = []
     for a in attrs:
         _str: str = str(getattr(object, a))
         vals.append(_str if _str else '""')
@@ -285,6 +285,6 @@ def task_name() -> str:
         return ""
     return task_name
     
-def logger_debug_task(log) -> None:
+def logger_debug_task(log: str) -> None:
     task_name_str: str = task_name()
     LOGGER.debug(f"{task_name_str} - {log}" if task_name_str else f"{log}")
