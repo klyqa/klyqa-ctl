@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 import argparse
-from asyncio import CancelledError, Task
+from asyncio import AbstractEventLoop, CancelledError, Task
 import datetime
 import json
 import select
@@ -438,7 +438,7 @@ class LocalCommunication:
         return return_state
 
     async def search_and_send_to_device(
-        self, proc_timeout_secs=DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
+        self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
         """! Send broadcast and make tasks for incoming tcp connections.
 
@@ -449,7 +449,7 @@ class LocalCommunication:
             true:  on success
             false: on exception or error
         """
-        loop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = asyncio.get_event_loop()
 
         try:
             if not self.tcp or not self.udp:
@@ -458,13 +458,13 @@ class LocalCommunication:
                 if not self.tcp or not self.udp:
                     break
                 # for debug cursor jump:
-                a = False
+                a: bool = False
                 if a:
                     break
 
                 if self.message_queue:
 
-                    read_broadcast_response = True
+                    read_broadcast_response: bool = True
                     try:
                         LOGGER.debug("Broadcasting QCX-SYN Burst")
                         self.udp.sendto(
