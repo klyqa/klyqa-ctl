@@ -25,29 +25,22 @@ from __future__ import annotations
 #
 ###################################################################
 
-import getpass
 import random
-import socket
 import sys
 import json
 import datetime
 import argparse
-import select
 import logging
 import time
-from typing import TypeVar, Any, TypedDict
-from xml.dom.pulldom import default_bufsize
+from typing import Any
 
-import requests, uuid, json
-from threading import Thread, Event
-from collections import ChainMap
-from enum import Enum
-import asyncio, aiofiles
-import functools, traceback
+import json
+import asyncio
+import traceback
 from asyncio.exceptions import CancelledError, TimeoutError
 from collections.abc import Callable
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local import AES_KEYs, LocalCommunication, LocalConnection, send_msg
+from klyqa_ctl.communication.local import AES_KEYs, LocalCommunication
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
@@ -61,68 +54,49 @@ from klyqa_ctl.general.parameters import get_description_parser
 from klyqa_ctl.account import Account
 
 
-tcp_udp_port_lock: AsyncIOLock = AsyncIOLock.instance()
-
 class Client:
     """Klyqa client"""
 
-    account: Account
+    account: Account | None
 
     def __init__(
         self,
-        local_communicator: LocalCommunication,
-        account: Account,
+        local_communicator: LocalCommunication | None,
+        cloud_backend: CloudBackend | None, 
+        account: Account | None,
         interactive_prompts: bool = False,
-        offline: bool = False,
+        offline: bool = False
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
 
-        self.local_communicator: LocalCommunication = local_communicator
+        self.local_communicator: LocalCommunication | None = local_communicator 
         self.account = account
         self.interactive_prompts: bool = interactive_prompts
         self.offline: bool = offline
         self.devices: dict[str, KlyqaDevice] = dict()
-        self.cloud_backend: CloudBackend = CloudBackend(self.devices, self.account)
+        self.cloud_backend: CloudBackend | None = cloud_backend
 
     def backend_connected(self) -> bool:
-        return self.cloud_backend.access_token != ""
+        if self.cloud_backend:
+            return bool(self.cloud_backend.access_token != "")
+        return False
     
 
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
                 
-        await self.cloud_backend.shutdown()
-        await self.local_communicator.shutdown()
-        
-
-    async def request_account_settings_eco(self, scan_interval: int = 60) -> bool:
-        if not await self.__acc_settings_lock.acquire():
-            return False
-        ret: bool = True
-        try:
-            now: datetime.datetime = datetime.datetime.now()
-            if not self._settings_loaded_ts or (
-                now - self._settings_loaded_ts
-                >= datetime.timedelta(seconds=scan_interval)
-            ):
-                """look that the settings are loaded only once in the scan interval"""
-                await self.request_account_settings()
-        finally:
-            self.__acc_settings_lock.release()
-        return ret
-
-    async def request_account_settings(self) -> None:
-        try:
-            acc_settings: dict[str, Any] | None = await self.request("settings")
-            if acc_settings:
-                self.acc_settings = acc_settings
-        except:
-            LOGGER.debug(f"{traceback.format_exc()}")
+        if self.cloud_backend:
+            await self.cloud_backend.shutdown()
+        if self.local_communicator:
+            await self.local_communicator.shutdown()
         
         
-    async def discover_devices(self, args, message_queue_tx_local, target_device_uids) -> None:
+    async def discover_devices(self, args: argparse.Namespace, message_queue_tx_local: list[Any],
+        target_device_uids: set[Any]) -> None:
         """Discover devices."""
+        if not self.local_communicator:
+            return
 
         print(sep_width * "-")
         print("Search local network for devices ...")
@@ -154,12 +128,13 @@ class Client:
             target_device_uids = set(
                 u_id for u_id, v in self.devices.items()
             )
+            # some code missing
 
 
     def device_name_to_uid(self, args: argparse.Namespace, target_device_uids: set[str]) -> bool:
         """Set target device uid by device name argument."""
         
-        if not self.acc_settings:
+        if not self.account or not self.account.settings:
             LOGGER.error(
                 'Missing account settings to resolve device name  "'
                 + args.device_name
@@ -168,7 +143,7 @@ class Client:
             return False
         dev: list[str] = [
             format_uid(device["localDeviceId"])
-            for device in self.acc_settings["devices"]
+            for device in self.account.settings["devices"]
             if device["name"] == args.device_name
         ]
         if not dev:
@@ -183,7 +158,7 @@ class Client:
         return True
     
     
-    async def select_device(self, args, send_started_local) -> str | set[str]:
+    async def select_device(self, args: argparse.Namespace, send_started_local: datetime.datetime) -> str | set[str]:
         """Interactive select device."""
         
         print(sep_width * "-")
@@ -283,8 +258,6 @@ class Client:
         self,
         args: argparse.Namespace,
         args_in: list[Any],
-        udp: socket.socket | None = None,
-        tcp: socket.socket | None = None,
         timeout_ms: int = 5000,
         async_answer_callback: Callable[[Message, str], Any] | None = None,
     ) -> str | bool | int | set:
@@ -301,10 +274,6 @@ class Client:
         Returns:
             bool: True if succeeded.
         """
-        if not udp:
-            udp = self.local_communicator.udp
-        if not tcp:
-            tcp = self.local_communicator.tcp
         try:
             global sep_width
 
@@ -349,8 +318,8 @@ class Client:
                 )
                 LOGGER.info("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
-            if not args.selectDevice and self.backend_connected():
-                await self.account.update_device_configs()
+            if not args.selectDevice and self.cloud_backend and self.backend_connected():
+                await self.cloud_backend.update_device_configs()
 
             ### device specific commands ###
 
@@ -359,8 +328,6 @@ class Client:
                 return await self.send_to_devices(
                     args,
                     args_in,
-                    udp=udp,
-                    tcp=tcp,
                     timeout_ms=3500,
                 )
 
@@ -391,11 +358,11 @@ class Client:
             success: bool = True
             to_send_device_uids: set[str] = set()
             
-            if args.local or args.tryLocalThanCloud:
+            if self.local_communicator and (args.local or args.tryLocalThanCloud):
                 if args.passive:
-                    if udp:
+                    if self.local_communicator and self.local_communicator.udp:
                         LOGGER.debug("Waiting for UDP broadcast")
-                        data, address = udp.recvfrom(4096)
+                        data, address = self.local_communicator.udp.recvfrom(4096)
                         LOGGER.debug(
                             "\n\n 2. UDP server received: ",
                             data.decode("utf-8"),
@@ -405,12 +372,11 @@ class Client:
                         )
 
                         LOGGER.debug("3a. Sending UDP ack.\n")
-                        udp.sendto("QCX-ACK".encode("utf-8"), address)
+                        self.local_communicator.udp.sendto("QCX-ACK".encode("utf-8"), address)
                         time.sleep(1)
                         LOGGER.debug("3b. Sending UDP ack.\n")
-                        udp.sendto("QCX-ACK".encode("utf-8"), address)
+                        self.local_communicator.udp.sendto("QCX-ACK".encode("utf-8"), address)
                 else:
-
 
                     send_started_local: datetime.datetime = datetime.datetime.now()
 
@@ -421,7 +387,7 @@ class Client:
 
                     to_send_device_uids = target_device_uids.copy()
 
-                    async def sl(uid) -> None:
+                    async def sl(uid: str) -> None:
                         """Sleep task for timeout."""
                         try:
                             await asyncio.sleep(timeout_ms / 1000)
@@ -436,7 +402,7 @@ class Client:
                         except Exception as e:
                             pass
 
-                    async def async_answer_callback_local(msg, uid) -> None:
+                    async def async_answer_callback_local(msg: Message, uid: str) -> None:
                         if msg and msg.msg_queue_sent:
                             LOGGER.debug(f"{uid} msg callback.")
 
@@ -487,7 +453,7 @@ class Client:
                         LOGGER.error(sent_locally_error)
                     success = False
 
-            if args.cloud or args.tryLocalThanCloud:
+            if self.cloud_backend and (args.cloud or args.tryLocalThanCloud):
                 success = await self.cloud_backend.cloud_send(args, target_device_uids, to_send_device_uids, timeout_ms, message_queue_tx_state_cloud, message_queue_tx_command_cloud)
 
             if success and scene:
@@ -529,12 +495,10 @@ class Client:
                 ret: str | bool | int | set = await self.send_to_devices(
                     scene_start_args_parsed,
                     args_in,
-                    udp = udp,
-                    tcp = tcp,
                     timeout_ms = timeout_ms
                     - int((datetime.datetime.now() - send_started).total_seconds())
                     * 1000,
-                    async_answer_callback=async_print_answer,
+                    async_answer_callback = async_print_answer,
                 )
 
                 if isinstance(ret, bool) and ret:
@@ -549,7 +513,7 @@ class Client:
             return False
     
 
-    async def send_to_devices_wrapped(self, args_parsed, args_in, timeout_ms=5000) -> int:
+    async def send_to_devices_wrapped(self, args_parsed: argparse.Namespace, args_in: list[Any], timeout_ms: int = 5000) -> int:
         """Set up broadcast port and tcp reply connection port."""
 
         if args_parsed.cloud or args_parsed.local:
@@ -564,13 +528,13 @@ class Client:
 
         local_communication: bool = args_parsed.local or args_parsed.tryLocalThanCloud
 
-        if local_communication:
+        if local_communication and self.local_communicator:
             if not await self.local_communicator.bind_ports():
                 return 1
 
         exit_ret: int = 0
 
-        async def async_answer_callback(msg, uid) -> None:
+        async def async_answer_callback(msg: Message, uid: str) -> None:
             LOGGER.debug(f"{uid}: ")
             if msg:
                 try:
@@ -586,33 +550,31 @@ class Client:
         if not await self.send_to_devices(
             args_parsed,
             args_in,
-            udp = self.local_communicator.udp,
-            tcp = self.local_communicator.tcp,
             timeout_ms = timeout_ms,
             async_answer_callback = async_answer_callback,
         ):
             exit_ret = 1
 
         LOGGER.debug("Closing ports")
-        if local_communication:
+        if self.local_communicator:
             await self.local_communicator.shutdown()
 
         return exit_ret
 
-async def tests(klyqa_acc: Account) -> int:
+async def tests(client: Client) -> int:
         
-    if not await klyqa_acc.local_communicator.bind_ports():
+    if client.local_communicator and not await client.local_communicator.bind_ports():
         return 1
     
     started: datetime.datetime = datetime.datetime.now()
     
     uids: list[str] = [
-        # "29daa5a4439969f57934",
-        "286DCD5C6BDA",
+        "29daa5a4439969f57934",
+        # "286DCD5C6BDA",
         # "00ac629de9ad2f4409dc",
         # "04256291add6f1b414d1",
-        # "cd992e921b3646b8c18a",
-        # "1a8379e585321fdb8778"
+        "cd992e921b3646b8c18a",
+        "1a8379e585321fdb8778"
         ]
     
     messages_answered: int = 0
@@ -623,9 +585,9 @@ async def tests(klyqa_acc: Account) -> int:
         args_all: list[list[str]] = []
         args_all.append(["--request"])
         args_all.append(["--color", str(random.randrange(0, 255)), str(random.randrange(0, 255)), str(random.randrange(0, 255))])
-        # args_all.append(["--temperature", str(random.randrange(2000, 6500))])
-        # args_all.append(["--brightness", str(random.randrange(0, 100))])
-        # args_all.append(["--WW"])
+        args_all.append(["--temperature", str(random.randrange(2000, 6500))])
+        args_all.append(["--brightness", str(random.randrange(0, 100))])
+        args_all.append(["--WW"])
         
         async def send_answer_cb(msg: Message, uid: str) -> None:
             nonlocal messages_answered
@@ -652,7 +614,7 @@ async def tests(klyqa_acc: Account) -> int:
             args_parsed: argparse.Namespace = parser.parse_args(args=args)
 
             new_task: asyncio.Task[Any] = asyncio.create_task(
-                klyqa_acc.send_to_devices(
+                client.send_to_devices(
                     args_parsed,
                     args,
                     async_answer_callback=send_answer_cb,
@@ -713,7 +675,7 @@ async def main() -> None:
         parser.print_help()
         sys.exit(1)
 
-    args_parsed = parser.parse_args(args=args_in)
+    args_parsed: argparse.Namespace = parser.parse_args(args=args_in)
 
     if args_parsed.version:
         print(KLYQA_CTL_VERSION)
@@ -736,8 +698,6 @@ async def main() -> None:
 
     server_ip: str = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
 
-    local_communicator: LocalCommunication = LocalCommunication(devices, acc_settings,server_ip)
-
     print_onboarded_devices: bool = (
         not args_parsed.device_name
         and not args_parsed.device_unitids
@@ -745,7 +705,7 @@ async def main() -> None:
         and not args_parsed.quiet
     )
 
-    klyqa_acc: Account | None = None
+    account: Account | None = None
 
     host: str = PROD_HOST
     if args_parsed.test:
@@ -754,58 +714,57 @@ async def main() -> None:
     if args_parsed.dev:
         if args_parsed.dev:
             LOGGER.info("development mode. Using default aes key.")
-        klyqa_acc = Account(
-            local_communicator, offline = args_parsed.offline, interactive_prompts = True
+        account = Account(
+            offline = args_parsed.offline, interactive_prompts = True
         )
-        await klyqa_acc.login(print_onboarded_devices=False)
+        print_onboarded_devices=False
 
     else:
         LOGGER.debug("login")
         if args_parsed.username is not None and args_parsed.username[0] in klyqa_accs:
-            klyqa_acc = klyqa_accs[args_parsed.username[0]]
+            account = klyqa_accs[args_parsed.username[0]]
         else:
-            klyqa_acc = Account(
-                local_communicator,
+            account = Account(
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
-                host,
                 offline=args_parsed.offline,
-                interactive_prompts=True,
+                interactive_prompts = True
             )
 
-        if not klyqa_acc.access_token:
-            try:
-                if await klyqa_acc.login(print_onboarded_devices=print_onboarded_devices):
-                    LOGGER.debug("login finished")
-                    klyqa_accs[klyqa_acc.username] = klyqa_acc
-                else:
-                    raise Exception()
-            except:
-                LOGGER.error("Error during login.")
-                LOGGER.debug(f"{traceback.format_exc()}")
-                sys.exit(1)
     exit_ret = 0
+        
+    
+    local_communicator: LocalCommunication = LocalCommunication(account, server_ip)
+    cloud_backend: CloudBackend = CloudBackend(account, host, args_parsed.offline)
+    
+    client: Client = Client(local_communicator, cloud_backend, account, interactive_prompts = True, offline = args_parsed.offline)
+    
+    if cloud_backend and not account.access_token:
+        try:
+            if await cloud_backend.login(print_onboarded_devices = print_onboarded_devices):
+                LOGGER.debug("login finished")
+                klyqa_accs[account.username] = account
+            else:
+                raise Exception()
+        except:
+            LOGGER.error("Error during login.")
+            LOGGER.debug(f"{traceback.format_exc()}")
+            sys.exit(1)
 
-    if False:
-        await tests(klyqa_acc)
+    if True:
+        await tests(client)
     else:
         if (
-            # loop.run_until_complete(
-            #     klyqa_acc.send_to_devices_wrapped(
-            #         args_parsed, args_in.copy(), timeout_ms=timeout_ms
-            #     )
-            # )
-            await klyqa_acc.send_to_devices_wrapped(
+            await client.send_to_devices_wrapped(
                 args_parsed, args_in.copy(), timeout_ms=timeout_ms)
             > 0
         ):
             exit_ret = 1
 
-    await klyqa_acc.shutdown()
-
+    await client.shutdown()
     LOGGER.debug("Closing ports")
-    if klyqa_acc.local_communicator:
-        await klyqa_acc.local_communicator.shutdown()
+    await local_communicator.shutdown()
+    await cloud_backend.shutdown()
 
     sys.exit(exit_ret)
 
