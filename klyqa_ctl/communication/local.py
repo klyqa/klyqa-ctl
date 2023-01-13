@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 import argparse
-from asyncio import CancelledError
+from asyncio import CancelledError, Task
 import datetime
 import json
 import select
 import socket
 from typing import Any, Callable
+from klyqa_ctl.account import Account
 from klyqa_ctl.devices import device
 
 from klyqa_ctl.devices.device import *
@@ -16,14 +17,12 @@ from klyqa_ctl.devices.vacuum import KlyqaVC
 from klyqa_ctl.general.general import *
 from klyqa_ctl.general.message import Message_state
 
-
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
     from Cryptodome.Random import get_random_bytes  # pycryptodome
 except:
     from Crypto.Cipher import AES  # provided by pycryptodome
     from Crypto.Random import get_random_bytes  # pycryptodome
-
 
 AES_KEYs: dict[str, bytes] = {}
 
@@ -32,8 +31,7 @@ Device_TCP_return = Enum(
     "no_error sent answered wrong_uid no_uid_device wrong_aes tcp_error unknown_error timeout nothing_done sent_error no_message_to_send device_lock_timeout err_local_iv missing_aes_key response_error send_error",
 )
 
-
-def send_msg(msg, device: KlyqaDevice, connection: LocalConnection) -> bool:
+def send_msg(msg: str, device: KlyqaDevice, connection: LocalConnection) -> bool:
     info_str: str = (
         (f"{task_name()} - " if LOGGER.level == 10 else "")
         + 'Sending in local network to "'
@@ -49,6 +47,7 @@ def send_msg(msg, device: KlyqaDevice, connection: LocalConnection) -> bool:
 
     if connection.sendingAES is None:
         return False
+    
     cipher: bytes = connection.sendingAES.encrypt(plain)
 
     while connection.socket:
@@ -62,7 +61,6 @@ def send_msg(msg, device: KlyqaDevice, connection: LocalConnection) -> bool:
             pass
     return False
 
-
 class LocalConnection:
     """LocalConnection"""
 
@@ -70,8 +68,6 @@ class LocalConnection:
     localIv: bytes = get_random_bytes(8)
     remoteIv: bytes = b""
 
-    sendingAES = None
-    receivingAES = None
     address: dict[str, str | int] = {"ip": "", "port": -1}
     socket: socket.socket | None = None
     received_packages: list[Any] = []
@@ -104,19 +100,20 @@ class LocalCommunication:
     #
     current_addr_connections: set[str]
     
-    def __init__(self, devices: dict[str, KlyqaDevice], acc_settings: TypeJSON | None, server_ip: str = "0.0.0.0") -> None:
-        self.devices: dict[str, KlyqaDevice] = devices
+    def __init__(self, account: Account, server_ip: str = "0.0.0.0") -> None:
+        self.devices: dict[str, KlyqaDevice] = account.devices
         self.tcp: socket.socket | None = None
         self.udp: socket.socket | None = None
         self.server_ip: str = server_ip
-        self.message_queue: dict[str, list[Message]]
-        self.__send_loop_sleep = None
-        self.__tasks_done = []
-        self.__tasks_undone = []
-        self.search_and_send_loop_task = None
-        self.search_and_send_loop_task_end_now = False
-        self.__read_tcp_task = None
-        self.acc_settings: TypeJSON | None = acc_settings
+        self.message_queue: dict[str, list[Message]] = {}
+        self.__send_loop_sleep: Task | None = None
+        self.__tasks_done: list[tuple[Task, datetime.datetime, datetime.datetime]] = []
+        self.__tasks_undone: list[tuple[Task, datetime.datetime]] = []
+        self.search_and_send_loop_task: Task | None = None
+        self.search_and_send_loop_task_end_now: bool = False
+        self.__read_tcp_task: Task | None = None
+        self.account: Account = account
+        self.acc_settings: TypeJSON | None = account.settings
         self.current_addr_connections: set[str] = set()
 
     async def shutdown(self) -> None:
@@ -149,10 +146,7 @@ class LocalCommunication:
             self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            if self.server_ip is not None:
-                server_address = (self.server_ip, 2222)
-            else:
-                server_address = ("0.0.0.0", 2222)
+            server_address = (self.server_ip, 2222)
             self.udp.bind(server_address)
             LOGGER.debug("Bound UDP port 2222")
 
@@ -181,7 +175,11 @@ class LocalCommunication:
     
     
     async def aes_wait_iv_pkg_zero(
-        self, connection, pkg: bytes, device: KlyqaDevice, r_device: RefParse,
+        self,
+        connection: LocalConnection,
+        pkg: bytes,
+        device: KlyqaDevice,
+        r_device: RefParse,
         use_dev_aes: bool) -> Device_TCP_return:
         # Check identification package from device, lock the device object for changes,
         # safe the idenfication to device object if it is a not known device,
@@ -245,11 +243,11 @@ class LocalCommunication:
 
         found: str = ""
         settings_device = ""
-        if self.acc_settings and "devices" in self.acc_settings:
+        if self.account and self.account.settings and "devices" in self.account.settings:
             settings_device = [
-                device_sets
-                for device_sets in self.acc_settings["devices"]
-                if format_uid(device_sets["localDeviceId"])
+                device_settings
+                for device_settings in self.account.settings["devices"]
+                if format_uid(device_settings["localDeviceId"])
                 == format_uid(device.u_id)
             ]
         if settings_device:
@@ -285,7 +283,8 @@ class LocalCommunication:
     
         return Device_TCP_return.no_error
 
-    async def aes_wait_iv_pkg_one(self, connection, pkg, device) -> None:
+    async def aes_wait_iv_pkg_one(self, connection: LocalConnection,
+        pkg: bytes, device: KlyqaDevice) -> Device_TCP_return:
         """Set aes key for the connection from the first package."""
         # Receive the remote initial vector (iv) for aes encrypted communication.
 
@@ -309,8 +308,11 @@ class LocalCommunication:
         )
 
         connection.state = "CONNECTED"
+    
+        return Device_TCP_return.no_error
         
-    async def message_answer_package(self, connection, pkg, device, msg_sent) -> Device_TCP_return | int:
+    async def message_answer_package(self, connection: LocalConnection,
+        pkg: bytes, device: KlyqaDevice, msg_sent: Message | None) -> Device_TCP_return | int:
         """Message answer package"""
         
         return_val: Device_TCP_return | int = 0
@@ -349,7 +351,6 @@ class LocalCommunication:
                 LOGGER.debug(
                     f"device {device.u_id} answered msg {msg_sent.msg_queue}"
                 )
-            msg_sent = None
 
         logger_debug_task(f" Request's reply decrypted: " + str(plain))
         return return_val
@@ -527,6 +528,7 @@ class LocalCommunication:
                                     LOGGER.error(
                                         "Error binding ports udp 2222 and tcp 3333."
                                     )
+                            return None
 
                         self.__read_tcp_task = asyncio.create_task(read_tcp_task())
 
@@ -619,10 +621,10 @@ class LocalCommunication:
                             self.__tasks_done.append(
                                 (task, started, datetime.datetime.now())
                             )
-                            e = task.exception()
-                            if e:
+                            exception: Any = task.exception()
+                            if exception:
                                 LOGGER.debug(
-                                    f"Exception error in {task.get_coro()}: {e}"
+                                    f"Exception error in {task.get_coro()}: {exception}"
                                 )
                         else:
                             if datetime.datetime.now() - started > datetime.timedelta(
@@ -664,7 +666,6 @@ class LocalCommunication:
         except CancelledError as e:
             LOGGER.debug(f"search and send to device loop cancelled.")
             self.message_queue = {}
-            self.message_queue_now = {}
             for task, started in self.__tasks_undone:
                 task.cancel(msg=f"Search and send loop cancelled.")
         except Exception as e:
@@ -673,7 +674,7 @@ class LocalCommunication:
             return False
         return True
 
-    async def search_and_send_loop_task_stop(self):
+    async def search_and_send_loop_task_stop(self) -> None:
         while (
             self.search_and_send_loop_task and not self.search_and_send_loop_task.done()
         ):
@@ -801,7 +802,7 @@ class LocalCommunication:
         async def __send_msg() -> Message | None:
             nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
             
-            def rm_msg(msg) -> None:
+            def rm_msg(msg: Message) -> None:
                 if not device:
                     return
                 try:
@@ -875,6 +876,10 @@ class LocalCommunication:
                         rm_msg(msg)
                 else:
                     rm_msg(msg)
+            return None
+        
+        if msg_sent and msg_sent.state == Message_state.answered:
+            msg_sent = None
                     
         while not communication_finished and (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
                device.u_id in self.message_queue or msg_sent):
@@ -916,8 +921,8 @@ class LocalCommunication:
                     logger_debug_task(f"Incomplete packet, waiting for more...")
                     break
 
-                data: bytes = data[4 + pkgLen :]
-
+                data = data[4 + pkgLen :]
+                ret: Device_TCP_return | int 
                 if connection.state == "WAIT_IV" and pkgType == 0:
 
                     ret = await self.aes_wait_iv_pkg_zero(connection, pkg, device, r_device, use_dev_aes)
@@ -926,13 +931,16 @@ class LocalCommunication:
                         return ret
 
                 if connection.state == "WAIT_IV" and pkgType == 1:
-                    await self.aes_wait_iv_pkg_one(connection, pkg, device)
+                    ret = await self.aes_wait_iv_pkg_one(connection, pkg, device)
+                    if ret != Device_TCP_return.no_error:
+                        return ret
 
                 elif connection.state == "CONNECTED" and pkgType == 2:
-                    ret: Device_TCP_return | int = await self.message_answer_package(connection, pkg, device, msg_sent)
+                    ret = await self.message_answer_package(connection, pkg, device, msg_sent)
                     if type(ret) == Device_TCP_return:
                         return_val = ret # type: ignore
                         if return_val == Device_TCP_return.answered:
+                            msg_sent = None
                             communication_finished = True
                     break
                 else:
@@ -940,7 +948,8 @@ class LocalCommunication:
         return return_val
     
         
-    async def discover_devices(self, args, message_queue_tx_local, target_device_uids) -> None:
+    async def discover_devices(self, args: argparse.Namespace,
+        message_queue_tx_local: list, target_device_uids: set) -> None:
         """Discover devices."""
 
         print(sep_width * "-")
