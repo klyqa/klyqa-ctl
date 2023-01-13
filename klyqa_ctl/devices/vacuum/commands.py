@@ -5,19 +5,19 @@ import json
 from typing import Any, Callable
 
 from klyqa_ctl.devices.vacuum import VC_SUCTION_STRENGTHS, VC_WORKINGMODE, CommandType
-from klyqa_ctl.general.general import LOGGER
+from klyqa_ctl.general.general import LOGGER, TypeJSON
 
 async def process_args_to_msg_cleaner(
-    args,
-    args_in,
-    send_to_devices_cb,
-    message_queue_tx_local,
-    message_queue_tx_command_cloud,
-    message_queue_tx_state_cloud,
+    args: argparse.Namespace,
+    args_in: list[Any],
+    send_to_devices_callable: Callable[[argparse.Namespace], Any],
+    message_queue_tx_local: list[Any],
+    message_queue_tx_command_cloud: list[Any],
+    message_queue_tx_state_cloud: list[Any],
 ) -> None:
     """process_args_to_msg_cleaner"""
 
-    def local_and_cloud_command_msg(json_msg, timeout) -> None:
+    def local_and_cloud_command_msg(json_msg: TypeJSON, timeout: int) -> None:
         message_queue_tx_local.append((json.dumps(json_msg), timeout))
         message_queue_tx_command_cloud.append(json_msg)
 
