@@ -29,13 +29,42 @@ class CloudBackend:
     
     def __init__(self, controller_data: ControllerData, account: Account,
         host: str = "", offline: bool = False) -> None:
-        self.controller_data: ControllerData = controller_data
-        self.account: Account = account
-        self.offline: bool = offline
-        self.host: str = PROD_HOST if not host else host
-        self.access_token: str = ""
-        self.devices: dict[str, KlyqaDevice] = account.devices
+        self._attr_controller_data: ControllerData = controller_data
+        self._attr_account: Account = account
+        self._attr_offline: bool = offline
+        self._attr_host: str = PROD_HOST if not host else host
+        self._attr_access_token: str = ""
+        self._attr_devices: dict[str, KlyqaDevice] = account.devices
 
+    @property
+    def devices(self) -> dict[str, KlyqaDevice]:
+        """Return or set the devices dictionary."""
+        return self._attr_devices
+
+    @property
+    def access_token(self) -> str:
+        """Return or set the cloud access token."""
+        return self._attr_access_token
+
+    @property
+    def host(self) -> str:
+        """Return or set the host."""
+        return self._attr_host
+
+    @property
+    def offline(self) -> bool:
+        """Return or set the offline attribute."""
+        return self._attr_offline
+
+    @property
+    def account(self) -> Account:
+        """Return or set the account object."""
+        return self._attr_account
+
+    @property
+    def controller_data(self) -> ControllerData:
+        """Return or set the controller data object."""
+        return self._attr_controller_data
     
     def backend_connected(self) -> bool:
         return self.access_token != ""
@@ -445,7 +474,7 @@ class CloudBackend:
 
         # exception requests.JSONDecodeError(*args, **kwargs)[source]
         # Couldn’t decode the text into json
-            
+                
             
         return response
         
