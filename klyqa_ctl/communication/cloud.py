@@ -8,6 +8,7 @@ from collections import ChainMap
 import datetime
 import functools
 import getpass
+import httpx
 import json
 from typing import Any
 import requests, uuid, json
@@ -145,7 +146,7 @@ class CloudBackend:
         if not self.offline and (
             self.account.username is not None and self.account.password is not None
         ):
-            login_response: requests.Response | None = None
+            login_response: httpx.Response | None = None
             cached: bool
             login_data: dict[str, str] = {
                 "email": self.account.username,
@@ -153,15 +154,7 @@ class CloudBackend:
             }
             try:
 
-                login_response = await loop.run_in_executor(
-                    None,
-                    functools.partial(
-                        requests.post,
-                        self.host + "/auth/login",
-                        json=login_data,
-                        timeout=10,
-                    ),
-                )
+                login_response = await self.request("/auth/login", json=login_data, timeout=10)
 
                 if not login_response or (
                     login_response.status_code != 200
@@ -394,95 +387,28 @@ class CloudBackend:
             **{"Authorization": "Bearer " + self.access_token},
         }
         
-    async def request(self, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> requests.Response | None:
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-        response: requests.Response | None = None
+ 
+    async def request(self, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> httpx.Response | None:
+        response: httpx.Response | None = None
         try:
-            # https://stackoverflow.com/questions/22190403/how-could-i-use-requests-in-asyncio
-            # httpx light weight asyncio request framework compared to aiohttp
-            # https://www.python-httpx.org/
-            response = await loop.run_in_executor(
-                None,
-                functools.partial(
-                    requests.get,
-                    self.host + "/" + url,
+            async with httpx.AsyncClient() as client:
+                response = await client.request("GET", url=self.host + "/" + url,                                    
                     headers=headers,
-                    **kwargs,
-                ),
-            )
-        
-        except requests.RequestException:
-            LOGGER.error("There was an ambiguous exception that occurred while handling your request.")
-            return None
-        
-        # except requests.HTTPError:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.URLRequired:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.TooManyRedirects:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.ConnectTimeout:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.ReadTimeout:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.Timeout:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.JSONDecodeError:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-        
-        # except requests.Timeout:
-        #     LOGGER.error("An HTTP error occurred.")
-        #     return None
-
-        # exception requests.ConnectionError(*args, **kwargs)[source]
-        
-
-        # exception requests.HTTPError(*args, **kwargs)[source]
-        
-
-        # exception requests.URLRequired(*args, **kwargs)[source]
-        # A valid URL is required to make a request.
-
-        # exception requests.TooManyRedirects(*args, **kwargs)[source]
-        # Too many redirects.
-
-        # exception requests.ConnectTimeout(*args, **kwargs)[source]
-        # The request timed out while trying to connect to the remote server.
-
-        # Requests that produced this error are safe to retry.
-
-        # exception requests.ReadTimeout(*args, **kwargs)[source]
-        # The server did not send any data in the allotted amount of time.
-
-        # exception requests.Timeout(*args, **kwargs)[source]
-        # The request timed out.
-
-        # Catching this error will catch both ConnectTimeout and ReadTimeout errors.
-
-        # exception requests.JSONDecodeError(*args, **kwargs)[source]
-        # Couldn’t decode the text into json
+                    **kwargs)
                 
+        except EnvironmentError as ex: # parent of IOError, OSError *and* WindowsError where available
+            LOGGER.error("Environment error occured during send request to cloud backend!")
+            LOGGER.debug(f"{traceback.format_exc()}")
+        except httpx.HTTPError as e:
+            LOGGER.error("Connection error occured during send request to cloud backend!")
+            LOGGER.debug(f"{traceback.format_exc()}")
             
         return response
-        
 
     async def request_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         answer: TypeJSON | None = None
-        response: requests.Response | None = await self.request(self.host + "/" + url,
+        response: httpx.Response | None = await self.request(self.host + "/" + url,
             self.get_beared_request_header() if self.access_token else self.get_header_default(), **kwargs)
         
         if not response:
@@ -554,7 +480,7 @@ class CloudBackend:
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         answer: TypeJSON | None = None
         try:
-            response: requests.Response = await loop.run_in_executor(
+            response: httpx.Response = await loop.run_in_executor(
                 None,
                 functools.partial(
                     requests.post,
