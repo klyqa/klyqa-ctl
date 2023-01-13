@@ -9,11 +9,15 @@ import functools
 import json
 from typing import Any, Callable
 
-from klyqa_ctl.devices.device import format_uid
+from klyqa_ctl.devices.device import format_uid, KlyqaDevice
 from klyqa_ctl.devices.light import BULB_SCENES, KlyqaBulb
 from klyqa_ctl.general.general import LOGGER, DeviceType, sep_width
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import TypeJSON
+
+Check_device_parameter = Enum(
+    "Check_device_parameter", "color brightness temperature scene"
+)
 
 # Global Constants
 commands_send_to_bulb: list[str] = [
@@ -61,7 +65,7 @@ commands_send_to_bulb: list[str] = [
 
 
 # Functions
-def color_message(red: str, green: str, blue: str, transition: int, skipWait=False) -> tuple[str, str]:
+def color_message(red: str, green: str, blue: str, transition: int, skipWait: bool = False) -> tuple[str, str]:
     """Create message for color change."""
     waitTime: str = str(transition) if not skipWait else "0"
     return (
@@ -135,8 +139,9 @@ def brightness_message(brightness: str, transition: int) -> tuple[str, str]:
     )
 
 
-def external_source_message(protocol, port, channel) -> TypeJSON:
+def external_source_message(protocol: int, port: int, channel: int) -> TypeJSON:
     """Create external source protocol message."""
+    protocol_str: str
     if protocol == 0:
         protocol_str = "EXT_OFF"
     elif protocol == 1:
@@ -486,146 +491,147 @@ async def process_args_to_msg_lighting(
     
     return True
 
-
+# Needs clean up
 async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_devices_callable: Callable) -> bool:
     """Interactive command select."""
-    print("Commands (arguments):")
-    print(sep_width * "-")
+    # print("Commands (arguments):")
+    # print(sep_width * "-")
 
-    def get_temp_range(product_id) -> bool | tuple[int,int]:
-        temperature_enum = []
-        if not self.device_config:
-            return False
-        try:
-            temperature_enum = [
-                trait["value_schema"]["properties"]["colorTemperature"]["enum"]
-                if "properties" in trait["value_schema"]
-                else trait["value_schema"]["enum"]
-                for trait in self.device_config["deviceTraits"]
-                if trait["trait"] == "@core/traits/color-temperature"
-            ]
-            if len(temperature_enum[0]) < 2:
-                raise Exception()
-        except:
-            return False
-        return temperature_enum[0]
+    # def get_temp_range(product_id: str) -> bool | tuple[int,int]:
+    #     temperature_enum = []
+    #     if not self.device_config:
+    #         return False
+    #     try:
+    #         temperature_enum = [
+    #             trait["value_schema"]["properties"]["colorTemperature"]["enum"]
+    #             if "properties" in trait["value_schema"]
+    #             else trait["value_schema"]["enum"]
+    #             for trait in self.device_config["deviceTraits"]
+    #             if trait["trait"] == "@core/traits/color-temperature"
+    #         ]
+    #         if len(temperature_enum[0]) < 2:
+    #             raise Exception()
+    #     except:
+    #         return False
+    #     return temperature_enum[0]
 
-    def get_inner_range(tup1, tup2) -> tuple[int, int]:
-        return (
-            tup1[0] if tup1[0] > tup2[0] else tup2[0],
-            tup1[1] if tup1[1] < tup2[1] else tup2[1],
-        )
+    # def get_inner_range(tup1: Any, tup2: Any) -> tuple[int, int]:
+    #     return (
+    #         tup1[0] if tup1[0] > tup2[0] else tup2[0],
+    #         tup1[1] if tup1[1] < tup2[1] else tup2[1],
+    #     )
 
-    temperature_enum: tuple[int, int] = tuple()
-    color: list[int] = [0, 255]
-    brightness: tuple[int, int] = (0,100)
-    for u_id in args.device_unitids[0].split(","):
-        u_id: str = format_uid(u_id)
-        if u_id not in self.devices or not self.devices[u_id].ident: # fix self devices
+    # temperature_enum: tuple[int, int] = tuple()
+    # color: list[int] = [0, 255]
+    # brightness: tuple[int, int] = (0,100)
+    # u_id: str
+    # for u_id in args.device_unitids[0].split(","):
+    #     u_id = format_uid(u_id)
+    #     if u_id not in self.devices or not self.devices[u_id].ident: # fix self devices
 
-            async def send_ping() -> bool:
-                discover_local_args2: list[str] = [
-                    "--ping",
-                    "--device_unitids",
-                    u_id,
-                ]
+    #         async def send_ping() -> bool:
+    #             discover_local_args2: list[str] = [
+    #                 "--ping",
+    #                 "--device_unitids",
+    #                 u_id,
+    #             ]
 
-                orginal_args_parser: argparse.ArgumentParser = (
-                    get_description_parser()
-                )
-                discover_local_args_parser2: argparse.ArgumentParser = (
-                    get_description_parser()
-                )
+    #             orginal_args_parser: argparse.ArgumentParser = (
+    #                 get_description_parser()
+    #             )
+    #             discover_local_args_parser2: argparse.ArgumentParser = (
+    #                 get_description_parser()
+    #             )
 
-                add_config_args(parser=orginal_args_parser)
-                add_config_args(parser=discover_local_args_parser2)
-                add_command_args_bulb(parser=discover_local_args_parser2)
+    #             add_config_args(parser=orginal_args_parser)
+    #             add_config_args(parser=discover_local_args_parser2)
+    #             add_command_args_bulb(parser=discover_local_args_parser2)
 
-                (
-                    original_config_args_parsed,
-                    _,
-                ) = orginal_args_parser.parse_known_args(args=args_in)
+    #             (
+    #                 original_config_args_parsed,
+    #                 _,
+    #             ) = orginal_args_parser.parse_known_args(args=args_in)
 
-                discover_local_args_parsed2 = (
-                    discover_local_args_parser2.parse_args(
-                        discover_local_args2,
-                        namespace=original_config_args_parsed,
-                    )
-                )
+    #             discover_local_args_parsed2 = (
+    #                 discover_local_args_parser2.parse_args(
+    #                     discover_local_args2,
+    #                     namespace=original_config_args_parsed,
+    #                 )
+    #             )
 
-                ret = send_to_devices_callable(discover_local_args_parsed2)
-                if isinstance(ret, bool) and ret:
-                    return True
-                else:
-                    return False
+    #             ret = send_to_devices_callable(discover_local_args_parsed2)
+    #             if isinstance(ret, bool) and ret:
+    #                 return True
+    #             else:
+    #                 return False
 
-            ret: bool = await send_ping()
-            if isinstance(ret, bool) and ret:
-                product_id: str = self.devices[u_id].ident.product_id
-            else:
-                LOGGER.error(f"Device {u_id} not found.")
-                return False
-        product_id = self.devices[u_id].ident.product_id
-        if not temperature_enum:
-            temperature_enum = get_temp_range(product_id)
-        else:
-            temperature_enum = get_inner_range(
-                temperature_enum, get_temp_range(product_id)
-            )
-    arguments_send_to_device = {}
-    if temperature_enum:
-        arguments_send_to_device = {
-            "temperature": " ["
-            + str(temperature_enum[0])
-            + "-"
-            + str(temperature_enum[1])
-            + "] (Kelvin, low: warm, high: cold)"
-        }
+    #         ret: bool = await send_ping()
+    #         if isinstance(ret, bool) and ret:
+    #             product_id: str = self.devices[u_id].ident.product_id
+    #         else:
+    #             LOGGER.error(f"Device {u_id} not found.")
+    #             return False
+    #     product_id = self.devices[u_id].ident.product_id
+    #     if not temperature_enum:
+    #         temperature_enum = get_temp_range(product_id)
+    #     else:
+    #         temperature_enum = get_inner_range(
+    #             temperature_enum, get_temp_range(product_id)
+    #         )
+    # arguments_send_to_device = {}
+    # if temperature_enum:
+    #     arguments_send_to_device = {
+    #         "temperature": " ["
+    #         + str(temperature_enum[0])
+    #         + "-"
+    #         + str(temperature_enum[1])
+    #         + "] (Kelvin, low: warm, high: cold)"
+    #     }
 
-    arguments_send_to_device: dict[str, str] = {
-        **arguments_send_to_device,
-        **{
-            "color": f" rgb [{color[0]}..{color[1]}] [{color[0]}..{color[1]}] [{color[0]}..{color[1]}]",
-            "brightness": " ["
-            + str(brightness[0])
-            + ".."
-            + str(brightness[1])
-            + "]",
-            "routine_commands": " [cmd]",
-            "routine_id": " [int]",
-            "power": " [on/off]",
-        },
-    }
+    # arguments_send_to_device: dict[str, str] = {
+    #     **arguments_send_to_device,
+    #     **{
+    #         "color": f" rgb [{color[0]}..{color[1]}] [{color[0]}..{color[1]}] [{color[0]}..{color[1]}]",
+    #         "brightness": " ["
+    #         + str(brightness[0])
+    #         + ".."
+    #         + str(brightness[1])
+    #         + "]",
+    #         "routine_commands": " [cmd]",
+    #         "routine_id": " [int]",
+    #         "power": " [on/off]",
+    #     },
+    # }
 
-    count: int = 1
-    for c in commands_send_to_bulb:
-        args_to_b: str = (
-            arguments_send_to_device[c] if c in arguments_send_to_device else ""
-        )
-        LOGGER.info(str(count) + ") " + c + args_to_b)
-        count = count + 1
+    # count: int = 1
+    # for c in commands_send_to_bulb:
+    #     args_to_b: str = (
+    #         arguments_send_to_device[c] if c in arguments_send_to_device else ""
+    #     )
+    #     LOGGER.info(str(count) + ") " + c + args_to_b)
+    #     count = count + 1
 
-    cmd_c_id: int = int(input("Choose command number [1-9]*: "))
-    if cmd_c_id > 0 and cmd_c_id < count:
-        args_in.append("--" + commands_send_to_bulb[cmd_c_id - 1])
-    else:
-        LOGGER.error("No such command id " + str(cmd_c_id) + " available.")
-        sys.exit(1)
+    # cmd_c_id: int = int(input("Choose command number [1-9]*: "))
+    # if cmd_c_id > 0 and cmd_c_id < count:
+    #     args_in.append("--" + commands_send_to_bulb[cmd_c_id - 1])
+    # else:
+    #     LOGGER.error("No such command id " + str(cmd_c_id) + " available.")
+    #     sys.exit(1)
 
-    if commands_send_to_bulb[cmd_c_id - 1] in arguments_send_to_device:
-        args_app: str = input(
-            "Set arguments (multiple arguments space separated) for command [Enter]: "
-        )
-        if args_app:
-            args_in.extend(args_app.split(" "))
+    # if commands_send_to_bulb[cmd_c_id - 1] in arguments_send_to_device:
+    #     args_app: str = input(
+    #         "Set arguments (multiple arguments space separated) for command [Enter]: "
+    #     )
+    #     if args_app:
+    #         args_in.extend(args_app.split(" "))
 
-    parser: argparse.ArgumentParser = get_description_parser()
+    # parser: argparse.ArgumentParser = get_description_parser()
 
-    add_config_args(parser=parser)
-    add_command_args_bulb(parser=parser)
+    # add_config_args(parser=parser)
+    # add_command_args_bulb(parser=parser)
 
-    args: argparse.Namespace = parser.parse_args(args_in, namespace=args)
-    # args.func(args)
+    # args = parser.parse_args(args_in, namespace=args)
+    # # args.func(args)
     return True
 
 def command_color(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
@@ -642,21 +648,22 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
     msg = msg + (check_color,)
 
     message_queue_tx_local.append(msg)
-    col = json.loads(msg[0])["color"]
+    col: Any = json.loads(msg[0])["color"]
     message_queue_tx_state_cloud.append({"color": col})
 
-def command_color_percent(args, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
+def command_color_percent(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
     """Command for color in percentage numbers."""
+    r: Any; g: Any; b: Any; w: Any; c: Any
     r, g, b, w, c = args.percent_color
-    tt = args.transitionTime[0]
+    tt: Any = args.transitionTime[0]
     msg: tuple[str, str] = percent_color_message(
         r, g, b, w, c, tt, skipWait=args.brightness is not None
     )
     message_queue_tx_local.append(msg)
-    p_color = json.loads(msg[0])["p_color"]
+    p_color: Any = json.loads(msg[0])["p_color"]
     message_queue_tx_state_cloud.append({"p_color": p_color})
         
-def command_brightness(args, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
+def command_brightness(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
     """Command for brightness."""
     brightness_str: str = args.brightness[0]
 
@@ -669,19 +676,19 @@ def command_brightness(args, message_queue_tx_local, message_queue_tx_state_clou
     msg = msg + (check_brightness,)
 
     message_queue_tx_local.append(msg)
-    brightness = json.loads(msg[0])["brightness"]
+    brightness: Any = json.loads(msg[0])["brightness"]
     message_queue_tx_state_cloud.append({"brightness": brightness})
 
-def command_temperature(args, message_queue_tx_local, message_queue_tx_state_cloud) -> None:
+def command_temperature(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
     """Command for temperature."""
     temperature: str = args.temperature[0]
 
-    tt = args.transitionTime[0]
+    tt: Any = args.transitionTime[0]
     msg: tuple[str, str] | tuple[str, str, Callable] = temperature_message(
         temperature, tt, skipWait=args.brightness is not None
     )
 
-    check_temperature = functools.partial(
+    check_temperature: functools.partial[bool] = functools.partial(
         check_device_parameter, args, Check_device_parameter.temperature, int(temperature)
     )
     msg = msg + (check_temperature,)
@@ -812,11 +819,7 @@ def forced_continue(args: argparse.Namespace, reason: str) -> bool:
         LOGGER.info("Enforced send")
         return True
 
-Check_device_parameter = Enum(
-    "Check_device_parameter", "color brightness temperature scene"
-)
-
-def missing_config(args: argparse.Namespace, product_id) -> bool:
+def missing_config(args: argparse.Namespace, product_id: str) -> bool:
     """Missing device config."""
     if not forced_continue(args, 
         "Missing or faulty config values for device " + " product_id: " + product_id
@@ -860,7 +863,7 @@ def check_temp_range(args: argparse.Namespace, device: KlyqaBulb, value: int) ->
             )
     return True
 
-def check_scene_support(args: argparse.Namespace, device, scene_id) -> bool:
+def check_scene_support(args: argparse.Namespace, device: KlyqaDevice, scene_id: str) -> bool:
     """Check device scene support."""
     try:
         scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
@@ -885,7 +888,7 @@ check_range: dict[Any, Any] = {
 }
 
 def check_device_parameter(args: argparse.Namespace, 
-    parameter: Check_device_parameter, values, device
+    parameter: Check_device_parameter, values: Any, device: KlyqaDevice
 ) -> bool:
     """Check device configs."""
     if not device.device_config and not forced_continue(args, "Missing configs for devices."):
