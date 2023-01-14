@@ -19,40 +19,124 @@ def format_uid(text: str) -> str:
 class KlyqaDevice:
     """KlyqaDevice"""
 
-    local_addr: dict[str, Any] = {"ip": "", "port": -1}
-    cloud: CloudConnection
-
-    u_id: str = "no_uid"
-    acc_sets: dict = {}
+    # u_id: str = "no_uid"
+    # acc_sets: dict = {}
     """ account settings """
 
-    _use_lock: asyncio.Lock | None
-    _use_thread: asyncio.Task | None
+    # _use_lock: asyncio.Lock | None
+    # _use_thread: asyncio.Task | None
 
-    recv_msg_unproc: list[Message]
-    ident: KlyqaDeviceResponseIdent | None = None
+    # recv_msg_unproc: list[Message]
 
-    response_classes: dict[str, Any]
-    status: KlyqaDeviceResponse | None
-    device_config: dict[str, Any]
+    # response_classes: dict[str, Any]
+    # status: KlyqaDeviceResponse | None
+    # device_config: dict[str, Any]
 
     def __init__(self) -> None:
-        self.local_addr = {"ip": "", "port": -1}
-        self.cloud = CloudConnection()
-        self.ident = KlyqaDeviceResponseIdent()
+        self._attr_local_addr: dict[str, Any] = { "ip": "", "port": -1 }
+        self._attr_cloud: CloudConnection = CloudConnection()
+        self._attr_ident: KlyqaDeviceResponseIdent | None = KlyqaDeviceResponseIdent()
 
-        self.u_id: str = "no_uid"
-        self.acc_sets = {}
-        self._use_lock = None
-        self._use_thread = None
-        self.recv_msg_unproc = []
+        self._attr_u_id: str = "no_uid"
+        self._attr_acc_sets: dict[Any, Any] = {}
+        self._attr__use_lock: asyncio.Lock | None = None
+        self._attr__use_thread: asyncio.Task[Any] | None = None
+        self._attr_recv_msg_unproc: list[Message] = []
 
-        self.status = None
-        self.response_classes= {
+        self._attr_status: KlyqaDeviceResponse | None = None
+        self._attr_response_classes: dict[str, Any] = {
             "ident": KlyqaDeviceResponseIdent,
             "status": KlyqaDeviceResponse,
         }
-        self.device_config = {}
+        self._attr_device_config: dict[str, Any] = {}
+
+    @property
+    def local_addr(self) -> dict[str, Any]:
+        return self._attr_local_addr
+    
+    @local_addr.setter
+    def local_addr(self, local_addr: dict[str, Any]) -> None:
+        self._attr_local_addr = local_addr
+    
+    @property
+    def cloud(self) -> CloudConnection:
+        return self._attr_cloud
+    
+    @cloud.setter
+    def cloud(self, cloud: CloudConnection) -> None:
+        self._attr_cloud = cloud
+        
+    @property
+    def ident(self) -> KlyqaDeviceResponseIdent | None:
+        return self._attr_ident
+    
+    @ident.setter
+    def ident(self, ident: KlyqaDeviceResponseIdent | None) -> None:
+        self._attr_ident = ident
+    
+    @property
+    def u_id(self) -> str:
+        return self._attr_u_id
+    
+    @u_id.setter
+    def u_id(self, u_id: str) -> None:
+        self._attr_u_id = u_id
+    
+    @property
+    def acc_sets(self) -> dict[Any, Any]:
+        return self._attr_acc_sets
+    
+    @acc_sets.setter
+    def acc_sets(self, acc_sets: dict) -> None:
+        self._attr_acc_sets = acc_sets
+    
+    @property
+    def _use_lock(self) -> asyncio.Lock | None:
+        return self._attr__use_lock
+    
+    @_use_lock.setter
+    def _use_lock(self, _use_lock: asyncio.Lock | None) -> None:
+        self._attr__use_lock = _use_lock
+    
+    @property
+    def _use_thread(self) -> asyncio.Task[Any] | None:
+        return self._attr__use_thread
+    
+    @_use_thread.setter
+    def _use_thread(self, _use_thread: asyncio.Task[Any] | None) -> None:
+        self._attr__use_thread = _use_thread
+    
+    @property
+    def recv_msg_unproc(self) -> list[Message]:
+        return self._attr_recv_msg_unproc
+    
+    @recv_msg_unproc.setter
+    def recv_msg_unproc(self, recv_msg_unproc: list[Message]) -> None:
+        self._attr_recv_msg_unproc = recv_msg_unproc
+    
+    @property
+    def status(self) -> KlyqaDeviceResponse | None:
+        return self._attr_status
+    
+    @status.setter
+    def status(self, status: KlyqaDeviceResponse | None) -> None:
+        self._attr_status = status
+    
+    @property
+    def response_classes(self) -> dict[str, Any]:
+        return self._attr_response_classes
+    
+    @response_classes.setter
+    def response_classes(self, response_classes: dict[str, Any]) -> None:
+        self._attr_response_classes = response_classes
+    
+    @property
+    def device_config(self) -> dict[str, Any]:
+        return self._attr_device_config
+    
+    @device_config.setter
+    def device_config(self, device_config: dict[str, Any]) -> None:
+        self._attr_device_config = device_config
 
     def process_msgs(self) -> None:
         for msg in self.recv_msg_unproc:
@@ -68,7 +152,7 @@ class KlyqaDevice:
 
     async def use_lock(self, timeout: int = 30, **kwargs: Any) -> bool:
         """Get device lock."""
-        task  = asyncio.current_task()
+        task: asyncio.Task[Any] | None  = asyncio.current_task()
         
         try:
             if not self._use_lock:
