@@ -47,6 +47,10 @@ class CloudBackend:
         """Return or set the cloud access token."""
         return self._attr_access_token
 
+    @access_token.setter
+    def access_token(self, access_token: str) -> None:
+        self._attr_access_token = access_token
+
     @property
     def host(self) -> str:
         """Return or set the host."""
@@ -386,7 +390,6 @@ class CloudBackend:
             **{"Authorization": "Bearer " + self.access_token},
         }
         
- 
     async def request(self, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> httpx.Response | None:
         response: httpx.Response | None = None
         try:
@@ -411,10 +414,10 @@ class CloudBackend:
             self.get_beared_request_header() if self.access_token else self.get_header_default(), **kwargs)
         
         if not response:
-            LOGGER.debug("No response from cloud request.")
+            LOGGER.error("No response from cloud request.")
             return None
         if response.status_code != 200:
-            LOGGER.debug("Unvalid response from cloud request.")
+            LOGGER.error("Unvalid response from cloud request.")
             raise Exception(response.text)
         try:
             answer = json.loads(response.text)
@@ -425,8 +428,8 @@ class CloudBackend:
         return answer
         
     async def request_account_settings_eco(self, scan_interval: int = 60) -> bool:
-        if not await self.account.settings_lock.acquire():
-            return False
+        await self.account.settings_lock.acquire() #:
+            # return False
         ret: bool = True
         try:
             now: datetime.datetime = datetime.datetime.now()
@@ -448,7 +451,6 @@ class CloudBackend:
         except:
             LOGGER.debug(f"{traceback.format_exc()}")
 
-
     async def update_device_configs(self) -> None:
         """Request the account settings from the cloud backend."""
         
@@ -468,33 +470,34 @@ class CloudBackend:
                     timeout=30,
                 )
                 device_config: Device_config | None = config
-                if not isinstance(self.account.device_configs, dict):
-                    self.account.device_configs = {}
+                # if not isinstance(self.account.device_configs, dict):
+                #     self.account.device_configs = {}
                 self.account.device_configs[product_id] = device_config
             except:
                 LOGGER.debug(f"{traceback.format_exc()}")
 
-    async def request_post_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
-        """Post requests with."""
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-        answer: TypeJSON | None = None
-        try:
-            response: httpx.Response = await loop.run_in_executor(
-                None,
-                functools.partial(
-                    requests.post,
-                    self.host + "/" + url,
-                    headers=self.get_beared_request_header(),
-                    **kwargs,
-                ),
-            )
-            if response.status_code != 200:
-                raise Exception(response.text)
-            answer = json.loads(response.text)
-        except:
-            LOGGER.debug(f"{traceback.format_exc()}")
-            answer = None
-        return answer
+    # async def request_post_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
+    #     """Post requests with."""
+    #     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    #     answer: TypeJSON | None = None
+    #     try:
+    #         response: httpx.Response = self.request(url, headers=self.get_beared_request_header(), **kwargs)
+    #         # response: httpx.Response = await loop.run_in_executor(
+    #         #     None,
+    #         #     functools.partial(
+    #         #         requests.post,
+    #         #         self.host + "/" + url,
+    #         #         headers=self.get_beared_request_header(),
+    #         #         **kwargs,
+    #         #     ),
+    #         # )
+    #         if response.status_code != 200:
+    #             raise Exception(response.text)
+    #         answer = json.loads(response.text)
+    #     except:
+    #         LOGGER.debug(f"{traceback.format_exc()}")
+    #         answer = None
+    #     return answer
 
     async def cloud_send(self,
         args: argparse.Namespace,
@@ -518,7 +521,7 @@ class CloudBackend:
                 f"Post {target} to the device '{cloud_device_id}' (unit_id: {unit_id}) over the cloud."
             )
             resp = {
-                cloud_device_id: await self.request_post_beared(
+                cloud_device_id: await self.request_beared(
                     url=f"device/{cloud_device_id}/{target}",
                     json=json_message,
                 )
