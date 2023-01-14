@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 from asyncio import AbstractEventLoop, CancelledError, Task
 import datetime
+from enum import auto
 import json
 import select
 import socket
@@ -25,10 +26,24 @@ except:
     from Crypto.Cipher import AES  # provided by pycryptodome
     from Crypto.Random import get_random_bytes  # pycryptodome
 
-Device_TCP_return = Enum(
-    "Device_TCP_return",
-    "no_error sent answered wrong_uid no_uid_device wrong_aes tcp_error unknown_error timeout nothing_done sent_error no_message_to_send device_lock_timeout err_local_iv missing_aes_key response_error send_error",
-)
+class Device_TCP_return(Enum):
+    no_error = auto()
+    sent = auto()
+    answered = auto()
+    wrong_uid = auto()
+    no_uid_device = auto()
+    wrong_aes = auto()
+    tcp_error = auto()
+    unknown_error = auto()
+    timeout = auto()
+    nothing_done = auto()
+    sent_error = auto()
+    no_message_to_send = auto()
+    device_lock_timeout = auto()
+    err_local_iv = auto()
+    missing_aes_key = auto()
+    response_error = auto()
+    send_error = auto()
 
 def send_msg(msg: str, device: KlyqaDevice, connection: LocalConnection) -> bool:
     info_str: str = (
@@ -685,7 +700,7 @@ class LocalCommunication:
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
                 )
 
-                if return_state == 0:
+                if return_state == Device_TCP_return.no_error:
                     """no error"""
 
                     def dict_values_to_list(d: dict) -> list[str]:
@@ -706,13 +721,13 @@ class LocalCommunication:
                         except:
                             LOGGER.debug(f"{traceback.format_exc()}")
 
-                elif return_state == 1:
+                elif return_state == Device_TCP_return.no_error:
                     LOGGER.error(
                         f"Unknown error during send (and handshake) with device {unit_id}."
                     )
-                elif return_state == 2:
+                elif return_state == Device_TCP_return.no_error:
                     pass
-                elif return_state == 3:
+                elif return_state == Device_TCP_return.no_error:
                     LOGGER.debug(
                         f"End of tcp stream. ({connection.address['ip']}:{connection.address['port']})"
                     )
@@ -995,7 +1010,7 @@ class LocalCommunication:
 
     async def set_send_message(
         self,
-        send_msgs: list[tuple[Any]],
+        send_msgs: list[tuple],
         target_device_uid: str,
         args: argparse.Namespace,
         callback: Callable | None = None,
