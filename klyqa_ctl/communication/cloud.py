@@ -24,7 +24,10 @@ from klyqa_ctl.general.general import LOGGER, EventQueuePrinter
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.general.general import *
         
-        
+class RequestMethod(str, Enum):
+    POST = "POST"
+    GET = "GET"
+    
 class CloudBackend:
     """Cloud backend"""
     
@@ -157,7 +160,7 @@ class CloudBackend:
             }
             try:
 
-                login_response = await self.request("/auth/login", json=login_data, timeout=10)
+                login_response = await self.request(RequestMethod.POST, "auth/login", json=login_data, timeout=10)
 
                 if not login_response or (
                     login_response.status_code != 200
@@ -176,7 +179,7 @@ class CloudBackend:
                 login_json: dict = json.loads(login_response.text)
                 self.access_token = str(login_json.get("accessToken"))
                 
-                acc_settings: dict[str, Any] | None = await self.request_beared("settings", timeout=30)
+                acc_settings: dict[str, Any] | None = await self.request_beared(RequestMethod.GET, "settings", timeout=30)
                 if acc_settings:
                     self.account.settings = acc_settings
 
@@ -257,6 +260,7 @@ class CloudBackend:
                 async def req() -> dict[str, Any] | None:
                     try:
                         ret: dict[str, Any] | None = await self.request_beared(
+                            RequestMethod.GET,
                             f'device/{device_settings["cloudDeviceId"]}/state',
                             timeout=30,
                         )
@@ -327,7 +331,9 @@ class CloudBackend:
                 def get_conf(id: str, device_configs: dict[str, Any]) -> None:
                     async def req() -> dict[str, Any] | None:
                         try:
-                            ret: dict[str, Any] | None = await self.request_beared("config/product/" + id, timeout=30)
+                            ret: dict[str, Any] | None = await self.request_beared(
+                            RequestMethod.GET,
+                            "config/product/" + id, timeout=30)
                             return ret
                         except:
                             return None
@@ -390,11 +396,11 @@ class CloudBackend:
             **{"Authorization": "Bearer " + self.access_token},
         }
         
-    async def request(self, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> httpx.Response | None:
+    async def request(self, method: RequestMethod, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> httpx.Response | None:
         response: httpx.Response | None = None
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.request("GET", url=self.host + "/" + url,                                    
+                response = await client.request(method, url=self.host + "/" + url,                                    
                     headers=headers,
                     **kwargs)
                 
@@ -407,10 +413,10 @@ class CloudBackend:
             
         return response
 
-    async def request_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
+    async def request_beared(self, method: RequestMethod, url: str, **kwargs: Any) -> TypeJSON | None:
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         answer: TypeJSON | None = None
-        response: httpx.Response | None = await self.request(self.host + "/" + url,
+        response: httpx.Response | None = await self.request(method, url,
             self.get_beared_request_header() if self.access_token else self.get_header_default(), **kwargs)
         
         if not response:
@@ -445,7 +451,8 @@ class CloudBackend:
 
     async def request_account_settings(self) -> None:
         try:
-            acc_settings: dict[str, Any] | None = await self.request_beared("settings")
+            acc_settings: dict[str, Any] | None = await self.request_beared(
+                            RequestMethod.GET, "settings")
             if acc_settings:
                 self.account.settings = acc_settings
         except:
@@ -466,6 +473,7 @@ class CloudBackend:
             LOGGER.debug("Try to request device config from server.")
             try:
                 config: TypeJSON | None = await self.request_beared(
+                    RequestMethod.GET,
                     "config/product/" + product_id,
                     timeout=30,
                 )
@@ -522,6 +530,7 @@ class CloudBackend:
             )
             resp = {
                 cloud_device_id: await self.request_beared(
+                    RequestMethod.POST,
                     url=f"device/{cloud_device_id}/{target}",
                     json=json_message,
                 )
