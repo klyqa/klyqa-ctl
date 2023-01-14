@@ -188,16 +188,16 @@ BULB_SCENES: list[dict[str, Any]] = [
 class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
     """Klyqa_Bulb_Response_Status"""
 
-    active_command: int | None = None
-    active_scene: str | None = None
-    fwversion: str | None = None
-    mode: str | None = None
-    open_slots: int | None = None
-    sdkversion: str | None = None
-    status: str | None = None
-    temperature: int | None = None
-    _brightness: int | None
-    _color: RGBColor | None
+    _attr_active_command: int | None = None
+    _attr_active_scene: str | None = None
+    _attr_fwversion: str | None = None
+    _attr_mode: str | None = None
+    _attr_open_slots: int | None = None
+    _attr_sdkversion: str | None = None
+    _attr_status: str | None = None
+    _attr_temperature: int | None = None
+    _attr_brightness: int | None
+    _attr_color: RGBColor | None
 
     def __str__(self) -> str:
         """__str__"""
@@ -205,51 +205,136 @@ class KlyqaBulbResponseStatus(KlyqaDeviceResponse):
 
     def __init__(self, **kwargs) -> None:
         """__init__"""
-        self.active_command = None
-        self.active_scene = None
-        self.fwversion = None
-        self.mode = None  # cmd, cct, rgb
-        self.open_slots = None
-        self.sdkversion = None
-        self.status = None
-        self.temperature = None
-        self._brightness = None
-        self._color = None
+        self._attr_active_command = None
+        self._attr_active_scene = None
+        self._attr_fwversion = None
+        self._attr_mode = None  # cmd, cct, rgb
+        self._attr_open_slots = None
+        self._attr_sdkversion = None
+        self._attr_status = None
+        self._attr_temperature = None
+        self._attr_open_slots = None
+        self._attr_color = None
         super().__init__(**kwargs)
         LOGGER.debug(f"save status {self}")
 
     @property
+    def active_command(self) -> int | None:
+        return self._attr_active_command
+
+    @active_command.setter
+    def active_command(self, active_command: int | None) -> None:
+        self._attr_active_command = active_command
+
+    @property
+    def active_scene(self) -> str | None:
+        return self._attr_active_scene
+
+    @active_scene.setter
+    def active_scene(self, active_scene: str | None) -> None:
+        self._attr_active_scene = active_scene
+
+    @property
+    def fwversion(self) -> str | None:
+        return self._attr_fwversion
+
+    @fwversion.setter
+    def fwversion(self, fwversion:str | None) -> None:
+        self._attr_fwversion = fwversion
+
+    @property
+    def mode(self) -> str | None:
+        return self._attr_mode
+
+    @mode.setter
+    def mode(self, mode: str | None) -> None:
+        self._attr_mode = mode
+
+    @property
+    def open_slots(self) -> int | None:
+        return self._attr_open_slots
+
+    @open_slots.setter
+    def open_slots(self, open_slots: int | None) -> None:
+        self._attr_open_slots = open_slots
+
+    @property
+    def sdkversion(self) -> str | None:
+        return self._attr_sdkversion
+
+    @sdkversion.setter
+    def sdkversion(self, sdkversion: str | None) -> None:
+        self._attr_sdkversion = sdkversion
+
+    @property
+    def status(self) -> str | None:
+        return self._attr_status
+
+    @status.setter
+    def status(self, status: str | None) -> None:
+        self._attr_status = status
+
+    @property
+    def temperature(self) -> int | None:
+        return self._attr_temperature
+
+    @temperature.setter
+    def temperature(self, temperature: int | None) -> None:
+        self._attr_temperature = temperature
+
+    @property
     def brightness(self) -> int | None:
-        return self._brightness
+        return self._attr_brightness
 
     @brightness.setter
     def brightness(self, brightness: dict[str, int]) -> None:
-        self._brightness = int(brightness["percentage"])
+        self._attr_brightness = int(brightness["percentage"])
 
     @property
     def color(self) -> RGBColor | None:
-        return self._color
+        return self._attr_color
 
     @color.setter
     def color(self, color: dict[str, int]) -> None:
-        self._color = (
+        self._attr_color = (
             RGBColor(color["red"], color["green"], color["blue"]) if color else None
         )
 
 class KlyqaBulb(KlyqaDevice):
     """KlyqaBulb"""
 
-    # status: KlyqaBulbResponseStatus = None
-
     def __init__(self) -> None:
         super().__init__()
-        # self.status = KlyqaBulbResponseStatus()
         self.response_classes["status"] = KlyqaBulbResponseStatus
-        self.brightness_range: Range | None = None
-        self.temperature_range: Range | None = None
-        self.color_range: Range | None = None
+        self._attr_brightness_range: Range | None = None
+        self._attr_temperature_range: Range | None = None
+        self._attr_color_range: Range | None = None
         
-    def set_brightness_range(self, device_config) -> None:
+    @property
+    def brightness_range(self) -> Range | None:
+        return self._attr_brightness_range
+    
+    @brightness_range.setter
+    def brightness_range(self, brightness_range: Range | None ) -> None:
+        self._attr_brightness_range = brightness_range
+        
+    @property
+    def temperature_range(self) -> Range | None:
+        return self._attr_temperature_range
+    
+    @temperature_range.setter
+    def temperature_range(self, temperature_range: Range | None) -> None:
+        self._attr_temperature_range = temperature_range
+        
+    @property
+    def color_range(self) -> Range | None:
+        return self._attr_color_range
+    
+    @color_range.setter
+    def color_range(self, color_range: Range | None) -> None:
+        self._attr_color_range = color_range
+        
+    def set_brightness_range(self, device_config: TypeJSON) -> None:
         brightness_enum: list[Any] = []
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
@@ -279,7 +364,7 @@ class KlyqaBulb(KlyqaDevice):
             LOGGER.error("Error during setting brightness range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
-    def set_temperature_range(self, device_config) -> None:
+    def set_temperature_range(self, device_config: TypeJSON) -> None:
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
                 self.temperature_range = Range(*[
@@ -304,7 +389,7 @@ class KlyqaBulb(KlyqaDevice):
             LOGGER.error("Error during setting temperature range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
-    def set_color_range(self, device_config) -> None:  
+    def set_color_range(self, device_config: TypeJSON) -> None:  
         color_enum = []
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
@@ -334,7 +419,7 @@ class KlyqaBulb(KlyqaDevice):
             LOGGER.error("Error during setting color range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
-    def read_device_config(self, device_config) -> None:
+    def read_device_config(self, device_config: TypeJSON) -> None:
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
         self.set_temperature_range(device_config)
