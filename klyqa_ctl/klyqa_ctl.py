@@ -54,12 +54,8 @@ from klyqa_ctl.general.message import *
 from klyqa_ctl.general.parameters import get_description_parser
 from klyqa_ctl.account import Account
 
-
 class Client:
     """Client"""
-
-    account: Account | None
-    controller_data: ControllerData
 
     def __init__(
         self,
@@ -70,17 +66,56 @@ class Client:
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
-        self.controller_data = controller_data
-        self.local_communicator: LocalCommunication | None = local_communicator 
-        self.account = account
-        self.devices: dict[str, KlyqaDevice] = dict()
-        self.cloud_backend: CloudBackend | None = cloud_backend
+        self._attr_controller_data: ControllerData = controller_data
+        self._attr_local_communicator: LocalCommunication | None = local_communicator 
+        self._attr_account: Account | None = account
+        self._attr_devices: dict[str, KlyqaDevice] = dict()
+        self._attr_cloud_backend: CloudBackend | None = cloud_backend
+
+    @property
+    def controller_data(self) -> ControllerData:
+        return self._attr_controller_data
+    
+    @controller_data.setter
+    def controller_data(self, controller_data: ControllerData) -> None:
+        self._attr_controller_data = controller_data
+
+    @property
+    def local_communicator(self) -> LocalCommunication | None:
+        return self._attr_local_communicator
+    
+    @local_communicator.setter
+    def local_communicator(self, local_communicator: LocalCommunication | None ) -> None:
+        self._attr_local_communicator = local_communicator
+
+    @property
+    def account(self) -> Account | None:
+        return self._attr_account
+    
+    @account.setter
+    def account(self, account: Account) -> None:
+        self._attr_account = account
+
+    @property
+    def devices(self) -> dict[str, KlyqaDevice]:
+        return self._attr_devices
+    
+    @devices.setter
+    def devices(self, devices: dict[str, KlyqaDevice]) -> None:
+        self._attr_devices = devices
+
+    @property
+    def cloud_backend(self) -> CloudBackend | None:
+        return self._attr_cloud_backend
+    
+    @cloud_backend.setter
+    def cloud_backend(self, cloud_backend: CloudBackend) -> None:
+        self._attr_cloud_backend = cloud_backend
 
     def backend_connected(self) -> bool:
         if self.cloud_backend:
             return bool(self.cloud_backend.access_token != "")
         return False
-    
 
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
@@ -89,7 +124,6 @@ class Client:
             await self.cloud_backend.shutdown()
         if self.local_communicator:
             await self.local_communicator.shutdown()
-        
         
     async def discover_devices(self, args: argparse.Namespace, message_queue_tx_local: list[Any],
         target_device_uids: set[Any]) -> None:
@@ -129,7 +163,6 @@ class Client:
             )
             # some code missing
 
-
     def device_name_to_uid(self, args: argparse.Namespace, target_device_uids: set[str]) -> bool:
         """Set target device uid by device name argument."""
         
@@ -155,7 +188,6 @@ class Client:
         else:
             target_device_uids.add(format_uid(dev[0]))
         return True
-    
     
     async def select_device(self, args: argparse.Namespace, send_started_local: datetime.datetime) -> str | set[str]:
         """Interactive select device."""
