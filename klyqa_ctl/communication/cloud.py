@@ -70,7 +70,6 @@ class CloudBackend:
     def backend_connected(self) -> bool:
         return self.access_token != ""
     
-    
     async def login_cache(self) -> bool:
         """Get cached account data for login and check existing username and password."""
 
