@@ -10,16 +10,13 @@ class ControllerData:
     
     @property
     def aes_keys(self) -> dict[str, bytes]:
-        """Return or set the devices dictionary."""
         return self._attr_aes_keys
     
     @property
     def interactive_prompts(self) -> bool:
-        """Return or set the devices dictionary."""
         return self._attr_interactive_prompts
     
     @property
     def offline(self) -> bool:
-        """Return or set the devices dictionary."""
         return self._attr_offline
     
