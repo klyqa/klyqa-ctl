@@ -66,6 +66,7 @@ class LocalConnection:
     def __init__(self) -> None:
         self._attr_state: str = "WAIT_IV"
         self._attr_localIv: bytes = get_random_bytes(8)
+        self._attr_remoteIv: bytes = b""
         self._attr_sendingAES: Any = None
         self._attr_receivingAES: Any = None
         self._attr_address: dict[str, str | int] = {"ip": "", "port": -1}
@@ -83,6 +84,14 @@ class LocalConnection:
     @state.setter
     def state(self, state: str) -> None:
         self._attr_state = state
+    
+    @property
+    def remoteIv(self) -> bytes:
+        return self._attr_localIv
+    
+    @remoteIv.setter
+    def remoteIv(self, remoteIv: bytes) -> None:
+        self._attr_remoteIv = remoteIv
     
     @property
     def localIv(self) -> bytes:
@@ -121,7 +130,7 @@ class LocalConnection:
         return self._attr_socket
     
     @socket.setter
-    def socket(self, socket: socket.socket) -> None:
+    def socket(self, socket: socket.socket | None) -> None:
         self._attr_socket = socket
     
     @property
@@ -137,7 +146,7 @@ class LocalConnection:
         return self._attr_sent_msg_answer
     
     @sent_msg_answer.setter
-    def sent_msg_answer(self, sent_msg_answer: dict[str, Any) -> None:
+    def sent_msg_answer(self, sent_msg_answer: dict[str, Any]) -> None:
         self._attr_sent_msg_answer = sent_msg_answer
     
     @property
@@ -667,7 +676,7 @@ class LocalCommunication:
 
                 if connection.socket is not None:
                     connection.socket.shutdown(socket.SHUT_RDWR)
-                    connection.socket.close()
+                    connection.socket.close() 
                     connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
                 logger_debug_task(f"tcp closed for {device.u_id}. Return state: {return_state}")
