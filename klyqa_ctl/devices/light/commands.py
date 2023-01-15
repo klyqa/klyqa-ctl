@@ -9,9 +9,9 @@ import functools
 import json
 from typing import Any, Callable
 
-from klyqa_ctl.devices.device import format_uid, KlyqaDevice
+from klyqa_ctl.devices.device import KlyqaDevice
 from klyqa_ctl.devices.light import BULB_SCENES, KlyqaBulb
-from klyqa_ctl.general.general import LOGGER, DeviceType, sep_width
+from klyqa_ctl.general.general import LOGGER, DeviceType
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import TypeJSON
 
