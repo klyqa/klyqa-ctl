@@ -110,28 +110,68 @@ class EventQueuePrinter:
         
 @dataclass
 class Range:
-    min: int
-    max: int
+    _attr_min: int
+    _attr_max: int
     
     def __post_init__(self) -> None:
         self.min = int(self.min)
         self.max = int(self.max)
 
+    @property
+    def min(self) -> int:
+        return self._attr_min
+
+    @min.setter
+    def min(self, min: int) -> None:
+        self._attr_min = min
+
+    @property
+    def max(self) -> int:
+        return self._attr_max
+
+    @max.setter
+    def max(self, max: int) -> None:
+        self._attr_max = max
+
 class RgbColor:
     """RGBColor"""
 
-    r: int
-    g: int
-    b: int
+    _attr_r: int
+    _attr_g: int
+    _attr_b: int
 
     def __str__(self) -> str:
         return "[" + ",".join([str(self.r), str(self.g), str(self.b)]) + "]"
         # return get_obj_values_as_string(self)
 
     def __init__(self, r: int, g: int, b: int) -> None:
-        self.r = r
-        self.g = g
-        self.b = b
+        self._attr_r = r
+        self._attr_g = g
+        self._attr_b = b
+
+    @property
+    def r(self) -> int:
+        return self._attr_r
+
+    @r.setter
+    def r(self, r: int) -> None:
+        self._attr_r = r
+
+    @property
+    def g(self) -> int:
+        return self._attr_g
+
+    @g.setter
+    def g(self, g: int) -> None:
+        self._attr_g = g
+
+    @property
+    def b(self) -> int:
+        return self._attr_b
+
+    @b.setter
+    def b(self, b: int) -> None:
+        self._attr_b = b
 
 class AsyncIoLock:
     """Async IO Lock"""
