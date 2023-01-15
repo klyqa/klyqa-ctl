@@ -11,7 +11,7 @@ try:
 except:
     from Crypto.Random import get_random_bytes  # pycryptodome
 
-class AESConnectionState(str, Enum):
+class AesConnectionState(str, Enum):
     """AES encrypted connection state."""
     WAIT_IV = "WAIT_IV"
     CONNECTED = "CONNECTED"
@@ -20,7 +20,7 @@ class LocalConnection:
     """Local connection class."""
 
     def __init__(self) -> None:
-        self._attr_state: str = AESConnectionState.WAIT_IV
+        self._attr_state: str = AesConnectionState.WAIT_IV
         self._attr_localIv: bytes = get_random_bytes(8)
         self._attr_remoteIv: bytes = b""
         self._attr_sendingAES: Any = None

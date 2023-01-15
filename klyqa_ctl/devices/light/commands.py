@@ -15,12 +15,7 @@ from klyqa_ctl.general.general import LOGGER, DeviceType, sep_width
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import TypeJSON
 
-Check_device_parameter = Enum(
-    "Check_device_parameter", "color brightness temperature scene"
-)
-
-# Global Constants
-commands_send_to_bulb: list[str] = [
+COMMANDS_SEND_TO_BULB: list[str] = [
     "request",
     "ping",
     "color",
@@ -63,6 +58,11 @@ commands_send_to_bulb: list[str] = [
     "ice",
 ]
 
+class CheckDeviceParameter(Enum):
+    COLOR = 0,
+    BRIGHTNESS = 1
+    TEMPERATURE = 2
+    SCENE = 3
 
 # Functions
 def color_message(red: str, green: str, blue: str, transition: int, skipWait: bool = False) -> tuple[str, str]:
@@ -83,7 +83,6 @@ def color_message(red: str, green: str, blue: str, transition: int, skipWait: bo
         waitTime,
     )
 
-
 def temperature_message(temperature: str, transition: str, skipWait: bool = False) -> tuple[str, str]:
     """Create message for temperature change in kelvin."""
     waitTime: str = transition if not skipWait else "0"
@@ -97,7 +96,6 @@ def temperature_message(temperature: str, transition: str, skipWait: bool = Fals
         ),
         waitTime,
     )
-
 
 def percent_color_message(
     red: str, green: str, blue: str, warm: str, cold: str, transition: str, skipWait: bool = False
@@ -122,7 +120,6 @@ def percent_color_message(
         waitTime,
     )
 
-
 def brightness_message(brightness: str, transition: int) -> tuple[str, str]:
     """Create message for brightness set."""
     return (
@@ -137,7 +134,6 @@ def brightness_message(brightness: str, transition: int) -> tuple[str, str]:
         ),
         str(transition),
     )
-
 
 def external_source_message(protocol: int, port: int, channel: int) -> TypeJSON:
     """Create external source protocol message."""
@@ -160,7 +156,6 @@ def external_source_message(protocol: int, port: int, channel: int) -> TypeJSON:
                 "channel": int(channel),
             },
         }
-
 
 def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     """Add arguments to the argument parser object.
@@ -302,7 +297,6 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--cotton", help="Cotton Candy", action="store_true")
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
 
-
 async def discover_devices(
     args: argparse.Namespace,
     args_in: list[Any],
@@ -359,7 +353,6 @@ async def discover_devices(
     args = orginal_args_parser.parse_args(args=args_in, namespace=args)
     return args
 
-
 async def process_args_to_msg_lighting(
     args: argparse.Namespace,
     args_in: list[Any],
@@ -412,7 +405,7 @@ async def process_args_to_msg_lighting(
             args = args_ret
 
     commands_to_send: list[str] = [
-        i for i in commands_send_to_bulb if hasattr(args, i) and getattr(args, i)
+        i for i in COMMANDS_SEND_TO_BULB if hasattr(args, i) and getattr(args, i)
     ]
 
     if commands_to_send:
@@ -643,7 +636,7 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
     msg: tuple[str, str] | tuple [str, str, Callable] = color_message(r, g, b, tt, skipWait=args.brightness is not None)
 
     check_color = functools.partial(
-        check_device_parameter, args, Check_device_parameter.color, [int(r), int(g), int(b)]
+        check_device_parameter, args, CheckDeviceParameter.COLOR, [int(r), int(g), int(b)]
     )
     msg = msg + (check_color,)
 
@@ -671,7 +664,7 @@ def command_brightness(args: argparse.Namespace, message_queue_tx_local: list, m
     msg: tuple[str, str] | tuple [str, str, Callable] = brightness_message(brightness_str, tt)
 
     check_brightness: functools.partial[bool] = functools.partial(
-        check_device_parameter, args, Check_device_parameter.brightness, int(brightness_str)
+        check_device_parameter, args, CheckDeviceParameter.BRIGHTNESS, int(brightness_str)
     )
     msg = msg + (check_brightness,)
 
@@ -689,7 +682,7 @@ def command_temperature(args: argparse.Namespace, message_queue_tx_local: list, 
     )
 
     check_temperature: functools.partial[bool] = functools.partial(
-        check_device_parameter, args, Check_device_parameter.temperature, int(temperature)
+        check_device_parameter, args, CheckDeviceParameter.TEMPERATURE, int(temperature)
     )
     msg = msg + (check_temperature,)
 
@@ -794,7 +787,7 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
 def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Put routine to device."""
     check_scene: functools.partial[Any] = functools.partial(
-        check_device_parameter, args, Check_device_parameter.scene, args.routine_scene
+        check_device_parameter, args, CheckDeviceParameter.SCENE, args.routine_scene
     )
     # msg = msg + (check_scene,) # fix check routine before putting
     local_and_cloud_command_msg(
@@ -880,20 +873,20 @@ def check_scene_support(args: argparse.Namespace, device: KlyqaDevice, scene_id:
         return not missing_config(args, device.acc_sets["productId"])
     return True
 
-check_range: dict[Any, Any] = {
-    Check_device_parameter.color: check_color_range,
-    Check_device_parameter.brightness: check_brightness_range,
-    Check_device_parameter.temperature: check_temp_range,
-    Check_device_parameter.scene: check_scene_support,
+CHECK_RANGE: dict[Any, Any] = {
+    CheckDeviceParameter.COLOR: check_color_range,
+    CheckDeviceParameter.BRIGHTNESS: check_brightness_range,
+    CheckDeviceParameter.TEMPERATURE: check_temp_range,
+    CheckDeviceParameter.SCENE: check_scene_support,
 }
 
 def check_device_parameter(args: argparse.Namespace, 
-    parameter: Check_device_parameter, values: Any, device: KlyqaDevice
+    parameter: CheckDeviceParameter, values: Any, device: KlyqaDevice
 ) -> bool:
     """Check device configs."""
     if not device.device_config and not forced_continue(args, "Missing configs for devices."):
         return False
 
-    if not check_range[parameter](args, device, values):
+    if not CHECK_RANGE[parameter](args, device, values):
         return False
     return True

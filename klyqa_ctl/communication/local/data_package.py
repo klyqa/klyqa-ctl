@@ -9,7 +9,7 @@ from klyqa_ctl.general.general import logger_debug_task
 class PackageType(Enum):
     """Data package types"""
     IDENTITY = 0
-    INITIAL_VECTOR = 1
+    AES_INITIAL_VECTOR = 1
     DATA = 2
 
 @dataclass
