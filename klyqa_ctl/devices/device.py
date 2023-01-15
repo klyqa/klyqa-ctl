@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import traceback
 from typing import Any
+from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
 
 from klyqa_ctl.general.connections import CloudConnection
