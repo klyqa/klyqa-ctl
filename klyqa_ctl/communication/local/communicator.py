@@ -1,4 +1,4 @@
-"""Local communication"""
+"""Local device communication"""
 
 from __future__ import annotations
 import argparse
@@ -6,10 +6,13 @@ from asyncio import AbstractEventLoop, CancelledError, Task
 import datetime
 from enum import auto
 import json
+from pickletools import bytes1
 import select
 import socket
 from typing import Any, Callable
 from klyqa_ctl.account import Account
+from klyqa_ctl.communication.local.connection import AESConnectionState, LocalConnection
+from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices import device
 
@@ -21,176 +24,30 @@ from klyqa_ctl.general.message import Message_state
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
-    from Cryptodome.Random import get_random_bytes  # pycryptodome
 except:
     from Crypto.Cipher import AES  # provided by pycryptodome
-    from Crypto.Random import get_random_bytes  # pycryptodome
 
-class Device_TCP_return(Enum):
-    no_error = auto()
-    sent = auto()
-    answered = auto()
-    wrong_uid = auto()
-    no_uid_device = auto()
-    wrong_aes = auto()
-    tcp_error = auto()
-    unknown_error = auto()
-    timeout = auto()
-    nothing_done = auto()
-    sent_error = auto()
-    no_message_to_send = auto()
+class DeviceTCPReturn(Enum):
+    NO_ERROR = auto()
+    SENT = auto()
+    ANSWERED = auto()
+    WRONG_UNIT_ID = auto()
+    NO_UNIT_ID = auto()
+    WRONG_AES = auto()
+    TCP_ERROR = auto()
+    UNKNOWN_ERROR = auto()
+    SOCKET_TIMEOUT = auto()
+    NOTHING_DONE = auto()
+    SENT_ERROR = auto()
+    NO_MESSAGE_TO_SEND = auto()
     device_lock_timeout = auto()
-    err_local_iv = auto()
-    missing_aes_key = auto()
-    response_error = auto()
-    send_error = auto()
+    ERROR_LOCAL_IV = auto()
+    MISSING_AES_KEY = auto()
+    RESPONSE_ERROR = auto()
+    SEND_ERROR = auto()
 
-def send_msg(msg: str, device: KlyqaDevice, connection: LocalConnection) -> bool:
-    info_str: str = (
-        (f"{task_name()} - " if LOGGER.level == 10 else "")
-        + 'Sending in local network to "'
-        + device.get_name()
-        + '": '
-        + json.dumps(json.loads(msg), sort_keys=True, indent=4)
-    )
-
-    LOGGER.info(info_str)
-    plain: bytes = msg.encode("utf-8")
-    while len(plain) % 16:
-        plain = plain + bytes([0x20])
-
-    if connection.sendingAES is None:
-        return False
-    
-    cipher: bytes = connection.sendingAES.encrypt(plain)
-
-    while connection.socket:
-        try:
-            connection.socket.send(
-                bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
-            )
-            return True
-        except socket.timeout:
-            LOGGER.debug("Send timed out, retrying...")
-            pass
-    return False
-
-class LocalConnection:
-    """LocalConnection"""
-
-    def __init__(self) -> None:
-        self._attr_state: str = "WAIT_IV"
-        self._attr_localIv: bytes = get_random_bytes(8)
-        self._attr_remoteIv: bytes = b""
-        self._attr_sendingAES: Any = None
-        self._attr_receivingAES: Any = None
-        self._attr_address: dict[str, str | int] = {"ip": "", "port": -1}
-        self._attr_socket: socket.socket | None = None
-        self._attr_received_packages: list[Any] = []
-        self._attr_sent_msg_answer: dict[str, Any] = {}
-        self._attr_aes_key_confirmed: bool = False
-        self._attr_aes_key: bytes = b""
-        self._attr_started: datetime.datetime = datetime.datetime.now()
-        
-    @property
-    def state(self) -> str:
-        return self._attr_state
-    
-    @state.setter
-    def state(self, state: str) -> None:
-        self._attr_state = state
-    
-    @property
-    def remoteIv(self) -> bytes:
-        return self._attr_localIv
-    
-    @remoteIv.setter
-    def remoteIv(self, remoteIv: bytes) -> None:
-        self._attr_remoteIv = remoteIv
-    
-    @property
-    def localIv(self) -> bytes:
-        return self._attr_localIv
-    
-    @localIv.setter
-    def localIv(self, localIv: bytes) -> None:
-        self._attr_localIv = localIv
-    
-    @property
-    def sendingAES(self) -> Any:
-        return self._attr_sendingAES
-    
-    @sendingAES.setter
-    def sendingAES(self, sendingAES: Any) -> None:
-        self._attr_sendingAES = sendingAES
-    
-    @property
-    def receivingAES(self) -> Any:
-        return self._attr_receivingAES
-    
-    @receivingAES.setter
-    def receivingAES(self, receivingAES: Any) -> None:
-        self._attr_receivingAES = receivingAES
-    
-    @property
-    def address(self) -> dict[str, str | int]:
-        return self._attr_address
-    
-    @address.setter
-    def address(self, address: dict[str, str | int]) -> None:
-        self._attr_address = address
-    
-    @property
-    def socket(self) -> socket.socket | None:
-        return self._attr_socket
-    
-    @socket.setter
-    def socket(self, socket: socket.socket | None) -> None:
-        self._attr_socket = socket
-    
-    @property
-    def received_packages(self) -> list[Any]:
-        return self._attr_received_packages
-    
-    @received_packages.setter
-    def received_packages(self, received_packages: list[Any]) -> None:
-        self._attr_received_packages = received_packages
-    
-    @property
-    def sent_msg_answer(self) -> dict[str, Any]:
-        return self._attr_sent_msg_answer
-    
-    @sent_msg_answer.setter
-    def sent_msg_answer(self, sent_msg_answer: dict[str, Any]) -> None:
-        self._attr_sent_msg_answer = sent_msg_answer
-    
-    @property
-    def aes_key_confirmed(self) -> bool:
-        return self._attr_aes_key_confirmed
-    
-    @aes_key_confirmed.setter
-    def aes_key_confirmed(self, aes_key_confirmed: bool) -> None:
-        self._attr_aes_key_confirmed = aes_key_confirmed
-    
-    @property
-    def aes_key(self) -> bytes:
-        return self._attr_aes_key
-    
-    @aes_key.setter
-    def aes_key(self, aes_key: bytes) -> None:
-        self._attr_aes_key = aes_key
-    
-    @property
-    def started(self) -> datetime.datetime:
-        return self._attr_started
-    
-    @started.setter
-    def started(self, started: datetime.datetime) -> None:
-        self._attr_started = started
-        
-
-class LocalCommunication:
-    """Data communicator for local connection"""
+class LocalCommunicator:
+    """Data communicator for local device connection"""
 
     # Set of current accepted connections to an IP. One connection is most of the time
     # enough to send all messages for that device behind that connection (in the aes send message method).
@@ -273,27 +130,27 @@ class LocalCommunication:
             return False
         return True
     
-    
-    async def aes_wait_iv_pkg_zero(
+    async def process_device_identity_package(
         self,
         connection: LocalConnection,
-        pkg: bytes,
+        data: bytes,
         device: KlyqaDevice,
         r_device: RefParse,
-        use_dev_aes: bool) -> Device_TCP_return:
+        use_dev_aes: bool) -> DeviceTCPReturn:
+        """Process the device identity package."""
         # Check identification package from device, lock the device object for changes,
         # safe the idenfication to device object if it is a not known device,
         # send the local initial vector for the encrypted communication to the device.
 
-        logger_debug_task(f"Plain: {pkg}")
-        json_response: dict[str, Any] = json.loads(pkg)
+        logger_debug_task(f"Plain: {data}")
+        json_response: dict[str, Any] = json.loads(data)
         try:
             ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent(
                 **json_response["ident"]
             )
             device.u_id = ident.unit_id
         except:
-            return Device_TCP_return.no_uid_device
+            return DeviceTCPReturn.NO_UNIT_ID
 
         is_new_device = False
         if device.u_id != "no_uid" and device.u_id not in self.devices:
@@ -314,7 +171,7 @@ class LocalCommunication:
 
         # cached client device (self.devices), incoming device object created on tcp connection acception
         if not device.u_id in self.devices:
-            return Device_TCP_return.nothing_done
+            return DeviceTCPReturn.NOTHING_DONE
         device_b: KlyqaDevice = self.devices[device.u_id]
         
         if await device_b.use_lock():
@@ -328,7 +185,7 @@ class LocalCommunication:
         else:
             err: str = f"{task_name()} - Couldn't get use lock for device {device_b.get_name()} {connection.address})"
             LOGGER.error(err)
-            return Device_TCP_return.device_lock_timeout
+            return DeviceTCPReturn.device_lock_timeout
 
         connection.received_packages.append(json_response)
         device.save_device_message(json_response)
@@ -339,7 +196,7 @@ class LocalCommunication:
         ):
             if device.u_id in self.message_queue:
                 del self.message_queue[device.u_id]
-            return Device_TCP_return.no_message_to_send
+            return DeviceTCPReturn.NO_MESSAGE_TO_SEND
 
         found: str = ""
         settings_device = ""
@@ -377,25 +234,24 @@ class LocalCommunication:
                 if not connection.socket.send(
                     bytes([0, 8, 0, 1]) + connection.localIv
                 ):
-                    return Device_TCP_return.err_local_iv
+                    return DeviceTCPReturn.ERROR_LOCAL_IV
         except:
-            return Device_TCP_return.err_local_iv
+            return DeviceTCPReturn.ERROR_LOCAL_IV
     
-        return Device_TCP_return.no_error
+        return DeviceTCPReturn.NO_ERROR
 
-    async def aes_wait_iv_pkg_one(self, connection: LocalConnection,
-        pkg: bytes, device: KlyqaDevice) -> Device_TCP_return:
-        """Set aes key for the connection from the first package."""
-        # Receive the remote initial vector (iv) for aes encrypted communication.
+    async def process_initial_vector_package(self, connection: LocalConnection,
+        data: bytes, device: KlyqaDevice) -> DeviceTCPReturn:
+        """Create the AES encryption and decryption objects."""
 
-        connection.remoteIv = pkg
-        connection.received_packages.append(pkg)
+        connection.remoteIv = data
+        connection.received_packages.append(data)
         if not connection.aes_key:
             logger_debug_task(
                 "Missing AES key. Probably not in onboarded devices. Provide AES key with --aes [key]! "
                 + str(device.u_id)
             )
-            return Device_TCP_return.missing_aes_key
+            return DeviceTCPReturn.MISSING_AES_KEY
         connection.sendingAES = AES.new(
             connection.aes_key,
             AES.MODE_CBC,
@@ -407,18 +263,17 @@ class LocalCommunication:
             iv=connection.remoteIv + connection.localIv,
         )
 
-        connection.state = "CONNECTED"
+        connection.state = AESConnectionState.CONNECTED
     
-        return Device_TCP_return.no_error
+        return DeviceTCPReturn.NO_ERROR
         
     async def message_answer_package(self, connection: LocalConnection,
-        pkg: bytes, device: KlyqaDevice, msg_sent: Message | None) -> Device_TCP_return | int:
-        """Message answer package"""
+        answer: bytes, device: KlyqaDevice, msg_sent: Message | None) -> DeviceTCPReturn | int:
+        """Process the encrypted device answer."""
         
-        return_val: Device_TCP_return | int = 0
-        # Receive encrypted answer for sent message.
+        return_val: DeviceTCPReturn | int = 0
 
-        cipher: bytes = pkg
+        cipher: bytes = answer
 
         plain: bytes = connection.receivingAES.decrypt(cipher)
         connection.received_packages.append(plain)
@@ -434,14 +289,14 @@ class LocalCommunication:
                 logger_debug_task(f"device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
             except:
                 logger_debug_task("Could not load json message from device: ")
-                logger_debug_task(f"{pkg}")
-                return Device_TCP_return.response_error
+                logger_debug_task(f"{answer}")
+                return DeviceTCPReturn.RESPONSE_ERROR
 
             msg_sent.answer_utf8 = plain_utf8
             msg_sent.answer_json = json_response
             msg_sent.state = Message_state.answered
             msg_sent.answered_datetime = datetime.datetime.now()
-            return_val = Device_TCP_return.answered
+            return_val = DeviceTCPReturn.ANSWERED
 
             device.recv_msg_unproc.append(msg_sent)
             device.process_msgs()
@@ -454,7 +309,6 @@ class LocalCommunication:
 
         logger_debug_task(f" Request's reply decrypted: " + str(plain))
         return return_val
-
    
     async def aes_handshake_and_send_msgs(
         self,
@@ -462,7 +316,7 @@ class LocalCommunication:
         # r_msg: RefParse,
         connection: LocalConnection,
         use_dev_aes: bool = False,
-    ) -> Device_TCP_return:
+    ) -> DeviceTCPReturn:
         """
         FIX: return type! sometimes return value sometimes tuple...
 
@@ -493,7 +347,7 @@ class LocalCommunication:
         global sep_width, LOGGER
         device: KlyqaDevice = r_device.ref
         if device is None or connection.socket is None:
-            return Device_TCP_return.unknown_error
+            return DeviceTCPReturn.UNKNOWN_ERROR
 
         data: bytes = b""
         last_send: datetime.datetime = datetime.datetime.now()
@@ -503,11 +357,12 @@ class LocalCommunication:
 
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
-        return_val: Device_TCP_return = Device_TCP_return.nothing_done
+        return_val: DeviceTCPReturn = DeviceTCPReturn.NOTHING_DONE
 
         msg_sent: Message | None = None
         communication_finished: bool = False        
         pause_after_send: int
+        package: DataPackage
 
         async def __send_msg() -> Message | None:
             nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
@@ -528,7 +383,7 @@ class LocalCommunication:
                 except:
                     logger_debug_task(f"{traceback.format_exc()}")
 
-            return_val = Device_TCP_return.sent
+            return_val = DeviceTCPReturn.SENT
             
             send_next: bool = elapsed >= pause
             sleep: float = (pause - elapsed).total_seconds()
@@ -597,59 +452,52 @@ class LocalCommunication:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
                 if len(data) == 0:
                     logger_debug_task("EOF")
-                    return Device_TCP_return.tcp_error
+                    return DeviceTCPReturn.TCP_ERROR
             except socket.timeout:
                 LOGGER.debug(f"{traceback.format_exc()}")
             except:
                 logger_debug_task(f"{traceback.format_exc()}")
-                return Device_TCP_return.unknown_error
+                return DeviceTCPReturn.UNKNOWN_ERROR
 
             elapsed = datetime.datetime.now() - last_send
             
             if msg_sent and msg_sent.state == Message_state.answered:
                 msg_sent = None
 
-            if connection.state == "CONNECTED" and msg_sent is None:
+            if connection.state == AESConnectionState.CONNECTED and msg_sent is None:
                 try:
                     await __send_msg()
                 except:
                     logger_debug_task(f"{traceback.format_exc()}")
-                    return Device_TCP_return.send_error
+                    return DeviceTCPReturn.SEND_ERROR
                 
             while not communication_finished and (len(data)):
                 logger_debug_task(
                     f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
                 )
 
-                # Read out the data package as follows: package length (pkgLen), package type (pkgType) and package data (pkg)
-                
-                pkgLen: int = data[0] * 256 + data[1]
-                pkgType: int = data[3]
-
-                pkg: bytes = data[4 : 4 + pkgLen]
-                if len(pkg) < pkgLen:
-                    logger_debug_task(f"Incomplete packet, waiting for more...")
+                package = DataPackage(data)
+                if not package.read_raw_data():
                     break
 
-                data = data[4 + pkgLen :]
-                ret: Device_TCP_return | int 
-                if connection.state == "WAIT_IV" and pkgType == 0:
+                ret: DeviceTCPReturn | int 
+                if connection.state == AESConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
 
-                    ret = await self.aes_wait_iv_pkg_zero(connection, pkg, device, r_device, use_dev_aes)
+                    ret = await self.process_device_identity_package(connection, package.data, device, r_device, use_dev_aes)
                     device = r_device.ref
-                    if ret != Device_TCP_return.no_error:
+                    if ret != DeviceTCPReturn.NO_ERROR:
                         return ret
 
-                if connection.state == "WAIT_IV" and pkgType == 1:
-                    ret = await self.aes_wait_iv_pkg_one(connection, pkg, device)
-                    if ret != Device_TCP_return.no_error:
+                if connection.state == AESConnectionState.WAIT_IV and package.type == PackageType.INITIAL_VECTOR:
+                    ret = await self.process_initial_vector_package(connection, package.data, device)
+                    if ret != DeviceTCPReturn.NO_ERROR:
                         return ret
 
-                elif connection.state == "CONNECTED" and pkgType == 2:
-                    ret = await self.message_answer_package(connection, pkg, device, msg_sent)
-                    if type(ret) == Device_TCP_return:
+                elif connection.state == AESConnectionState.CONNECTED and package.type == PackageType.DATA:
+                    ret = await self.message_answer_package(connection, package.data, device, msg_sent)
+                    if type(ret) == DeviceTCPReturn:
                         return_val = ret # type: ignore
-                        if return_val == Device_TCP_return.answered:
+                        if return_val == DeviceTCPReturn.ANSWERED:
                             msg_sent = None
                             communication_finished = True
                     break
@@ -660,9 +508,9 @@ class LocalCommunication:
 
     async def device_handle_local_tcp(
         self, device: KlyqaDevice, connection: LocalConnection
-    ) -> Device_TCP_return:
+    ) -> DeviceTCPReturn:
         """! Handle the incoming tcp connection to the device."""
-        return_state: Device_TCP_return = Device_TCP_return.nothing_done
+        return_state: DeviceTCPReturn = DeviceTCPReturn.NOTHING_DONE
         
         task: asyncio.Task[Any] | None = asyncio.current_task()
 
@@ -700,7 +548,7 @@ class LocalCommunication:
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
                 )
 
-                if return_state == Device_TCP_return.no_error:
+                if return_state == DeviceTCPReturn.NO_ERROR:
                     """no error"""
 
                     def dict_values_to_list(d: dict) -> list[str]:
@@ -721,13 +569,13 @@ class LocalCommunication:
                         except:
                             LOGGER.debug(f"{traceback.format_exc()}")
 
-                elif return_state == Device_TCP_return.no_error:
+                elif return_state == DeviceTCPReturn.NO_ERROR:
                     LOGGER.error(
                         f"Unknown error during send (and handshake) with device {unit_id}."
                     )
-                elif return_state == Device_TCP_return.no_error:
+                elif return_state == DeviceTCPReturn.NO_ERROR:
                     pass
-                elif return_state == Device_TCP_return.no_error:
+                elif return_state == DeviceTCPReturn.NO_ERROR:
                     LOGGER.debug(
                         f"End of tcp stream. ({connection.address['ip']}:{connection.address['port']})"
                     )
@@ -1081,3 +929,33 @@ class LocalCommunication:
             target_device_uids = set(
                 u_id for u_id, v in self.devices.items()
             )
+
+def send_msg(msg: str, device: KlyqaDevice, connection: LocalConnection) -> bool:
+    info_str: str = (
+        (f"{task_name()} - " if LOGGER.level == 10 else "")
+        + 'Sending in local network to "'
+        + device.get_name()
+        + '": '
+        + json.dumps(json.loads(msg), sort_keys=True, indent=4)
+    )
+
+    LOGGER.info(info_str)
+    plain: bytes = msg.encode("utf-8")
+    while len(plain) % 16:
+        plain = plain + bytes([0x20])
+
+    if connection.sendingAES is None:
+        return False
+    
+    cipher: bytes = connection.sendingAES.encrypt(plain)
+
+    while connection.socket:
+        try:
+            connection.socket.send(
+                bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
+            )
+            return True
+        except socket.timeout:
+            LOGGER.debug("Send timed out, retrying...")
+            pass
+    return False

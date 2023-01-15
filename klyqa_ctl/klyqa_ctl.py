@@ -41,7 +41,7 @@ from asyncio.exceptions import CancelledError
 from collections.abc import Callable
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local import LocalCommunication
+from klyqa_ctl.communication.local.communicator import LocalCommunicator
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
@@ -60,14 +60,14 @@ class Client:
     def __init__(
         self,
         controller_data: ControllerData,
-        local_communicator: LocalCommunication | None,
+        local_communicator: LocalCommunicator | None,
         cloud_backend: CloudBackend | None, 
         account: Account | None,
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
         self._attr_controller_data: ControllerData = controller_data
-        self._attr_local_communicator: LocalCommunication | None = local_communicator 
+        self._attr_local_communicator: LocalCommunicator | None = local_communicator 
         self._attr_account: Account | None = account
         self._attr_devices: dict[str, KlyqaDevice] = dict()
         self._attr_cloud_backend: CloudBackend | None = cloud_backend
@@ -81,11 +81,11 @@ class Client:
         self._attr_controller_data = controller_data
 
     @property
-    def local_communicator(self) -> LocalCommunication | None:
+    def local_communicator(self) -> LocalCommunicator | None:
         return self._attr_local_communicator
     
     @local_communicator.setter
-    def local_communicator(self, local_communicator: LocalCommunication | None ) -> None:
+    def local_communicator(self, local_communicator: LocalCommunicator | None ) -> None:
         self._attr_local_communicator = local_communicator
 
     @property
@@ -677,7 +677,7 @@ async def main() -> None:
     exit_ret = 0
         
     controller_data: ControllerData = ControllerData(interactive_prompts = True, offline = args_parsed.offline)    
-    local_communicator: LocalCommunication = LocalCommunication(controller_data, account, server_ip)
+    local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account, server_ip)
     cloud_backend: CloudBackend = CloudBackend(controller_data, account, host, args_parsed.offline)
 
     client: Client = Client(controller_data, local_communicator, cloud_backend, account)

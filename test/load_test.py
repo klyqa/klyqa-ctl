@@ -10,7 +10,7 @@ import traceback
 from typing import Any
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local import LocalCommunication
+from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.general.connections import PROD_HOST
@@ -77,7 +77,7 @@ async def load_test(client: Client) -> int:
                     args_parsed,
                     args,
                     async_answer_callback=send_answer_cb,
-                    timeout_ms=10 * 1000,
+                    timeout_ms=10000 * 1000,
                 )
             )
             messages_sent = messages_sent + 1
@@ -109,8 +109,8 @@ async def main() -> None:
         offline = False)  
  
     # build offline version here.
-    account = Account()
-    local_communicator: LocalCommunication = LocalCommunication(controller_data, account)
+    account = Account("frederick.stallmeyer@qconnex.com", "pass0w0rd")
+    local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account)
     cloud_backend: CloudBackend = CloudBackend(controller_data, account, PROD_HOST, False)
     
     if cloud_backend and not account.access_token:
