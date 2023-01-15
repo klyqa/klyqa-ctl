@@ -19,19 +19,6 @@ def format_uid(text: str) -> str:
 class KlyqaDevice:
     """KlyqaDevice"""
 
-    # u_id: str = "no_uid"
-    # acc_sets: dict = {}
-    """ account settings """
-
-    # _use_lock: asyncio.Lock | None
-    # _use_thread: asyncio.Task | None
-
-    # recv_msg_unproc: list[Message]
-
-    # response_classes: dict[str, Any]
-    # status: KlyqaDeviceResponse | None
-    # device_config: dict[str, Any]
-
     def __init__(self) -> None:
         self._attr_local_addr: dict[str, Any] = { "ip": "", "port": -1 }
         self._attr_cloud: CloudConnection = CloudConnection()
