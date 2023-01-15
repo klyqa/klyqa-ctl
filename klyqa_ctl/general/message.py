@@ -2,21 +2,21 @@
 
 from __future__ import annotations
 import argparse
-from asyncio import coroutines
 from dataclasses import dataclass
 
 import datetime
 from enum import Enum
-from typing import Any, Type
+from typing import Any
 
 from klyqa_ctl.general import *
 from klyqa_ctl.general.general import LOGGER
 
-Message_state = Enum("Message_state", "sent answered unsent")
-
+class MessageState(Enum):
+    SENT = 0
+    ANSWERED = 1
+    UNSENT = 2
 
 MSG_COUNTER = 0
-
 
 @dataclass
 class Message:
@@ -27,7 +27,7 @@ class Message:
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
     args: argparse.Namespace
     target_uid: str
-    state: Message_state = Message_state.unsent
+    state: MessageState = MessageState.UNSENT
     answered_datetime: datetime.datetime | None = None
     local_pause_after_answer_secs: float | None = None
     answer: bytes = b""

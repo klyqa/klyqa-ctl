@@ -4,6 +4,7 @@ import asyncio
 import datetime
 import traceback
 from typing import Any
+from klyqa_ctl.devices.response_message import ResponseMessage
 
 from klyqa_ctl.general.connections import CloudConnection
 from klyqa_ctl.general.general import LOGGER, logger_debug_task
@@ -203,23 +204,6 @@ class Device:
     def read_device_config(self, device_config: dict[str, Any]) -> None:
         self.device_config = device_config
 
-class ResponseMessage:
-    """Response message"""
-    
-    def __init__(self, **kwargs: Any) -> None:
-        """__init__"""
-        self.type: str = ""
-        self.ts: datetime.datetime | None = None
-        self.update(**kwargs)
-
-    def update(self, **kwargs: Any) -> None:
-        self.ts = datetime.datetime.now()
-        # Walk through parsed kwargs dict and look if names in dict exists as attribute in class,
-        # then apply the value in kwargs to the value in class.
-        for attr in kwargs:
-            if hasattr(self, attr):
-                setattr(self, attr, kwargs[attr])
-
 # eventually dataclass
 class ResponseIdentityMessage(ResponseMessage):
     """Device response identity message"""
@@ -234,7 +218,7 @@ class ResponseIdentityMessage(ResponseMessage):
         self.manufacturer_id: str = ""
         self.product_id: str = ""
         self.sdk_version: str = ""
-        self._unit_id: str = ""
+        self._attr_unit_id: str = ""
         super().__init__(**kwargs)
 
     def update(self, **kwargs: Any) -> None:
@@ -242,8 +226,8 @@ class ResponseIdentityMessage(ResponseMessage):
 
     @property
     def unit_id(self) -> str:
-        return self._unit_id
+        return self._attr_unit_id
 
     @unit_id.setter
     def unit_id(self, unit_id: str) -> None:
-        self._unit_id = format_uid(unit_id)
+        self._attr_unit_id = format_uid(unit_id)

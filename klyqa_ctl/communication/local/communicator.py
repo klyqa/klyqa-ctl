@@ -20,7 +20,7 @@ from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import *
-from klyqa_ctl.general.message import Message_state
+from klyqa_ctl.general.message import MessageState
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -277,7 +277,7 @@ class LocalCommunicator:
 
         plain: bytes = connection.receivingAES.decrypt(cipher)
         connection.received_packages.append(plain)
-        if msg_sent is not None and not msg_sent.state == Message_state.answered:
+        if msg_sent is not None and not msg_sent.state == MessageState.ANSWERED:
             msg_sent.answer = plain
             json_response = {}
             try:
@@ -294,7 +294,7 @@ class LocalCommunicator:
 
             msg_sent.answer_utf8 = plain_utf8
             msg_sent.answer_json = json_response
-            msg_sent.state = Message_state.answered
+            msg_sent.state = MessageState.ANSWERED
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
 
@@ -373,7 +373,7 @@ class LocalCommunicator:
                 try:
                     logger_debug_task(f"rm_msg()")
                     self.message_queue[device.u_id].remove(msg)
-                    msg.state = Message_state.sent
+                    msg.state = MessageState.SENT
 
                     if (
                         device.u_id in self.message_queue
@@ -402,7 +402,7 @@ class LocalCommunicator:
                 logger_debug_task(f"Process msg to send '{msg.msg_queue}' to device '{device.u_id}'.")
                 j: int = 0
                 
-                if msg.state == Message_state.unsent:
+                if msg.state == MessageState.UNSENT:
                     
                     while j < len(msg.msg_queue):
                             
@@ -436,14 +436,14 @@ class LocalCommunicator:
                             break
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
-                        msg.state = Message_state.sent
+                        msg.state = MessageState.SENT
                         # all messages sent to devices, break now for reading response
                         rm_msg(msg)
                 else:
                     rm_msg(msg)
             return None
         
-        if msg_sent and msg_sent.state == Message_state.answered:
+        if msg_sent and msg_sent.state == MessageState.ANSWERED:
             msg_sent = None
                     
         while not communication_finished and (device.u_id == "no_uid" or type(device) == Device or 
@@ -461,7 +461,7 @@ class LocalCommunicator:
 
             elapsed = datetime.datetime.now() - last_send
             
-            if msg_sent and msg_sent.state == Message_state.answered:
+            if msg_sent and msg_sent.state == MessageState.ANSWERED:
                 msg_sent = None
 
             if connection.state == AesConnectionState.CONNECTED and msg_sent is None:
