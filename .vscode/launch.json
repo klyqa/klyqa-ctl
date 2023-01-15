@@ -30,6 +30,16 @@
       ]
     },
     {
+      "name": "Python: klyqa_ctl load test",
+      // "cwd": "${fileDirname}",
+      "type": "python",
+      "request": "launch",
+      "program": "test/load_test.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": []
+    },
+    {
       "name": "Python: klyqa_ctl.py Account Cloud Reboot deviceuid",
       // "cwd": "${fileDirname}",
       "type": "python",
