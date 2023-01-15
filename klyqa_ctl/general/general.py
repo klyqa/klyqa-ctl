@@ -219,10 +219,18 @@ class AsyncIoLock:
 class RefParse:
     """Reference parse for parameter in function calls."""
 
-    ref: Any = None
+    _attr_ref: Any = None
 
     def __init__(self, ref: Any) -> None:
-        self.ref = ref
+        self._attr_ref = ref
+
+    @property
+    def ref(self) -> Any:
+        return self._attr_ref
+
+    @ref.setter
+    def ref(self, ref: Any) -> None:
+        self._attr_ref = ref
 
 Device_config = dict
 
