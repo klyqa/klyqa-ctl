@@ -55,25 +55,145 @@ class LocalCommunicator:
     # If connection is currently finishing due to sent messages and no messages left for that device and a new
     # message appears in the queue, send a new broadcast and establish a new connection.
     #
-    current_addr_connections: set[str]
+    _attr_current_addr_connections: set[str]
     
     def __init__(self, controller_data: ControllerData, account: Account, server_ip: str = "0.0.0.0") -> None:
-        self.controller_data: ControllerData = controller_data
-        self.account: Account = account
-        self.devices: dict[str, Device] = account.devices
-        self.tcp: socket.socket | None = None
-        self.udp: socket.socket | None = None
-        self.server_ip: str = server_ip
-        self.message_queue: dict[str, list[Message]] = {}
-        self.__send_loop_sleep: Task | None = None
-        self.__tasks_done: list[tuple[Task, datetime.datetime, datetime.datetime]] = []
-        self.__tasks_undone: list[tuple[Task, datetime.datetime]] = []
-        self.search_and_send_loop_task: Task | None = None
-        self.search_and_send_loop_task_end_now: bool = False
-        self.__read_tcp_task: Task | None = None
-        self.acc_settings: TypeJSON | None = account.settings
-        self.current_addr_connections: set[str] = set()
+        self._attr_controller_data: ControllerData = controller_data
+        self._attr_account: Account = account
+        self._attr_devices: dict[str, Device] = account.devices
+        self._attr_tcp: socket.socket | None = None
+        self._attr_udp: socket.socket | None = None
+        self._attr_server_ip: str = server_ip
+        self._attr_message_queue: dict[str, list[Message]] = {}
+        self.__attr_send_loop_sleep: Task | None = None
+        self.__attr_tasks_done: list[tuple[Task, datetime.datetime, datetime.datetime]] = []
+        self.__attr_tasks_undone: list[tuple[Task, datetime.datetime]] = []
+        self._attr_search_and_send_loop_task: Task | None = None
+        self._attr_search_and_send_loop_task_end_now: bool = False
+        self.__attr_read_tcp_task: Task | None = None
+        self._attr_acc_settings: TypeJSON | None = account.settings
+        self._attr_current_addr_connections = set()
+        
+    @property
+    def controller_data(self) -> ControllerData:
+        return self._attr_controller_data
 
+    @controller_data.setter
+    def controller_data(self, controller_data: ControllerData) -> None:
+        self._attr_controller_data = controller_data
+        
+    @property
+    def account(self) -> Account:
+        return self._attr_account
+
+    @account.setter
+    def account(self, account: Account) -> None:
+        self._attr_account = account
+        
+    @property
+    def devices(self) -> dict[str, Device]:
+        return self._attr_devices
+
+    @devices.setter
+    def devices(self, devices: dict[str, Device]) -> None:
+        self._attr_devices = devices
+        
+    @property
+    def tcp(self) -> socket.socket | None:
+        return self._attr_tcp
+
+    @tcp.setter
+    def tcp(self, tcp:  socket.socket | None) -> None:
+        self._attr_tcp = tcp
+        
+    @property
+    def udp(self) -> socket.socket | None:
+        return self._attr_udp
+
+    @udp.setter
+    def udp(self, udp: socket.socket | None) -> None:
+        self._attr_udp = udp
+        
+    @property
+    def server_ip(self) -> str:
+        return self._attr_server_ip
+
+    @server_ip.setter
+    def server_ip(self, server_ip: str) -> None:
+        self._attr_server_ip = server_ip
+        
+    @property
+    def message_queue(self) -> dict[str, list[Message]]:
+        return self._attr_message_queue
+
+    @message_queue.setter
+    def message_queue(self, message_queue: dict[str, list[Message]]) -> None:
+        self._attr_message_queue = message_queue
+        
+    @property
+    def __send_loop_sleep(self) -> Task | None:
+        return self.__attr_send_loop_sleep
+    
+    @__send_loop_sleep.setter
+    def __send_loop_sleep(self, send_loop_sleep: Task | None) -> None:
+        self.__attr_send_loop_sleep = send_loop_sleep
+        
+    @property
+    def __tasks_done(self) ->list[tuple[Task, datetime.datetime, datetime.datetime]]:
+        return self.__attr_tasks_done
+
+    @__tasks_done.setter
+    def __tasks_done(self, tasks_done: list[tuple[Task, datetime.datetime, datetime.datetime]]) -> None:
+        self.__attr_tasks_done = tasks_done
+        
+    @property
+    def __tasks_undone(self) -> list[tuple[Task, datetime.datetime]]:
+        return self.__attr_tasks_undone
+
+    @__tasks_undone.setter
+    def __tasks_undone(self, tasks_undone: list[tuple[Task, datetime.datetime]]) -> None:
+        self.__attr_tasks_undone = tasks_undone
+        
+    @property
+    def search_and_send_loop_task(self) -> Task | None:
+        return self._attr_search_and_send_loop_task
+
+    @search_and_send_loop_task.setter
+    def search_and_send_loop_task(self, search_and_send_loop_task: Task | None) -> None:
+        self._attr_search_and_send_loop_task = search_and_send_loop_task
+        
+    @property
+    def search_and_send_loop_task_end_now(self) -> bool:
+        return self._attr_search_and_send_loop_task_end_now
+
+    @search_and_send_loop_task_end_now.setter
+    def search_and_send_loop_task_end_now(self, search_and_send_loop_task_end_now: bool) -> None:
+        self._attr_search_and_send_loop_task_end_now = search_and_send_loop_task_end_now
+        
+    @property
+    def __read_tcp_task(self) -> Task | None:
+        return self.__attr_read_tcp_task
+
+    @__read_tcp_task.setter
+    def __read_tcp_task(self, read_tcp_task: Task | None) -> None:
+        self.__attr_read_tcp_task = read_tcp_task
+        
+    @property
+    def acc_settings(self) -> dict[str, Any] | None:
+        return self._attr_acc_settings
+
+    @acc_settings.setter
+    def acc_settings(self, acc_settings: TypeJSON | None) -> None:
+        self._attr_acc_settings = acc_settings
+        
+    @property
+    def current_addr_connections(self) -> set[str]:
+        return self._attr_current_addr_connections
+
+    @current_addr_connections.setter
+    def current_addr_connections(self, current_addr_connections: set[str]) -> None:
+        self._attr_current_addr_connections = current_addr_connections
+    
     async def shutdown(self) -> None:
 
         await self.search_and_send_loop_task_stop()
@@ -344,8 +464,6 @@ class LocalCommunicator:
                 7 - value not valid for device config
 
         """
-
-        global SEPARATION_WIDTH, LOGGER
         device: Device = r_device.ref
         if device is None or connection.socket is None:
             return DeviceTcpReturn.UNKNOWN_ERROR
@@ -455,7 +573,7 @@ class LocalCommunicator:
                     logger_debug_task("EOF")
                     return DeviceTcpReturn.TCP_ERROR
             except socket.timeout:
-                LOGGER.debug(f"{traceback.format_exc()}")
+                logger_debug_task("socket.timeout.")
             except:
                 logger_debug_task(f"{traceback.format_exc()}")
                 return DeviceTcpReturn.UNKNOWN_ERROR
@@ -505,7 +623,6 @@ class LocalCommunicator:
                 else:
                     logger_debug_task("No answer to process. Waiting on answer of the device ... ")
         return return_val
-    
 
     async def device_handle_local_tcp(
         self, device: Device, connection: LocalConnection
