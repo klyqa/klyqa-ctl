@@ -93,7 +93,6 @@ def get_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
         get_dict["mcu"] = None
     local_and_cloud_command_msg(get_dict, 1000)
 
-
 def reset_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Reset command."""
     
@@ -106,7 +105,6 @@ def reset_command(args: argparse.Namespace, local_and_cloud_command_msg: Callabl
     if args.filter:
         reset_dict["filter"] = None
     local_and_cloud_command_msg(reset_dict, 1000)
-
 
 def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Set command."""
@@ -136,7 +134,6 @@ def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
     if args.calibrationtime is not None:
         set_dict["calibrationtime"] = args.calibrationtime
     local_and_cloud_command_msg(set_dict, 1000)
-
 
 def routine(args: argparse.Namespace) -> None:
     """Set routine."""
