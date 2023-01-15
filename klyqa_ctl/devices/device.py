@@ -15,14 +15,13 @@ import slugify
 def format_uid(text: str) -> str:
     return slugify.slugify(text)
 
-
 class Device:
     """Device"""
 
     def __init__(self) -> None:
         self._attr_local_addr: dict[str, Any] = { "ip": "", "port": -1 }
         self._attr_cloud: CloudConnection = CloudConnection()
-        self._attr_ident: KlyqaDeviceResponseIdent | None = KlyqaDeviceResponseIdent()
+        self._attr_ident: ResponseIdentityMessage | None = ResponseIdentityMessage()
 
         self._attr_u_id: str = "no_uid"
         self._attr_acc_sets: dict[Any, Any] = {}
@@ -30,10 +29,10 @@ class Device:
         self._attr__use_thread: asyncio.Task[Any] | None = None
         self._attr_recv_msg_unproc: list[Message] = []
 
-        self._attr_status: DeviceResponse | None = None
+        self._attr_status: ResponseMessage | None = None
         self._attr_response_classes: dict[str, Any] = {
-            "ident": KlyqaDeviceResponseIdent,
-            "status": DeviceResponse,
+            "ident": ResponseIdentityMessage,
+            "status": ResponseMessage,
         }
         self._attr_device_config: dict[str, Any] = {}
 
@@ -54,11 +53,11 @@ class Device:
         self._attr_cloud = cloud
         
     @property
-    def ident(self) -> KlyqaDeviceResponseIdent | None:
+    def ident(self) -> ResponseIdentityMessage | None:
         return self._attr_ident
     
     @ident.setter
-    def ident(self, ident: KlyqaDeviceResponseIdent | None) -> None:
+    def ident(self, ident: ResponseIdentityMessage | None) -> None:
         self._attr_ident = ident
     
     @property
@@ -102,11 +101,11 @@ class Device:
         self._attr_recv_msg_unproc = recv_msg_unproc
     
     @property
-    def status(self) -> DeviceResponse | None:
+    def status(self) -> ResponseMessage | None:
         return self._attr_status
     
     @status.setter
-    def status(self, status: DeviceResponse | None) -> None:
+    def status(self, status: ResponseMessage | None) -> None:
         self._attr_status = status
     
     @property
@@ -204,8 +203,9 @@ class Device:
     def read_device_config(self, device_config: dict[str, Any]) -> None:
         self.device_config = device_config
 
-
-class DeviceResponse:
+class ResponseMessage:
+    """Response message"""
+    
     def __init__(self, **kwargs: Any) -> None:
         """__init__"""
         self.type: str = ""
@@ -220,10 +220,9 @@ class DeviceResponse:
             if hasattr(self, attr):
                 setattr(self, attr, kwargs[attr])
 
-
 # eventually dataclass
-class KlyqaDeviceResponseIdent(DeviceResponse):
-    """KlyqaDeviceResponseIdent"""
+class ResponseIdentityMessage(ResponseMessage):
+    """Device response identity message"""
 
     def __init__(
         self,

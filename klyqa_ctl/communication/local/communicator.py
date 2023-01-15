@@ -145,7 +145,7 @@ class LocalCommunicator:
         logger_debug_task(f"Plain: {data}")
         json_response: dict[str, Any] = json.loads(data)
         try:
-            ident: KlyqaDeviceResponseIdent = KlyqaDeviceResponseIdent(
+            ident: ResponseIdentityMessage = ResponseIdentityMessage(
                 **json_response["ident"]
             )
             device.u_id = ident.unit_id
