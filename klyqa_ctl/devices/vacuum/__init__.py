@@ -2,28 +2,49 @@
 from __future__ import annotations
 import argparse
 from enum import Enum
-import json
-from typing import Callable, Type, Any
+from typing import Any
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.general.general import get_obj_attr_values_as_string
 
-## Vacuum Cleaner ##
+class VcWorkingStatus(Enum):
+    SLEEP = 0
+    STANDBY = 1
+    CLEANING = 2
+    CLEANING_AUTO = 3
+    CLEANING_RANDOM = 4
+    CLEANING_SROOM = 5
+    CLEANING_EDGE = 6
+    CLEANING_SPOT = 7
+    CLEANING_COMP = 8
+    DOCKING = 9
+    CHARGING = 10
+    CHARGING_DC = 11
+    CHARGING_COMP = 12
+    ERROR = 13
 
-VC_WORKINGSTATUS = Enum(
-    "VC_WORKINGSTATUS",
-    "SLEEP STANDBY CLEANING CLEANING_AUTO CLEANING_RANDOM CLEANING_SROOM CLEANING_EDGE CLEANING_SPOT CLEANING_COMP DOCKING CHARGING CHARGING_DC CHARGING_COMP ERROR",
-)
+class VcSuctionStrengths(Enum):
+    NULL = 0
+    STRONG = 1
+    SMALL = 2
+    NORMAL = 3
+    MAX = 4
 
-VC_SUCTION_STRENGTHS = Enum(
-    "VC_SUCTION_STRENGTHS",
-    "NULL STRONG SMALL NORMAL MAX",
-)
+class VcWorkingMode(Enum):
+    STANDBY = 0
+    RANDOM = 1
+    SMART = 2
+    WALL_FOLLOW = 3
+    MOP = 4
+    SPIRAL = 5
+    PARTIAL_BOW = 6
+    SROOM = 7
+    CHARGE_GO = 8
 
-VC_WORKINGMODE = Enum(
-    "VC_WORKINGMODE",
-    "STANDBY RANDOM SMART WALL_FOLLOW MOP SPIRAL PARTIAL_BOW SROOM CHARGE_GO",
-)
+class CommandType(Enum):
+    GET = 0
+    SET = 1
+    RESET = 2
 
 
 class KlyqaVCResponseStatus(KlyqaDeviceResponse):
@@ -92,15 +113,10 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponse):
 class KlyqaVC(KlyqaDevice):
     """Klyqa vaccum cleaner"""
 
-    # status: KlyqaVCResponseStatus = None
-
     def __init__(self) -> None:
         super().__init__()
         # self.status = KlyqaVCResponseStatus()
         self.response_classes["status"] = KlyqaVCResponseStatus
-
-
-CommandType = Enum("CommandType", "get set reset")
 
 
 def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
@@ -126,7 +142,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
 
     sub.add_parser("productinfo", help="get product information")
 
-    req: argparse.ArgumentParser = sub.add_parser(CommandType.get.name, help="send state request")
+    req: argparse.ArgumentParser = sub.add_parser(CommandType.GET.name, help="send state request")
     req.add_argument(
         "--all",
         help="If this flag is set, the whole state will be requested",
@@ -241,7 +257,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
 
     # device specific
     set_parser = sub.add_parser(
-        CommandType.set.name,
+        CommandType.SET.name,
         help="enables use of the vc1 control arguments and will control vc1",
     )
     set_parser.add_argument("--power", choices=["on", "off"], help="turn power on/off")
@@ -259,7 +275,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     )
     set_parser.add_argument(
         "--workingmode",
-        choices=[m.name for m in VC_WORKINGMODE],
+        choices=[m.name for m in VcWorkingMode],
         help="set the working mode",
     )
     set_parser.add_argument(
@@ -267,7 +283,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     )
     set_parser.add_argument(
         "--suction",
-        choices=[m.name for m in VC_SUCTION_STRENGTHS],
+        choices=[m.name for m in VcSuctionStrengths],
         help="set suction power",
     )
     set_parser.add_argument(
@@ -288,7 +304,7 @@ def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
     )
 
     reset_parser = sub.add_parser(
-        CommandType.reset.name, help="enables resetting consumables"
+        CommandType.RESET.name, help="enables resetting consumables"
     )
     reset_parser.add_argument(
         "--sidebrush", help="resets the sidebrush life counter", action="store_true"

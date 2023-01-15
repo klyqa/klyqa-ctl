@@ -4,7 +4,7 @@ import argparse
 import json
 from typing import Any, Callable
 
-from klyqa_ctl.devices.vacuum import VC_SUCTION_STRENGTHS, VC_WORKINGMODE, CommandType
+from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandType
 from klyqa_ctl.general.general import LOGGER, TypeJSON
 
 async def process_args_to_msg_cleaner(
@@ -28,13 +28,13 @@ async def process_args_to_msg_cleaner(
                 {"type": "request", "action": "productinfo"}, 100
             )
 
-        if args.command == CommandType.get.name:
+        if args.command == CommandType.GET.name:
             get_command(args, local_and_cloud_command_msg)
 
-        elif args.command == CommandType.set.name:
+        elif args.command == CommandType.SET.name:
             set_command(args, local_and_cloud_command_msg)
 
-        elif args.command == CommandType.reset.name:
+        elif args.command == CommandType.RESET.name:
             reset_command(args, local_and_cloud_command_msg)
 
         elif args.command == "routine":
@@ -122,10 +122,10 @@ def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
     if args.carpetbooster is not None:
         set_dict["carpetbooster"] = args.carpetbooster
     if args.workingmode is not None:
-        mode: int = VC_WORKINGMODE[args.workingmode].value
+        mode: int = VcWorkingMode[args.workingmode].value
         set_dict["workingmode"] = mode
     if args.suction is not None:
-        suction: int = VC_SUCTION_STRENGTHS[args.suction].value
+        suction: int = VcSuctionStrengths[args.suction].value
         set_dict["suction"] = suction - 1
     if args.water is not None:
         set_dict["water"] = args.water
