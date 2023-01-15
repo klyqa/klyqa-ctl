@@ -4,7 +4,6 @@ import asyncio, aiofiles
 from threading import Event, Thread
 from dataclasses import dataclass
 from enum import Enum
-
 from typing import Any, Type, TypeVar
 import datetime
 import json
@@ -12,6 +11,7 @@ import logging
 import os
 import sys
 from pathlib import Path
+import slugify
 
 LOGGER: logging.Logger = logging.getLogger(__package__)
 LOGGER.setLevel(level=logging.INFO)
@@ -31,11 +31,11 @@ DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600 # 600 secs = 10 min
 TypeJSON = dict[str, Any]
 
 """ string output separator width """
-sep_width: int = 0
+SEPARATION_WIDTH: int = 0
 
 
 PRODUCT_URLS: dict[str, str] = {
-    """TODO: Make permalinks for urls."""
+    """TODO: Should be permalinks for urls here."""
     "@klyqa.lighting.cw-ww.gu10": "https://klyqa.de/produkte/gu10-white-strahler",
     "@klyqa.lighting.rgb-cw-ww.gu10": "https://klyqa.de/produkte/gu10-color-strahler",
     "@klyqa.lighting.cw-ww.g95": "https://www.klyqa.de/produkte/g95-vintage-lampe",
@@ -47,10 +47,12 @@ PRODUCT_URLS: dict[str, str] = {
 }
 
 
-SEND_LOOP_MAX_SLEEP_TIME = 0.05
-KLYQA_CTL_VERSION="1.0.17"
+SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
+KLYQA_CTL_VERSION: str = "1.0.17"
 
-DeviceType = Enum("DeviceType", "cleaner lighting")
+class DeviceType(Enum):
+    cleaner = 0
+    lighting = 1
 
 AES_KEY_DEV: bytes = bytes(
     [
@@ -115,7 +117,7 @@ class Range:
         self.min = int(self.min)
         self.max = int(self.max)
 
-class RGBColor:
+class RgbColor:
     """RGBColor"""
 
     r: int
@@ -131,9 +133,8 @@ class RGBColor:
         self.g = g
         self.b = b
 
-
-class AsyncIOLock:
-    """AsyncIOLock"""
+class AsyncIoLock:
+    """Async IO Lock"""
 
     task: asyncio.Task | None
     lock: asyncio.Lock
@@ -175,15 +176,13 @@ class AsyncIOLock:
             cls._instance.__init__()
         return cls._instance
 
-
 class RefParse:
-    """RefParse"""
+    """Reference parse for parameter in function calls."""
 
     ref: Any = None
 
     def __init__(self, ref: Any) -> None:
         self.ref = ref
-
 
 Device_config = dict
 
@@ -244,14 +243,12 @@ async def async_json_cache(json_data: TypeJSON | None, json_file: str) -> tuple[
             LOGGER.warning(f'No cache from json file "{json_file}" available.')
     return (return_json, cached)
 
-
 def get_fields(object: Any) -> Any | list[str]:
     """get_fields"""
     if hasattr(object, "__dict__"):
         return object.__dict__.keys()
     else:
         return dir(object)
-
 
 def get_obj_attrs_as_string(object: Any) -> str:
     """get_obj_attrs_as_string"""
@@ -260,7 +257,6 @@ def get_obj_attrs_as_string(object: Any) -> str:
         a for a in fields if not a.startswith("__") and not callable(getattr(object, a))
     ]
     return ", ".join(attrs)
-
 
 def get_obj_attr_values_as_string(object: Any) -> str:
     """get_obj_attr_values_as_string"""
@@ -273,7 +269,6 @@ def get_obj_attr_values_as_string(object: Any) -> str:
         _str: str = str(getattr(object, a))
         vals.append(_str if _str else '""')
     return ", ".join(vals)
-
 
 def task_name() -> str:
     """Return asyncio task name."""
@@ -289,3 +284,6 @@ def task_name() -> str:
 def logger_debug_task(log: str) -> None:
     task_name_str: str = task_name()
     LOGGER.debug(f"{task_name_str} - {log}" if task_name_str else f"{log}")
+    
+def format_uid(text: str) -> str:
+    return slugify.slugify(text)

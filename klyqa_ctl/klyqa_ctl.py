@@ -25,7 +25,6 @@ from __future__ import annotations
 #
 ###################################################################
 
-import random
 import sys
 import json
 import datetime
@@ -42,18 +41,17 @@ from collections.abc import Callable
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.communication.local.communicator import LocalCommunicator
-
-from klyqa_ctl.devices.device import *
-from klyqa_ctl.devices.light import *
+from klyqa_ctl.devices.device import Device
+from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.light.commands import add_command_args_bulb, process_args_to_msg_lighting
 from klyqa_ctl.devices.light.response_status import ResponseStatus
-from klyqa_ctl.devices.vacuum import *
+from klyqa_ctl.devices.vacuum import VacuumCleaner, add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.commands import process_args_to_msg_cleaner
-from klyqa_ctl.general.connections import *
-from klyqa_ctl.general.general import *
-from klyqa_ctl.general.message import *
-from klyqa_ctl.general.parameters import get_description_parser
+from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, DeviceType, TypeJSON, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, logger_debug_task, logging_hdl
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.account import Account
+from klyqa_ctl.general.message import Message
 
 class Client:
     """Client"""
@@ -132,9 +130,9 @@ class Client:
         if not self.local_communicator:
             return
 
-        print(sep_width * "-")
+        print(SEPARATION_WIDTH * "-")
         print("Search local network for devices ...")
-        print(sep_width * "-")
+        print(SEPARATION_WIDTH * "-")
 
         discover_end_event: asyncio.Event = asyncio.Event()
         discover_timeout_secs: float = 2.5
@@ -193,7 +191,7 @@ class Client:
     async def select_device(self, args: argparse.Namespace, send_started_local: datetime.datetime) -> str | set[str]:
         """Interactive select device."""
         
-        print(sep_width * "-")
+        print(SEPARATION_WIDTH * "-")
         # devices_working = {k: v for k, v in self.devices.items() if v.local.aes_key_confirmed}
         devices_working: dict[str, Device] = {
             u_id: device
@@ -234,7 +232,7 @@ class Client:
         if len(devices_working) <= 0:
             return "no_devices"
         
-        print(sep_width * "-")
+        print(SEPARATION_WIDTH * "-")
         count: int = 1
         device_items: list[Device] = list(devices_working.values())
 
@@ -307,7 +305,7 @@ class Client:
             bool: True if succeeded.
         """
         try:
-            global sep_width
+            global SEPARATION_WIDTH
 
             loop = asyncio.get_event_loop()
 

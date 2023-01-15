@@ -1,13 +1,7 @@
 """Local and cloud connections"""
 
 from __future__ import annotations
-import datetime
-import json
-import socket
 from typing import Any
-
-from klyqa_ctl.devices.device import *
-from klyqa_ctl.general.general import *
 
 
 class CloudConnection:

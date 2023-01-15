@@ -3,7 +3,6 @@ from __future__ import annotations
 import datetime
 from typing import Any
 from klyqa_ctl.devices.device import ResponseMessage
-
 from klyqa_ctl.general.general import LOGGER, get_obj_attr_values_as_string
 
 class ResponseStatus(ResponseMessage):

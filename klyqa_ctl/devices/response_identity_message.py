@@ -1,8 +1,7 @@
 """Response identity message"""
 from typing import Any
-
-from klyqa_ctl.devices.device import format_uid
 from klyqa_ctl.devices.response_message import ResponseMessage
+from klyqa_ctl.general.general import format_uid
 
 
 # eventually dataclass

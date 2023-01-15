@@ -4,25 +4,24 @@
 from __future__ import annotations
 import argparse
 from asyncio import AbstractEventLoop, CancelledError, Task
+import asyncio
 from collections import ChainMap
 import datetime
-import functools
+from enum import Enum
 import getpass
+from threading import Thread
+import traceback
 import httpx
 import json
 from typing import Any
 import requests, uuid, json
 from klyqa_ctl.account import Account
 from klyqa_ctl.controller_data import ControllerData
-
-from klyqa_ctl.devices.device import Device, format_uid
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
-from klyqa_ctl.general.general import LOGGER, EventQueuePrinter
-
-from klyqa_ctl.devices.device import *
-from klyqa_ctl.general.general import *
+from klyqa_ctl.general.general import LOGGER, Device_config, EventQueuePrinter, TypeJSON, async_json_cache, format_uid
         
 class RequestMethod(str, Enum):
     POST = "POST"
@@ -142,8 +141,6 @@ class CloudBackend:
             true:  on success of the login
             false: on error
         """
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-
         if not await self.login_cache():
             return False
 
@@ -208,14 +205,6 @@ class CloudBackend:
                 await async_json_cache(
                     acc_settings_cache, f"{self.account.username}.acc_settings.cache.json"
                 )
-
-                # await async_json_cache(
-                #     {"user": self.account.username, "password": self.account.password}, f"last.user.account.json"
-                # )
-                # async with aiofiles.open(
-                #     os.path.dirname(sys.argv[0]) + f"/last_username", mode="w"
-                # ) as f:
-                #     await f.write(self.account.username)
 
             except Exception as e:
                 pass

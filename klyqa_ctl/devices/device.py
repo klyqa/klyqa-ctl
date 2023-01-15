@@ -5,12 +5,9 @@ import traceback
 from typing import Any
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
-
 from klyqa_ctl.general.connections import CloudConnection
 from klyqa_ctl.general.general import LOGGER, logger_debug_task
 from klyqa_ctl.general.message import Message
-
-import slugify
 
 class Device:
     """Device"""
@@ -199,6 +196,4 @@ class Device:
                 
     def read_device_config(self, device_config: dict[str, Any]) -> None:
         self.device_config = device_config
-
-def format_uid(text: str) -> str:
-    return slugify.slugify(text)
+        

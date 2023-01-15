@@ -2,7 +2,7 @@
 from __future__ import annotations
 from typing import Any
 from klyqa_ctl.devices.device import ResponseMessage
-from klyqa_ctl.general.general import LOGGER, RGBColor, get_obj_attr_values_as_string
+from klyqa_ctl.general.general import LOGGER, RgbColor, get_obj_attr_values_as_string
 
 class ResponseStatus(ResponseMessage):
     """Response status of a bulb."""
@@ -16,7 +16,7 @@ class ResponseStatus(ResponseMessage):
     _attr_status: str | None = None
     _attr_temperature: int | None = None
     _attr_brightness: int | None
-    _attr_color: RGBColor | None
+    _attr_color: RgbColor | None
 
     def __str__(self) -> str:
         """__str__"""
@@ -110,12 +110,12 @@ class ResponseStatus(ResponseMessage):
         self._attr_brightness = int(brightness["percentage"])
 
     @property
-    def color(self) -> RGBColor | None:
+    def color(self) -> RgbColor | None:
         return self._attr_color
 
     @color.setter
     def color(self, color: dict[str, int]) -> None:
         self._attr_color = (
-            RGBColor(color["red"], color["green"], color["blue"]) if color else None
+            RgbColor(color["red"], color["green"], color["blue"]) if color else None
         )
         

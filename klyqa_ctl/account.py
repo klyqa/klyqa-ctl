@@ -5,13 +5,7 @@ import asyncio
 import datetime
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import TypeJSON
-
-try:
-    from Cryptodome.Cipher import AES  # provided by pycryptodome
-except:
-    from Crypto.Cipher import AES  # provided by pycryptodome
-
-from typing import Any, TypeVar
+from typing import Any
 
 class Account:
     """

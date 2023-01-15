@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 import argparse
-
 from klyqa_ctl.general.general import DeviceType
-
 
 def get_description_parser() -> argparse.ArgumentParser:
     """Make an argument parse object."""

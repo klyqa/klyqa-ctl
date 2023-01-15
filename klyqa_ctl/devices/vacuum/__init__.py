@@ -2,8 +2,7 @@
 from __future__ import annotations
 import argparse
 from enum import Enum
-
-from klyqa_ctl.devices.device import *
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.vacuum.response_status import ResponseStatus
 
 class VcWorkingStatus(Enum):

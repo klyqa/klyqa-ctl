@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import json
 from typing import Any, Callable
-
 from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandType
 from klyqa_ctl.general.general import LOGGER, TypeJSON
 

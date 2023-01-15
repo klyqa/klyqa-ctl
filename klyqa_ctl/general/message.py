@@ -1,13 +1,11 @@
-"""Message"""
+"""Message class"""
 
 from __future__ import annotations
 import argparse
 from dataclasses import dataclass
-
 import datetime
 from enum import Enum
 from typing import Any
-
 from klyqa_ctl.general import *
 from klyqa_ctl.general.general import LOGGER
 

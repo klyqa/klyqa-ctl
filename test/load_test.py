@@ -64,7 +64,7 @@ async def load_test(client: Client) -> int:
 
             parser: argparse.ArgumentParser = get_description_parser()
 
-            args.extend(["--local", "--device_unitids", f"{u_id}"])
+            args.extend(["--debug", "--local", "--device_unitids", f"{u_id}"])
 
             args.insert(0, DeviceType.lighting.name)
             add_config_args(parser=parser)

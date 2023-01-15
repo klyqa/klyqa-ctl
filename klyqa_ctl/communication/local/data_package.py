@@ -1,9 +1,7 @@
 """Data package and data package types."""
 from __future__ import annotations
-
 from dataclasses import dataclass
-from enum import Enum, auto
-
+from enum import Enum
 from klyqa_ctl.general.general import logger_debug_task
 
 class PackageType(Enum):

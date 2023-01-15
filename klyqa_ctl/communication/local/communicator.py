@@ -3,24 +3,25 @@
 from __future__ import annotations
 import argparse
 from asyncio import AbstractEventLoop, CancelledError, Task
+import asyncio
 import datetime
-from enum import auto
+from enum import Enum, auto
 import json
-from pickletools import bytes1
+import logging
 import select
 import socket
+import traceback
 from typing import Any, Callable
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.local.connection import AesConnectionState, LocalConnection
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices import device
-
-from klyqa_ctl.devices.device import *
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
+from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import *
-from klyqa_ctl.general.message import MessageState
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, RefParse, TypeJSON, format_uid, logger_debug_task, task_name, LOGGER
+from klyqa_ctl.general.message import Message, MessageState
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -344,7 +345,7 @@ class LocalCommunicator:
 
         """
 
-        global sep_width, LOGGER
+        global SEPARATION_WIDTH, LOGGER
         device: Device = r_device.ref
         if device is None or connection.socket is None:
             return DeviceTcpReturn.UNKNOWN_ERROR
@@ -899,9 +900,9 @@ class LocalCommunicator:
         message_queue_tx_local: list, target_device_uids: set) -> None:
         """Discover devices."""
 
-        print(sep_width * "-")
+        print(SEPARATION_WIDTH * "-")
         print("Search local network for devices ...")
-        print(sep_width * "-")
+        print(SEPARATION_WIDTH * "-")
 
         discover_end_event: asyncio.Event = asyncio.Event()
         discover_timeout_secs: float = 2.5

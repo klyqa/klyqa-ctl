@@ -1,18 +1,10 @@
-"""Lighting"""
-from __future__ import annotations
-
-from klyqa_ctl.devices.light.response_status import ResponseStatus
-
 """! @brief Contains all functions, constants and classes regarding lighting."""
-
-# Imports
-from typing import Callable, List
-from dataclasses import dataclass
-
-
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
-from klyqa_ctl.devices.device import *
-from klyqa_ctl.general.general import *
+from __future__ import annotations
+import traceback
+from typing import Any
+from klyqa_ctl.devices.device import Device
+from klyqa_ctl.devices.light.response_status import ResponseStatus
+from klyqa_ctl.general.general import LOGGER, Range, TypeJSON
 
 # Global Constants
 BULB_SCENES: list[dict[str, Any]] = [
@@ -276,7 +268,7 @@ class Light(Device):
             LOGGER.debug(f"{traceback.format_exc()}")
         
     def set_color_range(self, device_config: TypeJSON) -> None:  
-        color_enum = []
+        color_enum: list[Any] = []
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
                 color_enum = [
@@ -290,7 +282,7 @@ class Light(Device):
                 )
             else:
                 try:
-                    color_enum: list[Any] = [
+                    color_enum = [
                         trait["value_schema"]["definitions"]["color_value"]
                         for trait in device_config["deviceTraits"]
                         if trait["trait"] == "@core/traits/color"

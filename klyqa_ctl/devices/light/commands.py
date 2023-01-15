@@ -2,18 +2,15 @@
 from __future__ import annotations
 """! @brief Contains all functions for light commands."""
 import sys
-
 import argparse
 from enum import Enum
 import functools
 import json
 from typing import Any, Callable
-
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import BULB_SCENES, Light
-from klyqa_ctl.general.general import LOGGER, DeviceType
+from klyqa_ctl.general.general import LOGGER, DeviceType, TypeJSON
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
-from klyqa_ctl.klyqa_ctl import TypeJSON
 
 COMMANDS_SEND_TO_BULB: list[str] = [
     "request",
