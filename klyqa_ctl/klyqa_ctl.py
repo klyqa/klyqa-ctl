@@ -46,6 +46,7 @@ from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import *
 from klyqa_ctl.devices.light.commands import add_command_args_bulb, process_args_to_msg_lighting
+from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum import *
 from klyqa_ctl.devices.vacuum.commands import process_args_to_msg_cleaner
 from klyqa_ctl.general.connections import *
@@ -240,7 +241,7 @@ class Client:
         if device_items:
             print(
                 "Status attributes: ("
-                + get_obj_attrs_as_string(KlyqaBulbResponseStatus)
+                + get_obj_attrs_as_string(ResponseStatus)
                 + ") (local IP-Address)"
             )
             print("")
