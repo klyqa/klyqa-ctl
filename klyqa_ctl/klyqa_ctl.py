@@ -201,7 +201,7 @@ class Client:
             if (
                 (
                     args.type == DeviceType.lighting.name
-                    and isinstance(device, KlyqaBulb)
+                    and isinstance(device, Light)
                 )
                 or (
                     args.type == DeviceType.cleaner.name

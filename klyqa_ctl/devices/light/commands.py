@@ -10,7 +10,7 @@ import json
 from typing import Any, Callable
 
 from klyqa_ctl.devices.device import KlyqaDevice
-from klyqa_ctl.devices.light import BULB_SCENES, KlyqaBulb
+from klyqa_ctl.devices.light import BULB_SCENES, Light
 from klyqa_ctl.general.general import LOGGER, DeviceType
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import TypeJSON
@@ -822,7 +822,7 @@ def missing_config(args: argparse.Namespace, product_id: str) -> bool:
 
 #### Needing config profile versions implementation for checking trait ranges ###
 
-def check_color_range(args: argparse.Namespace, device: KlyqaBulb, values: list[int]) -> bool:
+def check_color_range(args: argparse.Namespace, device: Light, values: list[int]) -> bool:
     """Check device color range."""
     if not device.color_range:
         missing_config(args, device.acc_sets["productId"])
@@ -834,7 +834,7 @@ def check_color_range(args: argparse.Namespace, device: KlyqaBulb, values: list[
                 )
     return True
 
-def check_brightness_range(args: argparse.Namespace, device: KlyqaBulb, value: int) -> bool:
+def check_brightness_range(args: argparse.Namespace, device: Light, value: int) -> bool:
     """Check device brightness range."""
     if not device.brightness_range:
         missing_config(args, device.acc_sets["productId"])
@@ -845,7 +845,7 @@ def check_brightness_range(args: argparse.Namespace, device: KlyqaBulb, value: i
             )
     return True
 
-def check_temp_range(args: argparse.Namespace, device: KlyqaBulb, value: int) -> bool:
+def check_temp_range(args: argparse.Namespace, device: Light, value: int) -> bool:
     """Check device temperature range."""
     if not device.temperature_range:
         missing_config(args, device.acc_sets["productId"])

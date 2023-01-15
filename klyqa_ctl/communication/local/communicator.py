@@ -17,7 +17,7 @@ from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices import device
 
 from klyqa_ctl.devices.device import *
-from klyqa_ctl.devices.light import KlyqaBulb
+from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.vacuum import KlyqaVC
 from klyqa_ctl.general.general import *
 from klyqa_ctl.general.message import Message_state
@@ -165,7 +165,7 @@ class LocalCommunicator:
                 if dev:
                     device.acc_sets = dev[0]
             if ".lighting" in ident.product_id:
-                self.devices[device.u_id] = KlyqaBulb()
+                self.devices[device.u_id] = Light()
             elif ".cleaning" in ident.product_id:
                 self.devices[device.u_id] = KlyqaVC()
 
