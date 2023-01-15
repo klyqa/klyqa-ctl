@@ -9,7 +9,7 @@ import json
 from typing import Any, Callable
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import BULB_SCENES, Light
-from klyqa_ctl.general.general import LOGGER, DeviceType, TypeJSON
+from klyqa_ctl.general.general import LOGGER, DeviceType, RgbColor, TypeJSON
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 
 COMMANDS_SEND_TO_BULB: list[str] = [
@@ -383,10 +383,8 @@ async def process_args_to_msg_lighting(
         was sent. Give also a check function for the values that are send to be in
         limits (device config).
         """
-        msg: tuple[str, int] | tuple[str, int, Callable] = (json.dumps(json_msg), timeout)
-        if check_func:
-            msg = msg + (check_func,)
-        message_queue_tx_local.append(msg)
+        msg: tuple[str, int] = (json.dumps(json_msg), timeout)
+        message_queue_tx_local.append(msg + (check_func,) if check_func else msg)
         message_queue_tx_command_cloud.append(json_msg)
 
     # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
@@ -439,7 +437,9 @@ async def process_args_to_msg_lighting(
         message_queue_tx_state_cloud.append({"status": args.power[0]})
 
     if args.color is not None:
-        command_color(args, message_queue_tx_local, message_queue_tx_state_cloud)
+        command_color(RgbColor(*args.color), message_queue_tx_local, message_queue_tx_state_cloud,
+            args.brightness if args.brightness else None, args.transitionTime[0] if args.transitionTime else 0,
+            args.force)
     
     if args.percent_color is not None:
         command_color_percent(args, message_queue_tx_local, message_queue_tx_state_cloud)
@@ -624,68 +624,154 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
     # # args.func(args)
     return True
 
-def command_color(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+def forced_continue(force: bool, reason: str) -> bool:
+    """Force argument."""
+    if not force:
+        LOGGER.error(reason)
+        return False
+    else:
+        LOGGER.info(reason)
+        LOGGER.info("Enforced send")
+        return True
+
+def missing_config(force: bool, product_id: str) -> bool:
+    """Missing device config."""
+    if not forced_continue(force, 
+        "Missing or faulty config values for device " + " product_id: " + product_id
+    ):
+        return True
+    return False
+
+#### Needing config profile versions implementation for checking trait ranges ###
+
+def check_color_range(force: bool, device: Light, values: list[int]) -> bool:
+    """Check device color range."""
+    if not device.color_range:
+        missing_config(force, device.acc_sets["productId"])
+    else:
+        for value in values:
+            if int(value) < device.color_range.min or int(value) > device.color_range.max:
+                return forced_continue(force,
+                    f"Color {value} out of range [{device.color_range.min}..{device.color_range.max}]."
+                )
+    return True
+
+def check_brightness_range(force: bool, device: Light, value: int) -> bool:
+    """Check device brightness range."""
+    if not device.brightness_range:
+        missing_config(force, device.acc_sets["productId"])
+    else:
+        if int(value) < device.brightness_range.min or int(value) > device.brightness_range.max:
+            return forced_continue(force,
+                f"Brightness {value} out of range [{device.brightness_range.min}..{device.brightness_range.max}]."
+            )
+    return True
+
+def check_temp_range(force: bool, device: Light, value: int) -> bool:
+    """Check device temperature range."""
+    if not device.temperature_range:
+        missing_config(force, device.acc_sets["productId"])
+    else:
+        if int(value) < device.temperature_range.min or int(value) > device.temperature_range.max:
+            return forced_continue(force,
+                f"Temperature {value} out of range [{device.temperature_range.min}..{device.temperature_range.max}]."
+            )
+    return True
+
+def check_scene_support(force: bool, device: Device, scene_id: str) -> bool:
+    """Check device scene support."""
+    try:
+        scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
+        scene: dict[str, Any] = scene_result[0]
+
+        # bulb has no colors, therefore only cwww scenes are allowed
+        if not ".rgb" in device.acc_sets["productId"] and not "cwww" in scene:
+            return forced_continue(force,
+                f"Scene {scene['label']} not supported by device product" +
+                f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
+            )
+
+    except Exception as excp:
+        return not missing_config(force, device.acc_sets["productId"])
+    return True
+
+# CHECK_RANGE: dict[Any, Any] = {
+#     CheckDeviceParameter.COLOR: check_color_range,
+#     CheckDeviceParameter.BRIGHTNESS: check_brightness_range,
+#     CheckDeviceParameter.TEMPERATURE: check_temp_range,
+#     CheckDeviceParameter.SCENE: check_scene_support,
+# }
+
+def check_device_parameter(force: bool, 
+    check_function: Callable, values: Any, device: Device
+) -> bool:
+    """Check device configs."""
+    if not device.device_config and not forced_continue(force, "Missing configs for devices."):
+        return False
+
+    if not check_function(force, device, values):
+        return False
+    return True
+
+def command_color(color: RgbColor, message_queue_tx_local: list, message_queue_tx_state_cloud: list,
+    brightness: int | None = None, transition_time: int = 0, force_apply: bool = False) -> None:
     """Command for setting the color."""
-    r: str; g: str; b: str;
-    r, g, b = args.color
+    r: int = color.r; g: int = color.g; b: int = color.b
 
-    tt: int = int(args.transitionTime[0])
-    msg: tuple[str, str] | tuple [str, str, Callable] = color_message(r, g, b, tt, skipWait=args.brightness is not None)
+    tt: int = transition_time
+    msg: tuple[str, str] = color_message(str(color.r), str(color.g), str(color.b), tt, skipWait=brightness is not None)
 
-    check_color = functools.partial(
-        check_device_parameter, args, CheckDeviceParameter.COLOR, [int(r), int(g), int(b)]
+    check_color: functools.partial[bool] = functools.partial(
+        check_device_parameter, force_apply, check_color_range, [color.r, color.g, color.b]
     )
-    msg = msg + (check_color,)
+    msg_with_check: tuple[str, str, functools.partial[bool]] = msg + (check_color,)
 
-    message_queue_tx_local.append(msg)
-    col: Any = json.loads(msg[0])["color"]
-    message_queue_tx_state_cloud.append({"color": col})
+    message_queue_tx_local.append(msg_with_check)
+    col_msg_json: TypeJSON = json.loads(msg_with_check[0])["color"]
+    message_queue_tx_state_cloud.append({"color": col_msg_json})
 
-def command_color_percent(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+def command_color_percent(r: Any, g: Any, b: Any, w: Any, c: Any, message_queue_tx_local: list,
+    message_queue_tx_state_cloud: list,
+    brightness: int | None = None, transition_time: int = 0, force_apply: bool = False) -> None:
     """Command for color in percentage numbers."""
-    r: Any; g: Any; b: Any; w: Any; c: Any
-    r, g, b, w, c = args.percent_color
-    tt: Any = args.transitionTime[0]
+
     msg: tuple[str, str] = percent_color_message(
-        r, g, b, w, c, tt, skipWait=args.brightness is not None
+        r, g, b, w, c, str(transition_time), skipWait=brightness is not None
     )
     message_queue_tx_local.append(msg)
-    p_color: Any = json.loads(msg[0])["p_color"]
-    message_queue_tx_state_cloud.append({"p_color": p_color})
+    p_color_msg_json: TypeJSON = json.loads(msg[0])["p_color"]
+    message_queue_tx_state_cloud.append({"p_color": p_color_msg_json})
         
-def command_brightness(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+def command_brightness(brightness: int, message_queue_tx_local: list, message_queue_tx_state_cloud: list,
+    transition_time: int = 0, force_apply: bool = False) -> None:
     """Command for brightness."""
-    brightness_str: str = args.brightness[0]
 
-    tt: int = int(args.transitionTime[0])
-    msg: tuple[str, str] | tuple [str, str, Callable] = brightness_message(brightness_str, tt)
+    msg: tuple[str, str] = brightness_message(str(brightness), transition_time)
 
     check_brightness: functools.partial[bool] = functools.partial(
-        check_device_parameter, args, CheckDeviceParameter.BRIGHTNESS, int(brightness_str)
-    )
-    msg = msg + (check_brightness,)
+        check_device_parameter, force_apply, check_brightness_range, brightness)
 
-    message_queue_tx_local.append(msg)
-    brightness: Any = json.loads(msg[0])["brightness"]
-    message_queue_tx_state_cloud.append({"brightness": brightness})
+    msg_with_check: tuple[str, str, functools.partial[bool]] = msg + (check_brightness,)
 
-def command_temperature(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+    message_queue_tx_local.append(msg_with_check)
+    brightness_msg_json: TypeJSON = json.loads(msg_with_check[0])["brightness"]
+    message_queue_tx_state_cloud.append({"brightness": brightness_msg_json})
+
+def command_temperature(temperature: int, message_queue_tx_local: list, message_queue_tx_state_cloud: list,
+    brightness: int | None = None, transition_time: int = 0, force_apply: bool = False) -> None:
     """Command for temperature."""
-    temperature: str = args.temperature[0]
-
-    tt: Any = args.transitionTime[0]
-    msg: tuple[str, str] | tuple[str, str, Callable] = temperature_message(
-        temperature, tt, skipWait=args.brightness is not None
+    msg: tuple[str, str] = temperature_message(
+        str(temperature), str(transition_time), skipWait=brightness is not None
     )
 
     check_temperature: functools.partial[bool] = functools.partial(
-        check_device_parameter, args, CheckDeviceParameter.TEMPERATURE, int(temperature)
-    )
-    msg = msg + (check_temperature,)
+        check_device_parameter, force_apply, check_temp_range, temperature)
 
-    temperature= json.loads(msg[0])["temperature"]
-    message_queue_tx_local.append(msg)
-    message_queue_tx_state_cloud.append({"temperature": temperature})
+    msg_with_check: tuple[str, str, functools.partial[bool]] = msg + (check_temperature,)
+
+    temperature_msg_json: TypeJSON = json.loads(msg_with_check[0])["temperature"]
+    message_queue_tx_local.append(msg_with_check)
+    message_queue_tx_state_cloud.append({"temperature": temperature_msg_json})
 
 def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
     """Command for select scene."""
@@ -798,92 +884,3 @@ def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
         500,
         check_scene
     )
-
-def forced_continue(args: argparse.Namespace, reason: str) -> bool:
-    """Force argument."""
-    if not args.force:
-        LOGGER.error(reason)
-        return False
-    else:
-        LOGGER.info(reason)
-        LOGGER.info("Enforced send")
-        return True
-
-def missing_config(args: argparse.Namespace, product_id: str) -> bool:
-    """Missing device config."""
-    if not forced_continue(args, 
-        "Missing or faulty config values for device " + " product_id: " + product_id
-    ):
-        return True
-    return False
-
-#### Needing config profile versions implementation for checking trait ranges ###
-
-def check_color_range(args: argparse.Namespace, device: Light, values: list[int]) -> bool:
-    """Check device color range."""
-    if not device.color_range:
-        missing_config(args, device.acc_sets["productId"])
-    else:
-        for value in values:
-            if int(value) < device.color_range.min or int(value) > device.color_range.max:
-                return forced_continue(args,
-                    f"Color {value} out of range [{device.color_range.min}..{device.color_range.max}]."
-                )
-    return True
-
-def check_brightness_range(args: argparse.Namespace, device: Light, value: int) -> bool:
-    """Check device brightness range."""
-    if not device.brightness_range:
-        missing_config(args, device.acc_sets["productId"])
-    else:
-        if int(value) < device.brightness_range.min or int(value) > device.brightness_range.max:
-            return forced_continue(args,
-                f"Brightness {value} out of range [{device.brightness_range.min}..{device.brightness_range.max}]."
-            )
-    return True
-
-def check_temp_range(args: argparse.Namespace, device: Light, value: int) -> bool:
-    """Check device temperature range."""
-    if not device.temperature_range:
-        missing_config(args, device.acc_sets["productId"])
-    else:
-        if int(value) < device.temperature_range.min or int(value) > device.temperature_range.max:
-            return forced_continue(args,
-                f"Temperature {value} out of range [{device.temperature_range.min}..{device.temperature_range.max}]."
-            )
-    return True
-
-def check_scene_support(args: argparse.Namespace, device: Device, scene_id: str) -> bool:
-    """Check device scene support."""
-    try:
-        scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
-        scene: dict[str, Any] = scene_result[0]
-
-        # bulb has no colors, therefore only cwww scenes are allowed
-        if not ".rgb" in device.acc_sets["productId"] and not "cwww" in scene:
-            return forced_continue(args,
-                f"Scene {scene['label']} not supported by device product" +
-                f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
-            )
-
-    except Exception as excp:
-        return not missing_config(args, device.acc_sets["productId"])
-    return True
-
-CHECK_RANGE: dict[Any, Any] = {
-    CheckDeviceParameter.COLOR: check_color_range,
-    CheckDeviceParameter.BRIGHTNESS: check_brightness_range,
-    CheckDeviceParameter.TEMPERATURE: check_temp_range,
-    CheckDeviceParameter.SCENE: check_scene_support,
-}
-
-def check_device_parameter(args: argparse.Namespace, 
-    parameter: CheckDeviceParameter, values: Any, device: Device
-) -> bool:
-    """Check device configs."""
-    if not device.device_config and not forced_continue(args, "Missing configs for devices."):
-        return False
-
-    if not CHECK_RANGE[parameter](args, device, values):
-        return False
-    return True
