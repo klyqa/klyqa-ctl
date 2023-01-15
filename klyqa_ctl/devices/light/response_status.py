@@ -1,10 +1,10 @@
 """Response status."""
 from __future__ import annotations
 from typing import Any
-from klyqa_ctl.devices.device import KlyqaDeviceResponse
+from klyqa_ctl.devices.device import DeviceResponse
 from klyqa_ctl.general.general import LOGGER, RGBColor, get_obj_attr_values_as_string
 
-class ResponseStatus(KlyqaDeviceResponse):
+class ResponseStatus(DeviceResponse):
     """Response status of a bulb."""
 
     _attr_active_command: int | None = None

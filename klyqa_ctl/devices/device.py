@@ -30,10 +30,10 @@ class Device:
         self._attr__use_thread: asyncio.Task[Any] | None = None
         self._attr_recv_msg_unproc: list[Message] = []
 
-        self._attr_status: KlyqaDeviceResponse | None = None
+        self._attr_status: DeviceResponse | None = None
         self._attr_response_classes: dict[str, Any] = {
             "ident": KlyqaDeviceResponseIdent,
-            "status": KlyqaDeviceResponse,
+            "status": DeviceResponse,
         }
         self._attr_device_config: dict[str, Any] = {}
 
@@ -102,11 +102,11 @@ class Device:
         self._attr_recv_msg_unproc = recv_msg_unproc
     
     @property
-    def status(self) -> KlyqaDeviceResponse | None:
+    def status(self) -> DeviceResponse | None:
         return self._attr_status
     
     @status.setter
-    def status(self, status: KlyqaDeviceResponse | None) -> None:
+    def status(self, status: DeviceResponse | None) -> None:
         self._attr_status = status
     
     @property
@@ -205,7 +205,7 @@ class Device:
         self.device_config = device_config
 
 
-class KlyqaDeviceResponse:
+class DeviceResponse:
     def __init__(self, **kwargs: Any) -> None:
         """__init__"""
         self.type: str = ""
@@ -222,7 +222,7 @@ class KlyqaDeviceResponse:
 
 
 # eventually dataclass
-class KlyqaDeviceResponseIdent(KlyqaDeviceResponse):
+class KlyqaDeviceResponseIdent(DeviceResponse):
     """KlyqaDeviceResponseIdent"""
 
     def __init__(
