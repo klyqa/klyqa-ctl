@@ -82,7 +82,7 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
     optional = parser.add_argument_group("optional arguments")
     required.add_argument(
         "type",
-        choices=[m.name for m in DeviceType],
+        choices=[m.value for m in DeviceType],
         help="choose device type to control",
     )
 

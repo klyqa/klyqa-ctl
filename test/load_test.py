@@ -66,7 +66,7 @@ async def load_test(client: Client) -> int:
 
             args.extend(["--debug", "--local", "--device_unitids", f"{u_id}"])
 
-            args.insert(0, DeviceType.lighting.name)
+            args.insert(0, DeviceType.LIGHTING.value)
             add_config_args(parser=parser)
             add_command_args_bulb(parser=parser)
 

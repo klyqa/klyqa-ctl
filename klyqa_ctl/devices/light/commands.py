@@ -315,7 +315,7 @@ async def discover_devices(
     """
     
     discover_local_args: list[str] = [
-        DeviceType.lighting.name,
+        DeviceType.LIGHTING.value,
         "--request",
         "--allDevices",
         "--selectDevice",

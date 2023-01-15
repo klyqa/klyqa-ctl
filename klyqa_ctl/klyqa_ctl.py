@@ -198,11 +198,11 @@ class Client:
             for u_id, device in self.devices.items()
             if (
                 (
-                    args.type == DeviceType.lighting.name
+                    args.type == DeviceType.LIGHTING.value
                     and isinstance(device, Light)
                 )
                 or (
-                    args.type == DeviceType.cleaner.name
+                    args.type == DeviceType.CLEANER.value
                     and isinstance(device, VacuumCleaner)
                 )
             )
@@ -312,8 +312,8 @@ class Client:
             send_started: datetime.datetime = datetime.datetime.now()
 
             add_command_args_ch: dict[str, Callable[..., Any]] = {
-                DeviceType.lighting.name: add_command_args_bulb,
-                DeviceType.cleaner.name: add_command_args_cleaner,
+                DeviceType.LIGHTING.value: add_command_args_bulb,
+                DeviceType.CLEANER.value: add_command_args_cleaner,
             }
             add_command_args: Callable[..., Any] = add_command_args_ch[args.type]
 
@@ -362,7 +362,7 @@ class Client:
                 )
 
             scene: list[str] = []
-            if args.type == DeviceType.lighting.name:
+            if args.type == DeviceType.LIGHTING.value:
                 await process_args_to_msg_lighting(
                     args,
                     args_in,
@@ -372,7 +372,7 @@ class Client:
                     message_queue_tx_state_cloud,
                     scene,
                 )
-            elif args.type == DeviceType.cleaner.name:
+            elif args.type == DeviceType.CLEANER.value:
                 await process_args_to_msg_cleaner(
                     args,
                     args_in,
@@ -609,9 +609,9 @@ async def main() -> None:
         _,
     ) = parser.parse_known_args(args=args_in)
 
-    if config_args_parsed.type == DeviceType.cleaner.name:
+    if config_args_parsed.type == DeviceType.CLEANER.value:
         add_command_args_cleaner(parser=parser)
-    elif config_args_parsed.type == DeviceType.lighting.name:
+    elif config_args_parsed.type == DeviceType.LIGHTING.value:
         add_command_args_bulb(parser=parser)
     else:
         LOGGER.error("Unknown command type.")

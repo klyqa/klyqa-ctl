@@ -50,9 +50,9 @@ PRODUCT_URLS: dict[str, str] = {
 SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
 KLYQA_CTL_VERSION: str = "1.0.17"
 
-class DeviceType(Enum):
-    cleaner = 0
-    lighting = 1
+class DeviceType(str, Enum):
+    CLEANER = "cleaner"
+    LIGHTING = "lighting"
 
 AES_KEY_DEV: bytes = bytes(
     [
