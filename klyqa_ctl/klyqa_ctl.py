@@ -70,7 +70,7 @@ class Client:
         self._attr_controller_data: ControllerData = controller_data
         self._attr_local_communicator: LocalCommunicator | None = local_communicator 
         self._attr_account: Account | None = account
-        self._attr_devices: dict[str, KlyqaDevice] = dict()
+        self._attr_devices: dict[str, Device] = dict()
         self._attr_cloud_backend: CloudBackend | None = cloud_backend
 
     @property
@@ -98,11 +98,11 @@ class Client:
         self._attr_account = account
 
     @property
-    def devices(self) -> dict[str, KlyqaDevice]:
+    def devices(self) -> dict[str, Device]:
         return self._attr_devices
     
     @devices.setter
-    def devices(self, devices: dict[str, KlyqaDevice]) -> None:
+    def devices(self, devices: dict[str, Device]) -> None:
         self._attr_devices = devices
 
     @property
@@ -195,7 +195,7 @@ class Client:
         
         print(sep_width * "-")
         # devices_working = {k: v for k, v in self.devices.items() if v.local.aes_key_confirmed}
-        devices_working: dict[str, KlyqaDevice] = {
+        devices_working: dict[str, Device] = {
             u_id: device
             for u_id, device in self.devices.items()
             if (
@@ -236,7 +236,7 @@ class Client:
         
         print(sep_width * "-")
         count: int = 1
-        device_items: list[KlyqaDevice] = list(devices_working.values())
+        device_items: list[Device] = list(devices_working.values())
 
         if device_items:
             print(

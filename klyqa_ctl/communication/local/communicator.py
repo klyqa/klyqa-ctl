@@ -59,7 +59,7 @@ class LocalCommunicator:
     def __init__(self, controller_data: ControllerData, account: Account, server_ip: str = "0.0.0.0") -> None:
         self.controller_data: ControllerData = controller_data
         self.account: Account = account
-        self.devices: dict[str, KlyqaDevice] = account.devices
+        self.devices: dict[str, Device] = account.devices
         self.tcp: socket.socket | None = None
         self.udp: socket.socket | None = None
         self.server_ip: str = server_ip
@@ -134,7 +134,7 @@ class LocalCommunicator:
         self,
         connection: LocalConnection,
         data: bytes,
-        device: KlyqaDevice,
+        device: Device,
         r_device: RefParse,
         use_dev_aes: bool) -> DeviceTcpReturn:
         """Process the device identity package."""
@@ -172,7 +172,7 @@ class LocalCommunicator:
         # cached client device (self.devices), incoming device object created on tcp connection acception
         if not device.u_id in self.devices:
             return DeviceTcpReturn.NOTHING_DONE
-        device_b: KlyqaDevice = self.devices[device.u_id]
+        device_b: Device = self.devices[device.u_id]
         
         if await device_b.use_lock():
 
@@ -241,7 +241,7 @@ class LocalCommunicator:
         return DeviceTcpReturn.NO_ERROR
 
     async def process_initial_vector_package(self, connection: LocalConnection,
-        data: bytes, device: KlyqaDevice) -> DeviceTcpReturn:
+        data: bytes, device: Device) -> DeviceTcpReturn:
         """Create the AES encryption and decryption objects."""
 
         connection.remoteIv = data
@@ -268,7 +268,7 @@ class LocalCommunicator:
         return DeviceTcpReturn.NO_ERROR
         
     async def message_answer_package(self, connection: LocalConnection,
-        answer: bytes, device: KlyqaDevice, msg_sent: Message | None) -> DeviceTcpReturn | int:
+        answer: bytes, device: Device, msg_sent: Message | None) -> DeviceTcpReturn | int:
         """Process the encrypted device answer."""
         
         return_val: DeviceTcpReturn | int = 0
@@ -345,7 +345,7 @@ class LocalCommunicator:
         """
 
         global sep_width, LOGGER
-        device: KlyqaDevice = r_device.ref
+        device: Device = r_device.ref
         if device is None or connection.socket is None:
             return DeviceTcpReturn.UNKNOWN_ERROR
 
@@ -446,7 +446,7 @@ class LocalCommunicator:
         if msg_sent and msg_sent.state == Message_state.answered:
             msg_sent = None
                     
-        while not communication_finished and (device.u_id == "no_uid" or type(device) == KlyqaDevice or 
+        while not communication_finished and (device.u_id == "no_uid" or type(device) == Device or 
                device.u_id in self.message_queue or msg_sent):
             try:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
@@ -507,7 +507,7 @@ class LocalCommunicator:
     
 
     async def device_handle_local_tcp(
-        self, device: KlyqaDevice, connection: LocalConnection
+        self, device: Device, connection: LocalConnection
     ) -> DeviceTcpReturn:
         """! Handle the incoming tcp connection to the device."""
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
@@ -560,7 +560,7 @@ class LocalCommunicator:
                         return r
 
                 if device.u_id in self.devices:
-                    device_b: KlyqaDevice = self.devices[device.u_id]
+                    device_b: Device = self.devices[device.u_id]
                     if device_b._use_thread == asyncio.current_task():
                         try:
                             if device_b._use_lock is not None:
@@ -715,7 +715,7 @@ class LocalCommunicator:
                         if not self.tcp in readable:
                             break
                         else:
-                            device: KlyqaDevice = KlyqaDevice()
+                            device: Device = Device()
                             connection: LocalConnection = LocalConnection()
                             (
                                 connection.socket,
@@ -930,7 +930,7 @@ class LocalCommunicator:
                 u_id for u_id, v in self.devices.items()
             )
 
-def send_msg(msg: str, device: KlyqaDevice, connection: LocalConnection) -> bool:
+def send_msg(msg: str, device: Device, connection: LocalConnection) -> bool:
     info_str: str = (
         (f"{task_name()} - " if LOGGER.level == 10 else "")
         + 'Sending in local network to "'

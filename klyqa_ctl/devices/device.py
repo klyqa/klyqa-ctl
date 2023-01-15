@@ -16,8 +16,8 @@ def format_uid(text: str) -> str:
     return slugify.slugify(text)
 
 
-class KlyqaDevice:
-    """KlyqaDevice"""
+class Device:
+    """Device"""
 
     def __init__(self) -> None:
         self._attr_local_addr: dict[str, Any] = { "ip": "", "port": -1 }

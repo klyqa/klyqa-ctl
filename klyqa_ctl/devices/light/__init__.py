@@ -186,7 +186,7 @@ BULB_SCENES: list[dict[str, Any]] = [
     },
 ]
 
-class Light(KlyqaDevice):
+class Light(Device):
     """Light"""
 
     def __init__(self) -> None:

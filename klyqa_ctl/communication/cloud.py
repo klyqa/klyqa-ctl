@@ -15,7 +15,7 @@ import requests, uuid, json
 from klyqa_ctl.account import Account
 from klyqa_ctl.controller_data import ControllerData
 
-from klyqa_ctl.devices.device import KlyqaDevice, format_uid
+from klyqa_ctl.devices.device import Device, format_uid
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.vacuum import KlyqaVC
 from klyqa_ctl.general.connections import PROD_HOST
@@ -38,10 +38,10 @@ class CloudBackend:
         self._attr_offline: bool = offline
         self._attr_host: str = PROD_HOST if not host else host
         self._attr_access_token: str = ""
-        self._attr_devices: dict[str, KlyqaDevice] = account.devices
+        self._attr_devices: dict[str, Device] = account.devices
 
     @property
-    def devices(self) -> dict[str, KlyqaDevice]:
+    def devices(self) -> dict[str, Device]:
         """Return or set the devices dictionary."""
         return self._attr_devices
 
@@ -245,7 +245,7 @@ class CloudBackend:
                 )
                 cloud_state: dict[str, Any] | None = None
 
-                device: KlyqaDevice
+                device: Device
                 if ".lighting" in device_settings["productId"]:
                     device = Light()
                 elif ".cleaning" in device_settings["productId"]:
@@ -521,7 +521,7 @@ class CloudBackend:
         success: bool = False
 
         async def _cloud_post(
-            device: KlyqaDevice, json_message: dict[str, Any], target: str
+            device: Device, json_message: dict[str, Any], target: str
         ) -> None:
             cloud_device_id: str = device.acc_sets["cloudDeviceId"]
             unit_id: str = format_uid(device.acc_sets["localDeviceId"])
@@ -545,7 +545,7 @@ class CloudBackend:
             response_queue.append(resp_print)
             queue_printer.print(resp_print)
 
-        async def cloud_post(device: KlyqaDevice, json_message: dict[str, Any], target: str) -> int:
+        async def cloud_post(device: Device, json_message: dict[str, Any], target: str) -> int:
             if not await device.use_lock():
                 LOGGER.error(
                     f"Couldn't get use lock for device {device.get_name()})"
@@ -570,14 +570,14 @@ class CloudBackend:
 
             loop: AbstractEventLoop = asyncio.get_event_loop()
             threads: list[Any] = []
-            target_devices: list[KlyqaDevice] = [
+            target_devices: list[Device] = [
                 b
                 for b in self.devices.values()
                 for t in target_uids
                 if b.u_id == t
             ]
 
-            def create_post_threads(target: str, msg: dict[str, Any]) -> list[tuple[Task[int], KlyqaDevice]]:
+            def create_post_threads(target: str, msg: dict[str, Any]) -> list[tuple[Task[int], Device]]:
                 return [
                     (loop.create_task(cloud_post(b, msg, target)), b)
                     for b in target_devices

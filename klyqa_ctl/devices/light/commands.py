@@ -9,7 +9,7 @@ import functools
 import json
 from typing import Any, Callable
 
-from klyqa_ctl.devices.device import KlyqaDevice
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import BULB_SCENES, Light
 from klyqa_ctl.general.general import LOGGER, DeviceType
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
@@ -856,7 +856,7 @@ def check_temp_range(args: argparse.Namespace, device: Light, value: int) -> boo
             )
     return True
 
-def check_scene_support(args: argparse.Namespace, device: KlyqaDevice, scene_id: str) -> bool:
+def check_scene_support(args: argparse.Namespace, device: Device, scene_id: str) -> bool:
     """Check device scene support."""
     try:
         scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
@@ -881,7 +881,7 @@ CHECK_RANGE: dict[Any, Any] = {
 }
 
 def check_device_parameter(args: argparse.Namespace, 
-    parameter: CheckDeviceParameter, values: Any, device: KlyqaDevice
+    parameter: CheckDeviceParameter, values: Any, device: Device
 ) -> bool:
     """Check device configs."""
     if not device.device_config and not forced_continue(args, "Missing configs for devices."):

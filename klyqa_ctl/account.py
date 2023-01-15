@@ -3,7 +3,7 @@
 from __future__ import annotations
 import asyncio
 import datetime
-from klyqa_ctl.devices.device import KlyqaDevice
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import TypeJSON
 
 try:
@@ -38,7 +38,7 @@ class Account:
         communication tasks."""
         self._attr_username: str = username
         self._attr_password: str = password
-        self._attr_devices: dict[str, KlyqaDevice] = {}
+        self._attr_devices: dict[str, Device] = {}
         self._attr_settings: TypeJSON | None = {}
         self._attr_access_token: str = ""
         self._attr_username_cached: bool = False
@@ -76,11 +76,11 @@ class Account:
         self._attr_password = password
     
     @property
-    def devices(self) -> dict[str, KlyqaDevice]:
+    def devices(self) -> dict[str, Device]:
         return self._attr_devices
     
     @devices.setter
-    def devices(self, devices: dict[str, KlyqaDevice]) -> None:
+    def devices(self, devices: dict[str, Device]) -> None:
         self._attr_devices = devices
     
     @property
