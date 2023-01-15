@@ -12,10 +12,6 @@ from klyqa_ctl.general.message import Message
 
 import slugify
 
-
-def format_uid(text: str) -> str:
-    return slugify.slugify(text)
-
 class Device:
     """Device"""
 
@@ -204,3 +200,5 @@ class Device:
     def read_device_config(self, device_config: dict[str, Any]) -> None:
         self.device_config = device_config
 
+def format_uid(text: str) -> str:
+    return slugify.slugify(text)
