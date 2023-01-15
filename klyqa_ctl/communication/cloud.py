@@ -17,7 +17,7 @@ from klyqa_ctl.controller_data import ControllerData
 
 from klyqa_ctl.devices.device import Device, format_uid
 from klyqa_ctl.devices.light import Light
-from klyqa_ctl.devices.vacuum import KlyqaVC
+from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import LOGGER, EventQueuePrinter
 
@@ -249,7 +249,7 @@ class CloudBackend:
                 if ".lighting" in device_settings["productId"]:
                     device = Light()
                 elif ".cleaning" in device_settings["productId"]:
-                    device = KlyqaVC()
+                    device = VacuumCleaner()
                 else:
                     return
                 device.u_id = format_uid(device_settings["localDeviceId"])

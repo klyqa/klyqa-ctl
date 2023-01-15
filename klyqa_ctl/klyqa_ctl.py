@@ -205,7 +205,7 @@ class Client:
                 )
                 or (
                     args.type == DeviceType.cleaner.name
-                    and isinstance(device, KlyqaVC)
+                    and isinstance(device, VacuumCleaner)
                 )
             )
             and (

@@ -110,8 +110,8 @@ class KlyqaVCResponseStatus(KlyqaDeviceResponse):
         super().update(**kwargs)
 
 
-class KlyqaVC(Device):
-    """Klyqa vaccum cleaner"""
+class VacuumCleaner(Device):
+    """vaccum cleaner"""
 
     def __init__(self) -> None:
         super().__init__()

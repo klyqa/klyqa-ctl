@@ -18,7 +18,7 @@ from klyqa_ctl.devices import device
 
 from klyqa_ctl.devices.device import *
 from klyqa_ctl.devices.light import Light
-from klyqa_ctl.devices.vacuum import KlyqaVC
+from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import *
 from klyqa_ctl.general.message import Message_state
 
@@ -167,7 +167,7 @@ class LocalCommunicator:
             if ".lighting" in ident.product_id:
                 self.devices[device.u_id] = Light()
             elif ".cleaning" in ident.product_id:
-                self.devices[device.u_id] = KlyqaVC()
+                self.devices[device.u_id] = VacuumCleaner()
 
         # cached client device (self.devices), incoming device object created on tcp connection acception
         if not device.u_id in self.devices:
