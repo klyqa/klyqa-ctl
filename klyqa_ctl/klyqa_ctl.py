@@ -43,10 +43,11 @@ from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
-from klyqa_ctl.devices.light.commands import add_command_args_bulb, process_args_to_msg_lighting
+from klyqa_ctl.devices.light.commands import add_command_args_bulb
+from klyqa_ctl.devices.light.commands import create_device_message as create_device_message_light
 from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum import VacuumCleaner, add_command_args_cleaner
-from klyqa_ctl.devices.vacuum.commands import process_args_to_msg_cleaner
+from klyqa_ctl.devices.vacuum.commands import create_device_message as create_device_message_vacuum
 from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
 from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, DeviceType, TypeJSON, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, logger_debug_task, logging_hdl
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
@@ -305,8 +306,6 @@ class Client:
             bool: True if succeeded.
         """
         try:
-            global SEPARATION_WIDTH
-
             loop = asyncio.get_event_loop()
 
             send_started: datetime.datetime = datetime.datetime.now()
@@ -363,7 +362,7 @@ class Client:
 
             scene: list[str] = []
             if args.type == DeviceType.LIGHTING.value:
-                await process_args_to_msg_lighting(
+                await create_device_message_light(
                     args,
                     args_in,
                     send_to_devices_cb,
@@ -373,7 +372,7 @@ class Client:
                     scene,
                 )
             elif args.type == DeviceType.CLEANER.value:
-                await process_args_to_msg_cleaner(
+                await create_device_message_vacuum(
                     args,
                     args_in,
                     send_to_devices_cb,

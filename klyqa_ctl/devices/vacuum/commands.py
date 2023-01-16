@@ -6,7 +6,7 @@ from typing import Any, Callable
 from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandType
 from klyqa_ctl.general.general import LOGGER, TypeJSON
 
-async def process_args_to_msg_cleaner(
+async def create_device_message(
     args: argparse.Namespace,
     args_in: list[Any],
     send_to_devices_callable: Callable[[argparse.Namespace], Any],

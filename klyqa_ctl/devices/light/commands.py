@@ -8,11 +8,12 @@ import functools
 import json
 from typing import Any, Callable
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.devices.light import BULB_SCENES, Light
+from klyqa_ctl.devices.light import Light
+from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import LOGGER, DeviceType, TypeJSON
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 
-COMMANDS_SEND_TO_BULB: list[str] = [
+COMMANDS_TO_SEND: list[str] = [
     "request",
     "ping",
     "color",
@@ -350,7 +351,7 @@ async def discover_devices(
     args = orginal_args_parser.parse_args(args=args_in, namespace=args)
     return args
 
-async def process_args_to_msg_lighting(
+async def create_device_message(
     args: argparse.Namespace,
     args_in: list[Any],
     send_to_devices_callable: Callable[[argparse.Namespace], Any],
@@ -402,7 +403,7 @@ async def process_args_to_msg_lighting(
             args = args_ret
 
     commands_to_send: list[str] = [
-        i for i in COMMANDS_SEND_TO_BULB if hasattr(args, i) and getattr(args, i)
+        i for i in COMMANDS_TO_SEND if hasattr(args, i) and getattr(args, i)
     ]
 
     if commands_to_send:
@@ -745,7 +746,7 @@ def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
         scene = "Ice Cream"
 
     if scene:
-        scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["label"] == scene]
+        scene_result: list[dict[str, Any]] = [x for x in SCENES if x["label"] == scene]
         if not len(scene_result) or len(scene_result) > 1:
             LOGGER.error(
                 f"Scene {scene} not found or more than one scene with the name found."
@@ -856,7 +857,7 @@ def check_temp_range(args: argparse.Namespace, device: Light, value: int) -> boo
 def check_scene_support(args: argparse.Namespace, device: Device, scene_id: str) -> bool:
     """Check device scene support."""
     try:
-        scene_result: list[dict[str, Any]] = [x for x in BULB_SCENES if x["id"] == int(scene_id)]
+        scene_result: list[dict[str, Any]] = [x for x in SCENES if x["id"] == int(scene_id)]
         scene: dict[str, Any] = scene_result[0]
 
         # bulb has no colors, therefore only cwww scenes are allowed
