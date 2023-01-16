@@ -10,7 +10,7 @@ from typing import Any, Callable
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
-from klyqa_ctl.general.general import LOGGER, DeviceType, TypeJSON
+from klyqa_ctl.general.general import LOGGER, DeviceType, TypeJson
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 
 COMMANDS_TO_SEND: list[str] = [

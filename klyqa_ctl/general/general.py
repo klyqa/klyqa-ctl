@@ -33,7 +33,6 @@ TypeJson = dict[str, Any]
 """ string output separator width """
 SEPARATION_WIDTH: int = 0
 
-
 PRODUCT_URLS: dict[str, str] = {
     """TODO: Should be permalinks for urls here."""
     "@klyqa.lighting.cw-ww.gu10": "https://klyqa.de/produkte/gu10-white-strahler",
@@ -45,7 +44,6 @@ PRODUCT_URLS: dict[str, str] = {
     "@klyqa.lighting.cw-ww.e27": "https://klyqa.de/produkte/e27-white-lampe",
     "@klyqa.cleaning.vc1": "https://klyqa.de/Alle-Produkte/Smarter-Starter",
 }
-
 
 SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
 KLYQA_CTL_VERSION: str = "1.0.17"
@@ -216,7 +214,7 @@ class AsyncIoLock:
             cls._instance.__init__()
         return cls._instance
 
-class RefParse:
+class ReferenceParse:
     """Reference parse for parameter in function calls."""
 
     _attr_ref: Any = None
@@ -333,5 +331,5 @@ def logger_debug_task(log: str) -> None:
     task_name_str: str = task_name()
     LOGGER.debug(f"{task_name_str} - {log}" if task_name_str else f"{log}")
     
-def format_uid(text: str) -> str:
+def format_uid(text: str) -> Any:
     return slugify.slugify(text)

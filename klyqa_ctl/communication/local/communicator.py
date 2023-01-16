@@ -20,7 +20,7 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, RefParse, TypeJson, format_uid, logger_debug_task, task_name, LOGGER
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, ReferenceParse, TypeJson, format_uid, logger_debug_task, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
 
 try:
@@ -256,7 +256,7 @@ class LocalCommunicator:
         connection: LocalConnection,
         data: bytes,
         device: Device,
-        r_device: RefParse,
+        r_device: ReferenceParse,
         use_dev_aes: bool) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for changes,
@@ -433,7 +433,7 @@ class LocalCommunicator:
    
     async def aes_handshake_and_send_msgs(
         self,
-        r_device: RefParse,
+        r_device: ReferenceParse,
         # r_msg: RefParse,
         connection: LocalConnection,
         use_dev_aes: bool = False,
@@ -633,7 +633,7 @@ class LocalCommunicator:
         task: asyncio.Task[Any] | None = asyncio.current_task()
 
         try:
-            r_device: RefParse = RefParse(device)
+            r_device: ReferenceParse = ReferenceParse(device)
 
             if task is not None:
                 LOGGER.debug(
