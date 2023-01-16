@@ -171,20 +171,12 @@ class Device:
         status_update_types: set = {"status", "statechange"}
         if msg["type"] in status_update_types:
             msg["type"] = "status"
-        if "type" in msg and hasattr(self, msg["type"]):  # and msg["type"] in msg:
+        if "type" in msg and hasattr(self, msg["type"]):
             try:
                 LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
                 if msg["type"] == "ident" and self.ident:
-                    # setattr(self, "ident", self.ident.update(**msg))
-                    # setattr(
-                    #     self,
-                    #     msg["type"],
-                    #     self.response_classes[msg["type"]](**msg[msg["type"]]),
-                    # )
                     self.ident.update(**msg["ident"])
-                elif msg["type"] in status_update_types:  # and self.status:
-                    # setattr(self, msg["type"], self.response_classes[msg["type"]](**msg))
-                    # setattr(self, "status", self.status.update(**msg))
+                elif msg["type"] in status_update_types:
                     if self.status is None:
                         self.status = self.response_classes["status"](**msg)
                     else:
