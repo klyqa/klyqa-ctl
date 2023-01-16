@@ -447,14 +447,12 @@ class Client:
                         )
 
                     for uid in target_device_uids:
+                        LOGGER.debug(f"wait for send task {uid}.")
                         try:
-                            LOGGER.debug(f"wait for send task {uid}.")
                             await asyncio.wait([msg_wait_tasks[uid]])
-                            LOGGER.debug(f"wait for send task {uid} end.")
                         except CancelledError as e:
                             LOGGER.debug(f"sleep wait for uid {uid} cancelled.")
-                        except Exception as e:
-                            pass
+                        LOGGER.debug(f"wait for send task {uid} end.")
 
                     LOGGER.debug(f"wait for all target device uids done.")
 
