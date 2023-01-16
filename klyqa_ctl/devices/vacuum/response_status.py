@@ -7,15 +7,7 @@ from klyqa_ctl.general.general import LOGGER, get_obj_attr_values_as_string
 
 class ResponseStatus(ResponseMessage):
     """Vacuum cleaner Response Status"""
-
-    # Decrypted:  b'{"type":"statechange","mcu":"online","power":"on",
-    # "cleaning":"on","beeping":"off","battery":57,"sidebrush":10,
-    # "rollingbrush":30,"filter":60,"carpetbooster":200,"area":999,
-    # "time":999,"calibrationtime":19999999,"workingmode":null,
-    # "workingstatus":"STANDBY","suction":"MID","water":"LOW","direction":"STOP",
-    # "errors":["COLLISION","GROUND_CHECK","LEFT_WHEEL","RIGHT_WHEEL","SIDE_SCAN","MID_SWEEP","FAN","TRASH","BATTERY","ISSUES"],
-    # "cleaningrec":[],"equipmentmodel":"","alarmmessages":"","commissioninfo":"","action":"get"}
-
+    
     def __str__(self) -> str:
         """__str__"""
         return get_obj_attr_values_as_string(self)
