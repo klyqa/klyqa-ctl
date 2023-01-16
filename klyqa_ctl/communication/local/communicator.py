@@ -198,22 +198,24 @@ class LocalCommunicator:
 
         await self.search_and_send_loop_task_stop()
         
-        try:
-            if self.tcp:
+        if self.tcp:
+            try:
+                LOGGER.debug("Closing TCP port 3333")
                 self.tcp.shutdown(socket.SHUT_RDWR)
                 self.tcp.close()
-                LOGGER.debug("Closed TCP port 3333")
                 self.tcp = None
-        except:
-            LOGGER.debug(f"{traceback.format_exc()}")
+            except (socket.herror, socket.gaierror, socket.timeout):
+                LOGGER.error("Error on closing local tcp port 3333.")
+                LOGGER.debug(f"{traceback.format_exc()}")
 
-        try:
-            if self.udp:
+        if self.udp:
+            try:
+                LOGGER.debug("Closing UDP port 2222")
                 self.udp.close()
-                LOGGER.debug("Closed UDP port 2222")
                 self.udp = None
-        except:
-            LOGGER.debug(f"{traceback.format_exc()}")
+            except (socket.herror, socket.gaierror, socket.timeout):
+                LOGGER.error("Error on closing local udp port 2222.")
+                LOGGER.debug(f"{traceback.format_exc()}")
 
     async def bind_ports(self) -> bool:
         """bind ports."""
