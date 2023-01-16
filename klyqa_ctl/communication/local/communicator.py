@@ -226,9 +226,9 @@ class LocalCommunicator:
         server_address = (self.server_ip, 2222)
         try:
             self.udp.bind(server_address)
-        except:
+        except (socket.herror, socket.gaierror, socket.timeout):
             LOGGER.error(
-                "Error on opening and binding the udp port 2222 on host for initiating the device communication."
+                "Error on opening and binding the udp port 2222 on host for initiating the local device communication."
             )
             LOGGER.debug(f"{traceback.format_exc()}")
             return False
@@ -239,9 +239,9 @@ class LocalCommunicator:
         server_address = ("0.0.0.0", 3333)
         try:
             self.tcp.bind(server_address)
-        except:
+        except (socket.herror, socket.gaierror, socket.timeout):
             LOGGER.error(
-                "Error on opening and binding the tcp port 3333 on host for initiating the device communication."
+                "Error on opening and binding the tcp port 3333 on host for initiating the local device communication."
             )
             LOGGER.debug(f"{traceback.format_exc()}")
             return False
