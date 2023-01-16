@@ -14,7 +14,7 @@ import traceback
 import httpx
 import json
 from typing import Any
-import requests, uuid, json
+import uuid, json
 from klyqa_ctl.account import Account
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
