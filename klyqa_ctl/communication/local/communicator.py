@@ -219,36 +219,34 @@ class LocalCommunicator:
         """bind ports."""
         await self.shutdown()
         server_address: tuple[str, int]
+
+        self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        server_address = (self.server_ip, 2222)
         try:
-
-            self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            server_address = (self.server_ip, 2222)
             self.udp.bind(server_address)
-            LOGGER.debug("Bound UDP port 2222")
-
         except:
             LOGGER.error(
                 "Error on opening and binding the udp port 2222 on host for initiating the device communication."
             )
             LOGGER.debug(f"{traceback.format_exc()}")
             return False
+        LOGGER.debug("Bound UDP port 2222")
 
+        self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        server_address = ("0.0.0.0", 3333)
         try:
-            self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            server_address = ("0.0.0.0", 3333)
             self.tcp.bind(server_address)
-            LOGGER.debug("Bound TCP port 3333")
-            self.tcp.listen(1)
-
         except:
             LOGGER.error(
                 "Error on opening and binding the tcp port 3333 on host for initiating the device communication."
             )
             LOGGER.debug(f"{traceback.format_exc()}")
             return False
+        LOGGER.debug("Bound TCP port 3333")
+        self.tcp.listen(1)
         return True
     
     async def process_device_identity_package(
