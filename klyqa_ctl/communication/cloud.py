@@ -597,11 +597,6 @@ class CloudBackend:
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
         if self.access_token:
-            try:
-                requests.post(
-                    self.host + "/auth/logout", headers=self.get_header_default()
-                )
-                self.access_token = ""
-            except Exception:
-                LOGGER.warning("Couldn't logout.")
+            LOGGER.debug("Logout user from cloud backend.")
+            await self.request(RequestMethod.POST, "/auth/logout", headers=self.get_header_default())
                 
