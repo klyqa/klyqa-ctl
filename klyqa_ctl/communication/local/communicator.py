@@ -17,7 +17,7 @@ from klyqa_ctl.communication.local.connection import AesConnectionState, LocalCo
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.devices.light import Light
+from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, ReferenceParse, TypeJson, format_uid, logger_debug_task, task_name, LOGGER

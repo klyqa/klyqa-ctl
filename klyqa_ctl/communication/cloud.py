@@ -18,7 +18,7 @@ import requests, uuid, json
 from klyqa_ctl.account import Account
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.devices.light import Light
+from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import LOGGER, Device_config, EventQueuePrinter, TypeJson, async_json_cache, format_uid

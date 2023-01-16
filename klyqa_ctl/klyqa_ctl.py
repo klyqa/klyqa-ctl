@@ -42,7 +42,7 @@ from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.devices.light import Light
+from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.devices.light.commands import create_device_message as create_device_message_light
 from klyqa_ctl.devices.light.response_status import ResponseStatus

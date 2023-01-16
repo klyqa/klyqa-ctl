@@ -1,6 +1,5 @@
-"""Light commands"""
-from __future__ import annotations
 """! @brief Contains all functions for light commands."""
+from __future__ import annotations
 import sys
 import argparse
 from enum import Enum
@@ -8,7 +7,7 @@ import functools
 import json
 from typing import Any, Callable
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.devices.light import Light
+from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import LOGGER, DeviceType, TypeJson
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
