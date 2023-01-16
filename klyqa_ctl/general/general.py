@@ -285,8 +285,12 @@ async def async_json_cache(json_data: TypeJson | None, json_file: str) -> tuple[
                 s = await f.read()
             return_json = json.loads(s)
             cached = True
-        except:
+        except FileNotFoundError:
             LOGGER.warning(f'No cache from json file "{json_file}" available.')
+        except json.decoder.JSONDecodeError:
+            LOGGER.error(f'Could not read cache from json file "{json_file}"!')
+        except:
+            LOGGER.warning(f'Error during loading cache from json file "{json_file}".')
     return (return_json, cached)
 
 def get_fields(object: Any) -> Any | list[str]:
