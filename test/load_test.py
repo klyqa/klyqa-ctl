@@ -109,7 +109,7 @@ async def main() -> None:
         offline = False)  
  
     # build offline version here.
-    account = Account("frederick.stallmeyer@qconnex.com")
+    account = Account("frederick.stallmeyer@qconnex.com", "")
     local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account)
     cloud_backend: CloudBackend = CloudBackend(controller_data, account, PROD_HOST, False)
     
