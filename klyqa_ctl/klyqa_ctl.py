@@ -416,20 +416,15 @@ class Client:
 
                     to_send_device_uids = target_device_uids.copy()
 
-                    async def sl(uid: str) -> None:
+                    async def sleep_task(uid: str) -> None:
                         """Sleep task for timeout."""
                         try:
                             await asyncio.sleep(timeout_ms / 1000)
-                        except CancelledError as e:
+                        except CancelledError:
                             LOGGER.debug(f"sleep uid {uid} cancelled.")
-                        except Exception as e:
-                            pass
 
                     for uid in target_device_uids:
-                        try:
-                            msg_wait_tasks[uid] = loop.create_task(sl(uid))
-                        except Exception as e:
-                            pass
+                        msg_wait_tasks[uid] = loop.create_task(sleep_task(uid))
 
                     async def async_answer_callback_local(msg: Message, uid: str) -> None:
                         if msg and msg.msg_queue_sent:
@@ -437,10 +432,7 @@ class Client:
 
                         if uid in to_send_device_uids:
                             to_send_device_uids.remove(uid)
-                        try:
-                            msg_wait_tasks[uid].cancel()
-                        except:
-                            LOGGER.debug(f"{traceback.format_exc()}")
+                        msg_wait_tasks[uid].cancel()
                         if async_answer_callback:
                             await async_answer_callback(msg, uid)
 
@@ -541,7 +533,6 @@ class Client:
             logger_debug_task(f"{traceback.format_exc()}")
             return False
     
-
     async def send_to_devices_wrapped(self, args_parsed: argparse.Namespace, args_in: list[Any], timeout_ms: int = 5000) -> int:
         """Set up broadcast port and tcp reply connection port."""
 
