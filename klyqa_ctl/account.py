@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 import datetime
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.general.general import TypeJSON
+from klyqa_ctl.general.general import TypeJson
 from typing import Any
 
 class Account:
@@ -33,7 +33,7 @@ class Account:
         self._attr_username: str = username
         self._attr_password: str = password
         self._attr_devices: dict[str, Device] = {}
-        self._attr_settings: TypeJSON | None = {}
+        self._attr_settings: TypeJson | None = {}
         self._attr_access_token: str = ""
         self._attr_username_cached: bool = False
         self._attr_settings_cached: bool = False
@@ -78,11 +78,11 @@ class Account:
         self._attr_devices = devices
     
     @property
-    def settings(self) -> TypeJSON | None:
+    def settings(self) -> TypeJson | None:
         return self._attr_settings
     
     @settings.setter
-    def settings(self, settings: TypeJSON | None) -> None:
+    def settings(self, settings: TypeJson | None) -> None:
         self._attr_settings = settings
     
     @property

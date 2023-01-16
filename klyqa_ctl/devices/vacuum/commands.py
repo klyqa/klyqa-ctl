@@ -4,7 +4,7 @@ import argparse
 import json
 from typing import Any, Callable
 from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandType
-from klyqa_ctl.general.general import LOGGER, TypeJSON
+from klyqa_ctl.general.general import LOGGER, TypeJson
 
 async def create_device_message(
     args: argparse.Namespace,
@@ -16,7 +16,7 @@ async def create_device_message(
 ) -> None:
     """process_args_to_msg_cleaner"""
 
-    def local_and_cloud_command_msg(json_msg: TypeJSON, timeout: int) -> None:
+    def local_and_cloud_command_msg(json_msg: TypeJson, timeout: int) -> None:
         message_queue_tx_local.append((json.dumps(json_msg), timeout))
         message_queue_tx_command_cloud.append(json_msg)
 

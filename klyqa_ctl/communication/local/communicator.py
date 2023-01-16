@@ -20,7 +20,7 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, RefParse, TypeJSON, format_uid, logger_debug_task, task_name, LOGGER
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, RefParse, TypeJson, format_uid, logger_debug_task, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
 
 try:
@@ -71,7 +71,7 @@ class LocalCommunicator:
         self._attr_search_and_send_loop_task: Task | None = None
         self._attr_search_and_send_loop_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
-        self._attr_acc_settings: TypeJSON | None = account.settings
+        self._attr_acc_settings: TypeJson | None = account.settings
         self._attr_current_addr_connections = set()
         
     @property
@@ -183,7 +183,7 @@ class LocalCommunicator:
         return self._attr_acc_settings
 
     @acc_settings.setter
-    def acc_settings(self, acc_settings: TypeJSON | None) -> None:
+    def acc_settings(self, acc_settings: TypeJson | None) -> None:
         self._attr_acc_settings = acc_settings
         
     @property
@@ -1025,7 +1025,7 @@ class LocalCommunicator:
         discover_timeout_secs: float = 2.5
 
         async def discover_answer_end(
-            answer: TypeJSON, uid: str
+            answer: TypeJson, uid: str
         ) -> None:
             LOGGER.debug(f"discover ping end")
             discover_end_event.set()

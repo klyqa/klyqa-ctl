@@ -21,7 +21,7 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
-from klyqa_ctl.general.general import LOGGER, Device_config, EventQueuePrinter, TypeJSON, async_json_cache, format_uid
+from klyqa_ctl.general.general import LOGGER, Device_config, EventQueuePrinter, TypeJson, async_json_cache, format_uid
 
 DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
@@ -158,7 +158,7 @@ class CloudBackend:
                     else:
                         raise Exception("missing login response")
                     
-                login_json: TypeJSON = json.loads(login_response.text)
+                login_json: TypeJson = json.loads(login_response.text)
                 self.access_token = str(login_json.get("accessToken"))
                 
                 acc_settings: dict[str, Any] | None = await self.request_beared(RequestMethod.GET, "settings", timeout=30)
@@ -382,7 +382,7 @@ class CloudBackend:
             **{"Authorization": "Bearer " + self.access_token},
         }
         
-    async def request(self, method: RequestMethod, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> httpx.Response | None:
+    async def request(self, method: RequestMethod, url: str, headers: TypeJson | None = None, **kwargs: Any) -> httpx.Response | None:
         """Send http request with request method to url with headers."""
         response: httpx.Response | None = None
         try:
@@ -400,9 +400,9 @@ class CloudBackend:
             
         return response
 
-    async def request_beared(self, method: RequestMethod, url: str, **kwargs: Any) -> TypeJSON | None:
+    async def request_beared(self, method: RequestMethod, url: str, **kwargs: Any) -> TypeJson | None:
         """When the user logged in and an access token exists, use it for http requests."""
-        answer: TypeJSON | None = None
+        answer: TypeJson | None = None
         response: httpx.Response | None = await self.request(method, url,
             self.get_beared_request_header() if self.access_token else self.get_header_default(), **kwargs)
         
@@ -460,7 +460,7 @@ class CloudBackend:
                 continue
             LOGGER.debug("Try to request device config from server.")
             try:
-                config: TypeJSON | None = await self.request_beared(
+                config: TypeJson | None = await self.request_beared(
                     RequestMethod.GET,
                     "config/product/" + product_id,
                     timeout = 30,

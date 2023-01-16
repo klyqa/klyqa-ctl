@@ -4,7 +4,7 @@ import traceback
 from typing import Any
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.response_status import ResponseStatus
-from klyqa_ctl.general.general import LOGGER, Range, TypeJSON
+from klyqa_ctl.general.general import LOGGER, Range, TypeJson
 
 # Global Constants
 BULB_SCENES: list[dict[str, Any]] = [
@@ -212,7 +212,7 @@ class Light(Device):
     def color_range(self, color_range: Range | None) -> None:
         self._attr_color_range = color_range
         
-    def set_brightness_range(self, device_config: TypeJSON) -> None:
+    def set_brightness_range(self, device_config: TypeJson) -> None:
         brightness_enum: list[Any] = []
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
@@ -242,7 +242,7 @@ class Light(Device):
             LOGGER.error("Error during setting brightness range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
-    def set_temperature_range(self, device_config: TypeJSON) -> None:
+    def set_temperature_range(self, device_config: TypeJson) -> None:
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
                 self.temperature_range = Range(*[
@@ -267,7 +267,7 @@ class Light(Device):
             LOGGER.error("Error during setting temperature range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
-    def set_color_range(self, device_config: TypeJSON) -> None:  
+    def set_color_range(self, device_config: TypeJson) -> None:  
         color_enum: list[Any] = []
         try:
             if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
@@ -297,7 +297,7 @@ class Light(Device):
             LOGGER.error("Error during setting color range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
-    def read_device_config(self, device_config: TypeJSON) -> None:
+    def read_device_config(self, device_config: TypeJson) -> None:
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
         self.set_temperature_range(device_config)

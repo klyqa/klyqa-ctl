@@ -133,7 +133,7 @@ def brightness_message(brightness: str, transition: int) -> tuple[str, str]:
         str(transition),
     )
 
-def external_source_message(protocol: int, port: int, channel: int) -> TypeJSON:
+def external_source_message(protocol: int, port: int, channel: int) -> TypeJson:
     """Create external source protocol message."""
     protocol_str: str
     if protocol == 0:
@@ -379,7 +379,7 @@ async def create_device_message(
 
     """
 
-    def local_and_cloud_command_msg(json_msg: TypeJSON, timeout: int, check_func: Callable | None = None) -> None:
+    def local_and_cloud_command_msg(json_msg: TypeJson, timeout: int, check_func: Callable | None = None) -> None:
         """ Add message to local and cloud queue. Give a timeout after the message
         was sent. Give also a check function for the values that are send to be in
         limits (device config).

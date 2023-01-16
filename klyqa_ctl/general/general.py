@@ -28,7 +28,7 @@ LOGGER.addHandler(logging_hdl)
 DEFAULT_SEND_TIMEOUT_MS = 30
 DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600 # 600 secs = 10 min
 
-TypeJSON = dict[str, Any]
+TypeJson = dict[str, Any]
 
 """ string output separator width """
 SEPARATION_WIDTH: int = 0
@@ -238,7 +238,7 @@ ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
 
 NoneType: Type[None] = type(None)
 
-async def async_json_cache(json_data: TypeJSON | None, json_file: str) -> tuple[dict | None, bool]:
+async def async_json_cache(json_data: TypeJson | None, json_file: str) -> tuple[dict | None, bool]:
     """
     If json data is given write it to cache json_file.
     Else try to read from json_file the cache.
