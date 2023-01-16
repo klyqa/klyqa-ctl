@@ -22,7 +22,9 @@ from klyqa_ctl.devices.light import Light
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import LOGGER, Device_config, EventQueuePrinter, TypeJSON, async_json_cache, format_uid
-        
+
+DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
+
 class RequestMethod(str, Enum):
     POST = "POST"
     GET = "GET"
@@ -128,24 +130,8 @@ class CloudBackend:
 
         return True
     
-    # async def _run_login
-    
-    async def login(self, print_onboarded_devices: bool = False) -> bool:
-        """! Login on klyqa account, get account settings, get onboarded device profiles,
-        print all devices if parameter set.
-
-        Params:
-            print_onboarded_devices:   print onboarded devices from the klyqa account to the stdout
-
-        Returns:
-            true:  on success of the login
-            false: on error
-        """
-        if not await self.login_cache():
-            return False
-
-        acc_settings_cache: dict = {}
-
+    async def run_login(self) -> bool:
+        
         if not self.offline and (
             self.account.username is not None and self.account.password is not None
         ):
@@ -208,9 +194,101 @@ class CloudBackend:
 
             except Exception as e:
                 pass
+            
+        return True
 
-        await async_json_cache({"username": self.account.username}, f"last_username.json")
+    async def request_cloud_device_state(self, device_id: str) -> dict[str, Any] | None:
+        try:
+            response: dict[str, Any] | None = await self.request_beared(
+                RequestMethod.GET,
+                f'device/{device_id}/state',
+                timeout = 30,
+            )
+            return response
+        except Exception as e:
+            LOGGER.error(f"HTTP Request returned with an exception!")
+            LOGGER.debug({traceback.format_exc()})
+            return None
 
+    async def device_request_and_print(self, device_settings: dict[str, Any], print_onboarded_devices: bool = False) -> None:
+        state_str: str = (
+            f'Name: "{device_settings["name"]}"'
+            + f'\tAES-KEY: {device_settings["aesKey"]}'
+            + f'\tUnit-ID: {device_settings["localDeviceId"]}'
+            + f'\tCloud-ID: {device_settings["cloudDeviceId"]}'
+            + f'\tType: {device_settings["productId"]}'
+        )
+        cloud_state: dict[str, Any] | None = None
+
+        device: Device
+        if ".lighting" in device_settings["productId"]:
+            device = Light()
+        elif ".cleaning" in device_settings["productId"]:
+            device = VacuumCleaner()
+        else:
+            return
+        device.u_id = format_uid(device_settings["localDeviceId"])
+        device.acc_sets = device_settings
+
+        self.devices[format_uid(device_settings["localDeviceId"])] = device
+
+        if self.backend_connected():
+            try:
+                cloud_state = asyncio.run(self.request_cloud_device_state(device_settings["cloudDeviceId"]))
+                if cloud_state:
+                    if "connected" in cloud_state:
+                        state_str = (
+                            state_str
+                            + f'\tCloud-Connected: {cloud_state["connected"]}'
+                        )
+                    device.cloud.connected = cloud_state["connected"]
+
+                    device.save_device_message(
+                        {**cloud_state, **{"type": "status"}}
+                    )
+                else:
+                    raise
+            except:
+                LOGGER.info(f'No answer for cloud device state request {device_settings["localDeviceId"]}')
+
+        if print_onboarded_devices:
+            print(state_str)
+
+    async def get_device_config(self, product_id: str, device_configs: dict[str, Any]) -> None:
+        """Request device config from the cloud."""
+        try:
+            config: dict[str, Any] | None = await self.request_beared(
+                RequestMethod.GET,
+                "config/product/" + product_id, timeout = DEFAULT_HTTP_REQUEST_TIMEOUT_SECS)
+        except asyncio.TimeoutError:
+            LOGGER.error("Timed out get device config http request!")
+            return None
+        if config:
+            device_configs[product_id] = Device_config(config)
+        return None
+            
+    async def get_device_configs(self, device_product_ids: set[str]) -> None:
+        """Request device configs by product id from the cloud."""
+        if not self.backend_connected():
+            return None
+
+        if self.account.settings and device_product_ids:
+            
+            for product_id in device_product_ids:
+                LOGGER.debug(f"Try request device config for {product_id} from server.")
+                await self.get_device_config(product_id, self.account.device_configs)
+        
+        device_configs_cache, cached = await async_json_cache(
+            self.account.device_configs, "device.configs.json"
+        )
+        if cached and device_configs_cache:
+            self.account.device_configs = device_configs_cache
+            LOGGER.info("No server reply for device configs. Using cache.")
+        return None
+    
+    async def request_account_device_configs_and_print(self, print_onboarded_devices: bool = False) -> bool:
+        """Request all onboarded device configs and print the device attributes.
+        Use cached device configs when offline."""
         device_configs_cache: dict[Any, Any] | None
 
         try:
@@ -222,85 +300,16 @@ class CloudBackend:
                 print(klyqa_acc_string)
                 print(sep_width * "-")
 
-            queue_printer: EventQueuePrinter = EventQueuePrinter()
-
-            def device_request_and_print(device_settings: dict[str, Any]) -> None:
-                state_str: str = (
-                    f'Name: "{device_settings["name"]}"'
-                    + f'\tAES-KEY: {device_settings["aesKey"]}'
-                    + f'\tUnit-ID: {device_settings["localDeviceId"]}'
-                    + f'\tCloud-ID: {device_settings["cloudDeviceId"]}'
-                    + f'\tType: {device_settings["productId"]}'
-                )
-                cloud_state: dict[str, Any] | None = None
-
-                device: Device
-                if ".lighting" in device_settings["productId"]:
-                    device = Light()
-                elif ".cleaning" in device_settings["productId"]:
-                    device = VacuumCleaner()
-                else:
-                    return
-                device.u_id = format_uid(device_settings["localDeviceId"])
-                device.acc_sets = device_settings
-
-                self.devices[format_uid(device_settings["localDeviceId"])] = device
-
-                async def req() -> dict[str, Any] | None:
-                    try:
-                        ret: dict[str, Any] | None = await self.request_beared(
-                            RequestMethod.GET,
-                            f'device/{device_settings["cloudDeviceId"]}/state',
-                            timeout=30,
-                        )
-                        return ret
-                    except Exception as e:
-                        return None
-
-                if self.backend_connected():
-                    try:
-                        cloud_state = asyncio.run(req())
-                        if cloud_state:
-                            if "connected" in cloud_state:
-                                state_str = (
-                                    state_str
-                                    + f'\tCloud-Connected: {cloud_state["connected"]}'
-                                )
-                            device.cloud.connected = cloud_state["connected"]
-
-                            device.save_device_message(
-                                {**cloud_state, **{"type": "status"}}
-                            )
-                        else:
-                            raise
-                    except:
-                        LOGGER.info(f'No answer for cloud device state request {device_settings["localDeviceId"]}')
-
-                if print_onboarded_devices:
-                    queue_printer.print(state_str)
-
-            device_state_req_threads = []
-
             product_ids: set[str] = set()
             if self.account.settings and "devices" in self.account.settings:
                 for device_sets in self.account.settings["devices"]:
                     
-                    
-                    thread: Thread = Thread(target=device_request_and_print, args=(device_sets,))
-                    device_state_req_threads.append(thread)
+                    await self.device_request_and_print(device_sets, print_onboarded_devices)
 
-                    if isinstance(self.controller_data.aes_keys, dict):
-                        self.controller_data.aes_keys[
-                            format_uid(device_sets["localDeviceId"])
-                        ] = bytes.fromhex(device_sets["aesKey"])
+                    self.controller_data.aes_keys[
+                        format_uid(device_sets["localDeviceId"])
+                    ] = bytes.fromhex(device_sets["aesKey"])
                     product_ids.add(device_sets["productId"])
-
-            for t in device_state_req_threads:
-                t.start()
-            for t in device_state_req_threads:
-                t.join()
-
-            queue_printer.stop()
 
             if not self.backend_connected():
                 if not self.account.device_configs:
@@ -317,42 +326,7 @@ class CloudBackend:
 
             elif self.backend_connected():
 
-                def get_conf(id: str, device_configs: dict[str, Any]) -> None:
-                    async def req() -> dict[str, Any] | None:
-                        try:
-                            ret: dict[str, Any] | None = await self.request_beared(
-                            RequestMethod.GET,
-                            "config/product/" + id, timeout=30)
-                            return ret
-                        except:
-                            return None
-
-                    config: dict[str, Any] | None = asyncio.run(req())
-                    if config:
-                        device_config: Device_config = config
-                        device_configs[id] = device_config
-
-                if self.account.settings and product_ids:
-                    threads: list[Thread] = [
-                        Thread(target=get_conf, args=(i, self.account.device_configs))
-                        for i in product_ids
-                    ]
-                    for t in threads:
-                        LOGGER.debug(
-                            "Try to request device config for "
-                            + t._args[0]
-                            + " from server."
-                        )
-                        t.start()
-                    for t in threads:
-                        t.join()
-                
-                device_configs_cache, cached = await async_json_cache(
-                    self.account.device_configs, "device.configs.json"
-                )
-                if cached and device_configs_cache:
-                    self.account.device_configs = device_configs_cache
-                    LOGGER.info("No server reply for device configs. Using cache.")
+               await self.get_device_configs(product_ids)
 
             for uid in self.devices:
                 if (
@@ -366,6 +340,30 @@ class CloudBackend:
             LOGGER.error("Error during login to klyqa: " + str(e))
             LOGGER.debug(f"{traceback.format_exc()}")
             return False
+        return True
+        
+    async def login(self, print_onboarded_devices: bool = False) -> bool:
+        """! Login on klyqa account, get account settings, get onboarded device profiles,
+        print all devices if parameter set.
+
+        Params:
+            print_onboarded_devices:   print onboarded devices from the klyqa account to the stdout
+
+        Returns:
+            true:  on success of the login
+            false: on error
+        """
+        if not await self.login_cache():
+            return False
+
+        if not self.run_login():
+            return False
+
+        await async_json_cache({"username": self.account.username}, f"last_username.json")
+        
+        if not await self.request_account_device_configs_and_print(print_onboarded_devices):
+            return False
+        
         return True
 
     def get_header_default(self) -> dict[str, str]:
@@ -386,24 +384,25 @@ class CloudBackend:
         }
         
     async def request(self, method: RequestMethod, url: str, headers: TypeJSON | None = None, **kwargs: Any) -> httpx.Response | None:
+        """Send http request with request method to url with headers."""
         response: httpx.Response | None = None
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.request(method, url=self.host + "/" + url,                                    
-                    headers=headers,
-                    **kwargs)
+                headers=headers,
+                **kwargs)
                 
-        except EnvironmentError as ex: # parent of IOError, OSError *and* WindowsError where available
+        except EnvironmentError:
             LOGGER.error("Environment error occured during send request to cloud backend!")
             LOGGER.debug(f"{traceback.format_exc()}")
-        except httpx.HTTPError as e:
+        except httpx.HTTPError:
             LOGGER.error("Connection error occured during send request to cloud backend!")
             LOGGER.debug(f"{traceback.format_exc()}")
             
         return response
 
     async def request_beared(self, method: RequestMethod, url: str, **kwargs: Any) -> TypeJSON | None:
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        """When the user logged in and an access token exists, use it for http requests."""
         answer: TypeJSON | None = None
         response: httpx.Response | None = await self.request(method, url,
             self.get_beared_request_header() if self.access_token else self.get_header_default(), **kwargs)
@@ -423,8 +422,8 @@ class CloudBackend:
         return answer
         
     async def request_account_settings_eco(self, scan_interval: int = 60) -> bool:
-        await self.account.settings_lock.acquire() #:
-            # return False
+        """Only send a new account settings http request when the last update was after the scan interval."""
+        await self.account.settings_lock.acquire()
         ret: bool = True
         try:
             now: datetime.datetime = datetime.datetime.now()
@@ -439,6 +438,7 @@ class CloudBackend:
         return ret
 
     async def request_account_settings(self) -> None:
+        """Request the account settings via http."""
         try:
             acc_settings: dict[str, Any] | None = await self.request_beared(
                             RequestMethod.GET, "settings")
@@ -448,7 +448,7 @@ class CloudBackend:
             LOGGER.debug(f"{traceback.format_exc()}")
 
     async def update_device_configs(self) -> None:
-        """Request the account settings from the cloud backend."""
+        """Request the account settings from the cloud."""
         
         product_ids: set[str] = {
             device.ident.product_id
@@ -464,37 +464,12 @@ class CloudBackend:
                 config: TypeJSON | None = await self.request_beared(
                     RequestMethod.GET,
                     "config/product/" + product_id,
-                    timeout=30,
+                    timeout = 30,
                 )
                 device_config: Device_config | None = config
-                # if not isinstance(self.account.device_configs, dict):
-                #     self.account.device_configs = {}
                 self.account.device_configs[product_id] = device_config
             except:
                 LOGGER.debug(f"{traceback.format_exc()}")
-
-    # async def request_post_beared(self, url: str, **kwargs: Any) -> TypeJSON | None:
-    #     """Post requests with."""
-    #     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-    #     answer: TypeJSON | None = None
-    #     try:
-    #         response: httpx.Response = self.request(url, headers=self.get_beared_request_header(), **kwargs)
-    #         # response: httpx.Response = await loop.run_in_executor(
-    #         #     None,
-    #         #     functools.partial(
-    #         #         requests.post,
-    #         #         self.host + "/" + url,
-    #         #         headers=self.get_beared_request_header(),
-    #         #         **kwargs,
-    #         #     ),
-    #         # )
-    #         if response.status_code != 200:
-    #             raise Exception(response.text)
-    #         answer = json.loads(response.text)
-    #     except:
-    #         LOGGER.debug(f"{traceback.format_exc()}")
-    #         answer = None
-    #     return answer
 
     async def cloud_send(self,
         args: argparse.Namespace,
@@ -517,7 +492,7 @@ class CloudBackend:
             LOGGER.info(
                 f"Post {target} to the device '{cloud_device_id}' (unit_id: {unit_id}) over the cloud."
             )
-            resp = {
+            response: dict[str, Any] = {
                 cloud_device_id: await self.request_beared(
                     RequestMethod.POST,
                     url=f"device/{cloud_device_id}/{target}",
@@ -529,8 +504,8 @@ class CloudBackend:
             if device.acc_sets and "name" in device.acc_sets:
                 name = device.acc_sets["name"]
             resp_print = f'Device "{name}" cloud response:'
-            resp_print = json.dumps(resp, sort_keys=True, indent=4)
-            device.cloud.received_packages.append(resp)
+            resp_print = json.dumps(response, sort_keys = True, indent = 4)
+            device.cloud.received_packages.append(response)
             response_queue.append(resp_print)
             queue_printer.print(resp_print)
 
@@ -619,8 +594,7 @@ class CloudBackend:
         if len(response_queue):
             success = True
         return success
-            
-    
+
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
         if self.access_token:
