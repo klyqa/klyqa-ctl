@@ -101,7 +101,8 @@ class CloudBackend:
                     else:
                         LOGGER.info("Missing Klyqa account username. No login.")
                         return False
-            except:
+            except Exception as e:
+                LOGGER.debug(f"{traceback.format_exc()}")
                 return False
             
         try:
@@ -111,7 +112,6 @@ class CloudBackend:
             )
             if cached:
                 self.account.settings = acc_settings
-                # self.account.username, self.account.password = (user_acc_cache["user"], user_acc_cache["password"])
                 if self.account and self.account.settings and not self.account.password:
                     self.account.password = self.account.settings["password"]
 
@@ -161,7 +161,7 @@ class CloudBackend:
                 login_json: TypeJson = json.loads(login_response.text)
                 self.access_token = str(login_json.get("accessToken"))
                 
-                acc_settings: dict[str, Any] | None = await self.request_beared(RequestMethod.GET, "settings", timeout=30)
+                acc_settings: TypeJson | None = await self.request_beared(RequestMethod.GET, "settings", timeout=30)
                 if acc_settings:
                     self.account.settings = acc_settings
 
@@ -196,20 +196,15 @@ class CloudBackend:
             
         return True
 
-    async def request_cloud_device_state(self, device_id: str) -> dict[str, Any] | None:
-        try:
-            response: dict[str, Any] | None = await self.request_beared(
-                RequestMethod.GET,
-                f'device/{device_id}/state',
-                timeout = 30,
-            )
-            return response
-        except Exception as e:
-            LOGGER.error(f"HTTP Request returned with an exception!")
-            LOGGER.debug({traceback.format_exc()})
-            return None
+    async def request_cloud_device_state(self, device_id: str) -> TypeJson | None:
+        response: TypeJson | None = await self.request_beared(
+            RequestMethod.GET,
+            f'device/{device_id}/state',
+            timeout = 30,
+        )
+        return response
 
-    async def device_request_and_print(self, device_settings: dict[str, Any], print_onboarded_devices: bool = False) -> None:
+    async def device_request_and_print(self, device_settings: TypeJson, print_onboarded_devices: bool = False) -> None:
         state_str: str = (
             f'Name: "{device_settings["name"]}"'
             + f'\tAES-KEY: {device_settings["aesKey"]}'
@@ -217,7 +212,7 @@ class CloudBackend:
             + f'\tCloud-ID: {device_settings["cloudDeviceId"]}'
             + f'\tType: {device_settings["productId"]}'
         )
-        cloud_state: dict[str, Any] | None = None
+        cloud_state: TypeJson | None = None
 
         device: Device
         if ".lighting" in device_settings["productId"]:
@@ -232,31 +227,29 @@ class CloudBackend:
         self.devices[format_uid(device_settings["localDeviceId"])] = device
 
         if self.backend_connected():
-            try:
-                cloud_state = await self.request_cloud_device_state(device_settings["cloudDeviceId"])
-                if cloud_state:
-                    if "connected" in cloud_state:
-                        state_str = (
-                            state_str
-                            + f'\tCloud-Connected: {cloud_state["connected"]}'
-                        )
-                    device.cloud.connected = cloud_state["connected"]
-
-                    device.save_device_message(
-                        {**cloud_state, **{"type": "status"}}
+            cloud_state = await self.request_cloud_device_state(device_settings["cloudDeviceId"])
+            if cloud_state:
+                if "connected" in cloud_state:
+                    state_str = (
+                        state_str
+                        + f'\tCloud-Connected: {cloud_state["connected"]}'
                     )
-                else:
-                    raise
-            except:
+                device.cloud.connected = cloud_state["connected"]
+
+                device.save_device_message(
+                    {**cloud_state, **{"type": "status"}}
+                )
+            else:
                 LOGGER.info(f'No answer for cloud device state request {device_settings["localDeviceId"]}')
 
         if print_onboarded_devices:
             print(state_str)
 
-    async def get_device_config(self, product_id: str, device_configs: dict[str, Any]) -> None:
+    async def get_device_config(self, product_id: str, device_configs: TypeJson) -> None:
         """Request device config from the cloud."""
+        LOGGER.debug(f"Try request device config for {product_id} from server.")
         try:
-            config: dict[str, Any] | None = await self.request_beared(
+            config: TypeJson | None = await self.request_beared(
                 RequestMethod.GET,
                 "config/product/" + product_id, timeout = DEFAULT_HTTP_REQUEST_TIMEOUT_SECS)
         except asyncio.TimeoutError:
@@ -270,12 +263,12 @@ class CloudBackend:
         """Request device configs by product id from the cloud."""
         if not self.backend_connected():
             return None
+        loop: AbstractEventLoop = asyncio.get_event_loop()
 
         if self.account.settings and device_product_ids:
-            
-            for product_id in device_product_ids:
-                LOGGER.debug(f"Try request device config for {product_id} from server.")
-                await self.get_device_config(product_id, self.account.device_configs)
+            device_tasks: list[Task] = [asyncio.create_task(self.get_device_config(product_id, self.account.device_configs))
+                                        for product_id in device_product_ids]
+            await asyncio.wait(device_tasks, timeout=DEFAULT_HTTP_REQUEST_TIMEOUT_SECS)
         
         device_configs_cache, cached = await async_json_cache(
             self.account.device_configs, "device.configs.json"
@@ -285,60 +278,72 @@ class CloudBackend:
             LOGGER.info("No server reply for device configs. Using cache.")
         return None
     
+    async def get_device_configs_cached(self) -> bool:
+        device_configs_cache, cached = await async_json_cache(
+            None, "device.configs.json"
+        )
+        if (
+            cached and not self.account.device_configs
+        ):
+            # using again not device_configs check cause asyncio await scheduling
+            LOGGER.info("Using devices config cache.")
+            if device_configs_cache:
+                self.account.device_configs = device_configs_cache
+                return True
+        return False
+    
+    async def device_request_and_print_action(self, product_ids: set[str], print_onboarded_devices: bool = False) -> None:
+        """Print onboarded devices, get device configs and remember aes_keys."""
+        device_tasks: list[Task] = []
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+        
+        if self.account.settings:
+            for device_sets in self.account.settings["devices"]:
+                
+                device_tasks.append(loop.create_task(self.device_request_and_print(device_sets, print_onboarded_devices)))
+
+                self.controller_data.aes_keys[
+                    format_uid(device_sets["localDeviceId"])
+                ] = bytes.fromhex(device_sets["aesKey"])
+                product_ids.add(device_sets["productId"])
+                
+            for task in device_tasks:
+                if not task.done():
+                    await asyncio.wait_for(task, timeout=DEFAULT_HTTP_REQUEST_TIMEOUT_SECS)
+    
     async def request_account_device_configs_and_print(self, print_onboarded_devices: bool = False) -> bool:
         """Request all onboarded device configs and print the device attributes.
         Use cached device configs when offline."""
         device_configs_cache: dict[Any, Any] | None
+        product_ids: set[str] = set()
+        
+        klyqa_acc_string: str = "Klyqa account " + self.account.username + ". Onboarded devices:"
+        sep_width: int = len(klyqa_acc_string)
 
-        try:
-            klyqa_acc_string: str = "Klyqa account " + self.account.username + ". Onboarded devices:"
-            sep_width: int = len(klyqa_acc_string)
+        if print_onboarded_devices:
+            print(sep_width * "-")
+            print(klyqa_acc_string)
+            print(sep_width * "-")
 
-            if print_onboarded_devices:
-                print(sep_width * "-")
-                print(klyqa_acc_string)
-                print(sep_width * "-")
+        if self.account.settings and "devices" in self.account.settings:
+            await self.device_request_and_print_action(product_ids)
 
-            product_ids: set[str] = set()
-            if self.account.settings and "devices" in self.account.settings:
-                for device_sets in self.account.settings["devices"]:
-                    
-                    await self.device_request_and_print(device_sets, print_onboarded_devices)
+        if not self.backend_connected():
+            if not self.account.device_configs:
+                await self.get_device_configs_cached()
 
-                    self.controller_data.aes_keys[
-                        format_uid(device_sets["localDeviceId"])
-                    ] = bytes.fromhex(device_sets["aesKey"])
-                    product_ids.add(device_sets["productId"])
+        elif self.backend_connected():
+            await self.get_device_configs(product_ids)
 
-            if not self.backend_connected():
-                if not self.account.device_configs:
-                    device_configs_cache, cached = await async_json_cache(
-                        None, "device.configs.json"
-                    )
-                    if (
-                        cached and not self.account.device_configs
-                    ):
-                        # using again not device_configs check cause asyncio await scheduling
-                        LOGGER.info("Using devices config cache.")
-                        if device_configs_cache:
-                            self.account.device_configs = device_configs_cache
+        for uid in self.devices:
+            if (
+                "productId" in self.devices[uid].acc_sets
+                and self.devices[uid].acc_sets["productId"] in self.account.device_configs
+            ):
+                self.devices[uid].read_device_config(device_config = self.account.device_configs[
+                    self.devices[uid].acc_sets["productId"]
+                ])
 
-            elif self.backend_connected():
-
-               await self.get_device_configs(product_ids)
-
-            for uid in self.devices:
-                if (
-                    "productId" in self.devices[uid].acc_sets
-                    and self.devices[uid].acc_sets["productId"] in self.account.device_configs
-                ):
-                    self.devices[uid].read_device_config(device_config = self.account.device_configs[
-                        self.devices[uid].acc_sets["productId"]
-                    ])
-        except Exception as e:
-            LOGGER.error("Error during login to klyqa: " + str(e))
-            LOGGER.debug(f"{traceback.format_exc()}")
-            return False
         return True
         
     async def login(self, print_onboarded_devices: bool = False) -> bool:
@@ -439,7 +444,7 @@ class CloudBackend:
     async def request_account_settings(self) -> None:
         """Request the account settings via http."""
         try:
-            acc_settings: dict[str, Any] | None = await self.request_beared(
+            acc_settings: TypeJson | None = await self.request_beared(
                             RequestMethod.GET, "settings")
             if acc_settings:
                 self.account.settings = acc_settings
@@ -484,14 +489,14 @@ class CloudBackend:
         success: bool = False
 
         async def _cloud_post(
-            device: Device, json_message: dict[str, Any], target: str
+            device: Device, json_message: TypeJson, target: str
         ) -> None:
             cloud_device_id: str = device.acc_sets["cloudDeviceId"]
             unit_id: str = format_uid(device.acc_sets["localDeviceId"])
             LOGGER.info(
                 f"Post {target} to the device '{cloud_device_id}' (unit_id: {unit_id}) over the cloud."
             )
-            response: dict[str, Any] = {
+            response: TypeJson = {
                 cloud_device_id: await self.request_beared(
                     RequestMethod.POST,
                     url=f"device/{cloud_device_id}/{target}",
@@ -508,7 +513,7 @@ class CloudBackend:
             response_queue.append(resp_print)
             queue_printer.print(resp_print)
 
-        async def cloud_post(device: Device, json_message: dict[str, Any], target: str) -> int:
+        async def cloud_post(device: Device, json_message: TypeJson, target: str) -> int:
             if not await device.use_lock():
                 LOGGER.error(
                     f"Couldn't get use lock for device {device.get_name()})"
@@ -540,7 +545,7 @@ class CloudBackend:
                 if b.u_id == t
             ]
 
-            def create_post_threads(target: str, msg: dict[str, Any]) -> list[tuple[Task[int], Device]]:
+            def create_post_threads(target: str, msg: TypeJson) -> list[tuple[Task[int], Device]]:
                 return [
                     (loop.create_task(cloud_post(b, msg, target)), b)
                     for b in target_devices
