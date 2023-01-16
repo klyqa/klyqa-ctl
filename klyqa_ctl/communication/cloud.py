@@ -356,7 +356,7 @@ class CloudBackend:
         if not await self.login_cache():
             return False
 
-        if not self.run_login():
+        if not await self.run_login():
             return False
 
         await async_json_cache({"username": self.account.username}, f"last_username.json")
