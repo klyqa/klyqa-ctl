@@ -136,7 +136,6 @@ class CloudBackend:
             self.account.username is not None and self.account.password is not None
         ):
             login_response: httpx.Response | None = None
-            cached: bool
             login_data: dict[str, str] = {
                 "email": self.account.username,
                 "password": self.account.password,
@@ -159,7 +158,7 @@ class CloudBackend:
                     else:
                         raise Exception("missing login response")
                     
-                login_json: dict = json.loads(login_response.text)
+                login_json: TypeJSON = json.loads(login_response.text)
                 self.access_token = str(login_json.get("accessToken"))
                 
                 acc_settings: dict[str, Any] | None = await self.request_beared(RequestMethod.GET, "settings", timeout=30)
@@ -234,7 +233,7 @@ class CloudBackend:
 
         if self.backend_connected():
             try:
-                cloud_state = asyncio.run(self.request_cloud_device_state(device_settings["cloudDeviceId"]))
+                cloud_state = await self.request_cloud_device_state(device_settings["cloudDeviceId"])
                 if cloud_state:
                     if "connected" in cloud_state:
                         state_str = (
