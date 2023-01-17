@@ -36,7 +36,7 @@ import select
 import logging
 import time
 from typing import TypeVar, Any, Type
-import coloredlogs
+# import coloredlogs
 
 from .general.parameters import get_description_parser
 
