@@ -30,6 +30,16 @@
       ]
     },
     {
+      "name": "Python: local controller module",
+      // "cwd": "${fileDirname}",
+      "type": "python",
+      "request": "launch",
+      "module": "klyqa_ctl.local_controller",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": []
+    },
+    {
       "name": "Python: klyqa_ctl load test",
       // "cwd": "${fileDirname}",
       "type": "python",
