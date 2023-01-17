@@ -6,7 +6,7 @@ from typing import Any
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.connections import CloudConnection
-from klyqa_ctl.general.general import LOGGER, logger_debug_task
+from klyqa_ctl.general.general import LOGGER, task_log
 from klyqa_ctl.general.message import Message
 
 class Device:
@@ -144,12 +144,12 @@ class Device:
             
             self._use_thread = task
 
-            logger_debug_task(f"got lock... {self.get_name()}")
+            task_log(f"got lock... {self.get_name()}")
             return True
         except asyncio.TimeoutError:
             LOGGER.error(f'Timeout for getting the lock for device "{self.get_name()}"')
         except Exception:
-            logger_debug_task(f"Error while trying to get device lock.")
+            task_log(f"Error while trying to get device lock.")
             LOGGER.debug(f"{traceback.format_exc()}")
 
         return False

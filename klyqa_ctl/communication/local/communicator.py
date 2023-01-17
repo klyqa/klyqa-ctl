@@ -20,7 +20,7 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, ReferenceParse, TypeJson, format_uid, logger_debug_task, task_name, LOGGER
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, ReferenceParse, TypeJson, format_uid, task_log, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
 
 try:
@@ -263,7 +263,7 @@ class LocalCommunicator:
         # safe the idenfication to device object if it is a not known device,
         # send the local initial vector for the encrypted communication to the device.
 
-        logger_debug_task(f"Plain: {data}")
+        task_log(f"Plain: {data}")
         json_response: dict[str, Any] = json.loads(data)
         try:
             ident: ResponseIdentityMessage = ResponseIdentityMessage(
@@ -340,7 +340,7 @@ class LocalCommunicator:
                 f"{task_name()} - " if LOGGER.level == logging.DEBUG else "",
             )
         else:
-            logger_debug_task(f"Found device {found}")
+            task_log(f"Found device {found}")
 
         if "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
@@ -361,14 +361,14 @@ class LocalCommunicator:
     
         return DeviceTcpReturn.NO_ERROR
 
-    async def process_initial_vector_package(self, connection: LocalConnection,
+    async def process_aes_initial_vector_package(self, connection: LocalConnection,
         data: bytes, device: Device) -> DeviceTcpReturn:
         """Create the AES encryption and decryption objects."""
 
         connection.remoteIv = data
         connection.received_packages.append(data)
         if not connection.aes_key:
-            logger_debug_task(
+            task_log(
                 "Missing AES key. Probably not in onboarded devices. Provide AES key with --aes [key]! "
                 + str(device.u_id)
             )
@@ -407,10 +407,10 @@ class LocalCommunicator:
                 device.save_device_message(json_response)
                 connection.sent_msg_answer = json_response
                 connection.aes_key_confirmed = True
-                logger_debug_task(f"device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
+                task_log(f"device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
             except:
-                logger_debug_task("Could not load json message from device: ")
-                logger_debug_task(f"{answer}")
+                task_log("Could not load json message from device: ")
+                task_log(f"{answer}")
                 return DeviceTcpReturn.RESPONSE_ERROR
 
             msg_sent.answer_utf8 = plain_utf8
@@ -428,7 +428,7 @@ class LocalCommunicator:
                     f"device {device.u_id} answered msg {msg_sent.msg_queue}"
                 )
 
-        logger_debug_task(f" Request's reply decrypted: " + str(plain))
+        task_log(f" Request's reply decrypted: " + str(plain))
         return return_val
    
     async def aes_handshake_and_send_msgs(
@@ -490,7 +490,7 @@ class LocalCommunicator:
                 if not device:
                     return
                 try:
-                    logger_debug_task(f"rm_msg()")
+                    task_log(f"rm_msg()")
                     self.message_queue[device.u_id].remove(msg)
                     msg.state = MessageState.SENT
 
@@ -500,7 +500,7 @@ class LocalCommunicator:
                     ):
                         del self.message_queue[device.u_id]
                 except:
-                    logger_debug_task(f"{traceback.format_exc()}")
+                    task_log(f"{traceback.format_exc()}")
 
             return_val = DeviceTcpReturn.SENT
             
@@ -518,7 +518,7 @@ class LocalCommunicator:
             ):
                 msg: Message = self.message_queue[device.u_id][0]
                 
-                logger_debug_task(f"Process msg to send '{msg.msg_queue}' to device '{device.u_id}'.")
+                task_log(f"Process msg to send '{msg.msg_queue}' to device '{device.u_id}'.")
                 j: int = 0
                 
                 if msg.state == MessageState.UNSENT:
@@ -551,7 +551,7 @@ class LocalCommunicator:
                             else:
                                 raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
                         except:
-                            logger_debug_task(f"{traceback.format_exc()}")
+                            task_log(f"{traceback.format_exc()}")
                             break
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
@@ -570,12 +570,12 @@ class LocalCommunicator:
             try:
                 data = await loop.run_in_executor(None, connection.socket.recv, 4096)
                 if len(data) == 0:
-                    logger_debug_task("EOF")
+                    task_log("EOF")
                     return DeviceTcpReturn.TCP_ERROR
             except socket.timeout:
-                logger_debug_task("socket.timeout.")
+                task_log("socket.timeout.")
             except:
-                logger_debug_task(f"{traceback.format_exc()}")
+                task_log(f"{traceback.format_exc()}")
                 return DeviceTcpReturn.UNKNOWN_ERROR
 
             elapsed = datetime.datetime.now() - last_send
@@ -587,17 +587,19 @@ class LocalCommunicator:
                 try:
                     await __send_msg()
                 except:
-                    logger_debug_task(f"{traceback.format_exc()}")
+                    task_log(f"{traceback.format_exc()}")
                     return DeviceTcpReturn.SEND_ERROR
                 
             while not communication_finished and (len(data)):
-                logger_debug_task(
+                task_log(
                     f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
                 )
 
                 package = DataPackage(data)
                 if not package.read_raw_data():
                     break
+                
+                data = data[4 + package.length :]
 
                 ret: DeviceTcpReturn | int 
                 if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
@@ -608,7 +610,7 @@ class LocalCommunicator:
                         return ret
 
                 if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.AES_INITIAL_VECTOR:
-                    ret = await self.process_initial_vector_package(connection, package.data, device)
+                    ret = await self.process_aes_initial_vector_package(connection, package.data, device)
                     if ret != DeviceTcpReturn.NO_ERROR:
                         return ret
 
@@ -621,7 +623,7 @@ class LocalCommunicator:
                             communication_finished = True
                     break
                 else:
-                    logger_debug_task("No answer to process. Waiting on answer of the device ... ")
+                    task_log("No answer to process. Waiting on answer of the device ... ")
         return return_val
 
     async def device_handle_local_tcp(
@@ -653,14 +655,14 @@ class LocalCommunicator:
             except Exception as e:
                 LOGGER.debug(f"{traceback.format_exc()}")
             finally:
-                logger_debug_task(f"finished tcp device {connection.address['ip']}, return_state: {return_state}")
+                task_log(f"finished tcp device {connection.address['ip']}, return_state: {return_state}")
 
                 if connection.socket is not None:
                     connection.socket.shutdown(socket.SHUT_RDWR)
                     connection.socket.close() 
                     connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
-                logger_debug_task(f"tcp closed for {device.u_id}. Return state: {return_state}")
+                task_log(f"tcp closed for {device.u_id}. Return state: {return_state}")
 
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
@@ -1000,8 +1002,8 @@ class LocalCommunicator:
         if not await msg.check_msg_ttl():
             return False
 
-        LOGGER.debug(
-            f"new message {msg.msg_counter} target {target_device_uid} {send_msgs}"
+        task_log(
+            f"new message {msg.msg_counter} target {target_device_uid} {send_msgs}", LOGGER.trace
         )
 
         self.message_queue.setdefault(target_device_uid, []).append(msg)

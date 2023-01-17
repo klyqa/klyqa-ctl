@@ -49,7 +49,7 @@ from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum import VacuumCleaner, add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.commands import create_device_message as create_device_message_vacuum
 from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, TRACE, DeviceType, TypeJson, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, logger_debug_task, logging_hdl
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, TRACE, DeviceType, TypeJson, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, task_log, logging_hdl
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.account import Account
 from klyqa_ctl.general.message import Message
@@ -532,7 +532,7 @@ class Client:
 
             return success
         except Exception as e:
-            logger_debug_task(f"{traceback.format_exc()}")
+            task_log(f"{traceback.format_exc()}")
             return False
     
     async def send_to_devices_wrapped(self, args_parsed: argparse.Namespace, args_in: list[Any], timeout_ms: int = 5000) -> int:

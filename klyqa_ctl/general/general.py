@@ -4,7 +4,7 @@ import asyncio, aiofiles
 from threading import Event, Thread
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Type, TypeVar
+from typing import Any, Callable, Type, TypeVar
 import datetime
 import json
 import logging
@@ -345,9 +345,10 @@ def task_name() -> str:
         return ""
     return task_name
     
-def logger_debug_task(log: str) -> None:
+def task_log(log: str, output_func: Callable = LOGGER.debug) -> None:
+    """Output task name and logging string."""
     task_name_str: str = task_name()
-    LOGGER.debug(f"{task_name_str} - {log}" if task_name_str else f"{log}")
+    output_func(f"{task_name_str} - {log}" if task_name_str else f"{log}")
     
 def format_uid(text: str) -> Any:
     return slugify.slugify(text)
