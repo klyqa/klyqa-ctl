@@ -13,7 +13,7 @@ import socket
 import traceback
 from typing import Any, Callable
 from klyqa_ctl.account import Account
-from klyqa_ctl.communication.local.connection import AesConnectionState, LocalConnection
+from klyqa_ctl.communication.local.connection import AesConnectionState, DeviceTcpReturn, TcpConnection
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
@@ -27,25 +27,6 @@ try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
 except:
     from Crypto.Cipher import AES  # provided by pycryptodome
-
-class DeviceTcpReturn(Enum):
-    NO_ERROR = auto()
-    SENT = auto()
-    ANSWERED = auto()
-    WRONG_UNIT_ID = auto()
-    NO_UNIT_ID = auto()
-    WRONG_AES = auto()
-    TCP_ERROR = auto()
-    UNKNOWN_ERROR = auto()
-    SOCKET_TIMEOUT = auto()
-    NOTHING_DONE = auto()
-    SENT_ERROR = auto()
-    NO_MESSAGE_TO_SEND = auto()
-    device_lock_timeout = auto()
-    ERROR_LOCAL_IV = auto()
-    MISSING_AES_KEY = auto()
-    RESPONSE_ERROR = auto()
-    SEND_ERROR = auto()
 
 class LocalCommunicator:
     """Data communicator for local device connection"""
@@ -253,15 +234,16 @@ class LocalCommunicator:
     
     async def process_device_identity_package(
         self,
-        connection: LocalConnection,
+        connection: TcpConnection,
         data: bytes,
-        device: Device,
-        r_device: ReferenceParse,
+        device_ref: ReferenceParse,
         use_dev_aes: bool) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for changes,
         # safe the idenfication to device object if it is a not known device,
         # send the local initial vector for the encrypted communication to the device.
+        
+        device: Device = device_ref.ref
 
         task_log(f"Plain: {data}")
         json_response: dict[str, Any] = json.loads(data)
@@ -302,11 +284,11 @@ class LocalCommunicator:
                 device_b.ident = ident
                 device_b.u_id = ident.unit_id
             device = device_b
-            r_device.ref = device_b
+            device_ref.ref = device_b
         else:
             err: str = f"{task_name()} - Couldn't get use lock for device {device_b.get_name()} {connection.address})"
             LOGGER.error(err)
-            return DeviceTcpReturn.device_lock_timeout
+            return DeviceTcpReturn.DEVICE_LOCK_TIMEOUT
 
         connection.received_packages.append(json_response)
         device.save_device_message(json_response)
@@ -350,7 +332,7 @@ class LocalCommunicator:
             connection.aes_key = self.controller_data.aes_keys[device.u_id]
         try:
             if connection.socket is not None:
-                # for prod do in executor for more asyncio schedule task executions
+                # for prod do in executor or task for more asyncio schedule task executions
                 # await loop.run_in_executor(None, connection.socket.send, bytes([0, 8, 0, 1]) + connection.localIv)
                 if not connection.socket.send(
                     bytes([0, 8, 0, 1]) + connection.localIv
@@ -361,7 +343,7 @@ class LocalCommunicator:
     
         return DeviceTcpReturn.NO_ERROR
 
-    async def process_aes_initial_vector_package(self, connection: LocalConnection,
+    async def process_aes_initial_vector_package(self, connection: TcpConnection,
         data: bytes, device: Device) -> DeviceTcpReturn:
         """Create the AES encryption and decryption objects."""
 
@@ -388,11 +370,11 @@ class LocalCommunicator:
     
         return DeviceTcpReturn.NO_ERROR
         
-    async def message_answer_package(self, connection: LocalConnection,
-        answer: bytes, device: Device, msg_sent: Message | None) -> DeviceTcpReturn | int:
+    async def process_message_answer_package(self, connection: TcpConnection,
+        answer: bytes, device: Device, msg_sent: Message | None) -> DeviceTcpReturn:
         """Process the encrypted device answer."""
         
-        return_val: DeviceTcpReturn | int = 0
+        return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
         cipher: bytes = answer
 
@@ -400,7 +382,7 @@ class LocalCommunicator:
         connection.received_packages.append(plain)
         if msg_sent is not None and not msg_sent.state == MessageState.ANSWERED:
             msg_sent.answer = plain
-            json_response = {}
+            json_response: TypeJson = {}
             try:
                 plain_utf8: str = plain.decode()
                 json_response = json.loads(plain_utf8)
@@ -430,12 +412,27 @@ class LocalCommunicator:
 
         task_log(f" Request's reply decrypted: " + str(plain))
         return return_val
+    
+    def remove_msg_from_queue(self, msg: Message, device: Device | None) -> None:
+        if not device:
+            return
+        try:
+            task_log(f"rm_msg()")
+            self.message_queue[device.u_id].remove(msg)
+            msg.state = MessageState.SENT
+
+            if (
+                device.u_id in self.message_queue
+                and not self.message_queue[device.u_id]
+            ):
+                del self.message_queue[device.u_id]
+        except:
+            task_log(f"{traceback.format_exc()}")
    
     async def aes_handshake_and_send_msgs(
         self,
-        r_device: ReferenceParse,
-        # r_msg: RefParse,
-        connection: LocalConnection,
+        device_ref: ReferenceParse,
+        connection: TcpConnection,
         use_dev_aes: bool = False,
     ) -> DeviceTcpReturn:
         """
@@ -464,7 +461,7 @@ class LocalCommunicator:
                 7 - value not valid for device config
 
         """
-        device: Device = r_device.ref
+        device: Device = device_ref.ref
         if device is None or connection.socket is None:
             return DeviceTcpReturn.UNKNOWN_ERROR
 
@@ -481,26 +478,9 @@ class LocalCommunicator:
         msg_sent: Message | None = None
         communication_finished: bool = False        
         pause_after_send: int
-        package: DataPackage
 
         async def __send_msg() -> Message | None:
             nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
-            
-            def rm_msg(msg: Message) -> None:
-                if not device:
-                    return
-                try:
-                    task_log(f"rm_msg()")
-                    self.message_queue[device.u_id].remove(msg)
-                    msg.state = MessageState.SENT
-
-                    if (
-                        device.u_id in self.message_queue
-                        and not self.message_queue[device.u_id]
-                    ):
-                        del self.message_queue[device.u_id]
-                except:
-                    task_log(f"{traceback.format_exc()}")
 
             return_val = DeviceTcpReturn.SENT
             
@@ -534,7 +514,7 @@ class LocalCommunicator:
                             msg.msg_queue_sent.append(text)
                             if not check_func(device = device):
                                 # some parameter check in the message failed, remove message from the queue
-                                rm_msg(msg)
+                                self.remove_msg_from_queue(msg, device)
                                 # stop processing further the message
                                 break
 
@@ -557,9 +537,9 @@ class LocalCommunicator:
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
                         msg.state = MessageState.SENT
                         # all messages sent to devices, break now for reading response
-                        rm_msg(msg)
+                        self.remove_msg_from_queue(msg, device)
                 else:
-                    rm_msg(msg)
+                    self.remove_msg_from_queue(msg, device)
             return None
         
         if msg_sent and msg_sent.state == MessageState.ANSWERED:
@@ -567,16 +547,12 @@ class LocalCommunicator:
                     
         while not communication_finished and (device.u_id == "no_uid" or type(device) == Device or 
                device.u_id in self.message_queue or msg_sent):
-            try:
-                data = await loop.run_in_executor(None, connection.socket.recv, 4096)
-                if len(data) == 0:
-                    task_log("EOF")
-                    return DeviceTcpReturn.TCP_ERROR
-            except socket.timeout:
-                task_log("socket.timeout.")
-            except:
-                task_log(f"{traceback.format_exc()}")
-                return DeviceTcpReturn.UNKNOWN_ERROR
+            
+            data_ref: ReferenceParse = ReferenceParse(data)
+            read_data_ret: DeviceTcpReturn = await connection.read_local_tcp_socket(data_ref)
+            if read_data_ret != DeviceTcpReturn.NO_ERROR:
+                return read_data_ret
+            data = data_ref.ref
 
             elapsed = datetime.datetime.now() - last_send
             
@@ -594,40 +570,49 @@ class LocalCommunicator:
                 task_log(
                     f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
                 )
-
-                package = DataPackage(data)
-                if not package.read_raw_data():
-                    break
                 
-                data = data[4 + package.length :]
+                return_val = await self.aes_handshake_and_read_tcp_socket(connection, data_ref, msg_sent, device_ref, use_dev_aes)
+                data = data_ref.ref
+                device = device_ref.ref
+                if return_val == DeviceTcpReturn.ANSWERED:
+                    msg_sent = None
+                    communication_finished = True
+                elif return_val != DeviceTcpReturn.NO_ERROR:
+                    return return_val
+            
+        return return_val
+    
+    async def aes_handshake_and_read_tcp_socket(self, connection: TcpConnection, data_ref: ReferenceParse,
+        msg_sent: Message | None, device_ref: ReferenceParse, use_dev_aes: bool) -> DeviceTcpReturn:
+    
+        return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+        package: DataPackage = DataPackage(data_ref.ref)
+        
+        if not package.read_raw_data():
+            return DeviceTcpReturn.RESPONSE_ERROR
+        
+        data_ref.ref = data_ref.ref[4 + package.length :]
 
-                ret: DeviceTcpReturn | int 
-                if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
+        if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
 
-                    ret = await self.process_device_identity_package(connection, package.data, device, r_device, use_dev_aes)
-                    device = r_device.ref
-                    if ret != DeviceTcpReturn.NO_ERROR:
-                        return ret
+            return_val = await self.process_device_identity_package(connection, package.data, device_ref, use_dev_aes)
+            # device = r_device.ref
+            # if return_val != DeviceTcpReturn.NO_ERROR:
+            #     return return_val
 
-                if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.AES_INITIAL_VECTOR:
-                    ret = await self.process_aes_initial_vector_package(connection, package.data, device)
-                    if ret != DeviceTcpReturn.NO_ERROR:
-                        return ret
+        if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.AES_INITIAL_VECTOR:
+            return_val = await self.process_aes_initial_vector_package(connection, package.data, device_ref.ref)
+            if return_val != DeviceTcpReturn.NO_ERROR:
+                return return_val
 
-                elif connection.state == AesConnectionState.CONNECTED and package.type == PackageType.DATA:
-                    ret = await self.message_answer_package(connection, package.data, device, msg_sent)
-                    if type(ret) == DeviceTcpReturn:
-                        return_val = ret # type: ignore
-                        if return_val == DeviceTcpReturn.ANSWERED:
-                            msg_sent = None
-                            communication_finished = True
-                    break
-                else:
-                    task_log("No answer to process. Waiting on answer of the device ... ")
+        elif connection.state == AesConnectionState.CONNECTED and package.type == PackageType.DATA:
+            return_val = await self.process_message_answer_package(connection, package.data, device_ref.ref, msg_sent)
+        else:
+            task_log("No answer to process. Waiting on answer of the device ... ")
         return return_val
 
     async def device_handle_local_tcp(
-        self, device: Device, connection: LocalConnection
+        self, device: Device, connection: TcpConnection
     ) -> DeviceTcpReturn:
         """! Handle the incoming tcp connection to the device."""
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
@@ -668,16 +653,16 @@ class LocalCommunicator:
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
                 )
 
-                if return_state == DeviceTcpReturn.NO_ERROR:
-                    """no error"""
+                # if return_state == DeviceTcpReturn.NO_ERROR:
+                #     """no error"""
 
-                    def dict_values_to_list(d: dict) -> list[str]:
-                        r: list[str] = []
-                        for i in d.values():
-                            if isinstance(i, dict):
-                                i = dict_values_to_list(i)
-                            r.append(str(i))
-                        return r
+                #     def dict_values_to_list(d: dict) -> list[str]:
+                #         r: list[str] = []
+                #         for i in d.values():
+                #             if isinstance(i, dict):
+                #                 i = dict_values_to_list(i)
+                #             r.append(str(i))
+                #         return r
 
                 if device.u_id in self.devices:
                     device_b: Device = self.devices[device.u_id]
@@ -689,16 +674,16 @@ class LocalCommunicator:
                         except:
                             LOGGER.debug(f"{traceback.format_exc()}")
 
-                elif return_state == DeviceTcpReturn.NO_ERROR:
+                elif return_state == DeviceTcpReturn.UNKNOWN_ERROR:
                     LOGGER.error(
                         f"Unknown error during send (and handshake) with device {unit_id}."
                     )
-                elif return_state == DeviceTcpReturn.NO_ERROR:
-                    pass
-                elif return_state == DeviceTcpReturn.NO_ERROR:
-                    LOGGER.debug(
-                        f"End of tcp stream. ({connection.address['ip']}:{connection.address['port']})"
-                    )
+                # elif return_state == DeviceTcpReturn.NO_ERROR:
+                #     pass
+                # elif return_state == DeviceTcpReturn.NO_ERROR:
+                #     LOGGER.debug(
+                #         f"End of tcp stream. ({connection.address['ip']}:{connection.address['port']})"
+                #     )
 
         except CancelledError as e:
             LOGGER.error(f"Device tcp task cancelled.")
@@ -836,7 +821,7 @@ class LocalCommunicator:
                             break
                         else:
                             device: Device = Device()
-                            connection: LocalConnection = LocalConnection()
+                            connection: TcpConnection = TcpConnection()
                             (
                                 connection.socket,
                                 addr,
@@ -1050,9 +1035,9 @@ class LocalCommunicator:
                 u_id for u_id, v in self.devices.items()
             )
 
-def send_msg(msg: str, device: Device, connection: LocalConnection) -> bool:
+def send_msg(msg: str, device: Device, connection: TcpConnection) -> bool:
     info_str: str = (
-        (f"{task_name()} - " if LOGGER.level == 10 else "")
+        (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
         + 'Sending in local network to "'
         + device.get_name()
         + '": '
