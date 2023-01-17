@@ -13,7 +13,21 @@ import sys
 from pathlib import Path
 import slugify
 
-LOGGER: logging.Logger = logging.getLogger(__package__)
+TRACE = 5
+
+class TraceLogger(logging.Logger):
+    def __init__(self, name: str, level: int =logging.NOTSET) -> None:
+        super().__init__(name, level)
+
+        logging.addLevelName(TRACE, "TRACE")
+
+    def trace(self, msg: str, *args: Any, **kwargs: Any) -> None:
+        if self.isEnabledFor(TRACE):
+            self._log(TRACE, msg, args, **kwargs)
+
+logging.setLoggerClass(TraceLogger)
+
+LOGGER: TraceLogger = TraceLogger.manager.getLogger(__package__) # logging.getLogger(__package__)
 LOGGER.setLevel(level=logging.INFO)
 formatter: logging.Formatter = logging.Formatter(
     "%(asctime)s %(levelname)-8s - %(message)s"
