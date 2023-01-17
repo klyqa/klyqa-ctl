@@ -1,10 +1,14 @@
 """Local connection class"""
 from __future__ import annotations
+import asyncio
 
 from datetime import datetime
 import socket
+import traceback
 from typing import Any
-from enum import Enum
+from enum import Enum, auto
+
+from klyqa_ctl.general.general import ReferenceParse, task_log
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
@@ -15,8 +19,28 @@ class AesConnectionState(str, Enum):
     """AES encrypted connection state."""
     WAIT_IV = "WAIT_IV"
     CONNECTED = "CONNECTED"
+
+class DeviceTcpReturn(Enum):
+    NO_ERROR = auto()
+    SENT = auto()
+    ANSWERED = auto()
+    WRONG_UNIT_ID = auto()
+    NO_UNIT_ID = auto()
+    WRONG_AES = auto()
+    TCP_ERROR = auto()
+    UNKNOWN_ERROR = auto()
+    SOCKET_TIMEOUT = auto()
+    NOTHING_DONE = auto()
+    SENT_ERROR = auto()
+    NO_MESSAGE_TO_SEND = auto()
+    DEVICE_LOCK_TIMEOUT = auto()
+    ERROR_LOCAL_IV = auto()
+    MISSING_AES_KEY = auto()
+    RESPONSE_ERROR = auto()
+    SEND_ERROR = auto()
+    SOCKET_ERROR = auto()
     
-class LocalConnection:
+class TcpConnection:
     """Local connection class."""
 
     def __init__(self) -> None:
@@ -128,4 +152,20 @@ class LocalConnection:
     @started.setter
     def started(self, started: datetime) -> None:
         self._attr_started = started
+            
+    async def read_local_tcp_socket(self, data_ref: ReferenceParse) -> DeviceTcpReturn:
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        if self.socket is None:
+            return DeviceTcpReturn.SOCKET_ERROR
+        try:
+            data_ref.ref = await loop.run_in_executor(None, self.socket.recv, 4096)
+            if len(data_ref.ref) == 0:
+                task_log("EOF")
+                return DeviceTcpReturn.TCP_ERROR
+        except socket.timeout:
+            task_log("socket.timeout.")
+        except:
+            task_log(f"{traceback.format_exc()}")
+            return DeviceTcpReturn.UNKNOWN_ERROR
+        return DeviceTcpReturn.NO_ERROR
         
