@@ -108,6 +108,13 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         default=False,
     )
     parser.add_argument(
+        "--trace",
+        help="Enable trace logging messages.",
+        action="store_const",
+        const=True,
+        default=False,
+    )
+    parser.add_argument(
         "--selectDevice",
         help="Select device.",
         action="store_const",

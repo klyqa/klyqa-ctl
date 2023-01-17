@@ -14,7 +14,7 @@ from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.general.connections import PROD_HOST
-from klyqa_ctl.general.general import LOGGER, DeviceType, task_name
+from klyqa_ctl.general.general import LOGGER, TRACE, DeviceType, task_name, logging_hdl
 from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import Client

@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from klyqa_ctl.general.general import logger_debug_task
+from klyqa_ctl.general.general import task_log
 
 class PackageType(Enum):
     """Data package types"""
@@ -27,7 +27,7 @@ class DataPackage:
 
         self.data = self.raw_data[4 : 4 + self.length]
         if len(self.data) < self.length:
-            logger_debug_task(f"Incomplete packet, waiting for more...")
+            task_log(f"Incomplete packet, waiting for more...")
             self._valid = False
             return False
 
