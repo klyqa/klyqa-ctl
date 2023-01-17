@@ -151,7 +151,6 @@ class Client:
         await self.local_communicator.set_send_message(
             message_queue_tx_local,
             "all",
-            args,
             discover_answer_end,
             discover_timeout_secs,
         )
@@ -445,9 +444,8 @@ class Client:
                         await self.local_communicator.set_send_message(
                             send_msgs = message_queue_tx_local.copy(),
                             target_device_uid = uid,
-                            args = args,
                             callback=async_answer_callback_local,
-                            time_to_live_secs=(timeout_ms / 1000),
+                            time_to_live_secs=(timeout_ms / 1000)
                         )
 
                     for uid in target_device_uids:

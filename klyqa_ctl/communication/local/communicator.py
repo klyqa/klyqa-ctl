@@ -38,10 +38,10 @@ class LocalCommunicator:
     #
     _attr_current_addr_connections: set[str]
     
-    def __init__(self, controller_data: ControllerData, account: Account, server_ip: str = "0.0.0.0") -> None:
+    def __init__(self, controller_data: ControllerData, account: Account | None, server_ip: str = "0.0.0.0") -> None:
         self._attr_controller_data: ControllerData = controller_data
-        self._attr_account: Account = account
-        self._attr_devices: dict[str, Device] = account.devices
+        self._attr_account: Account | None = account
+        self._attr_devices: dict[str, Device] = account.devices if account else {}
         self._attr_tcp: socket.socket | None = None
         self._attr_udp: socket.socket | None = None
         self._attr_server_ip: str = server_ip
@@ -52,7 +52,7 @@ class LocalCommunicator:
         self._attr_search_and_send_loop_task: Task | None = None
         self._attr_search_and_send_loop_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
-        self._attr_acc_settings: TypeJson | None = account.settings
+        self._attr_acc_settings: TypeJson | None = account.settings if account else None
         self._attr_current_addr_connections = set()
         
     @property
@@ -64,7 +64,7 @@ class LocalCommunicator:
         self._attr_controller_data = controller_data
         
     @property
-    def account(self) -> Account:
+    def account(self) -> Account | None:
         return self._attr_account
 
     @account.setter
@@ -237,7 +237,8 @@ class LocalCommunicator:
         connection: TcpConnection,
         data: bytes,
         device_ref: ReferenceParse,
-        use_dev_aes: bool) -> DeviceTcpReturn:
+        use_dev_aes: bool,
+        aes_key: bytes | None = None) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for changes,
         # safe the idenfication to device object if it is a not known device,
@@ -313,8 +314,8 @@ class LocalCommunicator:
         if settings_device:
             name = settings_device[0]["name"]
             found = found + ' "' + name + '"'
-        else:
-            found = found + f" {json_response['ident']['unit_id']}"
+        elif device.ident:
+            found = found + f" {device.ident.unit_id}"
 
         if is_new_device:
             LOGGER.info(
@@ -324,7 +325,9 @@ class LocalCommunicator:
         else:
             task_log(f"Found device {found}")
 
-        if "all" in self.controller_data.aes_keys:
+        if aes_key is not None:
+            connection.aes_key = aes_key
+        elif "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
         elif use_dev_aes or "dev" in self.controller_data.aes_keys:
             connection.aes_key = AES_KEY_DEV
@@ -520,7 +523,8 @@ class LocalCommunicator:
 
                         pause = datetime.timedelta(milliseconds = float(pause_after_send))
                         try:
-                            if await loop.run_in_executor(None, send_msg, text, device, connection):
+                            if await loop.run_in_executor(None, send_msg, text, device,
+                                                          connection, msg.aes_key if msg.aes_key else None):
                                 msg_sent = msg 
                                 last_send = datetime.datetime.now()
                                 j = j + 1
@@ -965,9 +969,9 @@ class LocalCommunicator:
         self,
         send_msgs: list[tuple],
         target_device_uid: str,
-        args: argparse.Namespace,
         callback: Callable | None = None,
-        time_to_live_secs: float = -1.0
+        time_to_live_secs: float = -1.0,
+        **kwargs: Any
     ) -> bool:
 
         if not send_msgs and callback is not None:
@@ -978,10 +982,10 @@ class LocalCommunicator:
         msg: Message = Message(
             started = datetime.datetime.now(),
             msg_queue = send_msgs,
-            args = args,
             target_uid = target_device_uid,
             callback = callback,
             time_to_live_secs = time_to_live_secs,
+            **kwargs
         )
 
         if not await msg.check_msg_ttl():
@@ -1024,7 +1028,7 @@ class LocalCommunicator:
         await self.set_send_message(
             message_queue_tx_local,
             "all",
-            args,
+            # args,
             discover_answer_end,
             discover_timeout_secs,
         )
@@ -1035,7 +1039,7 @@ class LocalCommunicator:
                 u_id for u_id, v in self.devices.items()
             )
 
-def send_msg(msg: str, device: Device, connection: TcpConnection) -> bool:
+def send_msg(msg: str, device: Device, connection: TcpConnection, aes_key: bytes | None = None) -> bool:
     info_str: str = (
         (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
         + 'Sending in local network to "'
@@ -1052,6 +1056,12 @@ def send_msg(msg: str, device: Device, connection: TcpConnection) -> bool:
     if connection.sendingAES is None:
         return False
     
+    if aes_key is not None:
+        connection.sendingAES = AES.new(
+            aes_key,
+            AES.MODE_CBC,
+            iv=connection.localIv + connection.remoteIv,
+        )
     cipher: bytes = connection.sendingAES.encrypt(plain)
 
     while connection.socket:

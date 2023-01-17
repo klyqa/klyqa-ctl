@@ -1,11 +1,10 @@
 """Message class"""
 
 from __future__ import annotations
-import argparse
 from dataclasses import dataclass
 import datetime
 from enum import Enum
-from typing import Any
+from typing import Awaitable, Callable
 from klyqa_ctl.general import *
 from klyqa_ctl.general.general import LOGGER
 
@@ -23,7 +22,7 @@ class Message:
     started: datetime.datetime
     msg_queue: list[tuple]
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
-    args: argparse.Namespace
+    # args: argparse.Namespace
     target_uid: str
     state: MessageState = MessageState.UNSENT
     answered_datetime: datetime.datetime | None = None
@@ -32,10 +31,11 @@ class Message:
     answer_utf8: str = ""
     answer_json = {}
     # callback on error event or answer
-    callback: Any | None = None
+    callback: Callable[[Message | None, str], Awaitable] | None = None
     time_to_live_secs: float = -1
     msg_counter: int = -1
     send_try: int = 0
+    aes_key: bytes | None = None
 
     def __post_init__(self) -> None:
         global MSG_COUNTER
