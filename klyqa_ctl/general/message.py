@@ -22,7 +22,6 @@ class Message:
     started: datetime.datetime
     msg_queue: list[tuple]
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
-    # args: argparse.Namespace
     target_uid: str
     state: MessageState = MessageState.UNSENT
     answered_datetime: datetime.datetime | None = None

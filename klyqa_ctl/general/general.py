@@ -4,7 +4,7 @@ import asyncio, aiofiles
 from threading import Event, Thread
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Type, TypeVar
+from typing import Any, Callable, TextIO, Type, TypeVar
 import datetime
 import json
 import logging
@@ -27,20 +27,20 @@ class TraceLogger(logging.Logger):
 
 logging.setLoggerClass(TraceLogger)
 
-LOGGER: TraceLogger = TraceLogger.manager.getLogger(__package__) # logging.getLogger(__package__)
+LOGGER: TraceLogger = TraceLogger.manager.getLogger(__package__) # type: ignore
 LOGGER.setLevel(level=logging.INFO)
 formatter: logging.Formatter = logging.Formatter(
     "%(asctime)s %(levelname)-8s - %(message)s"
 )
 
-logging_hdl = logging.StreamHandler()
+logging_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler()
 logging_hdl.setLevel(level=logging.INFO)
 logging_hdl.setFormatter(formatter)
 
 LOGGER.addHandler(logging_hdl)
 
-DEFAULT_SEND_TIMEOUT_MS = 30
-DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600 # 600 secs = 10 min
+DEFAULT_SEND_TIMEOUT_MS: int = 30
+DEFAULT_MAX_COM_PROC_TIMEOUT_SECS: int = 600 # 600 secs = 10 min
 
 TypeJson = dict[str, Any]
 

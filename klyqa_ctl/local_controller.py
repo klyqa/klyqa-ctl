@@ -21,11 +21,13 @@ class LocalController:
     def __init__(self) -> None:
         self.local_communicator: LocalCommunicator = LocalCommunicator(
             ControllerData(False, offline=True), None, server_ip="0.0.0.0")
+        
     
     async def sendToDevice(self, unit_id: str, key: str, command: str) -> str:
                            #answer_cb: Callable[[Message | None, str], Awaitable]
                         #    ) -> str: #-> ErrorCode:
         # return_val: ErrorCode = ErrorCode.NO_ERROR
+        self.local_communicator.controller_data.aes_keys[unit_id] = key.encode("UTF-8")
         
         response_event: asyncio.Event = asyncio.Event()
         
@@ -42,8 +44,7 @@ class LocalController:
             send_msgs=[(json.dumps(command), 0)],
             target_device_uid=unit_id,
             callback=answer,
-            time_to_live_secs = 30,
-            aes_key = key
+            time_to_live_secs = 30000
         )
 
         await response_event.wait()
@@ -64,7 +65,9 @@ async def main() -> None:
     # callback: Callable[[Message | None, str], Awaitable] = test
     # await callback(None, "ok")
     
-    response: str = await lc.sendToDevice("29daa5a4439969f57934", "53b962431abc7af6ef84b43802994424",
+    # response: str = await lc.sendToDevice("29daa5a4439969f57934", "53b962431abc7af6ef84b43802994424",
+    #                       '{"type": "request"}') #, answered)
+    response: str = await lc.sendToDevice("", "",
                           '{"type": "request"}') #, answered)
     print(response)
     

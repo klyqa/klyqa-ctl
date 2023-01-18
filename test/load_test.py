@@ -109,9 +109,10 @@ async def main() -> None:
         offline = False)  
  
     # build offline version here.
-    account = Account("frederick.stallmeyer@qconnex.com", "")
+    account: Account = Account("", "")
     local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account)
-    cloud_backend: CloudBackend = CloudBackend(controller_data, account, PROD_HOST, False)
+    cloud_backend: CloudBackend = CloudBackend(controller_data, account,
+        PROD_HOST, False)
     
     if cloud_backend and not account.access_token:
         try:
@@ -126,7 +127,6 @@ async def main() -> None:
     
     client: Client = Client(controller_data, local_communicator, cloud_backend, account)
     await load_test(client)
-    
     
 if __name__ == '__main__':
     asyncio.run(main())
