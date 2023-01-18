@@ -3,13 +3,12 @@
 
 from __future__ import annotations
 import asyncio
-from enum import Enum, auto
 import json
-from typing import  Awaitable, Callable
 from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.general.general import LOGGER, TRACE, logging_hdl
 from klyqa_ctl.general.message import Message
+from klyqa_ctl.general.unit_id import UnitId
 
 
 # class ErrorCode(Enum):
@@ -23,17 +22,17 @@ class LocalController:
             ControllerData(False, offline=True), None, server_ip="0.0.0.0")
         
     
-    async def sendToDevice(self, unit_id: str, key: str, command: str) -> str:
+    async def sendToDevice(self, unit_id: UnitId, key: str, command: str) -> str:
                            #answer_cb: Callable[[Message | None, str], Awaitable]
                         #    ) -> str: #-> ErrorCode:
         # return_val: ErrorCode = ErrorCode.NO_ERROR
-        self.local_communicator.controller_data.aes_keys[unit_id] = key.encode("UTF-8")
+        self.local_communicator.controller_data.aes_keys[str(unit_id)] = key.encode("UTF-8")
         
         response_event: asyncio.Event = asyncio.Event()
         
         msg_answer: str = ""
         
-        async def answer(msg: Message | None = None, str2: str = "") -> None:
+        async def answer(msg: Message | None = None, unit_id: str = "") -> None:
             nonlocal msg_answer
             # await answer_cb(msg, str2)
             if msg is not None:
@@ -41,7 +40,7 @@ class LocalController:
             response_event.set()
         
         await self.local_communicator.set_send_message(
-            send_msgs=[(json.dumps(command), 0)],
+            send_msgs=[(command, 0)],
             target_device_uid=unit_id,
             callback=answer,
             time_to_live_secs = 30000
@@ -53,6 +52,7 @@ class LocalController:
         
 
 async def main() -> None:
+    
     lc: LocalController = LocalController()
 
     LOGGER.setLevel(TRACE)
@@ -67,7 +67,7 @@ async def main() -> None:
     
     # response: str = await lc.sendToDevice("29daa5a4439969f57934", "53b962431abc7af6ef84b43802994424",
     #                       '{"type": "request"}') #, answered)
-    response: str = await lc.sendToDevice("", "",
+    response: str = await lc.sendToDevice(UnitId(""), "",
                           '{"type": "request"}') #, answered)
     print(response)
     
