@@ -6,7 +6,7 @@ from typing import Any
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.connections import CloudConnection
-from klyqa_ctl.general.general import LOGGER, task_log
+from klyqa_ctl.general.general import LOGGER, format_uid, task_log
 from klyqa_ctl.general.message import Message
 
 class Device:
@@ -60,7 +60,7 @@ class Device:
     
     @u_id.setter
     def u_id(self, u_id: str) -> None:
-        self._attr_u_id = u_id
+        self._attr_u_id = format_uid(u_id)
     
     @property
     def acc_sets(self) -> dict[Any, Any]:

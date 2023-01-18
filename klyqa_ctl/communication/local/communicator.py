@@ -22,6 +22,7 @@ from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, ReferenceParse, TypeJson, format_uid, task_log, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
+from klyqa_ctl.general.unit_id import UnitId
 
 try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
@@ -314,7 +315,7 @@ class LocalCommunicator:
                 == format_uid(device.u_id)
             ]
         if settings_device:
-            name = settings_device[0]["name"]
+            name: str = settings_device[0]["name"]
             found = found + ' "' + name + '"'
         elif device.ident:
             found = found + f" {device.ident.unit_id}"
@@ -521,8 +522,8 @@ class LocalCommunicator:
 
                         pause = datetime.timedelta(milliseconds = float(pause_after_send))
                         try:
-                            if await loop.run_in_executor(None, send_msg, text, device,
-                                                          connection, msg.aes_key if msg.aes_key else None):
+                            if await loop.run_in_executor(None, encrypt_and_send_msg, text, device,
+                                                          connection):
                                 
                                 return_val = DeviceTcpReturn.SENT
                                 msg_sent = msg 
@@ -980,7 +981,7 @@ class LocalCommunicator:
     async def set_send_message(
         self,
         send_msgs: list[tuple],
-        target_device_uid: str,
+        target_device_uid: UnitId,
         callback: Callable | None = None,
         time_to_live_secs: float = -1.0,
         **kwargs: Any
@@ -992,9 +993,9 @@ class LocalCommunicator:
             return False
 
         msg: Message = Message(
-            started = datetime.datetime.now(),
+            datetime.datetime.now(),
+            target_device_uid,
             msg_queue = send_msgs,
-            target_uid = target_device_uid,
             callback = callback,
             time_to_live_secs = time_to_live_secs,
             **kwargs
@@ -1007,7 +1008,7 @@ class LocalCommunicator:
             f"new message {msg.msg_counter} target {target_device_uid} {send_msgs}", LOGGER.trace
         )
 
-        self.message_queue.setdefault(target_device_uid, []).append(msg)
+        self.message_queue.setdefault(str(target_device_uid), []).append(msg)
 
         if self.__read_tcp_task:
             # if still waiting for incoming connections, restart the process
@@ -1050,7 +1051,7 @@ class LocalCommunicator:
                 u_id for u_id, v in self.devices.items()
             )
 
-def send_msg(msg: str, device: Device, connection: TcpConnection, aes_key: bytes | None = None) -> bool:
+def encrypt_and_send_msg(msg: str, device: Device, connection: TcpConnection) -> bool:
     info_str: str = (
         (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
         + 'Sending in local network to "'
@@ -1064,15 +1065,6 @@ def send_msg(msg: str, device: Device, connection: TcpConnection, aes_key: bytes
     while len(plain) % 16:
         plain = plain + bytes([0x20])
 
-    if connection.sendingAES is None:
-        return False
-    
-    if aes_key is not None:
-        connection.sendingAES = AES.new(
-            aes_key,
-            AES.MODE_CBC,
-            iv=connection.localIv + connection.remoteIv,
-        )
     cipher: bytes = connection.sendingAES.encrypt(plain)
 
     while connection.socket:

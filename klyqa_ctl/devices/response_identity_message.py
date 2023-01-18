@@ -2,6 +2,7 @@
 from typing import Any
 from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.general import format_uid
+from klyqa_ctl.general.unit_id import UnitId
 
 
 # eventually dataclass
@@ -30,7 +31,7 @@ class ResponseIdentityMessage(ResponseMessage):
 
     @unit_id.setter
     def unit_id(self, unit_id: str) -> None:
-        self._attr_unit_id = format_uid(unit_id)
+        self._attr_unit_id = UnitId(unit_id)
 
     @property
     def fw_version(self) -> str:
