@@ -200,36 +200,38 @@ class LocalCommunicator:
 
     async def bind_ports(self) -> bool:
         """bind ports."""
-        await self.shutdown()
+        # await self.shutdown()
         server_address: tuple[str, int]
+        
+        if not self.udp: # or self.udp._closed or self.udp.__getstate__()() == -1:
+            self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_address = (self.server_ip, 2222)
+            try:
+                self.udp.bind(server_address)
+            except (socket.herror, socket.gaierror, socket.timeout):
+                LOGGER.error(
+                    "Error on opening and binding the udp port 2222 on host for initiating the local device communication."
+                )
+                LOGGER.debug(f"{traceback.format_exc()}")
+                return False
+            LOGGER.debug("Bound UDP port 2222")
 
-        self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_address = (self.server_ip, 2222)
-        try:
-            self.udp.bind(server_address)
-        except (socket.herror, socket.gaierror, socket.timeout):
-            LOGGER.error(
-                "Error on opening and binding the udp port 2222 on host for initiating the local device communication."
-            )
-            LOGGER.debug(f"{traceback.format_exc()}")
-            return False
-        LOGGER.debug("Bound UDP port 2222")
-
-        self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_address = ("0.0.0.0", 3333)
-        try:
-            self.tcp.bind(server_address)
-        except (socket.herror, socket.gaierror, socket.timeout):
-            LOGGER.error(
-                "Error on opening and binding the tcp port 3333 on host for initiating the local device communication."
-            )
-            LOGGER.debug(f"{traceback.format_exc()}")
-            return False
-        LOGGER.debug("Bound TCP port 3333")
-        self.tcp.listen(1)
+        if not self.tcp: # or self.tcp.closed() or self.tcp.fileno() == -1:
+            self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_address = ("0.0.0.0", 3333)
+            try:
+                self.tcp.bind(server_address)
+            except (socket.herror, socket.gaierror, socket.timeout):
+                LOGGER.error(
+                    "Error on opening and binding the tcp port 3333 on host for initiating the local device communication."
+                )
+                LOGGER.debug(f"{traceback.format_exc()}")
+                return False
+            LOGGER.debug("Bound TCP port 3333")
+            self.tcp.listen(1)
         return True
     
     async def process_device_identity_package(
@@ -249,10 +251,10 @@ class LocalCommunicator:
         task_log(f"Plain: {data}")
         json_response: dict[str, Any] = json.loads(data)
         try:
-            ident: ResponseIdentityMessage = ResponseIdentityMessage(
+            identity: ResponseIdentityMessage = ResponseIdentityMessage(
                 **json_response["ident"]
             )
-            device.u_id = ident.unit_id
+            device.u_id = identity.unit_id
         except:
             return DeviceTcpReturn.NO_UNIT_ID
 
@@ -268,9 +270,9 @@ class LocalCommunicator:
                 ]
                 if dev:
                     device.acc_sets = dev[0]
-            if ".lighting" in ident.product_id:
+            if ".lighting" in identity.product_id:
                 self.devices[device.u_id] = Light()
-            elif ".cleaning" in ident.product_id:
+            elif ".cleaning" in identity.product_id:
                 self.devices[device.u_id] = VacuumCleaner()
 
         # cached client device (self.devices), incoming device object created on tcp connection acception
@@ -282,8 +284,8 @@ class LocalCommunicator:
 
             device_b.local_addr = connection.address
             if is_new_device:
-                device_b.ident = ident
-                device_b.u_id = ident.unit_id
+                device_b.ident = identity
+                device_b.u_id = identity.unit_id
             device = device_b
             device_ref.ref = device_b
         else:
@@ -484,16 +486,12 @@ class LocalCommunicator:
 
         async def __send_msg() -> Message | None:
             nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
-
-            return_val = DeviceTcpReturn.SENT
             
             send_next: bool = elapsed >= pause
             sleep: float = (pause - elapsed).total_seconds()
             if sleep > 0:
                 await asyncio.sleep(sleep)
         
-            ## check how the answer come in and how they can be connected to the messages that has been sent.
-                
             if (
                 send_next and device
                 and device.u_id in self.message_queue
@@ -525,6 +523,8 @@ class LocalCommunicator:
                         try:
                             if await loop.run_in_executor(None, send_msg, text, device,
                                                           connection, msg.aes_key if msg.aes_key else None):
+                                
+                                return_val = DeviceTcpReturn.SENT
                                 msg_sent = msg 
                                 last_send = datetime.datetime.now()
                                 j = j + 1
@@ -540,7 +540,7 @@ class LocalCommunicator:
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
                         msg.state = MessageState.SENT
-                        # all messages sent to devices, break now for reading response
+                        # all messages , break now for reading response
                         self.remove_msg_from_queue(msg, device)
                 else:
                     self.remove_msg_from_queue(msg, device)
@@ -575,7 +575,8 @@ class LocalCommunicator:
                     f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
                 )
                 
-                return_val = await self.aes_handshake_and_read_tcp_socket(connection, data_ref, msg_sent, device_ref, use_dev_aes)
+                return_val = await self.aes_handshake_and_read_tcp_socket(connection, data_ref,
+                    msg_sent, device_ref, use_dev_aes)
                 data = data_ref.ref
                 device = device_ref.ref
                 if return_val == DeviceTcpReturn.ANSWERED:
@@ -599,13 +600,14 @@ class LocalCommunicator:
 
         if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
 
-            return_val = await self.process_device_identity_package(connection, package.data, device_ref, use_dev_aes)
-            # device = r_device.ref
-            # if return_val != DeviceTcpReturn.NO_ERROR:
-            #     return return_val
+            return_val = await self.process_device_identity_package(connection, package.data,
+                device_ref, use_dev_aes)
+            if return_val != DeviceTcpReturn.NO_ERROR:
+                return return_val
 
         if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.AES_INITIAL_VECTOR:
-            return_val = await self.process_aes_initial_vector_package(connection, package.data, device_ref.ref)
+            return_val = await self.process_aes_initial_vector_package(connection,
+                package.data, device_ref.ref)
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
@@ -711,10 +713,10 @@ class LocalCommunicator:
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
         try:
-            if not self.tcp or not self.udp:
-                await self.bind_ports()
+            # if not self.tcp or not self.udp:
             while not self.search_and_send_loop_task_end_now:
-                if not self.tcp or not self.udp:
+                if not await self.bind_ports():
+                # if (not self.tcp or not self.udp) and not await self.bind_ports():
                     break
                 # for debug cursor jump:
                 a: bool = False
@@ -726,9 +728,19 @@ class LocalCommunicator:
                     read_broadcast_response: bool = True
                     try:
                         LOGGER.debug("Broadcasting QCX-SYN Burst")
-                        self.udp.sendto(
-                            "QCX-SYN".encode("utf-8"), ("255.255.255.255", 2222)
-                        )
+                        if self.udp:
+                            await loop.run_in_executor(
+                                None,
+                                self.udp.sendto,
+                                "QCX-SYN".encode("utf-8"),
+                                ("255.255.255.255", 2222)
+                            )
+                        else:
+                            continue
+                        
+                        # self.udp.sendto(
+                        #     "QCX-SYN".encode("utf-8"), ("255.255.255.255", 2222)
+                        # )
 
                     except:
                         LOGGER.debug("Broadcasting QCX-SYN Burst Exception")
@@ -1028,7 +1040,6 @@ class LocalCommunicator:
         await self.set_send_message(
             message_queue_tx_local,
             "all",
-            # args,
             discover_answer_end,
             discover_timeout_secs,
         )
