@@ -361,12 +361,12 @@ class LocalCommunicator:
                 + str(device.u_id)
             )
             return DeviceTcpReturn.MISSING_AES_KEY
-        connection.sendingAES = AES.new(
+        connection.sending_aes = AES.new(
             connection.aes_key,
             AES.MODE_CBC,
             iv=connection.local_iv + connection.remote_iv,
         )
-        connection.receivingAES = AES.new(
+        connection.receiving_aes = AES.new(
             connection.aes_key,
             AES.MODE_CBC,
             iv=connection.remote_iv + connection.local_iv,
@@ -384,7 +384,7 @@ class LocalCommunicator:
 
         cipher: bytes = answer
 
-        plain: bytes = connection.receivingAES.decrypt(cipher)
+        plain: bytes = connection.receiving_aes.decrypt(cipher)
         connection.received_packages.append(plain)
         if msg_sent is not None and not msg_sent.state == MessageState.ANSWERED:
             msg_sent.answer = plain
@@ -1067,7 +1067,7 @@ def encrypt_and_send_msg(msg: str, device: Device, connection: TcpConnection) ->
     while len(plain) % 16:
         plain = plain + bytes([0x20])
 
-    cipher: bytes = connection.sendingAES.encrypt(plain)
+    cipher: bytes = connection.sending_aes.encrypt(plain)
 
     while connection.socket:
         try:

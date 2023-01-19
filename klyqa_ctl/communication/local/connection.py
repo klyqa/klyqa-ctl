@@ -47,8 +47,8 @@ class TcpConnection:
         self._attr_state: str = AesConnectionState.WAIT_IV
         self._attr_local_iv: bytes = get_random_bytes(8)
         self._attr_remote_iv: bytes = b""
-        self._attr_sendingAES: Any = None
-        self._attr_receivingAES: Any = None
+        self._attr_sending_aes: Any = None
+        self._attr_receiving_aes: Any = None
         self._attr_address: dict[str, str | int] = {"ip": "", "port": -1}
         self._attr_socket: socket.socket | None = None
         self._attr_received_packages: list[Any] = []
@@ -82,20 +82,20 @@ class TcpConnection:
         self._attr_local_iv = local_iv
     
     @property
-    def sendingAES(self) -> Any:
-        return self._attr_sendingAES
+    def sending_aes(self) -> Any:
+        return self._attr_sending_aes
     
-    @sendingAES.setter
-    def sendingAES(self, sendingAES: Any) -> None:
-        self._attr_sendingAES = sendingAES
+    @sending_aes.setter
+    def sending_aes(self, sending_aes: Any) -> None:
+        self._attr_sending_aes = sending_aes
     
     @property
-    def receivingAES(self) -> Any:
-        return self._attr_receivingAES
+    def receiving_aes(self) -> Any:
+        return self._attr_receiving_aes
     
-    @receivingAES.setter
-    def receivingAES(self, receivingAES: Any) -> None:
-        self._attr_receivingAES = receivingAES
+    @receiving_aes.setter
+    def receiving_aes(self, receiving_aes: Any) -> None:
+        self._attr_receiving_aes = receiving_aes
     
     @property
     def address(self) -> dict[str, str | int]:
