@@ -341,7 +341,7 @@ class LocalCommunicator:
                 # for prod do in executor or task for more asyncio schedule task executions
                 # await loop.run_in_executor(None, connection.socket.send, bytes([0, 8, 0, 1]) + connection.localIv)
                 if not connection.socket.send(
-                    bytes([0, 8, 0, 1]) + connection.localIv
+                    bytes([0, 8, 0, 1]) + connection.local_iv
                 ):
                     return DeviceTcpReturn.ERROR_LOCAL_IV
         except:
@@ -353,7 +353,7 @@ class LocalCommunicator:
         data: bytes, device: Device) -> DeviceTcpReturn:
         """Create the AES encryption and decryption objects."""
 
-        connection.remoteIv = data
+        connection.remote_iv = data
         connection.received_packages.append(data)
         if not connection.aes_key:
             task_log(
@@ -361,15 +361,15 @@ class LocalCommunicator:
                 + str(device.u_id)
             )
             return DeviceTcpReturn.MISSING_AES_KEY
-        connection.sendingAES = AES.new(
+        connection.sending_aes = AES.new(
             connection.aes_key,
             AES.MODE_CBC,
-            iv=connection.localIv + connection.remoteIv,
+            iv=connection.local_iv + connection.remote_iv,
         )
-        connection.receivingAES = AES.new(
+        connection.receiving_aes = AES.new(
             connection.aes_key,
             AES.MODE_CBC,
-            iv=connection.remoteIv + connection.localIv,
+            iv=connection.remote_iv + connection.local_iv,
         )
 
         connection.state = AesConnectionState.CONNECTED
@@ -384,7 +384,7 @@ class LocalCommunicator:
 
         cipher: bytes = answer
 
-        plain: bytes = connection.receivingAES.decrypt(cipher)
+        plain: bytes = connection.receiving_aes.decrypt(cipher)
         connection.received_packages.append(plain)
         if msg_sent is not None and not msg_sent.state == MessageState.ANSWERED:
             msg_sent.answer = plain
@@ -719,6 +719,8 @@ class LocalCommunicator:
                 if not await self.bind_ports():
                 # if (not self.tcp or not self.udp) and not await self.bind_ports():
                     break
+                if not self.tcp or not self.udp:
+                    break
                 # for debug cursor jump:
                 a: bool = False
                 if a:
@@ -1040,7 +1042,7 @@ class LocalCommunicator:
         # request message to these discovered devices.
         await self.set_send_message(
             message_queue_tx_local,
-            "all",
+            UnitId("all"),
             discover_answer_end,
             discover_timeout_secs,
         )
@@ -1065,7 +1067,7 @@ def encrypt_and_send_msg(msg: str, device: Device, connection: TcpConnection) ->
     while len(plain) % 16:
         plain = plain + bytes([0x20])
 
-    cipher: bytes = connection.sendingAES.encrypt(plain)
+    cipher: bytes = connection.sending_aes.encrypt(plain)
 
     while connection.socket:
         try:
