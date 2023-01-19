@@ -45,8 +45,8 @@ class TcpConnection:
 
     def __init__(self) -> None:
         self._attr_state: str = AesConnectionState.WAIT_IV
-        self._attr_localIv: bytes = get_random_bytes(8)
-        self._attr_remoteIv: bytes = b""
+        self._attr_local_iv: bytes = get_random_bytes(8)
+        self._attr_remote_iv: bytes = b""
         self._attr_sendingAES: Any = None
         self._attr_receivingAES: Any = None
         self._attr_address: dict[str, str | int] = {"ip": "", "port": -1}
@@ -66,20 +66,20 @@ class TcpConnection:
         self._attr_state = state
     
     @property
-    def remoteIv(self) -> bytes:
-        return self._attr_localIv
+    def remote_iv(self) -> bytes:
+        return self._attr_remote_iv
     
-    @remoteIv.setter
-    def remoteIv(self, remoteIv: bytes) -> None:
-        self._attr_remoteIv = remoteIv
+    @remote_iv.setter
+    def remote_iv(self, remote_iv: bytes) -> None:
+        self._attr_remote_iv = remote_iv
     
     @property
-    def localIv(self) -> bytes:
-        return self._attr_localIv
+    def local_iv(self) -> bytes:
+        return self._attr_local_iv
     
-    @localIv.setter
-    def localIv(self, localIv: bytes) -> None:
-        self._attr_localIv = localIv
+    @local_iv.setter
+    def local_iv(self, local_iv: bytes) -> None:
+        self._attr_local_iv = local_iv
     
     @property
     def sendingAES(self) -> Any:

@@ -23,18 +23,14 @@ class LocalController:
         
     
     async def sendToDevice(self, unit_id: UnitId, key: str, command: str) -> str:
-                           #answer_cb: Callable[[Message | None, str], Awaitable]
-                        #    ) -> str: #-> ErrorCode:
-        # return_val: ErrorCode = ErrorCode.NO_ERROR
-        self.local_communicator.controller_data.aes_keys[str(unit_id)] = key.encode("UTF-8")
+
+        self.local_communicator.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
         
         response_event: asyncio.Event = asyncio.Event()
-        
         msg_answer: str = ""
         
         async def answer(msg: Message | None = None, unit_id: str = "") -> None:
             nonlocal msg_answer
-            # await answer_cb(msg, str2)
             if msg is not None:
                 msg_answer = msg.answer_utf8
             response_event.set()
@@ -47,7 +43,7 @@ class LocalController:
         )
 
         await response_event.wait()
-        # return return_val
+
         return msg_answer
         
 
@@ -58,17 +54,12 @@ async def main() -> None:
     LOGGER.setLevel(TRACE)
     logging_hdl.setLevel(TRACE)
     
-    # async def answered(msg: Message | None = None, str2: str = "") -> None:
-    #     print("answered")
-    
-    # callback: Callable[[], Coroutine[Message, str, None]] = test(Message(), "")
-    # callback: Callable[[Message | None, str], Awaitable] = test
-    # await callback(None, "ok")
-    
-    # response: str = await lc.sendToDevice("29daa5a4439969f57934", "53b962431abc7af6ef84b43802994424",
-    #                       '{"type": "request"}') #, answered)
-    response: str = await lc.sendToDevice(UnitId(""), "",
-                          '{"type": "request"}') #, answered)
+    # response: str = await lc.sendToDevice(UnitId("286DCD5C6BDA"), "0c2ff6f6aa0ede2c454ca712ecfa1dfd",
+    #                       '{"type": "request"}')
+    unit_id: UnitId = UnitId("")
+    aes_key: str = ""
+    response: str = await lc.sendToDevice(unit_id, aes_key,
+                          '{"type": "request"}')
     print(response)
     
 if __name__ == "__main__":
