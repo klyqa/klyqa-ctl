@@ -30,7 +30,10 @@ except:
     from Crypto.Cipher import AES  # provided by pycryptodome
 
 class LocalCommunicator:
-    """Data communicator for local device connection"""
+    """Data communicator for local device connection.
+    
+    Important: Call async function shutdown() after using send method,
+    or the send message loop will keep running."""
 
     # Set of current accepted connections to an IP. One connection is most of the time
     # enough to send all messages for that device behind that connection (in the aes send message method).
