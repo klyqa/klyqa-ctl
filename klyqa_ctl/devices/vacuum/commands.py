@@ -1,10 +1,79 @@
 """Vacuum cleaner commands"""
 from __future__ import annotations
 import argparse
+from dataclasses import dataclass
+from enum import Enum
 import json
 from typing import Any, Callable
+from klyqa_ctl.devices.light.commands import RequestCommand
 from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandType
-from klyqa_ctl.general.general import LOGGER, TypeJson
+from klyqa_ctl.general.general import LOGGER, CommandTyped, TypeJson
+from klyqa_ctl.general.general import CommandType as MessageCommandType
+
+@dataclass
+class ProductinfoCommand(RequestCommand):        
+    def productinfo_json(self) -> TypeJson:
+            return {"action": "productinfo"}
+            
+    def json(self) -> TypeJson:
+        return super().json() | self.productinfo_json()
+
+@dataclass
+class RequestGetCommand(RequestCommand):
+    def get_json(self) -> TypeJson:
+            return {"action": "get"}
+            
+    def json(self) -> TypeJson:
+        return super().json() | self.get_json()
+
+@dataclass
+class RequestResetCommand(RequestCommand):
+    def reset_json(self) -> TypeJson:
+            return {"action": "reset"}
+            
+    def json(self) -> TypeJson:
+        return super().json() | self.reset_json()
+
+@dataclass
+class RequestSetCommand(RequestCommand):
+    def set_json(self) -> TypeJson:
+            return {"action": "set"}
+            
+    def json(self) -> TypeJson:
+        return super().json() | self.set_json()
+        
+class RoutineCommandActions(str, Enum):
+    ACTION = "action"
+    COUNT = "count"
+    LIST = "list"
+    DELETE = "delete"
+    START = "start"
+    PUT = "put"
+
+@dataclass
+class RoutineCommand(RequestCommand):
+    action: RoutineCommandActions = RoutineCommandActions.ACTION
+    id: str | None = None
+    scene: str | None = None
+    commands: str | None = None
+    
+    def __post_init__(self) -> None:
+        self.type = MessageCommandType.ROUTINE
+
+    def routine_json(self) -> TypeJson:
+        r: TypeJson = TypeJson()
+        r["action"] = self.action
+        if self.id is not None:
+            r["id"] = self.id
+        if self.scene is not None:
+            r["scene"] = self.scene
+        if self.commands is not None:
+            r["commands"] = self.commands
+        return r
+            
+    def json(self) -> TypeJson:
+        return super().json() | self.routine_json()
+
 
 async def create_device_message(
     args: argparse.Namespace,
@@ -24,7 +93,7 @@ async def create_device_message(
 
         if args.command == "productinfo":
             local_and_cloud_command_msg(
-                {"type": "request", "action": "productinfo"}, 100
+                ProductinfoCommand().json(), 100
             )
 
         if args.command == CommandType.GET.name:
@@ -42,10 +111,7 @@ async def create_device_message(
 def get_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Get command."""
     
-    get_dict: dict[str, Any] = {
-                "type": "request",
-                "action": "get",
-            }
+    get_dict: dict[str, Any] = RequestGetCommand().json()
     if args.power or args.all:
         get_dict["power"] = None
     if args.cleaning or args.all:
@@ -95,7 +161,7 @@ def get_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
 def reset_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Reset command."""
     
-    reset_dict: dict[str, Any] = {"type": "request", "action": "reset"}
+    reset_dict: dict[str, Any] = RequestResetCommand().json()
     
     if args.sidebrush:
         reset_dict["sidebrush"] = None
@@ -108,7 +174,7 @@ def reset_command(args: argparse.Namespace, local_and_cloud_command_msg: Callabl
 def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Set command."""
     
-    set_dict: dict[str, Any] = {"type": "request", "action": "set"}
+    set_dict: dict[str, Any] = RequestSetCommand().json()
    
     if args.power is not None:
         set_dict["power"] = args.power
@@ -137,22 +203,23 @@ def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
 def routine(args: argparse.Namespace) -> None:
     """Set routine."""
     
-    routine_dict: dict[str, str] = {
-                "type": "routine",
-            }
+    routine_dict: dict[str, str] = RoutineCommand().json()
 
     if args.count:
-        routine_dict["action"] = "count"
+        # routine_dict["action"] = "count"
+        routine_dict = RoutineCommand(action=RoutineCommandActions.COUNT).json()
 
     if args.list:
-        routine_dict["action"] = "list"
+        # routine_dict["action"] = "list"
+        routine_dict = RoutineCommand(action=RoutineCommandActions.LIST).json()
 
     if args.put:
         if args.id and args.commands:
-            routine_dict["action"] = "put"
-            routine_dict["id"] = args.id
-            routine_dict["scene"] = "none"
-            routine_dict["commands"] = args.commands
+            routine_dict = RoutineCommand(action=RoutineCommandActions.PUT, id=args.id, scene="none", commands=args.commands).json()
+            # routine_dict["action"] = "put"
+            # routine_dict["id"] = args.id
+            # routine_dict["scene"] = "none"
+            # routine_dict["commands"] = args.commands
         else:
             LOGGER.error("No ID and/or Commands given!")
 

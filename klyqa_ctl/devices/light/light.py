@@ -43,7 +43,7 @@ class Light(Device):
     def set_brightness_range(self, device_config: TypeJson) -> None:
         brightness_enum: list[Any] = []
         try:
-            if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+            if self.ident and self.ident.product_id.endswith(".rgb-cw-ww.e27"):
                 brightness_enum = [
                     trait["value_schema"]["properties"]["brightness"]
                     for trait in device_config["deviceTraits"]
@@ -66,13 +66,14 @@ class Light(Device):
                     )
                 except:
                     self.brightness_range = Range(0, 100)
+                    LOGGER.trace("Can't read brightness range%s. Falling back to default Range.", f" for product id {self.ident.product_id}" if self.ident else "")
         except Exception as e:
             LOGGER.error("Error during setting brightness range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
         
     def set_temperature_range(self, device_config: TypeJson) -> None:
         try:
-            if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+            if self.ident and self.ident.product_id.endswith(".rgb-cw-ww.e27"):
                 self.temperature_range = Range(*[
                     trait["value_schema"]["properties"]["colorTemperature"]["enum"]
                     for trait in device_config["deviceTraits"]
@@ -91,6 +92,7 @@ class Light(Device):
                 except:
                     LOGGER.debug("Bulb product id trait search failed using default temperature numbers.")
                     self.temperature_range = Range(2000, 6500)
+                    LOGGER.trace("Can't read temperature range%s. Falling back to default Range.", f" for product id {self.ident.product_id}" if self.ident else "")
         except Exception as e:
             LOGGER.error("Error during setting temperature range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
@@ -98,7 +100,7 @@ class Light(Device):
     def set_color_range(self, device_config: TypeJson) -> None:  
         color_enum: list[Any] = []
         try:
-            if self.acc_sets["productId"].endswith(".rgb-cw-ww.e27"):
+            if self.ident and self.ident.product_id.endswith(".rgb-cw-ww.e27"):
                 color_enum = [
                     trait["value_schema"]["definitions"]["color_value"]
                     for trait in device_config["deviceTraits"]
@@ -121,6 +123,7 @@ class Light(Device):
                     )
                 except:
                     self.color_range = Range(0, 255)
+                    LOGGER.trace("Can't read color range%s. Falling back to default Range.", f" for product id {self.ident.product_id}" if self.ident else "")
         except Exception as e:
             LOGGER.error("Error during setting color range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")
@@ -129,7 +132,7 @@ class Light(Device):
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
         self.set_temperature_range(device_config)
-        if ".rgb" in self.acc_sets["productId"]:
+        if self.ident and ".rgb" in self.ident.product_id:
             self.set_color_range(device_config)
 
     def set_temperature(self, temp: int) -> bool:

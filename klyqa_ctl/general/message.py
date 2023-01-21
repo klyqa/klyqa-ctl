@@ -5,7 +5,6 @@ from dataclasses import dataclass
 import datetime
 from enum import Enum
 from typing import Awaitable, Callable
-from klyqa_ctl.general import *
 from klyqa_ctl.general.general import LOGGER, format_uid
 
 class MessageState(Enum):
@@ -21,7 +20,7 @@ class Message:
 
     started: datetime.datetime
     _attr_target_uid: str
-    msg_queue: list[tuple]
+    msg_queue: list[Command]
     msg_queue_sent = []  #: list[str] = dataclasses.field(default_factory=list)
     state: MessageState = MessageState.UNSENT
     answered_datetime: datetime.datetime | None = None

@@ -16,11 +16,12 @@ from klyqa_ctl.account import Account
 from klyqa_ctl.communication.local.connection import AesConnectionState, DeviceTcpReturn, TcpConnection
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices.device import Device
+from klyqa_ctl.devices.device import CommandWithCheckValues, Device
+from klyqa_ctl.devices.light.commands import TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, ReferenceParse, TypeJson, format_uid, task_log, task_name, LOGGER
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, Command, ReferenceParse, TypeJson, format_uid, task_log, task_log_debug, task_log_error, task_log_ex_trace, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
@@ -45,7 +46,7 @@ class LocalCommunicator:
     def __init__(self, controller_data: ControllerData, account: Account | None, server_ip: str = "0.0.0.0") -> None:
         self._attr_controller_data: ControllerData = controller_data
         self._attr_account: Account | None = account
-        self._attr_devices: dict[str, Device] = account.devices if account else {}
+        self._attr_devices: dict[str, Device] = controller_data.devices
         self._attr_tcp: socket.socket | None = None
         self._attr_udp: socket.socket | None = None
         self._attr_server_ip: str = server_ip
@@ -262,38 +263,54 @@ class LocalCommunicator:
         except:
             return DeviceTcpReturn.NO_UNIT_ID
 
-        is_new_device = False
+        is_new_device: bool = False
+        if self.controller_data.add_devices_lock:
+            await self.controller_data.add_devices_lock.acquire_within_task()
+            
         if device.u_id != "no_uid" and device.u_id not in self.devices:
             is_new_device = True
-            if self.acc_settings:
-                dev: list[dict] = [
-                    device2
-                    for device2 in self.acc_settings["devices"]
-                    if format_uid(device2["localDeviceId"])
-                    == format_uid(device.u_id)
-                ]
-                if dev:
-                    device.acc_sets = dev[0]
+            new_dev: Device | None = None
             if ".lighting" in identity.product_id:
-                self.devices[device.u_id] = Light()
+                new_dev = Light()
             elif ".cleaning" in identity.product_id:
-                self.devices[device.u_id] = VacuumCleaner()
+                new_dev = VacuumCleaner()
+            if new_dev:
+                new_dev.ident = identity
+                new_dev.u_id = identity.unit_id
+                if new_dev.ident and new_dev.ident.product_id in self.controller_data.device_configs:
+                    new_dev.read_device_config(device_config = self.controller_data.device_configs[
+                        new_dev.ident.product_id
+                    ])
+                    
+                if self.acc_settings:
+                    dev: list[dict] = [
+                        dev_acc_sets
+                        for dev_acc_sets in self.acc_settings["devices"]
+                        if format_uid(dev_acc_sets["localDeviceId"])
+                        == format_uid(device.u_id)
+                    ]
+                    if dev:
+                        new_dev.acc_sets = dev[0]
+                self.devices[device.u_id] = new_dev
+            
+        if self.controller_data.add_devices_lock:
+            self.controller_data.add_devices_lock.release_within_task()
 
         # cached client device (self.devices), incoming device object created on tcp connection acception
         if not device.u_id in self.devices:
             return DeviceTcpReturn.NOTHING_DONE
-        device_b: Device = self.devices[device.u_id]
+        device_repl: Device = self.devices[device.u_id]
         
-        if await device_b.use_lock():
-
-            device_b.local_addr = connection.address
-            if is_new_device:
-                device_b.ident = identity
-                device_b.u_id = identity.unit_id
-            device = device_b
-            device_ref.ref = device_b
+        if await device_repl.use_lock():
+            # await asyncio.sleep(80000) # debug test cancel task sleep. remove on prod
+            device_repl.local_addr = connection.address
+            # if is_new_device:
+            #     device_b.ident = identity
+            #     device_b.u_id = identity.unit_id
+            device = device_repl
+            device_ref.ref = device_repl
         else:
-            err: str = f"{task_name()} - Couldn't get use lock for device {device_b.get_name()} {connection.address})"
+            err: str = f"{task_name()} - Couldn't get use lock for device {device_repl.get_name()} {connection.address})"
             LOGGER.error(err)
             return DeviceTcpReturn.DEVICE_LOCK_TIMEOUT
 
@@ -419,14 +436,14 @@ class LocalCommunicator:
                     f"device {device.u_id} answered msg {msg_sent.msg_queue}"
                 )
 
-        task_log(f" Request's reply decrypted: " + str(plain))
+        task_log_debug(f"%s Request's reply decrypted: " + str(plain), device.u_id if device else "")
         return return_val
     
     def remove_msg_from_queue(self, msg: Message, device: Device | None) -> None:
         if not device:
             return
         try:
-            task_log(f"rm_msg()")
+            task_log(f"remove message from queue")
             self.message_queue[device.u_id].remove(msg)
             msg.state = MessageState.SENT
 
@@ -509,19 +526,30 @@ class LocalCommunicator:
                 if msg.state == MessageState.UNSENT:
                     
                     while j < len(msg.msg_queue):
-                            
-                        text: str
-                        if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
-                            text, pause_after_send = msg.msg_queue[j]
-                            msg.msg_queue_sent.append(text)
-                        else:
-                            text, pause_after_send, check_func = msg.msg_queue[j]
-                            msg.msg_queue_sent.append(text)
-                            if not check_func(device = device):
-                                # some parameter check in the message failed, remove message from the queue
+                        
+                        command: Command = msg.msg_queue[j]
+                        text: str = command.msg_str()
+                        if isinstance(command, CommandWithCheckValues):
+                            cwcv: CommandWithCheckValues = command
+                            if not cwcv.force and not cwcv.check_values(device = device):
                                 self.remove_msg_from_queue(msg, device)
-                                # stop processing further the message
                                 break
+                            
+                        if isinstance(command, TransitionCommand):
+                            tc: TransitionCommand = command
+                            pause_after_send = tc.transition_time
+                            
+                        # if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
+                        #     text, pause_after_send = msg.msg_queue[j]
+                        #     msg.msg_queue_sent.append(text)
+                        # else:
+                        #     text, pause_after_send, check_func = msg.msg_queue[j]
+                        #     msg.msg_queue_sent.append(text)
+                        #     if not check_func(device = device):
+                        #         # some parameter check in the message failed, remove message from the queue
+                        #         self.remove_msg_from_queue(msg, device)
+                        #         # stop processing further the message
+                        #         break
 
                         pause = datetime.timedelta(milliseconds = float(pause_after_send))
                         try:
@@ -532,6 +560,7 @@ class LocalCommunicator:
                                 msg_sent = msg 
                                 last_send = datetime.datetime.now()
                                 j = j + 1
+                                msg.msg_queue_sent.append(text)
                                 # don't process the next message, but if
                                 # still elements in the msg_queue send them as well
                                 send_next = False
@@ -539,7 +568,7 @@ class LocalCommunicator:
                             else:
                                 raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
                         except:
-                            task_log(f"{traceback.format_exc()}")
+                            task_log_ex_trace()
                             break
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
@@ -593,6 +622,7 @@ class LocalCommunicator:
     
     async def aes_handshake_and_read_tcp_socket(self, connection: TcpConnection, data_ref: ReferenceParse,
         msg_sent: Message | None, device_ref: ReferenceParse, use_dev_aes: bool) -> DeviceTcpReturn:
+        """Read tcp socket and process packages."""
     
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
         package: DataPackage = DataPackage(data_ref.ref)
@@ -640,49 +670,39 @@ class LocalCommunicator:
                 return_state = await self.aes_handshake_and_send_msgs(
                     r_device, connection = connection
                 )
-                device = r_device.ref
             except CancelledError as e:
                 LOGGER.error(
-                    f"Cancelled local send because send-timeout send_timeout hitted {connection.address['ip']}, "
-                    + (device.u_id if device and device.u_id else "")
-                    + "."
+                    f"Cancelled local send to {connection.address['ip']}!"
                 )
             except Exception as e:
                 LOGGER.debug(f"{traceback.format_exc()}")
             finally:
                 task_log(f"finished tcp device {connection.address['ip']}, return_state: {return_state}")
 
+                device = r_device.ref
                 if connection.socket is not None:
-                    connection.socket.shutdown(socket.SHUT_RDWR)
-                    connection.socket.close() 
-                    connection.socket = None
+                    try:
+                        connection.socket.shutdown(socket.SHUT_RDWR)
+                        connection.socket.close() 
+                    finally:
+                        connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
-                task_log(f"tcp closed for {device.u_id}. Return state: {return_state}")
+                task_log(f"tcp closed for {device.u_id}. Return state: {return_state}", )
 
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
                 )
 
-                # if return_state == DeviceTcpReturn.NO_ERROR:
-                #     """no error"""
-
-                #     def dict_values_to_list(d: dict) -> list[str]:
-                #         r: list[str] = []
-                #         for i in d.values():
-                #             if isinstance(i, dict):
-                #                 i = dict_values_to_list(i)
-                #             r.append(str(i))
-                #         return r
-
                 if device.u_id in self.devices:
                     device_b: Device = self.devices[device.u_id]
-                    if device_b._use_thread == asyncio.current_task():
-                        try:
-                            if device_b._use_lock is not None:
-                                device_b._use_lock.release()
-                            device_b._use_thread = None
-                        except:
-                            LOGGER.debug(f"{traceback.format_exc()}")
+                    await device_b.use_unlock()
+                    # if device_b._use_thread == asyncio.current_task():
+                    #     try:
+                    #         if device_b._use_lock is not None:
+                    #             device_b._use_lock.release()
+                    #         device_b._use_thread = None
+                    #     except:
+                    #         LOGGER.debug(f"{traceback.format_exc()}")
 
                 elif return_state == DeviceTcpReturn.UNKNOWN_ERROR:
                     LOGGER.error(
@@ -696,10 +716,9 @@ class LocalCommunicator:
                 #     )
 
         except CancelledError as e:
-            LOGGER.error(f"Device tcp task cancelled.")
+            task_log_error(f"Device tcp task cancelled.")
         except Exception as e:
-            LOGGER.debug(f"{e}")
-            pass
+            task_log_ex_trace()
         return return_state
 
     async def search_and_send_to_device(
@@ -985,7 +1004,7 @@ class LocalCommunicator:
 
     async def set_send_message(
         self,
-        send_msgs: list[tuple],
+        send_msgs: list[Command],
         target_device_uid: UnitId,
         callback: Callable | None = None,
         time_to_live_secs: float = -1.0,
@@ -1055,6 +1074,18 @@ class LocalCommunicator:
             target_device_uids = set(
                 u_id for u_id, v in self.devices.items()
             )
+    
+    # @classmethod
+    # async def create_default(
+    #     cls: Any, interactive_prompts: bool = False, offline: bool = False
+    # ) -> LocalCommunicator:
+    #     """Factory for local only controller."""
+    #     controller_data: ControllerData = ControllerData(interactive_prompts = interactive_prompts, offline = offline)
+    #     await controller_data.init()
+    #     lcc: LocalCommunicator = LocalCommunicator(
+    #         controller_data, None, server_ip = "0.0.0.0")
+        
+    #     return lcc
 
 def encrypt_and_send_msg(msg: str, device: Device, connection: TcpConnection) -> bool:
     info_str: str = (

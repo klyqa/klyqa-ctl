@@ -22,6 +22,7 @@ from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import LOGGER, Device_config, EventQueuePrinter, TypeJson, async_json_cache, format_uid
+from klyqa_ctl.general.unit_id import UnitId
 
 DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
@@ -39,7 +40,7 @@ class CloudBackend:
         self._attr_offline: bool = offline
         self._attr_host: str = PROD_HOST if not host else host
         self._attr_access_token: str = ""
-        self._attr_devices: dict[str, Device] = account.devices
+        self._attr_devices: dict[str, Device] = controller_data.devices
 
     @property
     def devices(self) -> dict[str, Device]:
@@ -265,16 +266,16 @@ class CloudBackend:
             return None
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
-        if self.account.settings and device_product_ids:
-            device_tasks: list[Task] = [asyncio.create_task(self.get_device_config(product_id, self.account.device_configs))
+        if self.account.settings and device_product_ids and self.controller_data.device_configs:
+            device_tasks: list[Task] = [asyncio.create_task(self.get_device_config(product_id, self.controller_data.device_configs))
                                         for product_id in device_product_ids]
             await asyncio.wait(device_tasks, timeout=DEFAULT_HTTP_REQUEST_TIMEOUT_SECS)
         
         device_configs_cache, cached = await async_json_cache(
-            self.account.device_configs, "device.configs.json"
+            self.controller_data.device_configs, "device.configs.json"
         )
         if cached and device_configs_cache:
-            self.account.device_configs = device_configs_cache
+            self.controller_data.device_configs = device_configs_cache
             LOGGER.info("No server reply for device configs. Using cache.")
         return None
     
@@ -283,12 +284,12 @@ class CloudBackend:
             None, "device.configs.json"
         )
         if (
-            cached and not self.account.device_configs
+            cached and not self.controller_data.device_configs
         ):
             # using again not device_configs check cause asyncio await scheduling
             LOGGER.info("Using devices config cache.")
             if device_configs_cache:
-                self.account.device_configs = device_configs_cache
+                self.controller_data.device_configs = device_configs_cache
                 return True
         return False
     
@@ -329,7 +330,7 @@ class CloudBackend:
             await self.device_request_and_print_action(product_ids)
 
         if not self.backend_connected():
-            if not self.account.device_configs:
+            if not self.controller_data.device_configs:
                 await self.get_device_configs_cached()
 
         elif self.backend_connected():
@@ -337,11 +338,12 @@ class CloudBackend:
 
         for uid in self.devices:
             if (
+                self.devices[uid].ident and
                 "productId" in self.devices[uid].acc_sets
-                and self.devices[uid].acc_sets["productId"] in self.account.device_configs
+                and self.devices[uid].ident.product_id in self.controller_data.device_configs
             ):
-                self.devices[uid].read_device_config(device_config = self.account.device_configs[
-                    self.devices[uid].acc_sets["productId"]
+                self.devices[uid].read_device_config(device_config = self.controller_data.device_configs[
+                    self.devices[uid].ident.product_id
                 ])
 
         return True
@@ -427,7 +429,8 @@ class CloudBackend:
         
     async def request_account_settings_eco(self, scan_interval: int = 60) -> bool:
         """Only send a new account settings http request when the last update was after the scan interval."""
-        await self.account.settings_lock.acquire()
+        if self.account.settings_lock:
+            await self.account.settings_lock.acquire()
         ret: bool = True
         try:
             now: datetime.datetime = datetime.datetime.now()
@@ -438,7 +441,8 @@ class CloudBackend:
                 """look that the settings are loaded only once in the scan interval"""
                 await self.request_account_settings()
         finally:
-            self.account.settings_lock.release()
+            if self.account.settings_lock:
+                self.account.settings_lock.release()
         return ret
 
     async def request_account_settings(self) -> None:
@@ -461,7 +465,7 @@ class CloudBackend:
         }
 
         for product_id in list(product_ids):
-            if self.account.device_configs and product_id in self.account.device_configs:
+            if self.controller_data.device_configs and product_id in self.controller_data.device_configs:
                 continue
             LOGGER.debug("Try to request device config from server.")
             try:
@@ -471,14 +475,14 @@ class CloudBackend:
                     timeout = 30,
                 )
                 device_config: Device_config | None = config
-                self.account.device_configs[product_id] = device_config
+                self.controller_data.device_configs[product_id] = device_config
             except:
                 LOGGER.debug(f"{traceback.format_exc()}")
 
     async def cloud_send(self,
         args: argparse.Namespace,
-        target_device_uids: set[str],
-        to_send_device_uids: set[str],
+        target_device_uids: set[UnitId],
+        to_send_device_uids: set[UnitId],
         timeout_ms: int,
         message_queue_tx_state_cloud: list,
         message_queue_tx_command_cloud: list) -> bool:
@@ -534,7 +538,7 @@ class CloudBackend:
         started: datetime.datetime = datetime.datetime.now()
         # timeout_ms = 30000
 
-        async def process_cloud_messages(target_uids: set[str]) -> None:
+        async def process_cloud_messages(target_uids: set[UnitId]) -> None:
 
             loop: AbstractEventLoop = asyncio.get_event_loop()
             threads: list[Any] = []
