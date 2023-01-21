@@ -52,13 +52,11 @@ class RoutineCommandActions(str, Enum):
 
 @dataclass
 class RoutineCommand(RequestCommand):
+    type: MessageCommandType = MessageCommandType.ROUTINE
     action: RoutineCommandActions = RoutineCommandActions.ACTION
     id: str | None = None
     scene: str | None = None
     commands: str | None = None
-    
-    def __post_init__(self) -> None:
-        self.type = MessageCommandType.ROUTINE
 
     def routine_json(self) -> TypeJson:
         r: TypeJson = TypeJson()

@@ -65,19 +65,16 @@ class CheckDeviceParameter(Enum):
     
 @dataclass
 class RequestCommand(CommandTyped):
-    def __post_init__(self) -> None:
-        self.type = CommandType.REQUEST
+    type: CommandType = CommandType.REQUEST
 
 @dataclass
 class PingCommand(CommandTyped):
-    def __post_init__(self) -> None:
-        self.type = CommandType.PING
+    type: CommandType = CommandType.PING
 
 @dataclass
 class FwUpdateCommand(CommandTyped):
+    type: CommandType = CommandType.FW_UPDATE
     url: str = ""
-    def __post_init__(self) -> None:
-        self.type = CommandType.FW_UPDATE
     
     def url_json(self) -> TypeJson:
             return  { "url": self.url }
@@ -105,23 +102,23 @@ class CommandWithCheckValuesLight(CommandWithCheckValues):
 
 @dataclass
 class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
-    colors: RgbColor = RgbColor(0, 0, 0)
+    color: RgbColor = RgbColor(0, 0, 0)
     
-    def colors_json(self) -> TypeJson:
+    def color_json(self) -> TypeJson:
             return {"color": {
-                "red": self.colors.r,
-                "green": self.colors.g,
-                "blue": self.colors.b,
+                "red": self.color.r,
+                "green": self.color.g,
+                "blue": self.color.b,
             }}
     
     def json(self) -> TypeJson:
-        return super().json() | self.colors_json()
+        return super().json() | self.color_json()
         
     def check_values(self, device: Device) -> bool:
         """Check device color range."""
         if not super().check_values(device) or not self.light:
             return False
-        values: list = [self.colors.r, self.colors.g, self.colors.b]
+        values: list = [self.color.r, self.color.g, self.color.b]
         if (not self.light.ident or not self.light.color_range) and (not self.light.ident or missing_config(self.force, self.light.ident.product_id)):
             return False
         elif self.light.color_range:
@@ -773,7 +770,7 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
     tt: int = int(args.transitionTime[0])
     # msg: tuple[str, int] | tuple [str, int, Callable] = color_message(
     #     r, g, b, 0 if args.brightness is not None else tt)
-    msg: ColorCommand = ColorCommand(transition_time=tt, force=args.force, colors=RgbColor(
+    msg: ColorCommand = ColorCommand(transition_time=tt, force=args.force, color=RgbColor(
         int(r), int(g), int(b)))
 
     # check_color = functools.partial(

@@ -502,11 +502,10 @@ class LocalCommunicator:
         return_val: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
         msg_sent: Message | None = None
-        communication_finished: bool = False        
-        pause_after_send: int
+        communication_finished: bool = False
 
         async def __send_msg() -> Message | None:
-            nonlocal last_send, pause, return_val, device, msg_sent, pause_after_send
+            nonlocal last_send, pause, return_val, device, msg_sent
             
             send_next: bool = elapsed >= pause
             sleep: float = (pause - elapsed).total_seconds()
@@ -537,7 +536,7 @@ class LocalCommunicator:
                             
                         if isinstance(command, TransitionCommand):
                             tc: TransitionCommand = command
-                            pause_after_send = tc.transition_time
+                            pause = datetime.timedelta(milliseconds = float(tc.transition_time))
                             
                         # if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
                         #     text, pause_after_send = msg.msg_queue[j]
@@ -551,10 +550,9 @@ class LocalCommunicator:
                         #         # stop processing further the message
                         #         break
 
-                        pause = datetime.timedelta(milliseconds = float(pause_after_send))
+
                         try:
-                            if await loop.run_in_executor(None, encrypt_and_send_msg, text, device,
-                                                          connection):
+                            if await loop.run_in_executor(None, encrypt_and_send_msg, text, device, connection):
                                 
                                 return_val = DeviceTcpReturn.SENT
                                 msg_sent = msg 
@@ -675,7 +673,7 @@ class LocalCommunicator:
                     f"Cancelled local send to {connection.address['ip']}!"
                 )
             except Exception as e:
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_ex_trace()
             finally:
                 task_log(f"finished tcp device {connection.address['ip']}, return_state: {return_state}")
 

@@ -6,7 +6,7 @@ import random
 from typing import Any
 from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices.light.commands import ColorCommand, RequestCommand
+from klyqa_ctl.devices.light.commands import ColorCommand, PingCommand, RequestCommand
 from klyqa_ctl.general.general import LOGGER, RgbColor, logging_hdl, task_log_debug, task_log_error
 from klyqa_ctl.local_controller import LocalController
 from klyqa_ctl.general.unit_id import UnitId
@@ -18,14 +18,17 @@ async def main() -> None:
     #     controller_data, None, server_ip = "0.0.0.0")
     
     # lc: LocalController = LocalController(lcc)
-    lc = await LocalController.create_local_only(interactive_prompts = False)
-    loop = asyncio.get_running_loop()
+    lc: LocalController = await LocalController.create_local_only(interactive_prompts = False)
+    loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
 
     LOGGER.setLevel(INFO)
     logging_hdl.setLevel(INFO)
-    REQ = ColorCommand(colors=RgbColor(random.randrange(0, 255), 22, 122), transition_time=0) #, force=True)
-    sends = [
+    REQ: ColorCommand = ColorCommand(color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=0) #, force=True)
+    sends: list = [
+        (UnitId("00ac629de9ad2f4409dc"),
+            "e901f036a5a119a91ca1f30ef5c207d6",
+            PingCommand()),
         (UnitId("00ac629de9ad2f4409dc"),
             "e901f036a5a119a91ca1f30ef5c207d6",
             REQ
@@ -43,10 +46,10 @@ async def main() -> None:
         #     "53b962431abc7af6ef84b43802994424",
         #     RequestCommand()),
     ]
-    responds = {}
-    tasks = []
+    responds: dict = {}
+    tasks: list = []
     
-    count = 0
+    count: int = 0
     # for s in sends:
     #     tasks.append((count, s[0], loop.create_task(lc.sendToDevice(s[0], s[1],
     #         str(s[2])))))
