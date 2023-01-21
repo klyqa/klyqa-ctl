@@ -780,7 +780,7 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
 
     message_queue_tx_local.append(msg.msg_str())
     # col: Any = json.loads(msg[0])["color"]
-    message_queue_tx_state_cloud.append(msg.colors_json())
+    message_queue_tx_state_cloud.append(msg.color_json())
 
 def command_color_percent(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
     """Command for color in percentage numbers."""
@@ -998,19 +998,23 @@ def missing_config(force: bool, product_id: str) -> bool:
 
 def check_scene_support(force: bool, device: Device, scene_id: str) -> bool:
     """Check device scene support."""
+    if force:
+        return True
+    if not device.ident:
+        return False
     try:
         scene_result: list[dict[str, Any]] = [x for x in SCENES if x["id"] == int(scene_id)]
         scene: dict[str, Any] = scene_result[0]
 
         # bulb has no colors, therefore only cwww scenes are allowed
-        if not ".rgb" in device.device.ident.product_id and not "cwww" in scene:
+        if not ".rgb" in device.ident.product_id and not "cwww" in scene:
             return forced_continue(force,
                 f"Scene {scene['label']} not supported by device product" +
                 f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
             )
 
     except Exception as excp:
-        return not missing_config(force, device.device.ident.product_id)
+        return not missing_config(force, device.ident.product_id)
     return True
 
 CHECK_RANGE: dict[Any, Any] = {
