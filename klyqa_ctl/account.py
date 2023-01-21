@@ -26,7 +26,8 @@ class Account:
         self,
         username: str = "",
         password: str = "",
-        device_configs: dict = {},
+        # device_configs: dict[Any, Any] | None = {},
+        settings_lock: asyncio.Lock | None = asyncio.Lock()
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
@@ -38,20 +39,20 @@ class Account:
         self._attr_username_cached: bool = False
         self._attr_settings_cached: bool = False
         self._attr__settings_loaded_ts: datetime.datetime | None = None
-        self._attr_device_configs: dict[Any, Any] = device_configs
-        self._attr_settings_lock: asyncio.Lock = asyncio.Lock()
+        # self._attr_device_configs: dict[Any, Any] | None = device_configs
+        self._attr_settings_lock: asyncio.Lock | None = settings_lock
 
     @property
-    def settings_lock(self) -> asyncio.Lock:
+    def settings_lock(self) -> asyncio.Lock | None:
         return self._attr_settings_lock
     
-    @property
-    def device_configs(self) -> dict[Any, Any]:
-        return self._attr_device_configs
+    # @property
+    # def device_configs(self) -> dict[Any, Any] | None:
+    #     return self._attr_device_configs
     
-    @device_configs.setter
-    def device_configs(self, device_configs: dict[Any, Any]) -> None:
-        self._attr_device_configs = device_configs
+    # @device_configs.setter
+    # def device_configs(self, device_configs: dict[Any, Any]) -> None:
+    #     self._attr_device_configs = device_configs
     
     @property
     def username(self) -> str:

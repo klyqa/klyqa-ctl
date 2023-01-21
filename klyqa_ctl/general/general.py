@@ -1,8 +1,9 @@
 """General types, constants, functions"""
 from __future__ import annotations
 import asyncio, aiofiles
+import traceback
 from threading import Event, Thread
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Callable, TextIO, Type, TypeVar
 import datetime
@@ -86,7 +87,40 @@ AES_KEY_DEV: bytes = bytes(
         0xFF,
     ]
 )
+
+class CommandType(str, Enum):
+    PING = "ping"
+    REQUEST = "request"
+    FACTORY_RESET = "factory_reset"
+    ROUTINE = "routine"
+    REBOOT = "reboot"
+    FW_UPDATE = "fw_update"
+    
+@dataclass
+class Command:
+    """General command class."""
+    _json: TypeJson = field(default_factory=lambda: {})
+
+    def json(self) -> TypeJson:
+        """Return json command."""
+        return self._json
         
+    def msg_str(self) -> str:
+        """Return json command as string."""
+        return json.dumps(self.json())
+
+    def __str__(self) -> str:
+        return self.msg_str()
+    
+@dataclass
+class CommandTyped(Command):
+    """General command class."""
+    type: CommandType = CommandType.REQUEST
+
+    def json(self) -> TypeJson:
+        """Return json command."""
+        return TypeJson({ "type": self.type })
+
 class EventQueuePrinter:
     """Single event queue printer for job printing."""
 
@@ -185,48 +219,86 @@ class RgbColor:
     def b(self, b: int) -> None:
         self._attr_b = b
 
-class AsyncIoLock:
-    """Async IO Lock"""
-
-    task: asyncio.Task | None
-    lock: asyncio.Lock
-    _instance = None
-
-    def __init__(self) -> None:
-        """__init__"""
-        self.lock = asyncio.Lock()
-        self.task = None
-
-    async def acquire(self) -> None:
-        """acquire"""
-        await self.lock.acquire()
-        self.task = asyncio.current_task()
-
-    def release(self) -> None:
-        """release"""
-        self.lock.release()
-
-    def force_unlock(self) -> bool:
-        """force_unlock"""
+class AsyncIoLock(asyncio.Lock):
+    
+    def __init__(self, name: str = "") -> None:
+        super().__init__()
+        self.name: str = name
+        self.locked_in_task: asyncio.Task[Any] | None = None
+        
+    async def acquire_within_task(self, timeout: int = 30, **kwargs: Any) -> bool:
+        """Get asyncio lock."""
+        
         try:
-            if self.task:
-                self.task.cancel()
-            self.lock.release()
-        except:
-            return False
-        return True
+            LOGGER.debug(f"wait for lock... {self.name}")
 
-    @classmethod
-    def instance(
-        cls: Any,
-    ) -> Any:
-        """instance"""
-        if cls._instance is None:
-            LOGGER.debug("Creating new AsyncIOLock instance")
-            cls._instance = cls.__new__(cls)
-            # Put any initialization here.
-            cls._instance.__init__()
-        return cls._instance
+            await asyncio.wait_for(self.acquire(), timeout)
+            
+            self.locked_in_task = asyncio.current_task()
+
+            task_log(f"got lock... {self.name}")
+            return True
+        except asyncio.TimeoutError:
+            LOGGER.error(f'Timeout for getting the lock for device "{self.name}"')
+        except Exception:
+            task_log_error(f"Error while trying to get device lock!")
+            task_log_ex_trace()
+
+        return False
+
+    def release_within_task(self) -> None:
+        if self.locked() and self.locked_in_task == asyncio.current_task():
+            try:
+                super().release()
+                self.locked_in_task = None
+                LOGGER.debug(f"got unlock... {self.name}")
+            except Exception as e:
+                task_log_error(f"Error while trying to unlock the device! (Probably now locked until restart)")
+                task_log_ex_trace()
+                raise e
+                
+# class AsyncIoLockTask:
+#     """Async IO Lock"""
+
+#     task: asyncio.Task | None
+#     lock: asyncio.Lock
+#     _instance = None
+
+#     def __init__(self) -> None:
+#         """__init__"""
+#         self.lock = asyncio.Lock()
+#         self.task = None
+
+#     async def acquire(self) -> None:
+#         """acquire"""
+#         await self.lock.acquire()
+#         self.task = asyncio.current_task()
+
+#     def release(self) -> None:
+#         """release"""
+#         self.lock.release()
+
+#     def force_unlock(self) -> bool:
+#         """force_unlock"""
+#         try:
+#             if self.task:
+#                 self.task.cancel()
+#             self.lock.release()
+#         except:
+#             return False
+#         return True
+
+#     @classmethod
+#     def instance(
+#         cls: Any,
+#     ) -> Any:
+#         """instance"""
+#         if cls._instance is None:
+#             LOGGER.debug("Creating new AsyncIOLock instance")
+#             cls._instance = cls.__new__(cls)
+#             # Put any initialization here.
+#             cls._instance.__init__()
+#         return cls._instance
 
 class ReferenceParse:
     """Reference parse for parameter in function calls."""
@@ -345,10 +417,22 @@ def task_name() -> str:
         return ""
     return task_name
     
-def task_log(log: str, output_func: Callable = LOGGER.debug) -> None:
+def task_log(msg: str, output_func: Callable = LOGGER.debug, *args: Any, **kwargs: Any) -> None:
     """Output task name and logging string."""
     task_name_str: str = task_name()
-    output_func(f"{task_name_str} - {log}" if task_name_str else f"{log}")
+    output_func(f"{task_name_str} - {msg}" if task_name_str else f"{msg}", *args, **kwargs)
     
-def format_uid(text: str) -> Any:
+def task_log_debug(msg: str, *args: Any, **kwargs: Any) -> None:
+    """Output debug message with task name."""
+    task_log(msg, LOGGER.debug, *args, **kwargs)
+    
+def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
+    """Output error message with task name."""
+    task_log(msg, LOGGER.error, *args, **kwargs)
+    
+def task_log_ex_trace() -> None:
+    """Log exception trace within task."""
+    task_log(traceback.format_exc(), LOGGER.trace)
+    
+def format_uid(text: str, **kwargs: Any) -> Any:
     return slugify.slugify(text)

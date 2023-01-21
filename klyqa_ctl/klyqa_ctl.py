@@ -53,6 +53,7 @@ from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQ
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.account import Account
 from klyqa_ctl.general.message import Message
+from klyqa_ctl.general.unit_id import UnitId
 
 class Client:
     """Client"""
@@ -63,13 +64,14 @@ class Client:
         local_communicator: LocalCommunicator | None,
         cloud_backend: CloudBackend | None, 
         account: Account | None,
+        devices: dict = dict()
     ) -> None:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
         self._attr_controller_data: ControllerData = controller_data
         self._attr_local_communicator: LocalCommunicator | None = local_communicator 
         self._attr_account: Account | None = account
-        self._attr_devices: dict[str, Device] = dict()
+        self._attr_devices: dict[str, Device] = devices
         self._attr_cloud_backend: CloudBackend | None = cloud_backend
 
     @property
@@ -150,7 +152,7 @@ class Client:
         # request message to these discovered devices.
         await self.local_communicator.set_send_message(
             message_queue_tx_local,
-            "all",
+            UnitId("all"),
             discover_answer_end,
             discover_timeout_secs,
         )
@@ -162,7 +164,7 @@ class Client:
             )
             # some code missing
 
-    def device_name_to_uid(self, args: argparse.Namespace, target_device_uids: set[str]) -> bool:
+    def device_name_to_uid(self, args: argparse.Namespace, target_device_uids: set[UnitId]) -> bool:
         """Set target device uid by device name argument."""
         
         if not self.account or not self.account.settings:
@@ -334,7 +336,7 @@ class Client:
             if args.aes is not None:
                 self.controller_data.aes_keys["all"] = bytes.fromhex(args.aes[0])
 
-            target_device_uids: set[str] = set()
+            target_device_uids: set[UnitId] = set()
 
             message_queue_tx_local: list[Any] = []
             message_queue_tx_state_cloud: list[Any] = []
@@ -346,7 +348,7 @@ class Client:
 
             if args.device_unitids is not None:
                 target_device_uids = set(
-                    map(format_uid, set(args.device_unitids[0].split(",")))
+                    map(UnitId, set(args.device_unitids[0].split(",")))
                 )
                 LOGGER.info("Send to device: " + ", ".join(args.device_unitids[0].split(",")))
 
@@ -388,7 +390,7 @@ class Client:
                 return False
 
             success: bool = True
-            to_send_device_uids: set[str] = set()
+            to_send_device_uids: set[UnitId] = set()
             
             if self.local_communicator and (args.local or args.tryLocalThanCloud):
                 if args.passive:
@@ -434,7 +436,7 @@ class Client:
                             LOGGER.debug(f"{uid} msg callback.")
 
                         if uid in to_send_device_uids:
-                            to_send_device_uids.remove(uid)
+                            to_send_device_uids.remove(UnitId(uid))
                         msg_wait_tasks[uid].cancel()
                         if async_answer_callback:
                             await async_answer_callback(msg, uid)
@@ -648,6 +650,9 @@ async def main() -> None:
         and not args_parsed.allDevices
         and not args_parsed.quiet
     )
+    
+    controller_data: ControllerData = ControllerData(interactive_prompts = True, offline = args_parsed.offline)
+    await controller_data.init()
 
     account: Account | None = None
 
@@ -658,7 +663,7 @@ async def main() -> None:
     if args_parsed.dev:
         if args_parsed.dev:
             LOGGER.info("development mode. Using default aes key.")
-        account = Account()
+        # account = Account()
         print_onboarded_devices=False
 
     else:
@@ -668,28 +673,31 @@ async def main() -> None:
         else:
             account = Account(
                 args_parsed.username[0] if args_parsed.username else "",
-                args_parsed.password[0] if args_parsed.password else ""
+                args_parsed.password[0] if args_parsed.password else "",
+                # controller_data.device_configs
             )
 
     exit_ret = 0
         
-    controller_data: ControllerData = ControllerData(interactive_prompts = True, offline = args_parsed.offline)    
     local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account, server_ip)
-    cloud_backend: CloudBackend = CloudBackend(controller_data, account, host, args_parsed.offline)
+    
+    cloud_backend: CloudBackend | None = None
+    if account:
+        cloud_backend = CloudBackend(controller_data, account, host, args_parsed.offline)
+    
+        if cloud_backend and not account.access_token:
+            try:
+                if await cloud_backend.login(print_onboarded_devices = print_onboarded_devices):
+                    LOGGER.debug("login finished")
+                    klyqa_accs[account.username] = account
+                else:
+                    raise Exception()
+            except:
+                LOGGER.error("Error during login.")
+                LOGGER.debug(f"{traceback.format_exc()}")
+                sys.exit(1)
 
     client: Client = Client(controller_data, local_communicator, cloud_backend, account)
-    
-    if cloud_backend and not account.access_token:
-        try:
-            if await cloud_backend.login(print_onboarded_devices = print_onboarded_devices):
-                LOGGER.debug("login finished")
-                klyqa_accs[account.username] = account
-            else:
-                raise Exception()
-        except:
-            LOGGER.error("Error during login.")
-            LOGGER.debug(f"{traceback.format_exc()}")
-            sys.exit(1)
 
     if (
         await client.send_to_devices_wrapped(
@@ -701,7 +709,9 @@ async def main() -> None:
     await client.shutdown()
     LOGGER.debug("Closing ports")
     await local_communicator.shutdown()
-    await cloud_backend.shutdown()
+    
+    if cloud_backend:
+        await cloud_backend.shutdown()
 
     sys.exit(exit_ret)
 

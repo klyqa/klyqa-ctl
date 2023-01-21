@@ -127,9 +127,9 @@ class AccountControl:
         """Request the account settings from the cloud backend."""
         
         product_ids: set[str] = {
-            device.ident.product_id
+            ident.product_id
             for uid, device in self.devices.items()
-            if device.ident and device.ident.product_id
+            if device.ident and ident.product_id
         }
 
         for product_id in list(product_ids):

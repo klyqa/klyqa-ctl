@@ -1,12 +1,21 @@
 """Controller data."""
+from __future__ import annotations
+from typing import Any
+from klyqa_ctl.devices.device import Device
+
+from klyqa_ctl.general.general import LOGGER, AsyncIoLock, async_json_cache, task_log, task_log_debug
+
 
 class ControllerData:
     """Controller data."""
 
-    def __init__(self, interactive_prompts: bool = False, offline: bool = False) -> None:
+    def __init__(self, interactive_prompts: bool = False, offline: bool = False, add_devices_lock: AsyncIoLock | None = AsyncIoLock("add_devices_lock")) -> None:
         self._attr_aes_keys: dict[str, bytes] = {}
         self._attr_interactive_prompts: bool = interactive_prompts
         self._attr_offline: bool = offline
+        self._attr_device_configs: dict[Any, Any] = {}
+        self._attr_devices: dict[str, Device] = {}
+        self.add_devices_lock: AsyncIoLock | None = add_devices_lock
     
     @property
     def aes_keys(self) -> dict[str, bytes]:
@@ -20,3 +29,26 @@ class ControllerData:
     def offline(self) -> bool:
         return self._attr_offline
     
+    @property
+    def device_configs(self) -> dict[Any, Any]:
+        return self._attr_device_configs
+    
+    @device_configs.setter
+    def device_configs(self, device_configs: dict[Any, Any]) -> None:
+        self._attr_device_configs = device_configs
+
+    @property
+    def devices(self) -> dict[str, Device]:
+        """Return or set the devices dictionary."""
+        return self._attr_devices
+    
+    async def init(self) -> None:
+        device_configs_cache: dict | None = None
+        cached: bool = False
+        device_configs_cache, cached = await async_json_cache(
+            device_configs_cache, "device.configs.json"
+        )
+        if cached and device_configs_cache:
+            self.device_configs = device_configs_cache
+            task_log_debug("Read device configs cache.")
+        

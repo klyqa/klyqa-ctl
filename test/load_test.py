@@ -106,7 +106,8 @@ async def load_test(client: Client) -> int:
 async def main() -> None:
             
     controller_data: ControllerData = ControllerData(interactive_prompts = True, 
-        offline = False)  
+        offline = False)
+    await controller_data.init()
  
     # build offline version here.
     account: Account = Account("", "")
