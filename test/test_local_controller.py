@@ -22,8 +22,8 @@ async def main() -> None:
     loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
 
-    LOGGER.setLevel(INFO)
-    logging_hdl.setLevel(INFO)
+    LOGGER.setLevel(DEBUG)
+    logging_hdl.setLevel(DEBUG)
     REQ: ColorCommand = ColorCommand(color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=0) #, force=True)
     sends: list = [
         (UnitId("00ac629de9ad2f4409dc"),
@@ -63,7 +63,7 @@ async def main() -> None:
     t: asyncio.Task[Any]
     for count, u_id, t in tasks:
         responds[t.get_name()] = t.result()
-        print(f"{t.get_name()}: {count} {u_id} {t.result()}")
+        LOGGER.info(f"{t.get_name()}: {count} {u_id} {t.result()}")
         
     # print(response)
     # await asyncio.sleep(1.2)

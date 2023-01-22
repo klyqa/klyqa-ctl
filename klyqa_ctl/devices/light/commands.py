@@ -62,12 +62,10 @@ class CheckDeviceParameter(Enum):
     BRIGHTNESS = 1
     TEMPERATURE = 2
     SCENE = 3
-    
-@dataclass
+
 class RequestCommand(CommandTyped):
     type: CommandType = CommandType.REQUEST
 
-@dataclass
 class PingCommand(CommandTyped):
     type: CommandType = CommandType.PING
 

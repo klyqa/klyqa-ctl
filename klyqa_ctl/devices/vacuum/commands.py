@@ -10,7 +10,6 @@ from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandT
 from klyqa_ctl.general.general import LOGGER, CommandTyped, TypeJson
 from klyqa_ctl.general.general import CommandType as MessageCommandType
 
-@dataclass
 class ProductinfoCommand(RequestCommand):        
     def productinfo_json(self) -> TypeJson:
             return {"action": "productinfo"}
@@ -18,7 +17,6 @@ class ProductinfoCommand(RequestCommand):
     def json(self) -> TypeJson:
         return super().json() | self.productinfo_json()
 
-@dataclass
 class RequestGetCommand(RequestCommand):
     def get_json(self) -> TypeJson:
             return {"action": "get"}
@@ -26,7 +24,6 @@ class RequestGetCommand(RequestCommand):
     def json(self) -> TypeJson:
         return super().json() | self.get_json()
 
-@dataclass
 class RequestResetCommand(RequestCommand):
     def reset_json(self) -> TypeJson:
             return {"action": "reset"}
@@ -34,7 +31,6 @@ class RequestResetCommand(RequestCommand):
     def json(self) -> TypeJson:
         return super().json() | self.reset_json()
 
-@dataclass
 class RequestSetCommand(RequestCommand):
     def set_json(self) -> TypeJson:
             return {"action": "set"}

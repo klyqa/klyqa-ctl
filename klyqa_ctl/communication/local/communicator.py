@@ -453,7 +453,7 @@ class LocalCommunicator:
             ):
                 del self.message_queue[device.u_id]
         except:
-            task_log(f"{traceback.format_exc()}")
+            task_log_ex_trace()
    
     async def aes_handshake_and_send_msgs(
         self,
@@ -598,7 +598,7 @@ class LocalCommunicator:
                 try:
                     await __send_msg()
                 except:
-                    task_log(f"{traceback.format_exc()}")
+                    task_log_ex_trace()
                     return DeviceTcpReturn.SEND_ERROR
                 
             while not communication_finished and (len(data)):
@@ -799,7 +799,7 @@ class LocalCommunicator:
 
                     while read_broadcast_response:
 
-                        timeout_read: float = 0.01
+                        timeout_read: float = 0.3
                         LOGGER.debug("Read again tcp port..")
 
                         async def read_tcp_task() -> tuple[
