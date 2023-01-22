@@ -4,7 +4,6 @@ import asyncio
 from logging import DEBUG, INFO
 import random
 from typing import Any
-from klyqa_ctl.communication.local.communicator import LocalCommunicator
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.light.commands import ColorCommand, PingCommand, RequestCommand
 from klyqa_ctl.general.general import LOGGER, RgbColor, logging_hdl, task_log_debug, task_log_error

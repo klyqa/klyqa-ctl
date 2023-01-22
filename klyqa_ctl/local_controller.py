@@ -2,7 +2,7 @@ from __future__ import annotations
 import asyncio
 import json
 from typing import Any
-from klyqa_ctl.communication.local.communicator import LocalCommunicator
+from klyqa_ctl.communication.local.communicator import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.general.general import Command
 from klyqa_ctl.general.message import Message
@@ -10,8 +10,8 @@ from klyqa_ctl.general.unit_id import UnitId
  
 class LocalController:
     
-    def __init__(self, local_communicator: LocalCommunicator, controller_data: ControllerData) -> None:
-        self.local_communicator: LocalCommunicator = local_communicator
+    def __init__(self, local_communicator: LocalConnectionHandler, controller_data: ControllerData) -> None:
+        self.connection_hdl: LocalConnectionHandler = local_communicator
         self.controller_data: ControllerData = controller_data
         
     async def sendToDevice(self, unit_id: UnitId, key: str, command: str) -> str:
@@ -27,7 +27,7 @@ class LocalController:
                 msg_answer = msg.answer_utf8
             response_event.set()
         
-        await self.local_communicator.add_message(
+        await self.connection_hdl.add_message(
             send_msgs = [Command(_json=json.loads(command))],
             target_device_uid = unit_id,
             callback = answer,
@@ -40,7 +40,7 @@ class LocalController:
         
     async def sendToDeviceNative(self, unit_id: UnitId, key: str, command: Command) -> str:
 
-        self.local_communicator.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
+        self.connection_hdl.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
         
         response_event: asyncio.Event = asyncio.Event()
         msg_answer: str = ""
@@ -51,7 +51,7 @@ class LocalController:
                 msg_answer = msg.answer_utf8
             response_event.set()
         
-        await self.local_communicator.add_message(
+        await self.connection_hdl.add_message(
             send_msgs = [command],
             target_device_uid = unit_id,
             callback = answer,
@@ -63,7 +63,7 @@ class LocalController:
         return msg_answer
         
     async def shutdown(self) -> None:
-        await self.local_communicator.shutdown()
+        await self.connection_hdl.shutdown()
         
     @classmethod
     async def create_local_only(
@@ -72,7 +72,7 @@ class LocalController:
         """Factory for local only controller."""
         controller_data: ControllerData = ControllerData(interactive_prompts = interactive_prompts, offline = True)
         await controller_data.init()
-        lcc: LocalCommunicator = LocalCommunicator(
+        lcc: LocalConnectionHandler = LocalConnectionHandler(
             controller_data, None, server_ip = "0.0.0.0")
         
         # lc: LocalController = LocalController(lcc)

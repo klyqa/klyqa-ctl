@@ -8,7 +8,7 @@ import traceback
 from typing import Any
 from enum import Enum, auto
 
-from klyqa_ctl.general.general import LOGGER, ReferenceParse, task_log, task_log_debug, task_log_ex_trace
+from klyqa_ctl.general.general import LOGGER, ReferenceParse, task_log, task_log_debug, task_log_trace_ex
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
@@ -167,7 +167,7 @@ class TcpConnection:
         except socket.timeout:
             task_log("socket.timeout.")
         except:
-            task_log_ex_trace()
+            task_log_trace_ex()
             return DeviceTcpReturn.UNKNOWN_ERROR
         return DeviceTcpReturn.NO_ERROR
         

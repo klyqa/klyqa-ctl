@@ -1,6 +1,7 @@
 """Local device communication"""
 
 from __future__ import annotations
+from abc import abstractmethod
 import argparse
 from asyncio import AbstractEventLoop, CancelledError, Task
 import asyncio
@@ -13,6 +14,7 @@ import socket
 import traceback
 from typing import Any, Callable
 from klyqa_ctl.account import Account
+from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import AesConnectionState, DeviceTcpReturn, TcpConnection
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
@@ -21,7 +23,7 @@ from klyqa_ctl.devices.light.commands import TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, Command, ReferenceParse, TypeJson, format_uid, task_log, task_log_debug, task_log_error, task_log_ex_trace, task_log_trace, task_name, LOGGER
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, Command, ReferenceParse, TypeJson, format_uid, task_log, task_log_debug, task_log_error, task_log_trace_ex, task_log_trace, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
@@ -29,8 +31,8 @@ try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
 except:
     from Crypto.Cipher import AES  # provided by pycryptodome
-
-class LocalCommunicator:
+        
+class LocalConnectionHandler(ConnectionHandler):
     """Data communicator for local device connection.
     
     Important: Call async function shutdown() after using send method,
@@ -55,8 +57,8 @@ class LocalCommunicator:
         self.__attr_send_loop_sleep: Task | None = None
         self.__attr_tasks_done: list[tuple[Task, datetime.datetime, datetime.datetime]] = []
         self.__attr_tasks_undone: list[tuple[Task, datetime.datetime]] = []
-        self._attr_search_and_send_loop_task: Task | None = None
-        self._attr_search_and_send_loop_task_end_now: bool = False
+        self._attr_handlec_connections_task: Task | None = None
+        self._attr_handle_connections_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
         self.msg_ttl_task: Task | None = None
         self._attr_acc_settings: TypeJson | None = account.settings if account else None
@@ -143,20 +145,20 @@ class LocalCommunicator:
         self.__attr_tasks_undone = tasks_undone
         
     @property
-    def search_and_send_loop_task(self) -> Task | None:
-        return self._attr_search_and_send_loop_task
+    def handle_connections_task(self) -> Task | None:
+        return self._attr_handlec_connections_task
 
-    @search_and_send_loop_task.setter
-    def search_and_send_loop_task(self, search_and_send_loop_task: Task | None) -> None:
-        self._attr_search_and_send_loop_task = search_and_send_loop_task
+    @handle_connections_task.setter
+    def handle_connections_task(self, handle_connections_tasks: Task | None) -> None:
+        self._attr_handlec_connections_task = handle_connections_tasks
         
     @property
-    def search_and_send_loop_task_end_now(self) -> bool:
-        return self._attr_search_and_send_loop_task_end_now
+    def handle_connections_task_end_now(self) -> bool:
+        return self._attr_handle_connections_task_end_now
 
-    @search_and_send_loop_task_end_now.setter
-    def search_and_send_loop_task_end_now(self, search_and_send_loop_task_end_now: bool) -> None:
-        self._attr_search_and_send_loop_task_end_now = search_and_send_loop_task_end_now
+    @handle_connections_task_end_now.setter
+    def handle_connections_task_end_now(self, handle_connections_task_end_now: bool) -> None:
+        self._attr_handle_connections_task_end_now = handle_connections_task_end_now
         
     @property
     def __read_tcp_task(self) -> Task | None:
@@ -184,7 +186,7 @@ class LocalCommunicator:
     
     async def shutdown(self) -> None:
 
-        await self.search_and_send_loop_task_stop()
+        await self.handle_connections_task_stop()
         
         if self.tcp:
             try:
@@ -246,7 +248,7 @@ class LocalCommunicator:
         connection: TcpConnection,
         data: bytes,
         device_ref: ReferenceParse,
-        use_dev_aes: bool,
+        # use_dev_aes: bool,
         aes_key: bytes | None = None) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for changes,
@@ -356,8 +358,8 @@ class LocalCommunicator:
             connection.aes_key = aes_key
         elif "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
-        elif use_dev_aes or "dev" in self.controller_data.aes_keys:
-            connection.aes_key = AES_KEY_DEV
+        # elif use_dev_aes or "dev" in self.controller_data.aes_keys:
+        #     connection.aes_key = AES_KEY_DEV
         elif isinstance(self.controller_data.aes_keys, dict) and device.u_id in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys[device.u_id]
         try:
@@ -460,9 +462,9 @@ class LocalCommunicator:
             ):
                 del self.message_queue[device.u_id]
         except:
-            task_log_ex_trace()
+            task_log_trace_ex()
    
-    async def aes_handshake_and_send_msgs(
+    async def handle_connection(
         self,
         device_ref: ReferenceParse,
         connection: TcpConnection,
@@ -560,7 +562,7 @@ class LocalCommunicator:
                             else:
                                 raise Exception(f"TCP socket connection broken (uid: {device.u_id})")
                         except:
-                            task_log_ex_trace()
+                            task_log_trace_ex()
                             break
        
                     if len(msg.msg_queue) == len(msg.msg_queue_sent):
@@ -584,7 +586,7 @@ class LocalCommunicator:
                 try:
                     await __send_msg()
                 except:
-                    task_log_ex_trace()
+                    task_log_trace_ex()
                     return DeviceTcpReturn.SEND_ERROR
             
             data_ref: ReferenceParse = ReferenceParse(data)
@@ -601,7 +603,7 @@ class LocalCommunicator:
                 )
                 
                 return_val = await self.process_tcp_package(connection, data_ref,
-                    msg_sent, device_ref, use_dev_aes)
+                    msg_sent, device_ref) #, use_dev_aes)
                 data = data_ref.ref
                 device = device_ref.ref
                 if return_val == DeviceTcpReturn.ANSWERED:
@@ -613,7 +615,7 @@ class LocalCommunicator:
         return return_val
     
     async def process_tcp_package(self, connection: TcpConnection, data_ref: ReferenceParse,
-        msg_sent: Message | None, device_ref: ReferenceParse, use_dev_aes: bool) -> DeviceTcpReturn:
+        msg_sent: Message | None, device_ref: ReferenceParse) -> DeviceTcpReturn: #, use_dev_aes: bool) -> 
         """Read tcp socket and process packages."""
     
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
@@ -627,7 +629,7 @@ class LocalCommunicator:
         if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
 
             return_val = await self.process_device_identity_package(connection, package.data,
-                device_ref, use_dev_aes)
+                device_ref) #, use_dev_aes)
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
@@ -654,7 +656,7 @@ class LocalCommunicator:
 
             task_log_debug(f"New tcp connection to device at {connection.address}")
             try:
-                return_state = await self.aes_handshake_and_send_msgs(
+                return_state = await self.handle_connection(
                     r_device, connection = connection
                 )
             except CancelledError as e:
@@ -662,7 +664,7 @@ class LocalCommunicator:
                     f"Cancelled local send to {connection.address['ip']}!"
                 )
             except Exception as e:
-                task_log_ex_trace()
+                task_log_trace_ex()
             finally:
                 device = r_device.ref
                 if connection.socket is not None:
@@ -691,7 +693,7 @@ class LocalCommunicator:
         except CancelledError as e:
             task_log_error(f"Device tcp task cancelled.")
         except Exception as e:
-            task_log_ex_trace()
+            task_log_trace_ex()
         return return_state
 
     async def send_udp_broadcast(self) -> bool:
@@ -713,7 +715,7 @@ class LocalCommunicator:
 
         except:
             task_log_debug("Broadcasting QCX-SYN Burst Exception")
-            task_log_ex_trace()
+            task_log_trace_ex()
             if not await self.bind_ports():
                 LOGGER.error("Error binding ports udp 2222 and tcp 3333.")
                 return False
@@ -761,7 +763,7 @@ class LocalCommunicator:
         except CancelledError as e:
             LOGGER.debug("cancelled tcp reading.")
         except Exception as e:
-            task_log_ex_trace()
+            task_log_trace_ex()
             if not await self.bind_ports():
                 LOGGER.error(
                     "Error binding ports udp 2222 and tcp 3333."
@@ -850,7 +852,7 @@ class LocalCommunicator:
         else:
             LOGGER.debug(f"Address {addr[0]} already in connection.")
 
-    async def search_and_send_to_device(
+    async def handle_connections(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
         """! Send broadcast and make tasks for incoming tcp connections.
@@ -865,7 +867,7 @@ class LocalCommunicator:
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
         try:
-            while not self.search_and_send_loop_task_end_now:
+            while not self.handle_connections_task_end_now:
                 if not await self.bind_ports():
                     break
                 if not self.tcp or not self.udp:
@@ -960,24 +962,24 @@ class LocalCommunicator:
         task_log_debug("Search devices and process incoming connnections loop ended.")
         return True
 
-    async def search_and_send_loop_task_stop(self) -> None:
+    async def handle_connections_task_stop(self) -> None:
         """End device search and connections handler task."""
         
         if self.msg_ttl_task and not self.msg_ttl_task.done():
             self.msg_ttl_task.cancel()
             
         while (
-            self.search_and_send_loop_task and not self.search_and_send_loop_task.done()
+            self.handle_connections_task and not self.handle_connections_task.done()
         ):
             LOGGER.debug("stop send and search loop.")
-            if self.search_and_send_loop_task:
-                self.search_and_send_loop_task_end_now = True
-                self.search_and_send_loop_task.cancel(
+            if self.handle_connections_task:
+                self.handle_connections_task_end_now = True
+                self.handle_connections_task.cancel(
                     msg=f"Shutdown search and send loop."
                 )
             try:
                 LOGGER.debug("wait for send and search loop to end.")
-                await asyncio.wait_for(self.search_and_send_loop_task, timeout=0.1)
+                await asyncio.wait_for(self.handle_connections_task, timeout=0.1)
                 LOGGER.debug("wait end for send and search loop.")
             except Exception as e:
                 LOGGER.debug(f"{traceback.format_exc()}")
@@ -991,10 +993,10 @@ class LocalCommunicator:
         if not self.msg_ttl_task or self.msg_ttl_task.done():
             self.msg_ttl_task = loop.create_task(self.check_messages_time_to_live())
 
-        if not self.search_and_send_loop_task or self.search_and_send_loop_task.done():
+        if not self.handle_connections_task or self.handle_connections_task.done():
             LOGGER.debug("search and send loop task created.")
-            self.search_and_send_loop_task = loop.create_task(
-                self.search_and_send_to_device()
+            self.handle_connections_task = loop.create_task(
+                self.handle_connections()
             )
         try:
             if self.__send_loop_sleep is not None:
