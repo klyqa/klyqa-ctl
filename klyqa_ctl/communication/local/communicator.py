@@ -771,7 +771,7 @@ class LocalCommunicator:
     async def check_messages_time_to_live(self) -> None:
         """Check message queue for end of live messages."""
         try:
-            to_del: list[UnitId] = []
+            to_del: list[str] = []
             for uid, msgs in self.message_queue.items():
                 for msg in msgs:
                     if not await msg.check_msg_ttl():
