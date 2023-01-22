@@ -242,7 +242,7 @@ class AsyncIoLock(asyncio.Lock):
             LOGGER.error(f'Timeout for getting the lock for device "{self.name}"')
         except Exception:
             task_log_error(f"Error while trying to get device lock!")
-            task_log_ex_trace()
+            task_log_trace_ex()
 
         return False
 
@@ -254,7 +254,7 @@ class AsyncIoLock(asyncio.Lock):
                 task_log_debug(f"got unlock... {self.name}")
             except Exception as e:
                 task_log_error(f"Error while trying to unlock the device! (Probably now locked until restart)")
-                task_log_ex_trace()
+                task_log_trace_ex()
                 raise e
                 
 # class AsyncIoLockTask:
@@ -434,7 +434,7 @@ def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output error message with task name."""
     task_log(msg, LOGGER.error, *args, **kwargs)
     
-def task_log_ex_trace() -> None:
+def task_log_trace_ex() -> None:
     """Log exception trace within task."""
     task_log_trace(traceback.format_exc())
     

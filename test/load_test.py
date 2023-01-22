@@ -10,7 +10,7 @@ import traceback
 from typing import Any
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.communicator import LocalCommunicator
+from klyqa_ctl.communication.local.communicator import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.general.connections import PROD_HOST
@@ -22,7 +22,7 @@ from klyqa_ctl.klyqa_ctl import Client
 
 async def load_test(client: Client) -> int:
         
-    if client.local_communicator and not await client.local_communicator.bind_ports():
+    if client.local_con_hdl and not await client.local_con_hdl.bind_ports():
         return 1
     
     started: datetime.datetime = datetime.datetime.now()
@@ -111,7 +111,7 @@ async def main() -> None:
  
     # build offline version here.
     account: Account = Account("", "")
-    local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account)
+    connection_hdl: LocalConnectionHandler = LocalConnectionHandler(controller_data, account)
     cloud_backend: CloudBackend = CloudBackend(controller_data, account,
         PROD_HOST, False)
     
@@ -126,7 +126,7 @@ async def main() -> None:
             LOGGER.debug(f"{traceback.format_exc()}")
             sys.exit(1)
     
-    client: Client = Client(controller_data, local_communicator, cloud_backend, account)
+    client: Client = Client(controller_data, connection_hdl, cloud_backend, account)
     await load_test(client)
     
 if __name__ == '__main__':

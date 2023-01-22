@@ -4,7 +4,7 @@ import traceback
 from typing import Any
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.response_status import ResponseStatus
-from klyqa_ctl.general.general import LOGGER, Range, TypeJson
+from klyqa_ctl.general.general import LOGGER, Range, TypeJson, task_log_debug
 
 class Light(Device):
     """Light"""
@@ -81,7 +81,7 @@ class Light(Device):
                 ][0])
             else:
                 try:
-                    LOGGER.debug("Not known product id try default trait search.")
+                    task_log_debug("Not known product id try default trait search.")
                     self.temperature_range = Range(*[
                         trait["value_schema"]["properties"]["colorTemperature"]["enum"]
                         if "properties" in trait["value_schema"]
@@ -89,6 +89,7 @@ class Light(Device):
                         for trait in device_config["deviceTraits"]
                         if trait["trait"] == "@core/traits/color-temperature"
                     ][0])
+                    task_log_debug("Temperature range setted.")
                 except:
                     LOGGER.debug("Bulb product id trait search failed using default temperature numbers.")
                     self.temperature_range = Range(2000, 6500)
@@ -123,7 +124,9 @@ class Light(Device):
                     )
                 except:
                     self.color_range = Range(0, 255)
-                    LOGGER.trace("Can't read color range%s. Falling back to default Range.", f" for product id {self.ident.product_id}" if self.ident else "")
+                    LOGGER.trace("Can't read color range%s. Falling back to " +
+                        "default Range.", f" for product id {self.ident.product_id}"
+                        if self.ident else "")
         except Exception as e:
             LOGGER.error("Error during setting color range for klyqa bulb!")
             LOGGER.debug(f"{traceback.format_exc()}")

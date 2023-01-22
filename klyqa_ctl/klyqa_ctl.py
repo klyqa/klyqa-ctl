@@ -40,7 +40,7 @@ from asyncio.exceptions import CancelledError
 from collections.abc import Callable
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.communicator import LocalCommunicator
+from klyqa_ctl.communication.local.communicator import LocalConnectionHandler
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
@@ -49,7 +49,7 @@ from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum import VacuumCleaner, add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.commands import create_device_message as create_device_message_vacuum
 from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, TRACE, DeviceType, TypeJson, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, logging_hdl, task_log_ex_trace
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, TRACE, DeviceType, TypeJson, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, logging_hdl, task_log_trace_ex
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.account import Account
 from klyqa_ctl.general.message import Message
@@ -61,7 +61,7 @@ class Client:
     def __init__(
         self,
         controller_data: ControllerData,
-        local_communicator: LocalCommunicator | None,
+        local_connection_hdl: LocalConnectionHandler | None,
         cloud_backend: CloudBackend | None, 
         account: Account | None,
         devices: dict = dict()
@@ -69,7 +69,7 @@ class Client:
         """! Initialize the account with the login data, tcp, udp datacommunicator and tcp
         communication tasks."""
         self._attr_controller_data: ControllerData = controller_data
-        self._attr_local_communicator: LocalCommunicator | None = local_communicator 
+        self._attr_local_con_hdl: LocalConnectionHandler | None = local_connection_hdl 
         self._attr_account: Account | None = account
         self._attr_devices: dict[str, Device] = devices
         self._attr_cloud_backend: CloudBackend | None = cloud_backend
@@ -83,12 +83,12 @@ class Client:
         self._attr_controller_data = controller_data
 
     @property
-    def local_communicator(self) -> LocalCommunicator | None:
-        return self._attr_local_communicator
+    def local_con_hdl(self) -> LocalConnectionHandler | None:
+        return self._attr_local_con_hdl
     
-    @local_communicator.setter
-    def local_communicator(self, local_communicator: LocalCommunicator | None ) -> None:
-        self._attr_local_communicator = local_communicator
+    @local_con_hdl.setter
+    def local_con_hdl(self, local_con_hdl: LocalConnectionHandler | None ) -> None:
+        self._attr_local_con_hdl = local_con_hdl
 
     @property
     def account(self) -> Account | None:
@@ -124,13 +124,13 @@ class Client:
                 
         if self.cloud_backend:
             await self.cloud_backend.shutdown()
-        if self.local_communicator:
-            await self.local_communicator.shutdown()
+        if self.local_con_hdl:
+            await self.local_con_hdl.shutdown()
         
     async def discover_devices(self, args: argparse.Namespace, message_queue_tx_local: list[Any],
         target_device_uids: set[Any]) -> None:
         """Discover devices."""
-        if not self.local_communicator:
+        if not self.local_con_hdl:
             return
 
         print(SEPARATION_WIDTH * "-")
@@ -150,7 +150,7 @@ class Client:
         # send a message to uid "all" which is fake but will get the identification message
         # from the devices in the aes_search and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local_communicator.add_message(
+        await self.local_con_hdl.add_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_answer_end,
@@ -392,11 +392,11 @@ class Client:
             success: bool = True
             to_send_device_uids: set[UnitId] = set()
             
-            if self.local_communicator and (args.local or args.tryLocalThanCloud):
+            if self.local_con_hdl and (args.local or args.tryLocalThanCloud):
                 if args.passive:
-                    if self.local_communicator and self.local_communicator.udp:
+                    if self.local_con_hdl and self.local_con_hdl.udp:
                         LOGGER.debug("Waiting for UDP broadcast")
-                        data, address = self.local_communicator.udp.recvfrom(4096)
+                        data, address = self.local_con_hdl.udp.recvfrom(4096)
                         LOGGER.debug(
                             "\n\n 2. UDP server received: ",
                             data.decode("utf-8"),
@@ -406,10 +406,10 @@ class Client:
                         )
 
                         LOGGER.debug("3a. Sending UDP ack.\n")
-                        self.local_communicator.udp.sendto("QCX-ACK".encode("utf-8"), address)
+                        self.local_con_hdl.udp.sendto("QCX-ACK".encode("utf-8"), address)
                         time.sleep(1)
                         LOGGER.debug("3b. Sending UDP ack.\n")
-                        self.local_communicator.udp.sendto("QCX-ACK".encode("utf-8"), address)
+                        self.local_con_hdl.udp.sendto("QCX-ACK".encode("utf-8"), address)
                 else:
 
                     send_started_local: datetime.datetime = datetime.datetime.now()
@@ -443,7 +443,7 @@ class Client:
 
                     for uid in target_device_uids:
                         
-                        await self.local_communicator.add_message(
+                        await self.local_con_hdl.add_message(
                             send_msgs = message_queue_tx_local.copy(),
                             target_device_uid = uid,
                             callback=async_answer_callback_local,
@@ -532,7 +532,7 @@ class Client:
 
             return success
         except Exception as e:
-            task_log_ex_trace()
+            task_log_trace_ex()
             return False
     
     async def send_to_devices_wrapped(self, args_parsed: argparse.Namespace, args_in: list[Any], timeout_ms: int = 5000) -> int:
@@ -554,8 +554,8 @@ class Client:
 
         local_communication: bool = args_parsed.local or args_parsed.tryLocalThanCloud
 
-        if local_communication and self.local_communicator:
-            if not await self.local_communicator.bind_ports():
+        if local_communication and self.local_con_hdl:
+            if not await self.local_con_hdl.bind_ports():
                 return 1
 
         exit_ret: int = 0
@@ -582,8 +582,8 @@ class Client:
             exit_ret = 1
 
         LOGGER.debug("Closing ports")
-        if self.local_communicator:
-            await self.local_communicator.shutdown()
+        if self.local_con_hdl:
+            await self.local_con_hdl.shutdown()
 
         return exit_ret
 
@@ -679,7 +679,7 @@ async def main() -> None:
 
     exit_ret = 0
         
-    local_communicator: LocalCommunicator = LocalCommunicator(controller_data, account, server_ip)
+    local_con_hdl: LocalConnectionHandler = LocalConnectionHandler(controller_data, account, server_ip)
     
     cloud_backend: CloudBackend | None = None
     if account:
@@ -697,7 +697,7 @@ async def main() -> None:
                 LOGGER.debug(f"{traceback.format_exc()}")
                 sys.exit(1)
 
-    client: Client = Client(controller_data, local_communicator, cloud_backend, account)
+    client: Client = Client(controller_data, local_con_hdl, cloud_backend, account)
 
     if (
         await client.send_to_devices_wrapped(
@@ -708,7 +708,7 @@ async def main() -> None:
 
     await client.shutdown()
     LOGGER.debug("Closing ports")
-    await local_communicator.shutdown()
+    await local_con_hdl.shutdown()
     
     if cloud_backend:
         await cloud_backend.shutdown()

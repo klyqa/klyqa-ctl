@@ -31,7 +31,7 @@ class ResponseIdentityMessage(ResponseMessage):
 
     @unit_id.setter
     def unit_id(self, unit_id: str) -> None:
-        self._attr_unit_id = UnitId(unit_id)
+        self._attr_unit_id = str(UnitId(unit_id))
 
     @property
     def fw_version(self) -> str:

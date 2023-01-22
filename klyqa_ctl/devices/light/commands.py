@@ -63,11 +63,15 @@ class CheckDeviceParameter(Enum):
     TEMPERATURE = 2
     SCENE = 3
 
+@dataclass
 class RequestCommand(CommandTyped):
-    type: CommandType = CommandType.REQUEST
+    def __post_init__(self) -> None:
+        self.type = CommandType.PING
 
+@dataclass
 class PingCommand(CommandTyped):
-    type: CommandType = CommandType.PING
+    def __post_init__(self) -> None:
+        self.type = CommandType.PING
 
 @dataclass
 class FwUpdateCommand(CommandTyped):
@@ -75,7 +79,7 @@ class FwUpdateCommand(CommandTyped):
     url: str = ""
     
     def url_json(self) -> TypeJson:
-            return  { "url": self.url }
+        return { "url": self.url }
     
     def json(self) -> TypeJson:
         return super().json() | self.url_json()
