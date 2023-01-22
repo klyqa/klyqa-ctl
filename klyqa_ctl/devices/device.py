@@ -32,7 +32,7 @@ class Device:
         self._attr_acc_sets: dict[Any, Any] = {}
         self._attr__use_lock: AsyncIoLock | None = None
         self._attr__use_thread: asyncio.Task[Any] | None = None
-        self._attr_recv_msg_unproc: list[Message] = []
+        # self._attr_recv_msg_unproc: list[Message] = []
 
         self._attr_status: ResponseMessage | None = None
         self._attr_response_classes: dict[str, Any] = {
@@ -97,13 +97,13 @@ class Device:
     def _use_thread(self, _use_thread: asyncio.Task[Any] | None) -> None:
         self._attr__use_thread = _use_thread
     
-    @property
-    def recv_msg_unproc(self) -> list[Message]:
-        return self._attr_recv_msg_unproc
+    # @property
+    # def recv_msg_unproc(self) -> list[Message]:
+    #     return self._attr_recv_msg_unproc
     
-    @recv_msg_unproc.setter
-    def recv_msg_unproc(self, recv_msg_unproc: list[Message]) -> None:
-        self._attr_recv_msg_unproc = recv_msg_unproc
+    # @recv_msg_unproc.setter
+    # def recv_msg_unproc(self, recv_msg_unproc: list[Message]) -> None:
+    #     self._attr_recv_msg_unproc = recv_msg_unproc
     
     @property
     def status(self) -> ResponseMessage | None:
@@ -129,10 +129,10 @@ class Device:
     def device_config(self, device_config: dict[str, Any]) -> None:
         self._attr_device_config = device_config
 
-    def process_msgs(self) -> None:
-        for msg in self.recv_msg_unproc:
-            LOGGER.debug(f"updating device {self.u_id} entity with msg:")
-            self.recv_msg_unproc.remove(msg)
+    # def process_msgs(self) -> None:
+    #     for msg in self.recv_msg_unproc:
+    #         LOGGER.debug(f"updating device {self.u_id} entity with msg:")
+    #         self.recv_msg_unproc.remove(msg)
 
     def get_name(self) -> str:
         return (

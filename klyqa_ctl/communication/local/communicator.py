@@ -422,7 +422,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 connection.aes_key_confirmed = True
                 task_log(f"device uid {device.u_id} aes_confirmed {connection.aes_key_confirmed}")
             except:
-                task_log("Could not load json message from device: ")
+                task_log("Could not load json message from device: "); LOGGER.error("Couldn't read answer from device %s!", device.u_id)
                 task_log(f"{answer}")
                 return DeviceTcpReturn.RESPONSE_ERROR
 
@@ -432,8 +432,8 @@ class LocalConnectionHandler(ConnectionHandler):
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
 
-            device.recv_msg_unproc.append(msg_sent)
-            device.process_msgs()
+            # device.recv_msg_unproc.append(msg_sent)
+            # device.process_msgs()
                     
             if msg_sent and not msg_sent.callback is None and device is not None:
                 await msg_sent.callback(msg_sent, device.u_id)
@@ -454,7 +454,7 @@ class LocalConnectionHandler(ConnectionHandler):
 
             if (
                 device.u_id in self.message_queue
-                # and not self.message_queue[device.u_id]
+                and not self.message_queue[device.u_id]
             ):
                 del self.message_queue[device.u_id]
         except:
@@ -519,7 +519,7 @@ class LocalConnectionHandler(ConnectionHandler):
             if (
                 send_next and device
                 and device.u_id in self.message_queue
-                and len(self.message_queue[UnitId(device.u_id)]) > 0
+                and len(self.message_queue[device.u_id]) > 0
             ):
                 msg: Message = self.message_queue[device.u_id][0]
                 
@@ -543,7 +543,8 @@ class LocalConnectionHandler(ConnectionHandler):
                             pause = datetime.timedelta(milliseconds = float(tc.transition_time))
 
                         try:
-                            if await loop.run_in_executor(None, connection.encrypt_and_send_msg, text, device):
+                            # if await loop.run_in_executor(None, connection.encrypt_and_send_msg, text, device):
+                            if await connection.encrypt_and_send_msg(text, device):
                                 
                                 return_val = DeviceTcpReturn.SENT
                                 msg_sent = msg 

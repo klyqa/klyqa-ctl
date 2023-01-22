@@ -174,7 +174,8 @@ class TcpConnection:
             return DeviceTcpReturn.UNKNOWN_ERROR
         return DeviceTcpReturn.NO_ERROR
     
-    def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
+    async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         info_str: str = (
             (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
             + 'Sending in local network to "'
@@ -189,12 +190,15 @@ class TcpConnection:
             plain = plain + bytes([0x20])
 
         cipher: bytes = self.sending_aes.encrypt(plain)
+        package: bytes = bytes(
+            [len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
 
         while self.socket:
             try:
-                self.socket.send(
-                    bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
-                )
+                await loop.sock_sendall(self.socket, package)
+                # self.socket.send(
+                #     bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
+                # )
                 return True
             except socket.timeout:
                 LOGGER.debug("Send timed out, retrying...")
