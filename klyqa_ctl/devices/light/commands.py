@@ -11,7 +11,7 @@ from typing import Any, Callable
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
-from klyqa_ctl.general.general import LOGGER, CommandType, DeviceType, CommandTyped, RgbColor, TypeJson
+from klyqa_ctl.general.general import LOGGER, Command, CommandType, DeviceType, CommandTyped, RgbColor, TypeJson
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 
 COMMANDS_TO_SEND: list[str] = [
@@ -66,7 +66,7 @@ class CheckDeviceParameter(Enum):
 @dataclass
 class RequestCommand(CommandTyped):
     def __post_init__(self) -> None:
-        self.type = CommandType.PING
+        self.type = CommandType.REQUEST
 
 @dataclass
 class PingCommand(CommandTyped):
@@ -107,11 +107,11 @@ class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
     color: RgbColor = RgbColor(0, 0, 0)
     
     def color_json(self) -> TypeJson:
-            return {"color": {
-                "red": self.color.r,
-                "green": self.color.g,
-                "blue": self.color.b,
-            }}
+        return {"color": {
+            "red": self.color.r,
+            "green": self.color.g,
+            "blue": self.color.b,
+        }}
     
     def json(self) -> TypeJson:
         return super().json() | self.color_json()
@@ -160,9 +160,9 @@ class BrightnessCommand(CommandWithCheckValuesLight, TransitionCommand):
     brightness: int = 0
     
     def brightness_json(self) -> TypeJson:
-            return {"brightness": {
-                    "percentage": self.brightness,
-                }}
+        return {"brightness": {
+                "percentage": self.brightness,
+            }}
     
     def json(self) -> TypeJson:
         return super().json() | self.brightness_json()
@@ -516,16 +516,16 @@ async def create_device_message(
 
     """
 
-    def local_and_cloud_command_msg(json_msg: TypeJson, timeout: int, check_func: Callable | None = None) -> None:
+    def local_and_cloud_command_msg(json_msg: Command) -> None: #, check_func: Callable | None = None) -> None:
         """ Add message to local and cloud queue. Give a timeout after the message
         was sent. Give also a check function for the values that are send to be in
         limits (device config).
         """
-        msg: tuple[str, int] | tuple[str, int, Callable] = (json.dumps(json_msg), timeout)
-        if check_func:
-            msg = msg + (check_func,)
-        message_queue_tx_local.append(msg)
-        message_queue_tx_command_cloud.append(json_msg)
+        # msg: tuple[str, int] = (json.dumps(json_msg), timeout)
+        # if check_func:
+        #     msg = msg + (check_func,)
+        message_queue_tx_local.append(json_msg)
+        message_queue_tx_command_cloud.append(json_msg.json())
 
     # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
     if (args.local or args.tryLocalThanCloud) and (
@@ -550,21 +550,22 @@ async def create_device_message(
             return False
 
     if args.ota is not None:
-        local_and_cloud_command_msg(FwUpdateCommand(args.ota).json(), 10000)
+        local_and_cloud_command_msg(FwUpdateCommand(args.ota))
 
     if args.ping:
-        local_and_cloud_command_msg(PingCommand().json(), 10000)
+        local_and_cloud_command_msg(PingCommand())
 
     if args.request:
-        local_and_cloud_command_msg(RequestCommand().json(), 10000)
+        local_and_cloud_command_msg(RequestCommand())
 
-    if args.external_source:
-        mode, port, channel = args.external_source
-        local_and_cloud_command_msg(
-            # ExternalSourceCommand(protocol=, port=int(port), channel=int(channel)).json()
-            external_source_message(int(mode), port, channel)
-            , 0
-        )
+    # needs new command class
+    # if args.external_source:
+    #     mode, port, channel = args.external_source
+    #     local_and_cloud_command_msg(
+    #         # ExternalSourceCommand(protocol=, port=int(port), channel=int(channel)).json()
+    #         external_source_message(int(mode), port, channel)
+    #         , 0
+    #     )
 
     if args.enable_tb is not None:
         enable_tb(args, message_queue_tx_local)
@@ -573,9 +574,7 @@ async def create_device_message(
         pass
 
     if args.power:
-        message_queue_tx_local.append(
-            (json.dumps({"type": "request", "status": args.power[0]}), 500)
-        )
+        message_queue_tx_local.append(Command(_json={"type": "request", "status": args.power[0]}))
         message_queue_tx_state_cloud.append({"status": args.power[0]})
 
     if args.color is not None:
@@ -591,33 +590,34 @@ async def create_device_message(
         command_brightness(args, message_queue_tx_local, message_queue_tx_state_cloud)
 
     if args.factory_reset:
-        local_and_cloud_command_msg({"type": "factory_reset"}, 500)
+        local_and_cloud_command_msg(Command(_json={"type": "factory_reset", "status": args.power[0]}))
 
-    if args.fade is not None and len(args.fade) == 2:
-        local_and_cloud_command_msg(
-            {"type": "request", "fade_out": args.fade[1], "fade_in": args.fade[0]}, 500
-        )
+    # needs new command classes
+    # if args.fade is not None and len(args.fade) == 2:
+    #     local_and_cloud_command_msg(
+    #         {"type": "request", "fade_out": args.fade[1], "fade_in": args.fade[0]}, 500
+    #     )
 
-    if args.reboot:
-        local_and_cloud_command_msg({"type": "reboot"}, 500)
+    # if args.reboot:
+    #     local_and_cloud_command_msg({"type": "reboot"}, 500)
 
-    routine_scene(args, scene_list)
-        # return False
+    # routine_scene(args, scene_list)
+    #     # return False
 
-    if args.routine_list:
-        local_and_cloud_command_msg({"type": "routine", "action": "list"}, 500)
+    # if args.routine_list:
+    #     local_and_cloud_command_msg({"type": "routine", "action": "list"}, 500)
 
-    if args.routine_put and args.routine_id is not None:
-        routine_put(args, local_and_cloud_command_msg)
+    # if args.routine_put and args.routine_id is not None:
+    #     routine_put(args, local_and_cloud_command_msg)
 
-    if args.routine_delete and args.routine_id is not None:
-        local_and_cloud_command_msg(
-            {"type": "routine", "action": "delete", "id": args.routine_id}, 500
-        )
-    if args.routine_start and args.routine_id is not None:
-        local_and_cloud_command_msg(
-            {"type": "routine", "action": "start", "id": args.routine_id}, 500
-        )
+    # if args.routine_delete and args.routine_id is not None:
+    #     local_and_cloud_command_msg(
+    #         {"type": "routine", "action": "delete", "id": args.routine_id}, 500
+    #     )
+    # if args.routine_start and args.routine_id is not None:
+    #     local_and_cloud_command_msg(
+    #         {"type": "routine", "action": "start", "id": args.routine_id}, 500
+    #     )
     
     return True
 
@@ -929,7 +929,7 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
 def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
     """Put routine to device."""
     check_scene: functools.partial[Any] = functools.partial(
-        check_device_parameter, args, CheckDeviceParameter.SCENE, args.routine_scene
+        check_device_parameter, args.force, CheckDeviceParameter.SCENE, args.routine_scene
     )
     # msg = msg + (check_scene,) # fix check routine before putting
     local_and_cloud_command_msg(
