@@ -8,7 +8,7 @@ import traceback
 from typing import Any
 from enum import Enum, auto
 
-from klyqa_ctl.general.general import LOGGER, ReferenceParse, task_log, task_log_ex_trace
+from klyqa_ctl.general.general import LOGGER, ReferenceParse, task_log, task_log_debug, task_log_ex_trace
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
@@ -159,6 +159,7 @@ class TcpConnection:
             return DeviceTcpReturn.SOCKET_ERROR
         try:
             # data_ref.ref = await loop.run_in_executor(None, self.socket.recv, 4096)
+            task_log_debug("Read tcp socket to device.")
             data_ref.ref = await loop.sock_recv(self.socket, 4096)
             if len(data_ref.ref) == 0:
                 task_log("TCP connection ended unexpectedly!", LOGGER.error)

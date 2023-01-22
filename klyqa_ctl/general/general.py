@@ -251,7 +251,7 @@ class AsyncIoLock(asyncio.Lock):
             try:
                 super().release()
                 self.locked_in_task = None
-                LOGGER.debug(f"got unlock... {self.name}")
+                task_log_debug(f"got unlock... {self.name}")
             except Exception as e:
                 task_log_error(f"Error while trying to unlock the device! (Probably now locked until restart)")
                 task_log_ex_trace()
@@ -426,13 +426,17 @@ def task_log_debug(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
     task_log(msg, LOGGER.debug, *args, **kwargs)
     
+def task_log_trace(msg: str, *args: Any, **kwargs: Any) -> None:
+    """Output debug message with task name."""
+    task_log(msg, LOGGER.trace, *args, **kwargs)
+    
 def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output error message with task name."""
     task_log(msg, LOGGER.error, *args, **kwargs)
     
 def task_log_ex_trace() -> None:
     """Log exception trace within task."""
-    task_log(traceback.format_exc(), LOGGER.trace)
+    task_log_trace(traceback.format_exc())
     
 def format_uid(text: str, **kwargs: Any) -> Any:
     return slugify.slugify(text)

@@ -21,7 +21,7 @@ from klyqa_ctl.devices.light.commands import TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum import VacuumCleaner
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, Command, ReferenceParse, TypeJson, format_uid, task_log, task_log_debug, task_log_error, task_log_ex_trace, task_name, LOGGER
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_MAX_COM_PROC_TIMEOUT_SECS, SEPARATION_WIDTH, SEND_LOOP_MAX_SLEEP_TIME, Command, ReferenceParse, TypeJson, format_uid, task_log, task_log_debug, task_log_error, task_log_ex_trace, task_log_trace, task_name, LOGGER
 from klyqa_ctl.general.message import Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
@@ -50,6 +50,7 @@ class LocalCommunicator:
         self._attr_tcp: socket.socket | None = None
         self._attr_udp: socket.socket | None = None
         self._attr_server_ip: str = server_ip
+        # here message queue needs to be string not UnitId to be hashable for dictionary
         self._attr_message_queue: dict[str, list[Message]] = {}
         self.__attr_send_loop_sleep: Task | None = None
         self.__attr_tasks_done: list[tuple[Task, datetime.datetime, datetime.datetime]] = []
@@ -57,6 +58,7 @@ class LocalCommunicator:
         self._attr_search_and_send_loop_task: Task | None = None
         self._attr_search_and_send_loop_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
+        self.msg_ttl_task: Task | None = None
         self._attr_acc_settings: TypeJson | None = account.settings if account else None
         self._attr_current_addr_connections = set()
         
@@ -259,7 +261,7 @@ class LocalCommunicator:
             identity: ResponseIdentityMessage = ResponseIdentityMessage(
                 **json_response["ident"]
             )
-            device.u_id = identity.unit_id
+            device.u_id = UnitId(identity.unit_id)
         except:
             return DeviceTcpReturn.NO_UNIT_ID
 
@@ -274,9 +276,15 @@ class LocalCommunicator:
                 new_dev = Light()
             elif ".cleaning" in identity.product_id:
                 new_dev = VacuumCleaner()
-            if new_dev:
+            if not new_dev:
+                LOGGER.info(f"Found new device {identity.unit_id} but don't know the product id {identity.product_id}.")
+                task_log_debug(f"Found new device {identity.unit_id} but don't know the product id {identity.product_id}.")
+            else:
+                if is_new_device:
+                    LOGGER.info(f"Found new device {identity.unit_id}")
+                    task_log_debug(f"Found new device {identity.unit_id}")
                 new_dev.ident = identity
-                new_dev.u_id = identity.unit_id
+                new_dev.u_id = UnitId(identity.unit_id)
                 if new_dev.ident and new_dev.ident.product_id in self.controller_data.device_configs:
                     new_dev.read_device_config(device_config = self.controller_data.device_configs[
                         new_dev.ident.product_id
@@ -340,13 +348,9 @@ class LocalCommunicator:
         elif device.ident:
             found = found + f" {device.ident.unit_id}"
 
-        if is_new_device:
-            LOGGER.info(
-                f"%sFound device {found}",
-                f"{task_name()} - " if LOGGER.level == logging.DEBUG else "",
-            )
-        else:
+        if not is_new_device:
             task_log(f"Found device {found}")
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
         if aes_key is not None:
             connection.aes_key = aes_key
@@ -360,10 +364,12 @@ class LocalCommunicator:
             if connection.socket is not None:
                 # for prod do in executor or task for more asyncio schedule task executions
                 # await loop.run_in_executor(None, connection.socket.send, bytes([0, 8, 0, 1]) + connection.localIv)
-                if not connection.socket.send(
-                    bytes([0, 8, 0, 1]) + connection.local_iv
-                ):
-                    return DeviceTcpReturn.ERROR_LOCAL_IV
+                # if not connection.socket.send(
+                #     bytes([0, 8, 0, 1]) + connection.local_iv
+                # ):
+                task_log_debug("Sending local initial vector.")
+                await loop.sock_sendall(connection.socket, bytes([0, 8, 0, 1]) + connection.local_iv)
+                    # return DeviceTcpReturn.ERROR_LOCAL_IV
         except:
             return DeviceTcpReturn.ERROR_LOCAL_IV
     
@@ -393,6 +399,7 @@ class LocalCommunicator:
         )
 
         connection.state = AesConnectionState.CONNECTED
+        task_log_debug("Received remote initial vector. Connected state.")
     
         return DeviceTcpReturn.NO_ERROR
         
@@ -449,7 +456,7 @@ class LocalCommunicator:
 
             if (
                 device.u_id in self.message_queue
-                and not self.message_queue[device.u_id]
+                # and not self.message_queue[device.u_id]
             ):
                 del self.message_queue[device.u_id]
         except:
@@ -493,7 +500,7 @@ class LocalCommunicator:
 
         data: bytes = b""
         last_send: datetime.datetime = datetime.datetime.now()
-        connection.socket.settimeout(0.001)
+        # connection.socket.settimeout(0.001)
         pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
         elapsed: datetime.timedelta = datetime.datetime.now() - last_send
 
@@ -515,7 +522,7 @@ class LocalCommunicator:
             if (
                 send_next and device
                 and device.u_id in self.message_queue
-                and len(self.message_queue[device.u_id]) > 0
+                and len(self.message_queue[UnitId(device.u_id)]) > 0
             ):
                 msg: Message = self.message_queue[device.u_id][0]
                 
@@ -537,19 +544,6 @@ class LocalCommunicator:
                         if isinstance(command, TransitionCommand):
                             tc: TransitionCommand = command
                             pause = datetime.timedelta(milliseconds = float(tc.transition_time))
-                            
-                        # if len(msg.msg_queue[j]) and len(msg.msg_queue[j]) == 2:
-                        #     text, pause_after_send = msg.msg_queue[j]
-                        #     msg.msg_queue_sent.append(text)
-                        # else:
-                        #     text, pause_after_send, check_func = msg.msg_queue[j]
-                        #     msg.msg_queue_sent.append(text)
-                        #     if not check_func(device = device):
-                        #         # some parameter check in the message failed, remove message from the queue
-                        #         self.remove_msg_from_queue(msg, device)
-                        #         # stop processing further the message
-                        #         break
-
 
                         try:
                             if await loop.run_in_executor(None, encrypt_and_send_msg, text, device, connection):
@@ -583,14 +577,6 @@ class LocalCommunicator:
         while not communication_finished and (device.u_id == "no_uid" or type(device) == Device or 
                device.u_id in self.message_queue or msg_sent):
             
-            data_ref: ReferenceParse = ReferenceParse(data)
-            read_data_ret: DeviceTcpReturn = await connection.read_local_tcp_socket(data_ref)
-            if read_data_ret != DeviceTcpReturn.NO_ERROR:
-                return read_data_ret
-            data = data_ref.ref
-
-            elapsed = datetime.datetime.now() - last_send
-            
             if msg_sent and msg_sent.state == MessageState.ANSWERED:
                 msg_sent = None
 
@@ -600,13 +586,21 @@ class LocalCommunicator:
                 except:
                     task_log_ex_trace()
                     return DeviceTcpReturn.SEND_ERROR
+            
+            data_ref: ReferenceParse = ReferenceParse(data)
+            read_data_ret: DeviceTcpReturn = await connection.read_local_tcp_socket(data_ref)
+            if read_data_ret != DeviceTcpReturn.NO_ERROR:
+                return read_data_ret
+            data = data_ref.ref
+
+            elapsed = datetime.datetime.now() - last_send
                 
             while not communication_finished and (len(data)):
                 task_log(
                     f"TCP server received {str(len(data))} bytes from {str(connection.address)}"
                 )
                 
-                return_val = await self.aes_handshake_and_read_tcp_socket(connection, data_ref,
+                return_val = await self.process_tcp_package(connection, data_ref,
                     msg_sent, device_ref, use_dev_aes)
                 data = data_ref.ref
                 device = device_ref.ref
@@ -618,7 +612,7 @@ class LocalCommunicator:
             
         return return_val
     
-    async def aes_handshake_and_read_tcp_socket(self, connection: TcpConnection, data_ref: ReferenceParse,
+    async def process_tcp_package(self, connection: TcpConnection, data_ref: ReferenceParse,
         msg_sent: Message | None, device_ref: ReferenceParse, use_dev_aes: bool) -> DeviceTcpReturn:
         """Read tcp socket and process packages."""
     
@@ -654,16 +648,11 @@ class LocalCommunicator:
     ) -> DeviceTcpReturn:
         """! Handle the incoming tcp connection to the device."""
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
-        
-        task: asyncio.Task[Any] | None = asyncio.current_task()
 
         try:
             r_device: ReferenceParse = ReferenceParse(device)
 
-            if task is not None:
-                LOGGER.debug(
-                    f"{task.get_name()} - started tcp device {connection.address['ip']} "
-                )
+            task_log_debug(f"New tcp connection to device at {connection.address}")
             try:
                 return_state = await self.aes_handshake_and_send_msgs(
                     r_device, connection = connection
@@ -675,8 +664,6 @@ class LocalCommunicator:
             except Exception as e:
                 task_log_ex_trace()
             finally:
-                task_log(f"finished tcp device {connection.address['ip']}, return_state: {return_state}")
-
                 device = r_device.ref
                 if connection.socket is not None:
                     try:
@@ -685,7 +672,6 @@ class LocalCommunicator:
                     finally:
                         connection.socket = None
                 self.current_addr_connections.remove(str(connection.address["ip"]))
-                task_log(f"tcp closed for {device.u_id}. Return state: {return_state}", )
 
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
@@ -693,31 +679,176 @@ class LocalCommunicator:
 
                 if device.u_id in self.devices:
                     device_b: Device = self.devices[device.u_id]
-                    await device_b.use_unlock()
-                    # if device_b._use_thread == asyncio.current_task():
-                    #     try:
-                    #         if device_b._use_lock is not None:
-                    #             device_b._use_lock.release()
-                    #         device_b._use_thread = None
-                    #     except:
-                    #         LOGGER.debug(f"{traceback.format_exc()}")
+                    device_b.use_unlock()
 
                 elif return_state == DeviceTcpReturn.UNKNOWN_ERROR:
                     LOGGER.error(
                         f"Unknown error during send (and handshake) with device {unit_id}."
                     )
-                # elif return_state == DeviceTcpReturn.NO_ERROR:
-                #     pass
-                # elif return_state == DeviceTcpReturn.NO_ERROR:
-                #     LOGGER.debug(
-                #         f"End of tcp stream. ({connection.address['ip']}:{connection.address['port']})"
-                #     )
+                    
+                task_log(f"Finished tcp connection to device {connection.address['ip']} with return state: {return_state}")
 
         except CancelledError as e:
             task_log_error(f"Device tcp task cancelled.")
         except Exception as e:
             task_log_ex_trace()
         return return_state
+
+    async def send_udp_broadcast(self) -> bool:
+        """Send qcx-syn broadcast on udp socket."""
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+
+        try:
+            task_log_debug("Broadcasting QCX-SYN Burst")
+            if self.udp:
+                # loop.sock_sendto python3.11+
+                await loop.run_in_executor(
+                    None,
+                    self.udp.sendto,
+                    "QCX-SYN".encode("utf-8"),
+                    ("255.255.255.255", 2222)
+                )
+            else:
+                return False
+
+        except:
+            task_log_debug("Broadcasting QCX-SYN Burst Exception")
+            task_log_ex_trace()
+            if not await self.bind_ports():
+                LOGGER.error("Error binding ports udp 2222 and tcp 3333.")
+                return False
+        return True
+    
+    async def standby(self) -> None:
+        """Standby search devices and create incoming connection tasks."""
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+        try:
+            LOGGER.debug(f"sleep task create (broadcasts)..")
+            self.__send_loop_sleep = loop.create_task(
+                asyncio.sleep(
+                    SEND_LOOP_MAX_SLEEP_TIME
+                    if (
+                        len(self.message_queue) > 0
+                    )
+                    else 1000000000
+                )
+            )
+
+            LOGGER.debug(f"sleep task wait..")
+            done, pending = await asyncio.wait([self.__send_loop_sleep])
+
+            LOGGER.debug(f"sleep task done..")
+        except CancelledError as e:
+            LOGGER.debug(f"sleep cancelled1.")
+
+    async def read_incoming_tcp_con_task(self) -> tuple[
+        list[Any], list[Any], list[Any]
+    ] | None:
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+
+        timeout_read: float = 0.3
+        task_log_debug("Read again tcp port..")
+
+        try:
+            return await loop.run_in_executor(
+                None,
+                select.select,
+                [self.tcp],
+                [],
+                [],
+                timeout_read,
+            )
+        except CancelledError as e:
+            LOGGER.debug("cancelled tcp reading.")
+        except Exception as e:
+            task_log_ex_trace()
+            if not await self.bind_ports():
+                LOGGER.error(
+                    "Error binding ports udp 2222 and tcp 3333."
+                )
+        return None
+    
+    async def check_messages_time_to_live(self) -> None:
+        """Check message queue for end of live messages."""
+        try:
+            to_del: list[UnitId] = []
+            for uid, msgs in self.message_queue.items():
+                for msg in msgs:
+                    if not await msg.check_msg_ttl():
+                        msgs.remove(msg)
+                    if not self.message_queue[uid]:
+                        # del self.message_queue[uid]
+                        to_del.append(uid)
+                        break
+            for uid in to_del:
+                del self.message_queue[uid]
+        except asyncio.CancelledError:
+            task_log_debug("Message queue time to live task ended.")
+        
+    async def connection_tasks_time_to_live(self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS) -> None:
+        """End connection tasks with run out time to live."""
+        try:
+            tasks_undone_new: list[Any] = []
+            for task, started in self.__tasks_undone:
+                if task.done():
+                    self.__tasks_done.append(
+                        (task, started, datetime.datetime.now())
+                    )
+                    exception: Any = task.exception()
+                    if exception:
+                        LOGGER.debug(
+                            f"Exception error device connection handler task in {task.get_coro()}: {exception}"
+                        )
+                else:
+                    if datetime.datetime.now() - started > datetime.timedelta(
+                        seconds=proc_timeout_secs
+                    ):
+                        task.cancel(
+                            msg=f"timeout of process of {proc_timeout_secs} seconds."
+                        )
+                    tasks_undone_new.append((task, started))
+            self.__tasks_undone = tasks_undone_new
+
+        except CancelledError as e:
+            task_log_debug(f"__tasks_undone check cancelled.")
+        # except Exception as e:
+        #     LOGGER.debug(f"{e}")
+        
+    async def handle_incoming_tcp_connection(self, proc_timeout_secs: int) -> None:
+        """Accept incoming tcp connection and start connection handle process."""
+        if not self.tcp:
+            return
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+        device: Device = Device()
+        addr: tuple
+        connection: TcpConnection = TcpConnection()
+        (
+            connection.socket,
+            addr,
+        ) = self.tcp.accept()
+        if not addr[0] in self.current_addr_connections:
+            self.current_addr_connections.add(addr[0])
+            connection.address["ip"] = addr[0]
+            connection.address["port"] = addr[1]
+
+            new_task: Task[DeviceTcpReturn] = loop.create_task(
+                self.device_handle_local_tcp(device, connection)
+            )
+
+            loop.create_task(
+                asyncio.wait_for(
+                    new_task, timeout=proc_timeout_secs
+                )
+            )
+
+            task_log_debug(
+                f"Address {connection.address['ip']} process task created."
+            )
+            self.__tasks_undone.append(
+                (new_task, datetime.datetime.now())
+            )
+        else:
+            LOGGER.debug(f"Address {addr[0]} already in connection.")
 
     async def search_and_send_to_device(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
@@ -734,10 +865,8 @@ class LocalCommunicator:
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
         try:
-            # if not self.tcp or not self.udp:
             while not self.search_and_send_loop_task_end_now:
                 if not await self.bind_ports():
-                # if (not self.tcp or not self.udp) and not await self.bind_ports():
                     break
                 if not self.tcp or not self.udp:
                     break
@@ -749,82 +878,16 @@ class LocalCommunicator:
                 if self.message_queue:
 
                     read_broadcast_response: bool = True
-                    try:
-                        LOGGER.debug("Broadcasting QCX-SYN Burst")
-                        if self.udp:
-                            await loop.run_in_executor(
-                                None,
-                                self.udp.sendto,
-                                "QCX-SYN".encode("utf-8"),
-                                ("255.255.255.255", 2222)
-                            )
-                        else:
-                            continue
-                        
-                        # self.udp.sendto(
-                        #     "QCX-SYN".encode("utf-8"), ("255.255.255.255", 2222)
-                        # )
-
-                    except:
-                        LOGGER.debug("Broadcasting QCX-SYN Burst Exception")
-                        LOGGER.debug(f"{traceback.format_exc()}")
+                    if not await self.send_udp_broadcast():
                         read_broadcast_response = False
-                        if not await self.bind_ports():
-                            LOGGER.error("Error binding ports udp 2222 and tcp 3333.")
-                            return False
+                        continue
 
                     if not read_broadcast_response:
-                        try:
-                            LOGGER.debug(f"sleep task create (broadcasts)..")
-                            self.__send_loop_sleep = loop.create_task(
-                                asyncio.sleep(
-                                    SEND_LOOP_MAX_SLEEP_TIME
-                                    if (
-                                        len(self.message_queue) > 0
-                                    )
-                                    else 1000000000
-                                )
-                            )
-
-                            LOGGER.debug(f"sleep task wait..")
-                            done, pending = await asyncio.wait([self.__send_loop_sleep])
-
-                            LOGGER.debug(f"sleep task done..")
-                        except CancelledError as e:
-                            LOGGER.debug(f"sleep cancelled1.")
-                        except Exception as e:
-                            LOGGER.debug(f"{e}")
-                            pass
-                        pass
+                        await self.standby()
 
                     while read_broadcast_response:
 
-                        timeout_read: float = 0.3
-                        LOGGER.debug("Read again tcp port..")
-
-                        async def read_tcp_task() -> tuple[
-                            list[Any], list[Any], list[Any]
-                        ] | None:
-                            try:
-                                return await loop.run_in_executor(
-                                    None,
-                                    select.select,
-                                    [self.tcp],
-                                    [],
-                                    [],
-                                    timeout_read,
-                                )
-                            except CancelledError as e:
-                                LOGGER.debug("cancelled tcp reading.")
-                            except Exception as e:
-                                LOGGER.error(f"{traceback.format_exc()}")
-                                if not await self.bind_ports():
-                                    LOGGER.error(
-                                        "Error binding ports udp 2222 and tcp 3333."
-                                    )
-                            return None
-
-                        self.__read_tcp_task = asyncio.create_task(read_tcp_task())
+                        self.__read_tcp_task = asyncio.create_task(self.read_incoming_tcp_con_task())
 
                         LOGGER.debug("Started tcp reading..")
                         try:
@@ -859,116 +922,50 @@ class LocalCommunicator:
                         if not self.tcp in readable:
                             break
                         else:
-                            device: Device = Device()
-                            connection: TcpConnection = TcpConnection()
-                            (
-                                connection.socket,
-                                addr,
-                            ) = self.tcp.accept()
-                            if not addr[0] in self.current_addr_connections:
-                                self.current_addr_connections.add(addr[0])
-                                connection.address["ip"] = addr[0]
-                                connection.address["port"] = addr[1]
+                            await self.handle_incoming_tcp_connection(proc_timeout_secs)
 
-                                new_task = loop.create_task(
-                                    self.device_handle_local_tcp(device, connection)
-                                )
+                    # await self.check_messages_time_to_live()
 
-                                # for test:
-                                await asyncio.wait([new_task], timeout=0.00000001)
-                                # timeout task for the device tcp task
-                                loop.create_task(
-                                    asyncio.wait_for(
-                                        new_task, timeout=proc_timeout_secs
-                                    )
-                                )
-
-                                LOGGER.debug(
-                                    f"Address {connection.address['ip']} process task created."
-                                )
-                                self.__tasks_undone.append(
-                                    (new_task, datetime.datetime.now())
-                                )
-                            else:
-                                LOGGER.debug(f"{addr[0]} already in connection.")
-
-                    try:
-                        to_del = []
-                        """check message queue for ttls"""
-                        for uid, msgs in self.message_queue.items():
-                            for msg in msgs:
-                                if not await msg.check_msg_ttl():
-                                    msgs.remove(msg)
-                                if not self.message_queue[uid]:
-                                    # del self.message_queue[uid]
-                                    to_del.append(uid)
-                                    break
-                        for uid in to_del:
-                            del self.message_queue[uid]
-                    except Exception:
-                        LOGGER.debug(f"{traceback.format_exc()}")
-
-                try:
-                    tasks_undone_new = []
-                    for task, started in self.__tasks_undone:
-                        if task.done():
-                            self.__tasks_done.append(
-                                (task, started, datetime.datetime.now())
-                            )
-                            exception: Any = task.exception()
-                            if exception:
-                                LOGGER.debug(
-                                    f"Exception error in {task.get_coro()}: {exception}"
-                                )
-                        else:
-                            if datetime.datetime.now() - started > datetime.timedelta(
-                                seconds=proc_timeout_secs
-                            ):
-                                task.cancel(
-                                    msg=f"timeout of process of {proc_timeout_secs} seconds."
-                                )
-                            tasks_undone_new.append((task, started))
-                    self.__tasks_undone = tasks_undone_new
-
-                except CancelledError as e:
-                    LOGGER.debug(f"__tasks_undone check cancelled.")
-                except Exception as e:
-                    LOGGER.debug(f"{e}")
-                    pass
-                pass
+                await self.connection_tasks_time_to_live(proc_timeout_secs)
 
                 if not len(self.message_queue):
-                    try:
-                        LOGGER.debug(f"sleep task create2 (searchandsendloop)..")
-                        self.__send_loop_sleep = loop.create_task(
-                            asyncio.sleep(
-                                SEND_LOOP_MAX_SLEEP_TIME
-                                if len(self.message_queue) > 0
-                                else 1000000000
-                            )
-                        )
-                        LOGGER.debug(f"sleep task wait..")
-                        done, pending = await asyncio.wait([self.__send_loop_sleep])
-                        LOGGER.debug(f"sleep task done..")
-                    except CancelledError as e:
-                        LOGGER.debug(f"sleep cancelled2.")
-                    except Exception as e:
-                        LOGGER.debug(f"{e}")
-                        pass
+                    await self.standby()
+                    # try:
+                    #     LOGGER.debug(f"sleep task create2 (searchandsendloop)..")
+                    #     self.__send_loop_sleep = loop.create_task(
+                    #         asyncio.sleep(
+                    #             SEND_LOOP_MAX_SLEEP_TIME
+                    #             if len(self.message_queue) > 0
+                    #             else 1000000000
+                    #         )
+                    #     )
+                    #     LOGGER.debug(f"sleep task wait..")
+                    #     done, pending = await asyncio.wait([self.__send_loop_sleep])
+                    #     LOGGER.debug(f"sleep task done..")
+                    # except CancelledError as e:
+                    #     LOGGER.debug(f"sleep cancelled2.")
+                    # except Exception as e:
+                    #     LOGGER.debug(f"{e}")
+                    #     pass
                 pass
 
         except CancelledError as e:
-            LOGGER.debug(f"search and send to device loop cancelled.")
+            task_log_debug(f"search and send to device loop cancelled.")
             self.message_queue = {}
             for task, started in self.__tasks_undone:
                 task.cancel(msg=f"Search and send loop cancelled.")
-        except Exception as e:
-            LOGGER.debug("Exception on send and search loop. Stop loop.")
-            LOGGER.debug(f"{traceback.format_exc()}")
-            return False
+        except Exception as exception:
+            LOGGER.error("Exception on send and search loop. Stop search devices loop!")
+            raise exception
+        task_log_debug("Search devices and process incoming connnections loop ended.")
         return True
 
     async def search_and_send_loop_task_stop(self) -> None:
+        """End device search and connections handler task."""
+        
+        if self.msg_ttl_task and not self.msg_ttl_task.done():
+            self.msg_ttl_task.cancel()
+            
         while (
             self.search_and_send_loop_task and not self.search_and_send_loop_task.done()
         ):
@@ -988,10 +985,15 @@ class LocalCommunicator:
         pass
 
     def search_and_send_loop_task_alive(self) -> None:
+        """Ensure broadcast's and connection handler's task is alive."""
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+
+        if not self.msg_ttl_task or self.msg_ttl_task.done():
+            self.msg_ttl_task = loop.create_task(self.check_messages_time_to_live())
 
         if not self.search_and_send_loop_task or self.search_and_send_loop_task.done():
             LOGGER.debug("search and send loop task created.")
-            self.search_and_send_loop_task = asyncio.create_task(
+            self.search_and_send_loop_task = loop.create_task(
                 self.search_and_send_to_device()
             )
         try:
@@ -1000,7 +1002,7 @@ class LocalCommunicator:
         except:
             LOGGER.debug(f"{traceback.format_exc()}")
 
-    async def set_send_message(
+    async def add_message(
         self,
         send_msgs: list[Command],
         target_device_uid: UnitId,
@@ -1008,7 +1010,7 @@ class LocalCommunicator:
         time_to_live_secs: float = -1.0,
         **kwargs: Any
     ) -> bool:
-
+        """Add message to message's queue."""
         if not send_msgs and callback is not None:
             LOGGER.error(f"No message queue to send in message to {target_device_uid}!")
             await callback(None, target_device_uid)
@@ -1026,16 +1028,17 @@ class LocalCommunicator:
         if not await msg.check_msg_ttl():
             return False
 
-        task_log(
-            f"new message {msg.msg_counter} target {target_device_uid} {send_msgs}", LOGGER.trace
+        task_log_trace(
+            f"new message {msg.msg_counter} target {target_device_uid} {send_msgs}"
         )
 
         self.message_queue.setdefault(str(target_device_uid), []).append(msg)
-
-        if self.__read_tcp_task:
-            # if still waiting for incoming connections, restart the process
-            # with a new udp broadcast
-            self.__read_tcp_task.cancel()
+        
+        await self.send_udp_broadcast()
+        # if self.__read_tcp_task:
+        #     # if still waiting for incoming connections, restart the process
+        #     # with a new udp broadcast
+        #     self.__read_tcp_task.cancel()
         self.search_and_send_loop_task_alive()
         return True
         
@@ -1060,7 +1063,7 @@ class LocalCommunicator:
         # send a message to uid "all" which is fake but will get the identification message
         # from the devices in the aes_search and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.set_send_message(
+        await self.add_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_answer_end,

@@ -27,11 +27,11 @@ class LocalController:
                 msg_answer = msg.answer_utf8
             response_event.set()
         
-        await self.local_communicator.set_send_message(
+        await self.local_communicator.add_message(
             send_msgs = [Command(_json=json.loads(command))],
             target_device_uid = unit_id,
             callback = answer,
-            time_to_live_secs = 11111
+            time_to_live_secs = 11111 # DEFAULT_SEND_TIMEOUT_MS
         )
 
         await response_event.wait()
@@ -51,7 +51,7 @@ class LocalController:
                 msg_answer = msg.answer_utf8
             response_event.set()
         
-        await self.local_communicator.set_send_message(
+        await self.local_communicator.add_message(
             send_msgs = [command],
             target_device_uid = unit_id,
             callback = answer,

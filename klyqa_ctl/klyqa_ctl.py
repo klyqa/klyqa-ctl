@@ -150,7 +150,7 @@ class Client:
         # send a message to uid "all" which is fake but will get the identification message
         # from the devices in the aes_search and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local_communicator.set_send_message(
+        await self.local_communicator.add_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_answer_end,
@@ -443,7 +443,7 @@ class Client:
 
                     for uid in target_device_uids:
                         
-                        await self.local_communicator.set_send_message(
+                        await self.local_communicator.add_message(
                             send_msgs = message_queue_tx_local.copy(),
                             target_device_uid = uid,
                             callback=async_answer_callback_local,

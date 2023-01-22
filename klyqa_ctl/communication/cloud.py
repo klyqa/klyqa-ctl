@@ -532,7 +532,7 @@ class CloudBackend:
                     + "."
                 )
             finally:
-                await device.use_unlock()
+                device.use_unlock()
             return 0
 
         started: datetime.datetime = datetime.datetime.now()

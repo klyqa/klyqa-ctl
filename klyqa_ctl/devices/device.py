@@ -10,6 +10,7 @@ from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.connections import CloudConnection
 from klyqa_ctl.general.general import LOGGER, AsyncIoLock, CommandTyped, format_uid
 from klyqa_ctl.general.message import Message
+from klyqa_ctl.general.unit_id import UnitId
 
 @dataclass
 class CommandWithCheckValues(CommandTyped):
@@ -27,7 +28,7 @@ class Device:
         self._attr_cloud: CloudConnection = CloudConnection()
         self._attr_ident: ResponseIdentityMessage | None = ResponseIdentityMessage()
 
-        self._attr_u_id: str = "no_uid"
+        self._attr_u_id: UnitId = UnitId("no_uid")
         self._attr_acc_sets: dict[Any, Any] = {}
         self._attr__use_lock: AsyncIoLock | None = None
         self._attr__use_thread: asyncio.Task[Any] | None = None
@@ -65,12 +66,12 @@ class Device:
         self._attr_ident = ident
     
     @property
-    def u_id(self) -> str:
+    def u_id(self) -> UnitId:
         return self._attr_u_id
     
     @u_id.setter
-    def u_id(self, u_id: str) -> None:
-        self._attr_u_id = format_uid(u_id)
+    def u_id(self, u_id: UnitId) -> None:
+        self._attr_u_id = u_id
     
     @property
     def acc_sets(self) -> dict[Any, Any]:
@@ -167,7 +168,7 @@ class Device:
 
         # return False
 
-    async def use_unlock(self) -> None:
+    def use_unlock(self) -> None:
         if not self._use_lock:
             return
         self._use_lock.release_within_task()
