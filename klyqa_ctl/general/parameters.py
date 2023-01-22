@@ -52,7 +52,7 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         const=True,
         default=False
     )
-    parser.add_argument("--aes", nargs=1, help="give aes key for the lamp")
+    parser.add_argument("--aes", nargs=1, help="give aes key for the device")
     parser.add_argument("--username", nargs=1, help="give your username")
     parser.add_argument("--password", nargs=1, help="give your klyqa password")
     parser.add_argument(

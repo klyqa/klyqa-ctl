@@ -62,22 +62,17 @@ class CheckDeviceParameter(Enum):
     BRIGHTNESS = 1
     TEMPERATURE = 2
     SCENE = 3
-    
-@dataclass
-class RequestCommand(CommandTyped):
-    def __post_init__(self) -> None:
-        self.type = CommandType.REQUEST
 
-@dataclass
+class RequestCommand(CommandTyped):
+    type: CommandType = CommandType.REQUEST
+
 class PingCommand(CommandTyped):
-    def __post_init__(self) -> None:
-        self.type = CommandType.PING
+    type: CommandType = CommandType.PING
 
 @dataclass
 class FwUpdateCommand(CommandTyped):
+    type: CommandType = CommandType.FW_UPDATE
     url: str = ""
-    def __post_init__(self) -> None:
-        self.type = CommandType.FW_UPDATE
     
     def url_json(self) -> TypeJson:
             return  { "url": self.url }
@@ -105,23 +100,23 @@ class CommandWithCheckValuesLight(CommandWithCheckValues):
 
 @dataclass
 class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
-    colors: RgbColor = RgbColor(0, 0, 0)
+    color: RgbColor = RgbColor(0, 0, 0)
     
-    def colors_json(self) -> TypeJson:
+    def color_json(self) -> TypeJson:
             return {"color": {
-                "red": self.colors.r,
-                "green": self.colors.g,
-                "blue": self.colors.b,
+                "red": self.color.r,
+                "green": self.color.g,
+                "blue": self.color.b,
             }}
     
     def json(self) -> TypeJson:
-        return super().json() | self.colors_json()
+        return super().json() | self.color_json()
         
     def check_values(self, device: Device) -> bool:
         """Check device color range."""
         if not super().check_values(device) or not self.light:
             return False
-        values: list = [self.colors.r, self.colors.g, self.colors.b]
+        values: list = [self.color.r, self.color.g, self.color.b]
         if (not self.light.ident or not self.light.color_range) and (not self.light.ident or missing_config(self.force, self.light.ident.product_id)):
             return False
         elif self.light.color_range:
@@ -773,7 +768,7 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
     tt: int = int(args.transitionTime[0])
     # msg: tuple[str, int] | tuple [str, int, Callable] = color_message(
     #     r, g, b, 0 if args.brightness is not None else tt)
-    msg: ColorCommand = ColorCommand(transition_time=tt, force=args.force, colors=RgbColor(
+    msg: ColorCommand = ColorCommand(transition_time=tt, force=args.force, color=RgbColor(
         int(r), int(g), int(b)))
 
     # check_color = functools.partial(
@@ -783,7 +778,7 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
 
     message_queue_tx_local.append(msg.msg_str())
     # col: Any = json.loads(msg[0])["color"]
-    message_queue_tx_state_cloud.append(msg.colors_json())
+    message_queue_tx_state_cloud.append(msg.color_json())
 
 def command_color_percent(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
     """Command for color in percentage numbers."""
@@ -1001,19 +996,23 @@ def missing_config(force: bool, product_id: str) -> bool:
 
 def check_scene_support(force: bool, device: Device, scene_id: str) -> bool:
     """Check device scene support."""
+    if force:
+        return True
+    if not device.ident:
+        return False
     try:
         scene_result: list[dict[str, Any]] = [x for x in SCENES if x["id"] == int(scene_id)]
         scene: dict[str, Any] = scene_result[0]
 
         # bulb has no colors, therefore only cwww scenes are allowed
-        if not ".rgb" in device.device.ident.product_id and not "cwww" in scene:
+        if not ".rgb" in device.ident.product_id and not "cwww" in scene:
             return forced_continue(force,
                 f"Scene {scene['label']} not supported by device product" +
                 f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
             )
 
     except Exception as excp:
-        return not missing_config(force, device.device.ident.product_id)
+        return not missing_config(force, device.ident.product_id)
     return True
 
 CHECK_RANGE: dict[Any, Any] = {

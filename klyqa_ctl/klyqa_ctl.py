@@ -49,7 +49,7 @@ from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum import VacuumCleaner, add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.commands import create_device_message as create_device_message_vacuum
 from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
-from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, TRACE, DeviceType, TypeJson, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, task_log, logging_hdl
+from klyqa_ctl.general.general import AES_KEY_DEV, DEFAULT_SEND_TIMEOUT_MS, KLYQA_CTL_VERSION, LOGGER, TRACE, DeviceType, TypeJson, SEPARATION_WIDTH, format_uid, get_obj_attrs_as_string, logging_hdl, task_log_ex_trace
 from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.account import Account
 from klyqa_ctl.general.message import Message
@@ -150,7 +150,7 @@ class Client:
         # send a message to uid "all" which is fake but will get the identification message
         # from the devices in the aes_search and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local_communicator.set_send_message(
+        await self.local_communicator.add_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_answer_end,
@@ -443,7 +443,7 @@ class Client:
 
                     for uid in target_device_uids:
                         
-                        await self.local_communicator.set_send_message(
+                        await self.local_communicator.add_message(
                             send_msgs = message_queue_tx_local.copy(),
                             target_device_uid = uid,
                             callback=async_answer_callback_local,
@@ -532,7 +532,7 @@ class Client:
 
             return success
         except Exception as e:
-            task_log(f"{traceback.format_exc()}")
+            task_log_ex_trace()
             return False
     
     async def send_to_devices_wrapped(self, args_parsed: argparse.Namespace, args_in: list[Any], timeout_ms: int = 5000) -> int:
