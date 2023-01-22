@@ -247,9 +247,7 @@ class LocalConnectionHandler(ConnectionHandler):
         self,
         connection: TcpConnection,
         data: bytes,
-        device_ref: ReferenceParse,
-        # use_dev_aes: bool,
-        aes_key: bytes | None = None) -> DeviceTcpReturn:
+        device_ref: ReferenceParse) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for changes,
         # safe the idenfication to device object if it is a not known device,
@@ -263,7 +261,7 @@ class LocalConnectionHandler(ConnectionHandler):
             identity: ResponseIdentityMessage = ResponseIdentityMessage(
                 **json_response["ident"]
             )
-            device.u_id = UnitId(identity.unit_id)
+            device.u_id = identity.unit_id
         except:
             return DeviceTcpReturn.NO_UNIT_ID
 
@@ -354,9 +352,7 @@ class LocalConnectionHandler(ConnectionHandler):
             task_log(f"Found device {found}")
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
-        if aes_key is not None:
-            connection.aes_key = aes_key
-        elif "all" in self.controller_data.aes_keys:
+        if "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
         # elif use_dev_aes or "dev" in self.controller_data.aes_keys:
         #     connection.aes_key = AES_KEY_DEV
@@ -467,8 +463,7 @@ class LocalConnectionHandler(ConnectionHandler):
     async def handle_connection(
         self,
         device_ref: ReferenceParse,
-        connection: TcpConnection,
-        use_dev_aes: bool = False,
+        connection: TcpConnection
     ) -> DeviceTcpReturn:
         """
         FIX: return type! sometimes return value sometimes tuple...
@@ -548,7 +543,7 @@ class LocalConnectionHandler(ConnectionHandler):
                             pause = datetime.timedelta(milliseconds = float(tc.transition_time))
 
                         try:
-                            if await loop.run_in_executor(None, encrypt_and_send_msg, text, device, connection):
+                            if await loop.run_in_executor(None, connection.encrypt_and_send_msg, text, device):
                                 
                                 return_val = DeviceTcpReturn.SENT
                                 msg_sent = msg 
@@ -603,7 +598,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 )
                 
                 return_val = await self.process_tcp_package(connection, data_ref,
-                    msg_sent, device_ref) #, use_dev_aes)
+                    msg_sent, device_ref)
                 data = data_ref.ref
                 device = device_ref.ref
                 if return_val == DeviceTcpReturn.ANSWERED:
@@ -615,7 +610,7 @@ class LocalConnectionHandler(ConnectionHandler):
         return return_val
     
     async def process_tcp_package(self, connection: TcpConnection, data_ref: ReferenceParse,
-        msg_sent: Message | None, device_ref: ReferenceParse) -> DeviceTcpReturn: #, use_dev_aes: bool) -> 
+        msg_sent: Message | None, device_ref: ReferenceParse) -> DeviceTcpReturn:
         """Read tcp socket and process packages."""
     
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
@@ -628,8 +623,8 @@ class LocalConnectionHandler(ConnectionHandler):
 
         if connection.state == AesConnectionState.WAIT_IV and package.type == PackageType.IDENTITY:
 
-            return_val = await self.process_device_identity_package(connection, package.data,
-                device_ref) #, use_dev_aes)
+            return_val = await self.process_device_identity_package(connection,
+                package.data,device_ref)
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
@@ -891,14 +886,17 @@ class LocalConnectionHandler(ConnectionHandler):
 
                         self.__read_tcp_task = asyncio.create_task(self.read_incoming_tcp_con_task())
 
-                        LOGGER.debug("Started tcp reading..")
+                        task_log_debug("Reading incoming connections..")
                         try:
                             await asyncio.wait_for(self.__read_tcp_task, timeout=1.0)
-                        except Exception as e:
+                        except asyncio.TimeoutError:
                             LOGGER.debug(
                                 f"Socket-Timeout for incoming tcp connections."
                             )
 
+                        except socket.error as e:
+                            LOGGER.error("Socket error!")
+                            task_log_trace_ex()
                             if not await self.bind_ports():
                                 LOGGER.error(
                                     "Error binding ports udp 2222 and tcp 3333."
@@ -914,7 +912,7 @@ class LocalConnectionHandler(ConnectionHandler):
                             or not isinstance(result, tuple)
                             or not len(result) == 3
                         ):
-                            LOGGER.debug("no tcp read result. break")
+                            task_log_debug("No incoming tcp connections read result. break")
                             break
                         readable: list[Any]
                         readable, _, _ = result if result else ([], [], [])
@@ -1089,30 +1087,3 @@ class LocalConnectionHandler(ConnectionHandler):
     #         controller_data, None, server_ip = "0.0.0.0")
         
     #     return lcc
-
-def encrypt_and_send_msg(msg: str, device: Device, connection: TcpConnection) -> bool:
-    info_str: str = (
-        (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
-        + 'Sending in local network to "'
-        + device.get_name()
-        + '": '
-        + json.dumps(json.loads(msg), sort_keys=True, indent=4)
-    )
-
-    LOGGER.info(info_str)
-    plain: bytes = msg.encode("utf-8")
-    while len(plain) % 16:
-        plain = plain + bytes([0x20])
-
-    cipher: bytes = connection.sending_aes.encrypt(plain)
-
-    while connection.socket:
-        try:
-            connection.socket.send(
-                bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
-            )
-            return True
-        except socket.timeout:
-            LOGGER.debug("Send timed out, retrying...")
-            pass
-    return False

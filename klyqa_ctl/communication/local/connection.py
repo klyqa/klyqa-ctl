@@ -3,12 +3,15 @@ from __future__ import annotations
 import asyncio
 
 from datetime import datetime
+import json
+import logging
 import socket
 import traceback
 from typing import Any
 from enum import Enum, auto
+from klyqa_ctl.devices.device import Device
 
-from klyqa_ctl.general.general import LOGGER, ReferenceParse, task_log, task_log_debug, task_log_trace_ex
+from klyqa_ctl.general.general import LOGGER, ReferenceParse, task_log, task_log_debug, task_log_trace_ex, task_name
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
@@ -170,4 +173,31 @@ class TcpConnection:
             task_log_trace_ex()
             return DeviceTcpReturn.UNKNOWN_ERROR
         return DeviceTcpReturn.NO_ERROR
+    
+    def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
+        info_str: str = (
+            (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
+            + 'Sending in local network to "'
+            + device.get_name()
+            + '": '
+            + json.dumps(json.loads(msg), sort_keys=True, indent=4)
+        )
+
+        LOGGER.info(info_str)
+        plain: bytes = msg.encode("utf-8")
+        while len(plain) % 16:
+            plain = plain + bytes([0x20])
+
+        cipher: bytes = self.sending_aes.encrypt(plain)
+
+        while self.socket:
+            try:
+                self.socket.send(
+                    bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
+                )
+                return True
+            except socket.timeout:
+                LOGGER.debug("Send timed out, retrying...")
+                pass
+        return False
         

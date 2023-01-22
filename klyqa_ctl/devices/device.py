@@ -28,7 +28,7 @@ class Device:
         self._attr_cloud: CloudConnection = CloudConnection()
         self._attr_ident: ResponseIdentityMessage | None = ResponseIdentityMessage()
 
-        self._attr_u_id: UnitId = UnitId("no_uid")
+        self._attr_u_id: str = UnitId("no_uid")
         self._attr_acc_sets: dict[Any, Any] = {}
         self._attr__use_lock: AsyncIoLock | None = None
         self._attr__use_thread: asyncio.Task[Any] | None = None
@@ -66,12 +66,12 @@ class Device:
         self._attr_ident = ident
     
     @property
-    def u_id(self) -> UnitId:
+    def u_id(self) -> str:
         return self._attr_u_id
     
     @u_id.setter
-    def u_id(self, u_id: UnitId) -> None:
-        self._attr_u_id = u_id
+    def u_id(self, u_id: str) -> None:
+        self._attr_u_id = str(UnitId(u_id))
     
     @property
     def acc_sets(self) -> dict[Any, Any]:
