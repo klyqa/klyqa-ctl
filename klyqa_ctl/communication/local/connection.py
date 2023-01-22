@@ -196,6 +196,8 @@ class TcpConnection:
         while self.socket:
             try:
                 await loop.sock_sendall(self.socket, package)
+                # await loop.run_in_executor(None, self.socket.send, 
+                #     bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher)
                 # self.socket.send(
                 #     bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
                 # )
