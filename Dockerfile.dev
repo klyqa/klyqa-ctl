@@ -37,6 +37,8 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 && sudo apt update \
 && sudo apt install gh -y
 
+RUN python -m pip install black, flake8, pydocstyle, pycodestyle, mypy, pylint, isort
+
 # RUN pip3 install --no-cache-dir -r requirements.txt
 # RUN pip3 install --no-cache-dir -r klyqa_ctl/requirements.txt
 
