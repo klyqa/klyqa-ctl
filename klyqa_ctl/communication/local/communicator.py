@@ -9,7 +9,6 @@ import datetime
 import json
 import select
 import socket
-import traceback
 from typing import Any, Callable
 
 from klyqa_ctl.account import Account
@@ -25,7 +24,7 @@ from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.commands import TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
-from klyqa_ctl.devices.vacuum import VacuumCleaner
+from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
     LOGGER,
@@ -242,7 +241,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 self.tcp = None
             except (socket.herror, socket.gaierror, socket.timeout):
                 LOGGER.error("Error on closing local tcp port 3333.")
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
 
         if self.udp:
             try:
@@ -251,7 +250,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 self.udp = None
             except (socket.herror, socket.gaierror, socket.timeout):
                 LOGGER.error("Error on closing local udp port 2222.")
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
 
     async def bind_ports(self) -> bool:
         """bind ports."""
@@ -272,7 +271,7 @@ class LocalConnectionHandler(ConnectionHandler):
                     "Error on opening and binding the udp port 2222 on host"
                     " for initiating the local device communication."
                 )
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
                 return False
             LOGGER.debug("Bound UDP port 2222")
 
@@ -1165,7 +1164,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 )
                 LOGGER.debug("wait end for send and search loop.")
             except Exception:
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
             LOGGER.debug("wait end for send and search loop.")
         pass
 
@@ -1190,7 +1189,7 @@ class LocalConnectionHandler(ConnectionHandler):
             if self.__send_loop_sleep is not None:
                 self.__send_loop_sleep.cancel()
         except Exception:
-            LOGGER.debug(f"{traceback.format_exc()}")
+            task_log_trace_ex()
 
     async def add_message(
         self,

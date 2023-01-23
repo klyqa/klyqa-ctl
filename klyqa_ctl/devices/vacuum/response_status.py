@@ -1,13 +1,16 @@
 """Vacuum cleaner response status"""
 from __future__ import annotations
+
 import datetime
 from typing import Any
+
 from klyqa_ctl.devices.device import ResponseMessage
 from klyqa_ctl.general.general import LOGGER, get_obj_attr_values_as_string
 
+
 class ResponseStatus(ResponseMessage):
     """Vacuum cleaner Response Status"""
-    
+
     def __str__(self) -> str:
         """__str__"""
         return get_obj_attr_values_as_string(self)

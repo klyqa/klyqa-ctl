@@ -32,7 +32,6 @@ import json
 import logging
 import sys
 import time
-import traceback
 from typing import Any
 
 from klyqa_ctl.account import Account
@@ -46,10 +45,11 @@ from klyqa_ctl.devices.light.commands import (
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.response_status import ResponseStatus
-from klyqa_ctl.devices.vacuum import VacuumCleaner, add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.commands import (
     create_device_message as create_device_message_vacuum,
 )
+from klyqa_ctl.devices.vacuum.commands import add_command_args_cleaner
+from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
 from klyqa_ctl.general.general import (
     AES_KEY_DEV,
@@ -582,7 +582,7 @@ class Client:
                             )
                             LOGGER.info(f"{format_answer}")
                         except json.JSONDecodeError:
-                            LOGGER.debug(f"{traceback.format_exc()}")
+                            task_log_trace_ex()
                     else:
                         LOGGER.error(f"Error no message returned from {uid}.")
 
@@ -791,7 +791,7 @@ async def main() -> None:
                     raise Exception()
             except Exception:
                 LOGGER.error("Error during login.")
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
                 sys.exit(1)
 
     client: Client = Client(

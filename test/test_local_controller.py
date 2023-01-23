@@ -10,7 +10,13 @@ from klyqa_ctl.devices.light.commands import (
     PingCommand,
     RequestCommand,
 )
-from klyqa_ctl.general.general import LOGGER, TRACE, RgbColor, set_debug_logger
+from klyqa_ctl.general.general import (
+    LOGGER,
+    TRACE,
+    RgbColor,
+    set_debug_logger,
+    task_log_trace_ex,
+)
 from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
 
@@ -85,4 +91,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    set_debug_logger(TRACE)
+    task_log_trace_ex()
     asyncio.run(main())

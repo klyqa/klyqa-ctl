@@ -21,7 +21,7 @@ from klyqa_ctl.account import Account
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
-from klyqa_ctl.devices.vacuum import VacuumCleaner
+from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import (
     LOGGER,
@@ -509,13 +509,13 @@ class CloudBackend:
                 "Environment error occured during send request to cloud"
                 " backend!"
             )
-            LOGGER.debug(f"{traceback.format_exc()}")
+            task_log_trace_ex()
         except httpx.HTTPError:
             LOGGER.error(
                 "Connection error occured during send request to cloud"
                 " backend!"
             )
-            LOGGER.debug(f"{traceback.format_exc()}")
+            task_log_trace_ex()
 
         return response
 
@@ -579,7 +579,7 @@ class CloudBackend:
             if acc_settings:
                 self.account.settings = acc_settings
         except Exception:
-            LOGGER.debug(f"{traceback.format_exc()}")
+            task_log_trace_ex()
 
     async def update_device_configs(self) -> None:
         """Request the account settings from the cloud."""

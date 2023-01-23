@@ -1,11 +1,13 @@
 """Response message"""
 from __future__ import annotations
+
 import datetime
 from typing import Any
 
+
 class ResponseMessage:
     """Response message"""
-    
+
     def __init__(self, **kwargs: Any) -> None:
         """__init__"""
         self._attr_type: str = ""

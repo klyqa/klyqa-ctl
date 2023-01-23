@@ -1,6 +1,7 @@
 """Local and cloud connections"""
 
 from __future__ import annotations
+
 from typing import Any
 
 
@@ -13,7 +14,7 @@ class CloudConnection:
     def __init__(self) -> None:
         self._attr_connected = False
         self._attr_received_packages = []
-        
+
     @property
     def received_packages(self) -> list[Any]:
         return self._attr_received_packages
@@ -30,6 +31,6 @@ class CloudConnection:
     def connected(self, connected: bool) -> None:
         self._attr_connected = connected
 
+
 PROD_HOST: str = "https://app-api.prod.qconnex.io"
 TEST_HOST: str = "https://app-api.test.qconnex.io"
-
