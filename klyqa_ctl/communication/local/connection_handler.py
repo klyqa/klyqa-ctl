@@ -70,6 +70,7 @@ class LocalConnectionHandler(ConnectionHandler):
         controller_data: ControllerData,
         account: Account | None,
         server_ip: str = "0.0.0.0",
+        broadcast_ntw_intf: str | None = None,
     ) -> None:
         self._attr_controller_data: ControllerData = controller_data
         self._attr_account: Account | None = account
@@ -93,6 +94,15 @@ class LocalConnectionHandler(ConnectionHandler):
             account.settings if account else None
         )
         self._attr_current_addr_connections = set()
+        self._attr_broadcast_ntw_intf: str | None = broadcast_ntw_intf
+
+    @property
+    def broadcast_ntw_intf(self) -> str | None:
+        return self._attr_broadcast_ntw_intf
+
+    @broadcast_ntw_intf.setter
+    def broadcast_ntw_intf(self, _attr_broadcast_ntw_intf: str | None) -> None:
+        self._attr_broadcast_ntw_intf = _attr_broadcast_ntw_intf
 
     @property
     def controller_data(self) -> ControllerData:
@@ -263,6 +273,12 @@ class LocalConnectionHandler(ConnectionHandler):
             self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            if self.broadcast_ntw_intf is not None:
+                self.udp.setsockopt(
+                    socket.SOL_SOCKET,
+                    25,
+                    self.broadcast_ntw_intf.encode("utf-8"),
+                )
             server_address = (self.server_ip, 2222)
             try:
                 self.udp.bind(server_address)

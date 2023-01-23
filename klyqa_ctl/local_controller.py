@@ -85,7 +85,9 @@ class LocalController:
 
     @classmethod
     async def create_local_only(
-        cls: Any, interactive_prompts: bool = False
+        cls: Any,
+        interactive_prompts: bool = False,
+        broadcast_ntw_intf: str | None = None,
     ) -> LocalController:
         """Factory for local only controller."""
         controller_data: ControllerData = ControllerData(
@@ -93,7 +95,10 @@ class LocalController:
         )
         await controller_data.init()
         lcc: LocalConnectionHandler = LocalConnectionHandler(
-            controller_data, None, server_ip="0.0.0.0"
+            controller_data,
+            None,
+            server_ip="0.0.0.0",
+            broadcast_ntw_intf=broadcast_ntw_intf,
         )
 
         # lc: LocalController = LocalController(lcc)

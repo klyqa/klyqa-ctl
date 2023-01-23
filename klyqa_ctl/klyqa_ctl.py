@@ -772,8 +772,12 @@ async def main() -> None:
 
     exit_ret = 0
 
+    intf: str | None = None
+    if args_parsed.interface is not None:
+        intf = args_parsed.interface[0]
+
     local_con_hdl: LocalConnectionHandler = LocalConnectionHandler(
-        controller_data, account, server_ip
+        controller_data, account, server_ip, broadcast_ntw_intf=intf
     )
 
     cloud_backend: CloudBackend | None = None

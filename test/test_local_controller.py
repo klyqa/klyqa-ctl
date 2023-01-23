@@ -17,7 +17,7 @@ from klyqa_ctl.local_controller import LocalController
 
 async def main() -> None:
     lc: LocalController = await LocalController.create_local_only(
-        interactive_prompts=False
+        interactive_prompts=False, broadcast_ntw_intf="eth0"
     )
     loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
