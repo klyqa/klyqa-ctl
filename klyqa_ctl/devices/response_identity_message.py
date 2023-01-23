@@ -1,7 +1,7 @@
 """Response identity message"""
 from typing import Any
+
 from klyqa_ctl.devices.response_message import ResponseMessage
-from klyqa_ctl.general.general import format_uid
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -80,5 +80,3 @@ class ResponseIdentityMessage(ResponseMessage):
     @sdk_version.setter
     def sdk_version(self, sdk_version: str) -> None:
         self._attr_sdk_version = sdk_version
-        
-        

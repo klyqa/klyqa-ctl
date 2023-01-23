@@ -9,7 +9,6 @@ import datetime
 import json
 import select
 import socket
-import traceback
 from typing import Any, Callable
 
 from klyqa_ctl.account import Account
@@ -25,7 +24,7 @@ from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.commands import TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
-from klyqa_ctl.devices.vacuum import VacuumCleaner
+from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
     LOGGER,
@@ -71,6 +70,7 @@ class LocalConnectionHandler(ConnectionHandler):
         controller_data: ControllerData,
         account: Account | None,
         server_ip: str = "0.0.0.0",
+        broadcast_ntw_intf: str | None = None,
     ) -> None:
         self._attr_controller_data: ControllerData = controller_data
         self._attr_account: Account | None = account
@@ -94,6 +94,15 @@ class LocalConnectionHandler(ConnectionHandler):
             account.settings if account else None
         )
         self._attr_current_addr_connections = set()
+        self._attr_broadcast_ntw_intf: str | None = broadcast_ntw_intf
+
+    @property
+    def broadcast_ntw_intf(self) -> str | None:
+        return self._attr_broadcast_ntw_intf
+
+    @broadcast_ntw_intf.setter
+    def broadcast_ntw_intf(self, _attr_broadcast_ntw_intf: str | None) -> None:
+        self._attr_broadcast_ntw_intf = _attr_broadcast_ntw_intf
 
     @property
     def controller_data(self) -> ControllerData:
@@ -242,7 +251,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 self.tcp = None
             except (socket.herror, socket.gaierror, socket.timeout):
                 LOGGER.error("Error on closing local tcp port 3333.")
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
 
         if self.udp:
             try:
@@ -251,7 +260,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 self.udp = None
             except (socket.herror, socket.gaierror, socket.timeout):
                 LOGGER.error("Error on closing local udp port 2222.")
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
 
     async def bind_ports(self) -> bool:
         """bind ports."""
@@ -264,6 +273,12 @@ class LocalConnectionHandler(ConnectionHandler):
             self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            if self.broadcast_ntw_intf is not None:
+                self.udp.setsockopt(
+                    socket.SOL_SOCKET,
+                    25,
+                    self.broadcast_ntw_intf.encode("utf-8"),
+                )
             server_address = (self.server_ip, 2222)
             try:
                 self.udp.bind(server_address)
@@ -272,7 +287,7 @@ class LocalConnectionHandler(ConnectionHandler):
                     "Error on opening and binding the udp port 2222 on host"
                     " for initiating the local device communication."
                 )
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
                 return False
             LOGGER.debug("Bound UDP port 2222")
 
@@ -977,7 +992,8 @@ class LocalConnectionHandler(ConnectionHandler):
     async def handle_incoming_tcp_connection(
         self, proc_timeout_secs: int
     ) -> None:
-        """Accept incoming tcp connection and start connection handle process."""
+        """Accept incoming tcp connection and start connection handle
+        process."""
         if not self.tcp:
             return
         loop: AbstractEventLoop = asyncio.get_event_loop()
@@ -1164,7 +1180,7 @@ class LocalConnectionHandler(ConnectionHandler):
                 )
                 LOGGER.debug("wait end for send and search loop.")
             except Exception:
-                LOGGER.debug(f"{traceback.format_exc()}")
+                task_log_trace_ex()
             LOGGER.debug("wait end for send and search loop.")
         pass
 
@@ -1189,7 +1205,7 @@ class LocalConnectionHandler(ConnectionHandler):
             if self.__send_loop_sleep is not None:
                 self.__send_loop_sleep.cancel()
         except Exception:
-            LOGGER.debug(f"{traceback.format_exc()}")
+            task_log_trace_ex()
 
     async def add_message(
         self,
@@ -1250,10 +1266,10 @@ class LocalConnectionHandler(ConnectionHandler):
         discover_timeout_secs: float = 2.5
 
         async def discover_answer_end(answer: TypeJson, uid: str) -> None:
-            LOGGER.debug(f"discover ping end")
+            LOGGER.debug("discover ping end")
             discover_end_event.set()
 
-        LOGGER.debug(f"discover ping start")
+        LOGGER.debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
@@ -1266,15 +1282,17 @@ class LocalConnectionHandler(ConnectionHandler):
         )
 
         await discover_end_event.wait()
-        if self.devices:
-            target_device_uids = set(u_id for u_id, v in self.devices.items())
+        # if self.devices:
+        #     target_device_uids = set(
+        #         u_id for u_id, v in self.devices.items())
 
     # @classmethod
     # async def create_default(
     #     cls: Any, interactive_prompts: bool = False, offline: bool = False
     # ) -> LocalCommunicator:
     #     """Factory for local only controller."""
-    #     controller_data: ControllerData = ControllerData(interactive_prompts = interactive_prompts, offline = offline)
+    #     controller_data: ControllerData = ControllerData(
+    #         interactive_prompts = interactive_prompts, offline = offline)
     #     await controller_data.init()
     #     lcc: LocalCommunicator = LocalCommunicator(
     #         controller_data, None, server_ip = "0.0.0.0")

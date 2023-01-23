@@ -1,18 +1,31 @@
 """! @brief Contains all functions for light commands."""
 from __future__ import annotations
+
 from abc import abstractmethod
-from dataclasses import dataclass
-import sys
 import argparse
+from dataclasses import dataclass
 from enum import Enum
 import functools
 import json
+import sys
 from typing import Any, Callable
+
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
-from klyqa_ctl.general.general import LOGGER, Command, CommandType, DeviceType, CommandTyped, RgbColor, TypeJson
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
+from klyqa_ctl.general.general import (
+    LOGGER,
+    Command,
+    CommandType,
+    CommandTyped,
+    DeviceType,
+    RgbColor,
+    TypeJson,
+)
+from klyqa_ctl.general.parameters import (
+    add_config_args,
+    get_description_parser,
+)
 
 COMMANDS_TO_SEND: list[str] = [
     "request",
@@ -57,44 +70,50 @@ COMMANDS_TO_SEND: list[str] = [
     "ice",
 ]
 
+
 class CheckDeviceParameter(Enum):
-    COLOR = 0,
+    COLOR = (0,)
     BRIGHTNESS = 1
     TEMPERATURE = 2
     SCENE = 3
+
 
 @dataclass
 class RequestCommand(CommandTyped):
     def __post_init__(self) -> None:
         self.type = CommandType.REQUEST
 
+
 @dataclass
 class PingCommand(CommandTyped):
     def __post_init__(self) -> None:
         self.type = CommandType.PING
 
+
 @dataclass
 class FwUpdateCommand(CommandTyped):
     type: CommandType = CommandType.FW_UPDATE
     url: str = ""
-    
+
     def url_json(self) -> TypeJson:
-        return { "url": self.url }
-    
+        return {"url": self.url}
+
     def json(self) -> TypeJson:
         return super().json() | self.url_json()
-    
+
+
 @dataclass
 class TransitionCommand(RequestCommand):
     transition_time: int = 0
-    
+
     def json(self) -> TypeJson:
-        return super().json() | { "transitionTime": self.transition_time }
+        return super().json() | {"transitionTime": self.transition_time}
+
 
 @dataclass
 class CommandWithCheckValuesLight(CommandWithCheckValues):
     light: Light | None = None
-    
+
     @abstractmethod
     def check_values(self, device: Device) -> bool:
         if not isinstance(device, Light):
@@ -102,112 +121,156 @@ class CommandWithCheckValuesLight(CommandWithCheckValues):
         self.light = device
         return True
 
+
 @dataclass
 class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
     color: RgbColor = RgbColor(0, 0, 0)
-    
+
     def color_json(self) -> TypeJson:
-        return {"color": {
-            "red": self.color.r,
-            "green": self.color.g,
-            "blue": self.color.b,
-        }}
-    
+        return {
+            "color": {
+                "red": self.color.r,
+                "green": self.color.g,
+                "blue": self.color.b,
+            }
+        }
+
     def json(self) -> TypeJson:
         return super().json() | self.color_json()
-        
+
     def check_values(self, device: Device) -> bool:
         """Check device color range."""
         if not super().check_values(device) or not self.light:
             return False
         values: list = [self.color.r, self.color.g, self.color.b]
-        if (not self.light.ident or not self.light.color_range) and (not self.light.ident or missing_config(self.force, self.light.ident.product_id)):
+        if (not self.light.ident or not self.light.color_range) and (
+            not self.light.ident
+            or missing_config(self.force, self.light.ident.product_id)
+        ):
             return False
         elif self.light.color_range:
             for value in values:
-                if int(value) < self.light.color_range.min or int(value) > self.light.color_range.max:
-                    return forced_continue(self.force,
-                        f"Color {value} out of range [{self.light.color_range.min}..{self.light.color_range.max}]."
+                if (
+                    int(value) < self.light.color_range.min
+                    or int(value) > self.light.color_range.max
+                ):
+                    return forced_continue(
+                        self.force,
+                        f"Color {value} out of range"
+                        f" [{self.light.color_range.min}.."
+                        f"{self.light.color_range.max}].",
                     )
         return True
+
 
 @dataclass
 class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
     temperature: int = 0
-    
+
     def temperature_json(self) -> TypeJson:
-            return { "temperature": self.temperature }
-    
+        return {"temperature": self.temperature}
+
     def json(self) -> TypeJson:
         return super().json() | self.temperature_json()
-        
+
     def check_values(self, device: Device) -> bool:
         """Check device temperature range."""
         if not super().check_values(device) or not self.light:
             return False
         value: int = self.temperature
-        if not self.light.ident or not self.light.temperature_range or missing_config(self.force, self.light.ident.product_id):
+        if (
+            not self.light.ident
+            or not self.light.temperature_range
+            or missing_config(self.force, self.light.ident.product_id)
+        ):
             return False
         else:
-            if int(value) < self.light.temperature_range.min or int(value) > self.light.temperature_range.max:
-                return forced_continue(self.force,
-                    f"Temperature {value} out of range [{self.light.temperature_range.min}..{self.light.temperature_range.max}]."
+            if (
+                int(value) < self.light.temperature_range.min
+                or int(value) > self.light.temperature_range.max
+            ):
+                return forced_continue(
+                    self.force,
+                    f"Temperature {value} out of range"
+                    f" [{self.light.temperature_range.min}.."
+                    f"{self.light.temperature_range.max}].",
                 )
         return True
-    
+
+
 @dataclass
 class BrightnessCommand(CommandWithCheckValuesLight, TransitionCommand):
     brightness: int = 0
-    
+
     def brightness_json(self) -> TypeJson:
-        return {"brightness": {
+        return {
+            "brightness": {
                 "percentage": self.brightness,
-            }}
-    
+            }
+        }
+
     def json(self) -> TypeJson:
         return super().json() | self.brightness_json()
-        
+
     def check_values(self, device: Device) -> bool:
         if not super().check_values(device) or not self.light:
             return False
         value: int = self.brightness
-        if not self.light.ident or not self.light.brightness_range or missing_config(self.force, self.light.ident.product_id):
+        if (
+            not self.light.ident
+            or not self.light.brightness_range
+            or missing_config(self.force, self.light.ident.product_id)
+        ):
             return False
         else:
-            if int(value) < self.light.brightness_range.min or int(value) > self.light.brightness_range.max:
-                return forced_continue(self.force,
-                    f"Brightness {value} out of range [{self.light.brightness_range.min}..{self.light.brightness_range.max}]."
+            if (
+                int(value) < self.light.brightness_range.min
+                or int(value) > self.light.brightness_range.max
+            ):
+                return forced_continue(
+                    self.force,
+                    f"Brightness {value} out of range"
+                    f" [{self.light.brightness_range.min}.."
+                    f"{self.light.brightness_range.max}].",
                 )
         return True
 
         # return check_brightness_range(force, device, value = self.brightness)
+
 
 class ExternalSourceProtocol(str, Enum):
     EXT_OFF = "EXT_OFF"
     EXT_UDP = "EXT_UDP"
     EXT_E131 = "EXT_E131"
     EXT_TPM2 = "EXT_TPM2"
-    
+
+
 @dataclass
 class ExternalSourceCommand(CommandWithCheckValues, RequestCommand):
     protocol: ExternalSourceProtocol = ExternalSourceProtocol.EXT_OFF
     port: int = 0
     channel: int = 0
-    
+
     def json(self) -> TypeJson:
         return super().json() | {
             "external": {
                 "mode": self.protocol,
                 "port": self.port,
-                "channel": self.channel
-            }}
-        
+                "channel": self.channel,
+            }
+        }
+
     def check_values(self, device: Device) -> bool:
         return True
-    #     return check_external_source_command(force, device, value = self.brightness)
+
+        # return check_external_source_command(
+        #     force, device, value=self.brightness
+        # )
+
 
 # Functions
-# def color_message(red: str, green: str, blue: str, transition_time: int) -> Command:
+# def color_message(red: str, green: str, blue: str, transition_time: int
+#                   ) -> Command:
 #     """Create message for color change."""
 #     return Command(
 #         {
@@ -222,7 +285,8 @@ class ExternalSourceCommand(CommandWithCheckValues, RequestCommand):
 #         transition_time,
 #     )
 
-# def temperature_message(temperature: str, transition_time: int) -> CommandTyped:
+# def temperature_message(temperature: str, transition_time: int
+# ) -> CommandTyped:
 #     """Create message for temperature change in kelvin."""
 #     return CommandTyped(
 #         {
@@ -232,6 +296,7 @@ class ExternalSourceCommand(CommandWithCheckValues, RequestCommand):
 #         }        ,
 #         transition_time,
 #     )
+
 
 def percent_color_message(
     red: str, green: str, blue: str, warm: str, cold: str, transition_time: int
@@ -255,6 +320,7 @@ def percent_color_message(
         transition_time,
     )
 
+
 # def brightness_message(brightness: str, transition: int) -> tuple[str, int]:
 #     """Create message for brightness set."""
 #     return (
@@ -269,8 +335,11 @@ def percent_color_message(
 #         ),
 #         transition,
 #     )
-    
-def external_source_message(protocol: int, port: int,channel: int) -> TypeJson:
+
+
+def external_source_message(
+    protocol: int, port: int, channel: int
+) -> TypeJson:
     """Create external source protocol message."""
     protocol_str: str
     if protocol == 0:
@@ -284,13 +353,14 @@ def external_source_message(protocol: int, port: int,channel: int) -> TypeJson:
     else:
         protocol_str = "EXT_OFF"
     return {
-            "type": "request",
-            "external": {
-                "mode": protocol_str,
-                "port": int(port),
-                "channel": int(channel),
-            },
-        }
+        "type": "request",
+        "external": {
+            "mode": protocol_str,
+            "port": int(port),
+            "channel": int(channel),
+        },
+    }
+
 
 def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     """Add arguments to the argument parser object.
@@ -299,16 +369,26 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
         parser: Parser object
     """
     parser.add_argument(
-        "--transitionTime", nargs=1, help="transition time in milliseconds", default=[0]
+        "--transitionTime",
+        nargs=1,
+        help="transition time in milliseconds",
+        default=[0],
     )
 
-    parser.add_argument("--color", nargs=3, help="set color command (r,g,b) 0-255")
+    parser.add_argument(
+        "--color", nargs=3, help="set color command (r,g,b) 0-255"
+    )
     parser.add_argument(
         "--temperature",
         nargs=1,
-        help="set temperature command (in kelvin, range depends on lamp profile) (lower: warm, higher: cold)",
+        help=(
+            "set temperature command (in kelvin, range depends on lamp"
+            " profile) (lower: warm, higher: cold)"
+        ),
     )
-    parser.add_argument("--brightness", nargs=1, help="set brightness in percent 0-100")
+    parser.add_argument(
+        "--brightness", nargs=1, help="set brightness in percent 0-100"
+    )
     parser.add_argument(
         "--percent_color",
         nargs=5,
@@ -317,7 +397,11 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument("--ota", nargs=1, help="specify http URL for ota")
     parser.add_argument(
-        "--ping", help="send ping", action="store_const", const=True, default=False
+        "--ping",
+        help="send ping",
+        action="store_const",
+        const=True,
+        default=False,
     )
     parser.add_argument(
         "--request",
@@ -338,7 +422,10 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
 
     parser.add_argument(
         "--factory_reset",
-        help="trigger a factory reset on the device (Warning: device has to be onboarded again afterwards)",
+        help=(
+            "trigger a factory reset on the device (Warning: device has to be"
+            " onboarded again afterwards)"
+        ),
         action="store_const",
         const=True,
         default=False,
@@ -372,10 +459,15 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
         default=False,
     )
     parser.add_argument(
-        "--routine_id", help="specify routine id to act on (for put, start, delete)"
+        "--routine_id",
+        help="specify routine id to act on (for put, start, delete)",
     )
-    parser.add_argument("--routine_scene", help="specify routine scene label (for put)")
-    parser.add_argument("--routine_commands", help="specify routine program (for put)")
+    parser.add_argument(
+        "--routine_scene", help="specify routine scene label (for put)"
+    )
+    parser.add_argument(
+        "--routine_commands", help="specify routine program (for put)"
+    )
     parser.add_argument(
         "--reboot",
         help="trigger a reboot",
@@ -428,16 +520,20 @@ def add_command_args_bulb(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--deep_sea", help="deep_sea", action="store_true")
     parser.add_argument("--tropical", help="tropical", action="store_true")
     parser.add_argument("--magic", help="magic Mood", action="store_true")
-    parser.add_argument("--mystic", help="Mystic Mountain", action="store_true")
+    parser.add_argument(
+        "--mystic", help="Mystic Mountain", action="store_true"
+    )
     parser.add_argument("--cotton", help="Cotton Candy", action="store_true")
     parser.add_argument("--ice", help="Ice Cream", action="store_true")
+
 
 async def discover_devices(
     args: argparse.Namespace,
     args_in: list[Any],
-    send_to_devices_cb: Callable[[argparse.Namespace], Any]) -> argparse.Namespace | None:
-        
-    """Send out klyqa broadcast to discover all devices. Tries to set 
+    send_to_devices_cb: Callable[[argparse.Namespace], Any],
+) -> argparse.Namespace | None:
+
+    """Send out klyqa broadcast to discover all devices. Tries to set
     device_unitids in args parse. The user can select them.
 
     Params:
@@ -451,7 +547,7 @@ async def discover_devices(
     Returns:
         bool: True if succeeded.
     """
-    
+
     discover_local_args: list[str] = [
         DeviceType.LIGHTING.value,
         "--request",
@@ -461,7 +557,9 @@ async def discover_devices(
     ]
 
     orginal_args_parser: argparse.ArgumentParser = get_description_parser()
-    discover_local_args_parser: argparse.ArgumentParser = get_description_parser()
+    discover_local_args_parser: argparse.ArgumentParser = (
+        get_description_parser()
+    )
 
     add_config_args(parser=orginal_args_parser)
     add_config_args(parser=discover_local_args_parser)
@@ -475,7 +573,9 @@ async def discover_devices(
         discover_local_args, namespace=original_config_args_parsed
     )
 
-    uids: set | list | str = await send_to_devices_cb(discover_local_args_parsed)
+    uids: set | list | str = await send_to_devices_cb(
+        discover_local_args_parsed
+    )
     if isinstance(uids, set) or isinstance(uids, list):
         args_in = ["--device_unitids", ",".join(list(uids))] + args_in
     elif isinstance(uids, str) and uids == "no_devices":
@@ -488,6 +588,7 @@ async def discover_devices(
     args = orginal_args_parser.parse_args(args=args_in, namespace=args)
     return args
 
+
 async def create_device_message(
     args: argparse.Namespace,
     args_in: list[Any],
@@ -498,13 +599,14 @@ async def create_device_message(
     scene_list: list[str],
 ) -> bool:
     """
-    
-    Process arguments for communicating with lights. Fill message queues for local
-    and cloud communication. Discover devices to communicate with.
-    
+
+    Process arguments for communicating with lights. Fill message queues for
+    local and cloud communication. Discover devices to communicate with.
+
     Params:
         args: Parsed arguments to be processed.
-        args_in: Original arguments as a list, if we want to reparse and add arguments.
+        args_in: Original arguments as a list, if we want to reparse and add
+            arguments.
         send_to_devices_callable: If we need to send something to the lamps,
             use this callable.
         message_queue_tx_local: Queue to be filled with messages for local
@@ -516,10 +618,12 @@ async def create_device_message(
 
     """
 
-    def local_and_cloud_command_msg(json_msg: Command) -> None: #, check_func: Callable | None = None) -> None:
-        """ Add message to local and cloud queue. Give a timeout after the message
-        was sent. Give also a check function for the values that are send to be in
-        limits (device config).
+    def local_and_cloud_command_msg(
+        json_msg: Command,
+    ) -> None:  # , check_func: Callable | None = None) -> None:
+        """Add message to local and cloud queue. Give a timeout after the
+        message was sent. Give also a check function for the values that
+        are send to be in limits (device config).
         """
         # msg: tuple[str, int] = (json.dumps(json_msg), timeout)
         # if check_func:
@@ -527,15 +631,18 @@ async def create_device_message(
         message_queue_tx_local.append(json_msg)
         message_queue_tx_command_cloud.append(json_msg.json())
 
-    # TODO: Missing cloud discovery and interactive device selection. Send to devices if given as argument working.
+    # TODO: Missing cloud discovery and interactive device selection. Send to
+    # devices if given as argument working.
     if (args.local or args.tryLocalThanCloud) and (
         not args.device_name
         and not args.device_unitids
         and not args.allDevices
         and not args.discover
     ):
-        args_ret: argparse.Namespace | None = await discover_devices(args, args_in, send_to_devices_callable)
-        
+        args_ret: argparse.Namespace | None = await discover_devices(
+            args, args_in, send_to_devices_callable
+        )
+
         if isinstance(args_ret, argparse.Namespace):
             args = args_ret
 
@@ -544,7 +651,9 @@ async def create_device_message(
     ]
 
     if commands_to_send:
-        LOGGER.info("Commands to send to devices: " + ", ".join(commands_to_send))
+        LOGGER.info(
+            "Commands to send to devices: " + ", ".join(commands_to_send)
+        )
     else:
         if not await commands_select(args, args_in, send_to_devices_callable):
             return False
@@ -562,7 +671,8 @@ async def create_device_message(
     # if args.external_source:
     #     mode, port, channel = args.external_source
     #     local_and_cloud_command_msg(
-    #         # ExternalSourceCommand(protocol=, port=int(port), channel=int(channel)).json()
+    #         # ExternalSourceCommand(protocol=, port=int(port),
+    # channel=int(channel)).json()
     #         external_source_message(int(mode), port, channel)
     #         , 0
     #     )
@@ -574,28 +684,41 @@ async def create_device_message(
         pass
 
     if args.power:
-        message_queue_tx_local.append(Command(_json={"type": "request", "status": args.power[0]}))
+        message_queue_tx_local.append(
+            Command(_json={"type": "request", "status": args.power[0]})
+        )
         message_queue_tx_state_cloud.append({"status": args.power[0]})
 
     if args.color is not None:
-        command_color(args, message_queue_tx_local, message_queue_tx_state_cloud)
-    
+        command_color(
+            args, message_queue_tx_local, message_queue_tx_state_cloud
+        )
+
     if args.percent_color is not None:
-        command_color_percent(args, message_queue_tx_local, message_queue_tx_state_cloud)
+        command_color_percent(
+            args, message_queue_tx_local, message_queue_tx_state_cloud
+        )
 
     if args.temperature is not None:
-        command_temperature(args, message_queue_tx_local, message_queue_tx_state_cloud)
+        command_temperature(
+            args, message_queue_tx_local, message_queue_tx_state_cloud
+        )
 
     if args.brightness is not None:
-        command_brightness(args, message_queue_tx_local, message_queue_tx_state_cloud)
+        command_brightness(
+            args, message_queue_tx_local, message_queue_tx_state_cloud
+        )
 
     if args.factory_reset:
-        local_and_cloud_command_msg(Command(_json={"type": "factory_reset", "status": args.power[0]}))
+        local_and_cloud_command_msg(
+            Command(_json={"type": "factory_reset", "status": args.power[0]})
+        )
 
     # needs new command classes
     # if args.fade is not None and len(args.fade) == 2:
     #     local_and_cloud_command_msg(
-    #         {"type": "request", "fade_out": args.fade[1], "fade_in": args.fade[0]}, 500
+    #         {"type": "request", "fade_out": args.fade[1],
+    # "fade_in": args.fade[0]}, 500
     #     )
 
     # if args.reboot:
@@ -605,24 +728,32 @@ async def create_device_message(
     #     # return False
 
     # if args.routine_list:
-    #     local_and_cloud_command_msg({"type": "routine", "action": "list"}, 500)
+    #     local_and_cloud_command_msg({"type": "routine", "action": "list"},
+    # 500)
 
     # if args.routine_put and args.routine_id is not None:
     #     routine_put(args, local_and_cloud_command_msg)
 
     # if args.routine_delete and args.routine_id is not None:
     #     local_and_cloud_command_msg(
-    #         {"type": "routine", "action": "delete", "id": args.routine_id}, 500
+    #         {"type": "routine", "action": "delete", "id": args.routine_id},
+    # 500
     #     )
     # if args.routine_start and args.routine_id is not None:
     #     local_and_cloud_command_msg(
-    #         {"type": "routine", "action": "start", "id": args.routine_id}, 500
+    #         {"type": "routine", "action": "start", "id": args.routine_id},
+    # 500
     #     )
-    
+
     return True
 
+
 # Needs clean up
-async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_devices_callable: Callable) -> bool:
+async def commands_select(
+    args: argparse.Namespace,
+    args_in: list[str],
+    send_to_devices_callable: Callable,
+) -> bool:
     """Interactive command select."""
     # print("Commands (arguments):")
     # print(sep_width * "-")
@@ -657,7 +788,8 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
     # u_id: str
     # for u_id in args.device_unitids[0].split(","):
     #     u_id = format_uid(u_id)
-    #     if u_id not in self.devices or not self.devices[u_id].ident: # fix self devices
+    #     # fix self devices
+    #     if u_id not in self.devices or not self.devices[u_id].ident:
 
     #         async def send_ping() -> bool:
     #             discover_local_args2: list[str] = [
@@ -721,7 +853,8 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
     # arguments_send_to_device: dict[str, str] = {
     #     **arguments_send_to_device,
     #     **{
-    #         "color": f" rgb [{color[0]}..{color[1]}] [{color[0]}..{color[1]}] [{color[0]}..{color[1]}]",
+    #         "color": f" rgb [{color[0]}..{color[1]}] [{color[0]}..{color[1]}]
+    # [{color[0]}..{color[1]}]",
     #         "brightness": " ["
     #         + str(brightness[0])
     #         + ".."
@@ -736,7 +869,8 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
     # count: int = 1
     # for c in commands_send_to_bulb:
     #     args_to_b: str = (
-    #         arguments_send_to_device[c] if c in arguments_send_to_device else ""
+    #         arguments_send_to_device[c] if c in arguments_send_to_device
+    # else ""
     #     )
     #     LOGGER.info(str(count) + ") " + c + args_to_b)
     #     count = count + 1
@@ -750,7 +884,8 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
 
     # if commands_send_to_bulb[cmd_c_id - 1] in arguments_send_to_device:
     #     args_app: str = input(
-    #         "Set arguments (multiple arguments space separated) for command [Enter]: "
+    #         "Set arguments (multiple arguments space separated) for command
+    # [Enter]: "
     #     )
     #     if args_app:
     #         args_in.extend(args_app.split(" "))
@@ -764,19 +899,30 @@ async def commands_select(args: argparse.Namespace, args_in: list[str], send_to_
     # # args.func(args)
     return True
 
-def command_color(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+
+def command_color(
+    args: argparse.Namespace,
+    message_queue_tx_local: list,
+    message_queue_tx_state_cloud: list,
+) -> None:
     """Command for setting the color."""
-    r: str; g: str; b: str;
+    r: str
+    g: str
+    b: str
     r, g, b = args.color
 
     tt: int = int(args.transitionTime[0])
     # msg: tuple[str, int] | tuple [str, int, Callable] = color_message(
     #     r, g, b, 0 if args.brightness is not None else tt)
-    msg: ColorCommand = ColorCommand(transition_time=tt, force=args.force, color=RgbColor(
-        int(r), int(g), int(b)))
+    msg: ColorCommand = ColorCommand(
+        transition_time=tt,
+        force=args.force,
+        color=RgbColor(int(r), int(g), int(b)),
+    )
 
     # check_color = functools.partial(
-    #     check_device_parameter, args, CheckDeviceParameter.COLOR, [int(r), int(g), int(b)]
+    #     check_device_parameter, args, CheckDeviceParameter.COLOR, [int(r),
+    # int(g), int(b)]
     # )
     # msg = msg + (check_color,)
 
@@ -784,27 +930,46 @@ def command_color(args: argparse.Namespace, message_queue_tx_local: list, messag
     # col: Any = json.loads(msg[0])["color"]
     message_queue_tx_state_cloud.append(msg.color_json())
 
-def command_color_percent(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+
+def command_color_percent(
+    args: argparse.Namespace,
+    message_queue_tx_local: list,
+    message_queue_tx_state_cloud: list,
+) -> None:
     """Command for color in percentage numbers."""
-    r: Any; g: Any; b: Any; w: Any; c: Any
+    r: Any
+    g: Any
+    b: Any
+    w: Any
+    c: Any
     r, g, b, w, c = args.percent_color
     tt: Any = args.transitionTime[0]
     msg: tuple[str, int] = percent_color_message(
-        r, g, b, w, c, 0 if args.brightness is not None else tt)
+        r, g, b, w, c, 0 if args.brightness is not None else tt
+    )
     message_queue_tx_local.append(msg)
     p_color: Any = json.loads(msg[0])["p_color"]
     message_queue_tx_state_cloud.append({"p_color": p_color})
-        
-def command_brightness(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+
+
+def command_brightness(
+    args: argparse.Namespace,
+    message_queue_tx_local: list,
+    message_queue_tx_state_cloud: list,
+) -> None:
     """Command for brightness."""
     brightness_str: str = args.brightness[0]
 
     tt: int = int(args.transitionTime[0])
-    # msg: tuple[str, int] | tuple [str, int, Callable] = brightness_message(brightness_str, tt)#
-    msg: BrightnessCommand = BrightnessCommand(transition_time=tt, force=args.force, brightness=int(brightness_str))
+    # msg: tuple[str, int] | tuple [str, int, Callable] = brightness_message(
+    # brightness_str, tt)#
+    msg: BrightnessCommand = BrightnessCommand(
+        transition_time=tt, force=args.force, brightness=int(brightness_str)
+    )
 
     # check_brightness: functools.partial[bool] = functools.partial(
-    #     check_device_parameter, args, CheckDeviceParameter.BRIGHTNESS, int(brightness_str)
+    #     check_device_parameter, args, CheckDeviceParameter.BRIGHTNESS,
+    # int(brightness_str)
     # )
     # msg = msg + (check_brightness,)
 
@@ -813,7 +978,12 @@ def command_brightness(args: argparse.Namespace, message_queue_tx_local: list, m
     # message_queue_tx_state_cloud.append({"brightness": brightness})
     message_queue_tx_state_cloud.append(msg.brightness_json())
 
-def command_temperature(args: argparse.Namespace, message_queue_tx_local: list, message_queue_tx_state_cloud: list) -> None:
+
+def command_temperature(
+    args: argparse.Namespace,
+    message_queue_tx_local: list,
+    message_queue_tx_state_cloud: list,
+) -> None:
     """Command for temperature."""
     temperature: str = args.temperature[0]
 
@@ -822,19 +992,23 @@ def command_temperature(args: argparse.Namespace, message_queue_tx_local: list, 
     #     temperature, 0 if args.brightness is not None else tt)
 
     # check_temperature: functools.partial[bool] = functools.partial(
-    #     check_device_parameter, args, CheckDeviceParameter.TEMPERATURE, int(temperature)
+    #     check_device_parameter, args, CheckDeviceParameter.TEMPERATURE,
+    # int(temperature)
     # )
     # msg = msg + (check_temperature,)
 
     # temperature = json.loads(msg[0])["temperature"]
-    msg: TemperatureCommand = TemperatureCommand(transition_time=tt, force=args.force, temperature=int(temperature))
-    
+    msg: TemperatureCommand = TemperatureCommand(
+        transition_time=tt, force=args.force, temperature=int(temperature)
+    )
+
     message_queue_tx_local.append(msg)
     message_queue_tx_state_cloud.append(msg.temperature_json())
 
+
 def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
     """Command for select scene."""
-    
+
     scene: str = ""
     if args.WW:
         scene = "Warm White"
@@ -890,19 +1064,24 @@ def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
         scene = "Ice Cream"
 
     if scene:
-        scene_result: list[dict[str, Any]] = [x for x in SCENES if x["label"] == scene]
+        scene_result: list[dict[str, Any]] = [
+            x for x in SCENES if x["label"] == scene
+        ]
         if not len(scene_result) or len(scene_result) > 1:
             LOGGER.error(
-                f"Scene {scene} not found or more than one scene with the name found."
+                f"Scene {scene} not found or more than one scene with the name"
+                " found."
             )
             return False
         scene_obj: dict[str, Any] = scene_result[0]
 
-        # check_brightness = functools.partial(check_device_parameter, Check_device_parameter.scene, scene_obj)
+        # check_brightness = functools.partial(check_device_parameter,
+        # Check_device_parameter.scene, scene_obj)
         # msg = msg + (check_brightness,)
-        # if not check_device_parameter(Check_device_parameter.scene, scene_obj):
+        # if not check_device_parameter(Check_device_parameter.scene,
+        # scene_obj):
         #     return False
-        
+
         commands: str = scene_obj["commands"]
         if len(commands.split(";")) > 2:
             commands += "l 0;"
@@ -912,8 +1091,9 @@ def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
         args.routine_scene = str(scene_obj["id"])
 
         scene_list.append(scene)
-        
+
     return True
+
 
 def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
     """Enable thingsboard to device."""
@@ -926,10 +1106,16 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
         (json.dumps({"type": "backend", "link_enabled": a}), 1000)
     )
 
-def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
+
+def routine_put(
+    args: argparse.Namespace, local_and_cloud_command_msg: Callable
+) -> None:
     """Put routine to device."""
     check_scene: functools.partial[Any] = functools.partial(
-        check_device_parameter, args.force, CheckDeviceParameter.SCENE, args.routine_scene
+        check_device_parameter,
+        args.force,
+        CheckDeviceParameter.SCENE,
+        args.routine_scene,
     )
     # msg = msg + (check_scene,) # fix check routine before putting
     local_and_cloud_command_msg(
@@ -941,8 +1127,9 @@ def routine_put(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
             "commands": args.routine_commands,
         },
         500,
-        check_scene
+        check_scene,
     )
+
 
 def forced_continue(force: bool, reason: str) -> bool:
     """Force argument."""
@@ -954,15 +1141,20 @@ def forced_continue(force: bool, reason: str) -> bool:
         LOGGER.info("Enforced send")
         return True
 
+
 def missing_config(force: bool, product_id: str) -> bool:
     """Missing device config."""
-    if not forced_continue(force, 
-        "Missing or faulty config values for device " + " product_id: " + product_id
+    if not forced_continue(
+        force,
+        "Missing or faulty config values for device "
+        + " product_id: "
+        + product_id,
     ):
         return True
     return False
 
-#### Needing config profile versions implementation for checking trait ranges ###
+
+# Needing config profile versions implementation for checking trait ranges ###
 
 # def check_color_range(force: bool, device: Light, values: list[int]) -> bool:
 #     """Check device color range."""
@@ -970,9 +1162,11 @@ def missing_config(force: bool, product_id: str) -> bool:
 #         missing_config(force, device.device.ident.product_id)
 #     else:
 #         for value in values:
-#             if int(value) < device.color_range.min or int(value) > device.color_range.max:
+#             if int(value) < device.color_range.min or int(value) >
+# device.color_range.max:
 #                 return forced_continue(force,
-#                     f"Color {value} out of range [{device.color_range.min}..{device.color_range.max}]."
+#                     f"Color {value} out of range [{device.color_range.min}.."
+#                     f"{device.color_range.max}]."
 #                 )
 #     return True
 
@@ -981,9 +1175,12 @@ def missing_config(force: bool, product_id: str) -> bool:
 #     if not device.brightness_range:
 #         missing_config(force, device.device.ident.product_id)
 #     else:
-#         if int(value) < device.brightness_range.min or int(value) > device.brightness_range.max:
+#         if int(value) < device.brightness_range.min or int(value) >
+#         device.brightness_range.max:
 #             return forced_continue(force,
-#                 f"Brightness {value} out of range [{device.brightness_range.min}..{device.brightness_range.max}]."
+#                 f"Brightness {value} out of range
+# [{device.brightness_range.min}"
+#                 f"..{device.brightness_range.max}]."
 #             )
 #     return True
 
@@ -992,11 +1189,15 @@ def missing_config(force: bool, product_id: str) -> bool:
 #     if not device.temperature_range:
 #         missing_config(force, device.device.ident.product_id)
 #     else:
-#         if int(value) < device.temperature_range.min or int(value) > device.temperature_range.max:
+#         if int(value) < device.temperature_range.min or int(value) >
+# device.temperature_range.max:
 #             return forced_continue(force,
-#                 f"Temperature {value} out of range [{device.temperature_range.min}..{device.temperature_range.max}]."
+#                 f"Temperature {value} out of range
+# [{device.temperature_range.min}.."
+#                 f"{device.temperature_range.max}]."
 #             )
 #     return True
+
 
 def check_scene_support(force: bool, device: Device, scene_id: str) -> bool:
     """Check device scene support."""
@@ -1005,19 +1206,24 @@ def check_scene_support(force: bool, device: Device, scene_id: str) -> bool:
     if not device.ident:
         return False
     try:
-        scene_result: list[dict[str, Any]] = [x for x in SCENES if x["id"] == int(scene_id)]
+        scene_result: list[dict[str, Any]] = [
+            x for x in SCENES if x["id"] == int(scene_id)
+        ]
         scene: dict[str, Any] = scene_result[0]
 
         # bulb has no colors, therefore only cwww scenes are allowed
-        if not ".rgb" in device.ident.product_id and not "cwww" in scene:
-            return forced_continue(force,
-                f"Scene {scene['label']} not supported by device product" +
-                f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes only."
+        if ".rgb" not in device.ident.product_id and "cwww" not in scene:
+            return forced_continue(
+                force,
+                f"Scene {scene['label']} not supported by device product"
+                + f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes"
+                " only.",
             )
 
-    except Exception as excp:
+    except Exception:
         return not missing_config(force, device.ident.product_id)
     return True
+
 
 CHECK_RANGE: dict[Any, Any] = {
     # CheckDeviceParameter.COLOR: check_color_range,
@@ -1026,11 +1232,14 @@ CHECK_RANGE: dict[Any, Any] = {
     CheckDeviceParameter.SCENE: check_scene_support,
 }
 
-def check_device_parameter(force: bool, 
-    parameter: CheckDeviceParameter, values: Any, device: Device
+
+def check_device_parameter(
+    force: bool, parameter: CheckDeviceParameter, values: Any, device: Device
 ) -> bool:
     """Check device configs."""
-    if not device.device_config and not forced_continue(force, "Missing configs for devices."):
+    if not device.device_config and not forced_continue(
+        force, "Missing configs for devices."
+    ):
         return False
 
     if not CHECK_RANGE[parameter](force, device, values):

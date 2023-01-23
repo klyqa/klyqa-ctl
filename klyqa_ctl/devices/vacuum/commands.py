@@ -1,43 +1,57 @@
 """Vacuum cleaner commands"""
 from __future__ import annotations
+
 import argparse
 from dataclasses import dataclass
 from enum import Enum
 import json
 from typing import Any, Callable
-from klyqa_ctl.devices.light.commands import RequestCommand
-from klyqa_ctl.devices.vacuum import VcSuctionStrengths, VcWorkingMode, CommandType
-from klyqa_ctl.general.general import LOGGER, CommandTyped, TypeJson
-from klyqa_ctl.general.general import CommandType as MessageCommandType
 
-class ProductinfoCommand(RequestCommand):        
+from klyqa_ctl.devices.light.commands import RequestCommand
+from klyqa_ctl.devices.vacuum.general import VcSuctionStrengths, VcWorkingMode
+from klyqa_ctl.general.general import CommandType as MessageCommandType
+from klyqa_ctl.general.general import LOGGER
+from klyqa_ctl.general.general import TypeJson
+
+
+class CommandType(Enum):
+    GET = 0
+    SET = 1
+    RESET = 2
+
+
+class ProductinfoCommand(RequestCommand):
     def productinfo_json(self) -> TypeJson:
-            return {"action": "productinfo"}
-            
+        return {"action": "productinfo"}
+
     def json(self) -> TypeJson:
         return super().json() | self.productinfo_json()
 
+
 class RequestGetCommand(RequestCommand):
     def get_json(self) -> TypeJson:
-            return {"action": "get"}
-            
+        return {"action": "get"}
+
     def json(self) -> TypeJson:
         return super().json() | self.get_json()
 
+
 class RequestResetCommand(RequestCommand):
     def reset_json(self) -> TypeJson:
-            return {"action": "reset"}
-            
+        return {"action": "reset"}
+
     def json(self) -> TypeJson:
         return super().json() | self.reset_json()
 
+
 class RequestSetCommand(RequestCommand):
     def set_json(self) -> TypeJson:
-            return {"action": "set"}
-            
+        return {"action": "set"}
+
     def json(self) -> TypeJson:
         return super().json() | self.set_json()
-        
+
+
 class RoutineCommandActions(str, Enum):
     ACTION = "action"
     COUNT = "count"
@@ -45,6 +59,7 @@ class RoutineCommandActions(str, Enum):
     DELETE = "delete"
     START = "start"
     PUT = "put"
+
 
 @dataclass
 class RoutineCommand(RequestCommand):
@@ -64,7 +79,7 @@ class RoutineCommand(RequestCommand):
         if self.commands is not None:
             r["commands"] = self.commands
         return r
-            
+
     def json(self) -> TypeJson:
         return super().json() | self.routine_json()
 
@@ -86,9 +101,7 @@ async def create_device_message(
     if args.command is not None:
 
         if args.command == "productinfo":
-            local_and_cloud_command_msg(
-                ProductinfoCommand().json(), 100
-            )
+            local_and_cloud_command_msg(ProductinfoCommand().json(), 100)
 
         if args.command == CommandType.GET.name:
             get_command(args, local_and_cloud_command_msg)
@@ -102,9 +115,12 @@ async def create_device_message(
         elif args.command == "routine":
             routine(args)
 
-def get_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
+
+def get_command(
+    args: argparse.Namespace, local_and_cloud_command_msg: Callable
+) -> None:
     """Get command."""
-    
+
     get_dict: dict[str, Any] = RequestGetCommand().json()
     if args.power or args.all:
         get_dict["power"] = None
@@ -152,11 +168,14 @@ def get_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
         get_dict["mcu"] = None
     local_and_cloud_command_msg(get_dict, 1000)
 
-def reset_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
+
+def reset_command(
+    args: argparse.Namespace, local_and_cloud_command_msg: Callable
+) -> None:
     """Reset command."""
-    
+
     reset_dict: dict[str, Any] = RequestResetCommand().json()
-    
+
     if args.sidebrush:
         reset_dict["sidebrush"] = None
     if args.rollingbrush:
@@ -165,11 +184,14 @@ def reset_command(args: argparse.Namespace, local_and_cloud_command_msg: Callabl
         reset_dict["filter"] = None
     local_and_cloud_command_msg(reset_dict, 1000)
 
-def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable) -> None:
+
+def set_command(
+    args: argparse.Namespace, local_and_cloud_command_msg: Callable
+) -> None:
     """Set command."""
-    
+
     set_dict: dict[str, Any] = RequestSetCommand().json()
-   
+
     if args.power is not None:
         set_dict["power"] = args.power
     if args.cleaning is not None:
@@ -194,14 +216,17 @@ def set_command(args: argparse.Namespace, local_and_cloud_command_msg: Callable)
         set_dict["calibrationtime"] = args.calibrationtime
     local_and_cloud_command_msg(set_dict, 1000)
 
+
 def routine(args: argparse.Namespace) -> None:
     """Set routine."""
-    
+
     routine_dict: dict[str, str] = RoutineCommand().json()
 
     if args.count:
         # routine_dict["action"] = "count"
-        routine_dict = RoutineCommand(action=RoutineCommandActions.COUNT).json()
+        routine_dict = RoutineCommand(
+            action=RoutineCommandActions.COUNT
+        ).json()
 
     if args.list:
         # routine_dict["action"] = "list"
@@ -209,7 +234,12 @@ def routine(args: argparse.Namespace) -> None:
 
     if args.put:
         if args.id and args.commands:
-            routine_dict = RoutineCommand(action=RoutineCommandActions.PUT, id=args.id, scene="none", commands=args.commands).json()
+            routine_dict = RoutineCommand(
+                action=RoutineCommandActions.PUT,
+                id=args.id,
+                scene="none",
+                commands=args.commands,
+            ).json()
             # routine_dict["action"] = "put"
             # routine_dict["id"] = args.id
             # routine_dict["scene"] = "none"
@@ -228,3 +258,261 @@ def routine(args: argparse.Namespace) -> None:
         if args.id:
             routine_dict["action"] = "start"
             routine_dict["id"] = args.id
+
+
+def add_command_args_cleaner(parser: argparse.ArgumentParser) -> None:
+    """Add command parse arguments."""
+
+    sub: argparse._SubParsersAction[
+        argparse.ArgumentParser
+    ] = parser.add_subparsers(title="subcommands", dest="command")
+
+    sub.add_parser(
+        "passive", help="vApp will passively listen for UDP SYN from devices"
+    )
+
+    ota: argparse.ArgumentParser = sub.add_parser(
+        "ota", help="allows over the air programming of the device"
+    )
+    ota.add_argument("url", help="specify http URL for ota")
+
+    sub.add_parser("ping", help="send a ping and nothing else")
+
+    sub.add_parser(
+        "factory-reset",
+        help=(
+            "trigger a factory reset on the device - the device has to be"
+            " onboarded again afterwards)"
+        ),
+    )
+
+    sub.add_parser("reboot", help="trigger a reboot")
+
+    sub.add_parser("productinfo", help="get product information")
+
+    req: argparse.ArgumentParser = sub.add_parser(
+        CommandType.GET.name, help="send state request"
+    )
+    req.add_argument(
+        "--all",
+        help="If this flag is set, the whole state will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--power",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--cleaning",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--beeping",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--battery",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--sidebrush",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--rollingbrush",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--filter",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--carpetbooster",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--area",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--time",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--calibrationtime",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--workingmode",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--workingstatus",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--suction",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--water",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--direction",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--errors",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--cleaningrec",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--equipmentmodel",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--alarmmessages",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument(
+        "--commissioninfo",
+        help="If this flag is set, the state element will be requested",
+        action="store_true",
+    )
+    req.add_argument("--mcu", help="Ask if mcu is online", action="store_true")
+
+    # device specific
+    set_parser = sub.add_parser(
+        CommandType.SET.name,
+        help="enables use of the vc1 control arguments and will control vc1",
+    )
+    set_parser.add_argument(
+        "--power", choices=["on", "off"], help="turn power on/off"
+    )
+    set_parser.add_argument(
+        "--cleaning", choices=["on", "off"], help="turn cleaning on/off"
+    )
+    set_parser.add_argument(
+        "--beeping",
+        choices=["on", "off"],
+        help="enable/disable the find-vc function",
+    )
+    set_parser.add_argument(
+        "--carpetbooster",
+        metavar="strength",
+        type=int,
+        help="set the carpet booster strength (0-255)",
+    )
+    set_parser.add_argument(
+        "--workingmode",
+        choices=[m.name for m in VcWorkingMode],
+        help="set the working mode",
+    )
+    set_parser.add_argument(
+        "--water", choices=["LOW", "MID", "HIGH"], help="set water quantity"
+    )
+    set_parser.add_argument(
+        "--suction",
+        choices=[m.name for m in VcSuctionStrengths],
+        help="set suction power",
+    )
+    set_parser.add_argument(
+        "--direction",
+        choices=["FORWARDS", "BACKWARDS", "TURN_LEFT", "TURN_RIGHT", "STOP"],
+        help="manually control movement",
+    )
+    set_parser.add_argument(
+        "--commissioninfo",
+        type=str,
+        help="set up to 256 characters of commisioning info",
+    )
+    set_parser.add_argument(
+        "--calibrationtime",
+        metavar="time",
+        type=int,
+        help="set the calibration time (1-1999999999)",
+    )
+
+    reset_parser = sub.add_parser(
+        CommandType.RESET.name, help="enables resetting consumables"
+    )
+    reset_parser.add_argument(
+        "--sidebrush",
+        help="resets the sidebrush life counter",
+        action="store_true",
+    )
+    reset_parser.add_argument(
+        "--rollingbrush",
+        help="resets the rollingbrush life counter",
+        action="store_true",
+    )
+    reset_parser.add_argument(
+        "--filter", help="resets the filter life counter", action="store_true"
+    )
+
+    routine_parser = sub.add_parser("routine", help="routine functions")
+    routine_parser.add_argument(
+        "--list",
+        help="lists stored routines",
+        action="store_const",
+        const=True,
+        default=False,
+    )
+    routine_parser.add_argument(
+        "--put",
+        help="store new routine",
+        action="store_const",
+        const=True,
+        default=False,
+    )
+    routine_parser.add_argument(
+        "--delete",
+        help="delete routine",
+        action="store_const",
+        const=True,
+        default=False,
+    )
+    routine_parser.add_argument(
+        "--start",
+        help="start routine",
+        action="store_const",
+        const=True,
+        default=False,
+    )
+    routine_parser.add_argument(
+        "--id", help="specify routine id to act on (for put, start, delete)"
+    )
+    routine_parser.add_argument(
+        "--scene", help="specify routine scene label (for put)"
+    )
+    routine_parser.add_argument(
+        "--count", help="get the current free slots for routines", type=bool
+    )
+    routine_parser.add_argument(
+        "--commands", help="specify routine program (for put)"
+    )
+    # routine_parser.set_defaults(func=routine_request)

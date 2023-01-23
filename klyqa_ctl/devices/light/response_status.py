@@ -1,8 +1,15 @@
 """Response status."""
 from __future__ import annotations
+
 from typing import Any
+
 from klyqa_ctl.devices.device import ResponseMessage
-from klyqa_ctl.general.general import LOGGER, RgbColor, get_obj_attr_values_as_string
+from klyqa_ctl.general.general import (
+    LOGGER,
+    RgbColor,
+    get_obj_attr_values_as_string,
+)
+
 
 class ResponseStatus(ResponseMessage):
     """Response status of a bulb."""
@@ -58,7 +65,7 @@ class ResponseStatus(ResponseMessage):
         return self._attr_fwversion
 
     @fwversion.setter
-    def fwversion(self, fwversion:str | None) -> None:
+    def fwversion(self, fwversion: str | None) -> None:
         self._attr_fwversion = fwversion
 
     @property
@@ -116,6 +123,7 @@ class ResponseStatus(ResponseMessage):
     @color.setter
     def color(self, color: dict[str, int]) -> None:
         self._attr_color = (
-            RgbColor(color["red"], color["green"], color["blue"]) if color else None
+            RgbColor(color["red"], color["green"], color["blue"])
+            if color
+            else None
         )
-        
