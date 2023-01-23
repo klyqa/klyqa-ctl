@@ -402,11 +402,14 @@ async def async_json_cache(
         )
         for cache_path in [klyqa_data_path + f"/{json_file}", dc_default_path]:
 
+            task_log_trace(f"Try read cache file {cache_path}.")
             try:
                 async with aiofiles.open(cache_path, mode="r") as f:
                     s = await f.read()
                     return_json = json.loads(s)
                     cached = True
+                    task_log_trace(f"Read cache file {cache_path} succeeded.")
+                    break
             except FileNotFoundError:
                 LOGGER.warning(
                     f'No cache from json file "{cache_path}" available.'
@@ -420,7 +423,6 @@ async def async_json_cache(
                     "Error during loading cache from json file"
                     f' "{cache_path}".'
                 )
-            break
     return (return_json, cached)
 
 
