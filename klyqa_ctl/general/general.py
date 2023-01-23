@@ -393,21 +393,34 @@ async def async_json_cache(
             )
     else:
         """no json data, take cached json from disk if available"""
-        try:
-            async with aiofiles.open(
-                klyqa_data_path + f"/{json_file}", mode="r"
-            ) as f:
-                s = await f.read()
-            return_json = json.loads(s)
-            cached = True
-        except FileNotFoundError:
-            LOGGER.warning(f'No cache from json file "{json_file}" available.')
-        except json.decoder.JSONDecodeError:
-            LOGGER.error(f'Could not read cache from json file "{json_file}"!')
-        except Exception:
-            LOGGER.warning(
-                f'Error during loading cache from json file "{json_file}".'
-            )
+
+        k_ctl_main_path_parts: list[str] = list(
+            Path(__file__).absolute().parts[:-2]
+        )
+        dc_default_path: str = (
+            str(Path(*k_ctl_main_path_parts).absolute())
+            + "/device.configs.json"
+        )
+        for cache_path in [klyqa_data_path + f"/{json_file}", dc_default_path]:
+
+            try:
+                async with aiofiles.open(cache_path, mode="r") as f:
+                    s = await f.read()
+                    return_json = json.loads(s)
+                    cached = True
+            except FileNotFoundError:
+                LOGGER.warning(
+                    f'No user cache from json file "{json_file}" available.'
+                )
+            except json.decoder.JSONDecodeError:
+                LOGGER.error(
+                    f'Could not read cache from json file "{json_file}"!'
+                )
+            except Exception:
+                LOGGER.warning(
+                    f'Error during loading cache from json file "{json_file}".'
+                )
+            break
     return (return_json, cached)
 
 

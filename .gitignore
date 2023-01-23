@@ -5,7 +5,6 @@ dist/*
 klyqa_ctl.egg-info/*
 .idea/*
 klyqa_ctl/bulb.configs.json
-klyqa_ctl/device.configs.json
 klyqa_ctl/frederick.stallmeyer@qconnex.com.acc_settings.cache.json
 get-pip.py
 install_python3.9.bash
