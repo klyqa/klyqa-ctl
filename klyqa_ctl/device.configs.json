@@ -1,0 +1,703 @@
+{
+    "@klyqa.cleaning.vc1-dev": {
+        "id": "f25530a4-56da-4e67-836c-ec5858d2dec8",
+        "createdAt": "2022-09-15T14:14:52.150Z",
+        "updatedAt": "2022-09-15T14:14:52.150Z",
+        "schemaVersion": 1,
+        "productId": "@klyqa.cleaning.vc1-dev",
+        "configVersion": 1,
+        "brandId": "qconnex",
+        "deviceTypeId": "vacuumrobot",
+        "assets": {},
+        "segments": [],
+        "transport": {
+            "type": "mqtt",
+            "topic": "v1/devices/me/attributes",
+            "msg_type": "json-payload"
+        },
+        "deviceTraits": [
+            {
+                "trait": "@core/traits/status",
+                "msg_key": "status",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/power",
+                "msg_key": "power",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/cleaning",
+                "msg_key": "cleaning",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/beeping",
+                "msg_key": "beeping",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/carpetbooster",
+                "msg_key": "carpetbooster",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "carpetbooster": {
+                            "type": "integer",
+                            "maximum": 255,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/calibrationtime",
+                "msg_key": "calibrationtime",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "calibrationtime": {
+                            "type": "integer",
+                            "maximum": 1999999999,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/working-mode",
+                "msg_key": "workingmode",
+                "value_schema": {
+                    "enum": [
+                        "STANDBY",
+                        "SMART",
+                        "MOP",
+                        "RANDOM",
+                        "WALL_FOLLOW",
+                        "PARTIAL_BOW",
+                        "SPIRAL",
+                        "CHARGE_GO",
+                        "SROOM"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/suction",
+                "msg_key": "suction",
+                "value_schema": {
+                    "enum": [
+                        "LOW",
+                        "MID",
+                        "HIGH"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/water",
+                "msg_key": "water",
+                "value_schema": {
+                    "enum": [
+                        "LOW",
+                        "MID",
+                        "HIGH"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/direction",
+                "msg_key": "direction",
+                "value_schema": {
+                    "enum": [
+                        "FORWARDS",
+                        "BACKWARDS",
+                        "TURN_LEFT",
+                        "TURN_RIGHT",
+                        "STOP"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/connectivity",
+                "msg_key": "connectivity",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "enum": [
+                                "OK",
+                                "UNREACHABLE"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        ],
+        "widgets": [
+            {
+                "widget": "@qcx/widget/vacuumcleaner-default",
+                "traits": [
+                    "@core/traits/status",
+                    "@core/traits/power"
+                ],
+                "category": "homescreen",
+                "properties": {}
+            },
+            {
+                "widget": "@qcx/widget/vacuumcleaner-vc1",
+                "traits": [
+                    "@core/traits/beeping",
+                    "@core/traits/carpetbooster",
+                    "@core/traits/calibrationtime",
+                    "@core/traits/cleaning",
+                    "@core/traits/direction",
+                    "@core/traits/status",
+                    "@core/traits/suction",
+                    "@core/traits/water",
+                    "@core/traits/working-mode",
+                    "@core/traits/power"
+                ],
+                "version": 1,
+                "category": "detailscreen",
+                "properties": {}
+            }
+        ],
+        "manufacturerId": "29384439-01e8-4354-b74b-12a74d2b791c"
+    },
+    "@klyqa.lighting.rgb-cw-ww.e14": {
+        "id": "91f43849-c325-4ab4-984a-0f7e17e47708",
+        "createdAt": "2021-01-28T14:46:53.280Z",
+        "updatedAt": "2021-01-28T14:46:53.280Z",
+        "schemaVersion": 1,
+        "productId": "@klyqa.lighting.rgb-cw-ww.e14",
+        "configVersion": 1,
+        "brandId": "qconnex",
+        "deviceTypeId": "light",
+        "assets": {},
+        "segments": [],
+        "transport": {
+            "type": "mqtt",
+            "topic": "v1/devices/me/attributes",
+            "msg_type": "json-payload"
+        },
+        "deviceTraits": [
+            {
+                "trait": "@core/traits/status",
+                "msg_key": "status",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/brightness",
+                "msg_key": "brightness",
+                "value_schema": {
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 0
+                }
+            },
+            {
+                "trait": "@core/traits/color",
+                "msg_key": "color",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "red": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "blue": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "green": {
+                            "$ref": "#/definitions/color_value"
+                        }
+                    },
+                    "definitions": {
+                        "color_value": {
+                            "type": "number",
+                            "maximum": 255,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color-temperature",
+                "msg_key": "temperature",
+                "value_schema": {
+                    "enum": [
+                        2000,
+                        6500
+                    ],
+                    "type": "integer"
+                }
+            },
+            {
+                "trait": "@core/traits/color-mode",
+                "msg_key": "mode",
+                "value_schema": {
+                    "enum": [
+                        "rgb",
+                        "cct",
+                        "cmd"
+                    ],
+                    "type": "string"
+                }
+            }
+        ],
+        "widgets": [
+            {
+                "widget": "@qcx/widget/lamp-default",
+                "traits": [
+                    "@core/traits/status",
+                    "@core/traits/brightness"
+                ],
+                "category": "homescreen",
+                "properties": {}
+            },
+            {
+                "widget": "@qcx/widget/lamp-dual-color",
+                "traits": [
+                    "@core/traits/color",
+                    "@core/traits/color-temperature",
+                    "@core/traits/brightness"
+                ],
+                "version": 1,
+                "category": "detailscreen",
+                "properties": {
+                    "icon": "https://files.qconnex.de/icons/qcx-bulb-v1.png"
+                }
+            }
+        ],
+        "manufacturerId": "983395f9-2877-497e-950b-c8a952066001"
+    },
+    "@klyqa.lighting.rgb-cw-ww.e27": {
+        "id": "183a9b00-b06c-4ba0-ae26-0ca74ab521cd",
+        "createdAt": "2021-09-30T12:32:28.096Z",
+        "updatedAt": "2021-09-30T12:32:28.096Z",
+        "schemaVersion": 1,
+        "productId": "@klyqa.lighting.rgb-cw-ww.e27",
+        "configVersion": 5,
+        "brandId": "qconnex",
+        "deviceTypeId": "light",
+        "assets": {},
+        "segments": [
+            "temp",
+            "rgb"
+        ],
+        "transport": {
+            "type": "mqtt",
+            "topic": "v1/devices/me/attributes",
+            "msg_type": "json-payload"
+        },
+        "deviceTraits": [
+            {
+                "trait": "@core/traits/status",
+                "msg_key": "status",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/brightness",
+                "msg_key": "brightness",
+                "segment": "rgb",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "brightness": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color",
+                "msg_key": "color",
+                "segment": "left",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "red": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "blue": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "green": {
+                            "$ref": "#/definitions/color_value"
+                        }
+                    },
+                    "definitions": {
+                        "color_value": {
+                            "type": "number",
+                            "maximum": 255,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color-temperature",
+                "msg_key": "temperature",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "colorTemperature": {
+                            "enum": [
+                                2000,
+                                6500
+                            ],
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color-mode",
+                "msg_key": "mode",
+                "value_schema": {
+                    "enum": [
+                        "rgb",
+                        "cct"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/connectivity",
+                "msg_key": "connectivity",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "enum": [
+                                "OK",
+                                "UNREACHABLE"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        ],
+        "widgets": [
+            {
+                "widget": "@qcx/widget/lamp-default",
+                "traits": [
+                    "@core/traits/status",
+                    "@core/traits/brightness"
+                ],
+                "category": "homescreen",
+                "properties": {}
+            },
+            {
+                "widget": "@qcx/widget/lamp-dual-color",
+                "traits": [
+                    "@core/traits/color",
+                    "@core/traits/color-temperature",
+                    "@core/traits/brightness"
+                ],
+                "version": 1,
+                "category": "detailscreen",
+                "properties": {}
+            }
+        ],
+        "manufacturerId": "983395f9-2877-497e-950b-c8a952066001"
+    },
+    "@qcx.lighting.rgb-cw-ww.virtual": {
+        "id": "c6c53296-01bb-4b74-84ea-8179c452ac83",
+        "createdAt": "2020-11-24T15:55:56.210Z",
+        "updatedAt": "2020-11-24T15:55:56.210Z",
+        "schemaVersion": 1,
+        "productId": "@qcx.lighting.rgb-cw-ww.virtual",
+        "configVersion": 4,
+        "brandId": "qconnex",
+        "deviceTypeId": "light",
+        "assets": {},
+        "segments": [
+            "temp",
+            "rgb"
+        ],
+        "transport": {
+            "type": "mqtt",
+            "topic": "v1/devices/me/attributes",
+            "msg_type": "json-payload"
+        },
+        "deviceTraits": [
+            {
+                "trait": "@core/traits/status",
+                "msg_key": "status",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/brightness",
+                "msg_key": "brightness",
+                "segment": "rgb",
+                "value_schema": {
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 0
+                }
+            },
+            {
+                "trait": "@core/traits/color",
+                "msg_key": "color",
+                "segment": "left",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "red": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "blue": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "green": {
+                            "$ref": "#/definitions/color_value"
+                        }
+                    },
+                    "definitions": {
+                        "color_value": {
+                            "type": "number",
+                            "maximum": 255,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color-temperature",
+                "msg_key": "temperature",
+                "value_schema": {
+                    "enum": [
+                        2000,
+                        6500
+                    ],
+                    "type": "integer"
+                }
+            },
+            {
+                "trait": "@core/traits/color-mode",
+                "msg_key": "mode",
+                "value_schema": {
+                    "enum": [
+                        "rgb",
+                        "cct"
+                    ],
+                    "type": "string"
+                }
+            }
+        ],
+        "widgets": [
+            {
+                "widget": "@qcx/widget/lamp-default",
+                "traits": [
+                    "@core/traits/status",
+                    "@core/traits/brightness"
+                ],
+                "category": "homescreen",
+                "properties": {}
+            },
+            {
+                "widget": "@qcx/widget/lamp-dual-color",
+                "traits": [
+                    "@core/traits/color",
+                    "@core/traits/color-temperature",
+                    "@core/traits/brightness"
+                ],
+                "version": 1,
+                "category": "detailscreen",
+                "properties": {
+                    "icon": "https://files.qconnex.de/icons/qcx-bulb-v1.png"
+                }
+            }
+        ],
+        "manufacturerId": "59a58a9f-59ca-4c46-96fc-791a79839bc7"
+    },
+    "@klyqa.lighting.rgb-cw-ww.e27-dev": {
+        "id": "4bc1a9e9-69c1-4de8-8991-497d914cac6b",
+        "createdAt": "2021-09-30T12:32:20.354Z",
+        "updatedAt": "2021-09-30T12:32:20.354Z",
+        "schemaVersion": 1,
+        "productId": "@klyqa.lighting.rgb-cw-ww.e27-dev",
+        "configVersion": 9,
+        "brandId": "qconnex",
+        "deviceTypeId": "light",
+        "assets": {},
+        "segments": [
+            "temp",
+            "rgb"
+        ],
+        "transport": {
+            "type": "mqtt",
+            "topic": "v1/devices/me/attributes",
+            "msg_type": "json-payload"
+        },
+        "deviceTraits": [
+            {
+                "trait": "@core/traits/status",
+                "msg_key": "status",
+                "value_schema": {
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/brightness",
+                "msg_key": "brightness",
+                "segment": "rgb",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "brightness": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color",
+                "msg_key": "color",
+                "segment": "left",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "red": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "blue": {
+                            "$ref": "#/definitions/color_value"
+                        },
+                        "green": {
+                            "$ref": "#/definitions/color_value"
+                        }
+                    },
+                    "definitions": {
+                        "color_value": {
+                            "type": "number",
+                            "maximum": 255,
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color-temperature",
+                "msg_key": "temperature",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "colorTemperature": {
+                            "enum": [
+                                2000,
+                                6500
+                            ],
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            {
+                "trait": "@core/traits/color-mode",
+                "msg_key": "mode",
+                "value_schema": {
+                    "enum": [
+                        "rgb",
+                        "cct"
+                    ],
+                    "type": "string"
+                }
+            },
+            {
+                "trait": "@core/traits/connectivity",
+                "msg_key": "connectivity",
+                "value_schema": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "enum": [
+                                "OK",
+                                "UNREACHABLE"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        ],
+        "widgets": [
+            {
+                "widget": "@qcx/widget/lamp-default",
+                "traits": [
+                    "@core/traits/status",
+                    "@core/traits/brightness"
+                ],
+                "category": "homescreen",
+                "properties": {}
+            },
+            {
+                "widget": "@qcx/widget/lamp-dual-color",
+                "traits": [
+                    "@core/traits/color",
+                    "@core/traits/color-temperature",
+                    "@core/traits/brightness"
+                ],
+                "version": 1,
+                "category": "detailscreen",
+                "properties": {}
+            }
+        ],
+        "manufacturerId": "983395f9-2877-497e-950b-c8a952066001"
+    }
+}
