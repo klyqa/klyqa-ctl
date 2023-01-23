@@ -1250,10 +1250,10 @@ class LocalConnectionHandler(ConnectionHandler):
         discover_timeout_secs: float = 2.5
 
         async def discover_answer_end(answer: TypeJson, uid: str) -> None:
-            LOGGER.debug(f"discover ping end")
+            LOGGER.debug("discover ping end")
             discover_end_event.set()
 
-        LOGGER.debug(f"discover ping start")
+        LOGGER.debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
@@ -1267,14 +1267,16 @@ class LocalConnectionHandler(ConnectionHandler):
 
         await discover_end_event.wait()
         # if self.devices:
-        #     target_device_uids = set(u_id for u_id, v in self.devices.items())
+        #     target_device_uids = set(
+        #         u_id for u_id, v in self.devices.items())
 
     # @classmethod
     # async def create_default(
     #     cls: Any, interactive_prompts: bool = False, offline: bool = False
     # ) -> LocalCommunicator:
     #     """Factory for local only controller."""
-    #     controller_data: ControllerData = ControllerData(interactive_prompts = interactive_prompts, offline = offline)
+    #     controller_data: ControllerData = ControllerData(
+    #         interactive_prompts = interactive_prompts, offline = offline)
     #     await controller_data.init()
     #     lcc: LocalCommunicator = LocalCommunicator(
     #         controller_data, None, server_ip = "0.0.0.0")
