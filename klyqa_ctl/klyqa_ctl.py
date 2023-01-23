@@ -36,7 +36,9 @@ from typing import Any
 
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.communicator import LocalConnectionHandler
+from klyqa_ctl.communication.local.connection_handler import (
+    LocalConnectionHandler,
+)
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (

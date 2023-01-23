@@ -484,13 +484,14 @@ LOGGER.addHandler(logging_hdl)
 
 def set_debug_logger(level: int = logging.DEBUG) -> None:
     """Stream logging handler to stderr pipe."""
+    if len(LOGGER.handlers) >= 2:
+        return
     trace_log_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
         stream=sys.stderr
     )
     LOGGER.setLevel(level)
     trace_log_hdl.setLevel(level)
     trace_log_hdl.setFormatter(debug_formatter)
-
     LOGGER.addHandler(trace_log_hdl)
 
 
