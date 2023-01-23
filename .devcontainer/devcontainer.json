@@ -18,9 +18,16 @@
     "python.pythonPath": "/usr/local/bin/python",
     "python.languageServer": "Pylance",
     "python.linting.enabled": true,
-    "python.formatting.blackPath": "/usr/local/bin/black",
+    "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
     "python.formatting.provider": "black",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "python.linting.flake8Enabled": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "python.linting.pylintEnabled": false,
+    "python.linting.mypyEnabled": true,
+    "python.testing.pytestEnabled": false,
   },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
