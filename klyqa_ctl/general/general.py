@@ -398,8 +398,7 @@ async def async_json_cache(
             Path(__file__).absolute().parts[:-2]
         )
         dc_default_path: str = (
-            str(Path(*k_ctl_main_path_parts).absolute())
-            + "/device.configs.json"
+            str(Path(*k_ctl_main_path_parts).absolute()) + f"/{json_file}"
         )
         for cache_path in [klyqa_data_path + f"/{json_file}", dc_default_path]:
 
@@ -410,15 +409,16 @@ async def async_json_cache(
                     cached = True
             except FileNotFoundError:
                 LOGGER.warning(
-                    f'No user cache from json file "{json_file}" available.'
+                    f'No cache from json file "{cache_path}" available.'
                 )
             except json.decoder.JSONDecodeError:
                 LOGGER.error(
-                    f'Could not read cache from json file "{json_file}"!'
+                    f'Could not read cache from json file "{cache_path}"!'
                 )
             except Exception:
                 LOGGER.warning(
-                    f'Error during loading cache from json file "{json_file}".'
+                    "Error during loading cache from json file"
+                    f' "{cache_path}".'
                 )
             break
     return (return_json, cached)
