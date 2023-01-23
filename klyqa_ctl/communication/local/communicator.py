@@ -977,7 +977,8 @@ class LocalConnectionHandler(ConnectionHandler):
     async def handle_incoming_tcp_connection(
         self, proc_timeout_secs: int
     ) -> None:
-        """Accept incoming tcp connection and start connection handle process."""
+        """Accept incoming tcp connection and start connection handle
+        process."""
         if not self.tcp:
             return
         loop: AbstractEventLoop = asyncio.get_event_loop()
@@ -1266,8 +1267,8 @@ class LocalConnectionHandler(ConnectionHandler):
         )
 
         await discover_end_event.wait()
-        if self.devices:
-            target_device_uids = set(u_id for u_id, v in self.devices.items())
+        # if self.devices:
+        #     target_device_uids = set(u_id for u_id, v in self.devices.items())
 
     # @classmethod
     # async def create_default(
