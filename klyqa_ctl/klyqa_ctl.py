@@ -809,12 +809,8 @@ async def main() -> None:
     ):
         exit_ret = 1
 
+    LOGGER.debug("Shutting down..")
     await client.shutdown()
-    LOGGER.debug("Closing ports")
-    await local_con_hdl.shutdown()
-
-    if cloud_backend:
-        await cloud_backend.shutdown()
 
     sys.exit(exit_ret)
 
