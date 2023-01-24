@@ -30,6 +30,3 @@ class CloudConnection:
     @connected.setter
     def connected(self, connected: bool) -> None:
         self._attr_connected = connected
-
-
-PROD_HOST: str = "https://app-api.prod.qconnex.io"

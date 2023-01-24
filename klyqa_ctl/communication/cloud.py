@@ -22,9 +22,9 @@ from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
-from klyqa_ctl.general.connections import PROD_HOST
 from klyqa_ctl.general.general import (
     LOGGER,
+    PROD_HOST,
     Device_config,
     EventQueuePrinter,
     TypeJson,

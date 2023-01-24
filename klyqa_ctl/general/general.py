@@ -28,6 +28,8 @@ TypeJson = dict[str, Any]
 """ string output separator width """
 SEPARATION_WIDTH: int = 0
 
+PROD_HOST: str = "https://app-api.prod.qconnex.io"
+
 PRODUCT_URLS: dict[str, str] = {
     """TODO: Should be permalinks for urls here."""
     "@klyqa.lighting.cw-ww.gu10": (
