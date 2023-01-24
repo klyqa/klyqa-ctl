@@ -6,9 +6,12 @@ import random
 from typing import Any
 
 from klyqa_ctl.devices.light.commands import (
+    BrightnessCommand,
     ColorCommand,
+    FwUpdateCommand,
     PingCommand,
     RequestCommand,
+    TemperatureCommand,
 )
 from klyqa_ctl.general.general import (  # AES_KEY_DEV,
     LOGGER,
@@ -37,21 +40,41 @@ async def main() -> None:
     )  # , force=True)
 
     sends: list = [
+        # (
+        #     unit_id,
+        #     aes_key,
+        #     BrightnessCommand(brightness=random.randrange(0, 100)),
+        # ),
+        # (
+        #     unit_id,
+        #     aes_key,
+        #     TemperatureCommand(temperature=random.randrange(2500, 6000)),
+        # ),
         (
             unit_id,
             aes_key,
-            PingCommand(),
+            FwUpdateCommand(
+                url=(
+                    "http://firmware.prod.qconnex.io/firmware/download/"
+                    "814c9be3-b929-4848-bc80-709da52a14c6?inline=true"
+                )
+            ),
         ),
-        (
-            unit_id,
-            aes_key,
-            req_color,
-        ),
-        (
-            unit_id,
-            aes_key,
-            RequestCommand(),
-        ),
+        # (
+        #     unit_id,
+        #     aes_key,
+        #     PingCommand(),
+        # ),
+        # (
+        #     unit_id,
+        #     aes_key,
+        #     req_color,
+        # ),
+        # (
+        #     unit_id,
+        #     aes_key,
+        #     RequestCommand(),
+        # ),
         # (UnitId("3cbca9af8989582f2a75"),
         #     "5aefe7eda29f76e4c31af460e10ce74c",
         #     REQ),
