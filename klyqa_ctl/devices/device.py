@@ -38,7 +38,6 @@ class Device:
         self._attr_acc_sets: dict[Any, Any] = {}
         self._attr__use_lock: AsyncIoLock | None = None
         self._attr__use_thread: asyncio.Task[Any] | None = None
-        # self._attr_recv_msg_unproc: list[Message] = []
 
         self._attr_status: ResponseMessage | None = None
         self._attr_response_classes: dict[str, Any] = {
@@ -103,14 +102,6 @@ class Device:
     def _use_thread(self, _use_thread: asyncio.Task[Any] | None) -> None:
         self._attr__use_thread = _use_thread
 
-    # @property
-    # def recv_msg_unproc(self) -> list[Message]:
-    #     return self._attr_recv_msg_unproc
-
-    # @recv_msg_unproc.setter
-    # def recv_msg_unproc(self, recv_msg_unproc: list[Message]) -> None:
-    #     self._attr_recv_msg_unproc = recv_msg_unproc
-
     @property
     def status(self) -> ResponseMessage | None:
         return self._attr_status
@@ -135,11 +126,6 @@ class Device:
     def device_config(self, device_config: dict[str, Any]) -> None:
         self._attr_device_config = device_config
 
-    # def process_msgs(self) -> None:
-    #     for msg in self.recv_msg_unproc:
-    #         LOGGER.debug(f"updating device {self.u_id} entity with msg:")
-    #         self.recv_msg_unproc.remove(msg)
-
     def get_name(self) -> str:
         return (
             f"{self.acc_sets['name']} ({self.u_id})"
@@ -157,38 +143,10 @@ class Device:
 
         return True
 
-        # try:
-        #     LOGGER.debug(f"wait for lock... {self.get_name()}")
-
-        #     await asyncio.wait_for(self._use_lock.acquire(), timeout)
-
-        #     self._use_thread = asyncio.current_task()
-
-        #     task_log(f"got lock... {self.get_name()}")
-        #     return True
-        # except asyncio.TimeoutError:
-        #     LOGGER.error(f'Timeout for getting the lock for device '
-        # f'"{self.get_name()}"')
-        # except Exception:
-        #     task_log_error(f"Error while trying to get device lock!")
-        #     task_log_trace()
-
-        # return False
-
     def use_unlock(self) -> None:
         if not self._use_lock:
             return
         self._use_lock.release_within_task()
-        # if (self._use_lock.locked() and self._use_thread ==
-        # asyncio.current_task()):
-        #     try:
-        #         self._use_lock.release()
-        #         self._use_thread = None
-        #         LOGGER.debug(f"got unlock... {self.get_name()}")
-        #     except:
-        #         task_log_error(f"Error while trying to unlock the device! "
-        # f"(Probably now locked until restart)")
-        #         task_log_trace()
 
     def save_device_message(self, msg: Any) -> None:
         """msg: json dict"""
