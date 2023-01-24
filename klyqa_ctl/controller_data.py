@@ -20,7 +20,7 @@ class ControllerData:
         interactive_prompts: bool = False,
         offline: bool = False,
         user_account: Account | None = None,
-        add_devices_lock: AsyncIoLock | None = AsyncIoLock("add_devices_lock"),
+        add_devices_lock: AsyncIoLock | None = None,
     ) -> None:
         self._attr_aes_keys: dict[str, bytes] = {}
         self._attr_interactive_prompts: bool = interactive_prompts
@@ -92,7 +92,8 @@ class ControllerData:
         controller_data: ControllerData = ControllerData(
             interactive_prompts=interactive_prompts,
             user_account=user_account,
-            offline=True,
+            offline=offline,
+            add_devices_lock=AsyncIoLock("add_devices_lock"),
         )
         await controller_data.init()
         return controller_data
