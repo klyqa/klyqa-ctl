@@ -44,15 +44,10 @@ class RequestMethod(str, Enum):
 class CloudBackend:
     """Cloud backend"""
 
-    def __init__(
-        self,
-        controller_data: ControllerData,
-        host: str = "",
-        offline: bool = False,
-    ) -> None:
+    def __init__(self, controller_data: ControllerData) -> None:
         self._attr_controller_data: ControllerData = controller_data
-        self._attr_offline: bool = offline
-        self._attr_host: str = PROD_HOST if not host else host
+        self._attr_offline: bool = False
+        self._attr_host: str = PROD_HOST
         self._attr_access_token: str = ""
         self._attr_devices: dict[str, Device] = controller_data.devices
 
@@ -74,6 +69,10 @@ class CloudBackend:
     def host(self) -> str:
         """Return or set the host."""
         return self._attr_host
+
+    @host.setter
+    def host(self, host: str) -> None:
+        self._attr_host = host
 
     @property
     def offline(self) -> bool:
@@ -775,3 +774,12 @@ class CloudBackend:
                 "/auth/logout",
                 headers=self.get_header_default(),
             )
+
+    @classmethod
+    def create_default(
+        cls: Any, controller_data: ControllerData, host: str = PROD_HOST
+    ) -> CloudBackend:
+        """Factory for CloudBackend."""
+        cb: CloudBackend = CloudBackend(controller_data=controller_data)
+        cb.host = host
+        return cb
