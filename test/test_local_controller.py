@@ -1,4 +1,5 @@
 """Test the LocalController class."""
+
 from __future__ import annotations
 
 import asyncio
@@ -11,8 +12,13 @@ from klyqa_ctl.devices.light.commands import (
     FwUpdateCommand,
     PingCommand,
     RequestCommand,
+    RoutineDeleteCommand,
+    RoutineListCommand,
+    RoutinePutCommand,
+    RoutineStartCommand,
     TemperatureCommand,
 )
+from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import (  # AES_KEY_DEV,
     LOGGER,
     TRACE,
@@ -25,6 +31,22 @@ from klyqa_ctl.local_controller import LocalController
 
 async def main() -> None:
     set_debug_logger(TRACE)
+    rc: RoutinePutCommand = RoutinePutCommand(action="put")
+    print(rc.json())
+
+    rc2 = RoutineListCommand()
+    print(rc2.json())
+
+    rcp = RoutinePutCommand(
+        id="ok", commands=SCENES[0]["commands"], scene=SCENES[0]["label"]
+    )
+    print(rcp.json())
+
+    rc3 = RoutineStartCommand(id="ok")
+    print(rc3.json())
+
+    rdc = RoutineDeleteCommand(id="ok")
+    print(rdc.json())
 
     loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
 

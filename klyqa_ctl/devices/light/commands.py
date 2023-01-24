@@ -81,19 +81,21 @@ class CheckDeviceParameter(Enum):
 @dataclass
 class RequestCommand(CommandTyped):
     def __post_init__(self) -> None:
-        self.type = CommandType.REQUEST
+        self.type = CommandType.REQUEST.value
 
 
 @dataclass
 class PingCommand(CommandTyped):
     def __post_init__(self) -> None:
-        self.type = CommandType.PING
+        self.type = CommandType.PING.value
 
 
 @dataclass
 class FwUpdateCommand(CommandTyped):
-    type: CommandType = CommandType.FW_UPDATE
     url: str = ""
+
+    def __post_init__(self) -> None:
+        self.type = CommandType.FW_UPDATE.value
 
     def url_json(self) -> TypeJson:
         return {"url": self.url}
@@ -112,13 +114,13 @@ class TransitionCommand(RequestCommand):
 
 @dataclass
 class CommandWithCheckValuesLight(CommandWithCheckValues):
-    light: Light | None = None
+    _light: Light | None = None
 
     @abstractmethod
     def check_values(self, device: Device) -> bool:
         if not isinstance(device, Light):
             return False
-        self.light = device
+        self._light = device
         return True
 
 
@@ -140,25 +142,25 @@ class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
 
     def check_values(self, device: Device) -> bool:
         """Check device color range."""
-        if not super().check_values(device) or not self.light:
+        if not super().check_values(device) or not self._light:
             return False
         values: list = [self.color.r, self.color.g, self.color.b]
-        if (not self.light.ident or not self.light.color_range) and (
-            not self.light.ident
-            or missing_config(self.force, self.light.ident.product_id)
+        if (not self._light.ident or not self._light.color_range) and (
+            not self._light.ident
+            or missing_config(self._force, self._light.ident.product_id)
         ):
             return False
-        elif self.light.color_range:
+        elif self._light.color_range:
             for value in values:
                 if (
-                    int(value) < self.light.color_range.min
-                    or int(value) > self.light.color_range.max
+                    int(value) < self._light.color_range.min
+                    or int(value) > self._light.color_range.max
                 ):
                     return forced_continue(
-                        self.force,
+                        self._force,
                         f"Color {value} out of range"
-                        f" [{self.light.color_range.min}.."
-                        f"{self.light.color_range.max}].",
+                        f" [{self._light.color_range.min}.."
+                        f"{self._light.color_range.max}].",
                     )
         return True
 
@@ -175,25 +177,25 @@ class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
 
     def check_values(self, device: Device) -> bool:
         """Check device temperature range."""
-        if not super().check_values(device) or not self.light:
+        if not super().check_values(device) or not self._light:
             return False
         value: int = self.temperature
 
-        if (not self.light.ident or not self.light.temperature_range) and (
-            not self.light.ident
-            or missing_config(self.force, self.light.ident.product_id)
+        if (not self._light.ident or not self._light.temperature_range) and (
+            not self._light.ident
+            or missing_config(self._force, self._light.ident.product_id)
         ):
             return False
-        elif self.light.temperature_range:
+        elif self._light.temperature_range:
             if (
-                int(value) < self.light.temperature_range.min
-                or int(value) > self.light.temperature_range.max
+                int(value) < self._light.temperature_range.min
+                or int(value) > self._light.temperature_range.max
             ):
                 return forced_continue(
-                    self.force,
+                    self._force,
                     f"Temperature {value} out of range"
-                    f" [{self.light.temperature_range.min}.."
-                    f"{self.light.temperature_range.max}].",
+                    f" [{self._light.temperature_range.min}.."
+                    f"{self._light.temperature_range.max}].",
                 )
         return True
 
@@ -213,25 +215,25 @@ class BrightnessCommand(CommandWithCheckValuesLight, TransitionCommand):
         return super().json() | self.brightness_json()
 
     def check_values(self, device: Device) -> bool:
-        if not super().check_values(device) or not self.light:
+        if not super().check_values(device) or not self._light:
             return False
         value: int = self.brightness
 
-        if (not self.light.ident or not self.light.brightness_range) and (
-            not self.light.ident
-            or missing_config(self.force, self.light.ident.product_id)
+        if (not self._light.ident or not self._light.brightness_range) and (
+            not self._light.ident
+            or missing_config(self._force, self._light.ident.product_id)
         ):
             return False
-        elif self.light.brightness_range:
+        elif self._light.brightness_range:
             if (
-                int(value) < self.light.brightness_range.min
-                or int(value) > self.light.brightness_range.max
+                int(value) < self._light.brightness_range.min
+                or int(value) > self._light.brightness_range.max
             ):
                 return forced_continue(
-                    self.force,
+                    self._force,
                     f"Brightness {value} out of range"
-                    f" [{self.light.brightness_range.min}.."
-                    f"{self.light.brightness_range.max}].",
+                    f" [{self._light.brightness_range.min}.."
+                    f"{self._light.brightness_range.max}].",
                 )
         return True
 
@@ -685,7 +687,8 @@ async def create_device_message(
 
     if args.power:
         message_queue_tx_local.append(
-            Command(_json={"type": "request", "status": args.power[0]})
+            PowerCommand(status=args.power[0])
+            # Command(_json={"type": "request", "status": args.power[0]})
         )
         message_queue_tx_state_cloud.append({"status": args.power[0]})
 
@@ -711,39 +714,57 @@ async def create_device_message(
 
     if args.factory_reset:
         local_and_cloud_command_msg(
-            Command(_json={"type": "factory_reset", "status": args.power[0]})
+            FactoryResetCommand()
+            # Command(_json={"type": "factory_reset", "status": args.power[0]})
         )
 
     # needs new command classes
-    # if args.fade is not None and len(args.fade) == 2:
-    #     local_and_cloud_command_msg(
-    #         {"type": "request", "fade_out": args.fade[1],
-    # "fade_in": args.fade[0]}, 500
-    #     )
+    if args.fade is not None and len(args.fade) == 2:
+        #     local_and_cloud_command_msg(
+        #         {"type": "request", "fade_out": args.fade[1],
+        # "fade_in": args.fade[0]}, 500
+        #     )
+        local_and_cloud_command_msg(
+            FadeCommand(fade_in=args.fade[0], fade_out=args.fade[1])
+            # Command(
+            #     _json={
+            #         "type": "request",
+            #         "fade_out": args.fade[1],
+            #         "fade_in": args.fade[0],
+            #     }
+            # )
+        )
 
-    # if args.reboot:
-    #     local_and_cloud_command_msg({"type": "reboot"}, 500)
+    if args.reboot:
+        # local_and_cloud_command_msg(Command(_json={"type": "reboot"}))
+        local_and_cloud_command_msg(RebootCommand())
 
-    # routine_scene(args, scene_list)
-    #     # return False
+    routine_scene(args, scene_list)
+    # return False
 
-    # if args.routine_list:
-    #     local_and_cloud_command_msg({"type": "routine", "action": "list"},
-    # 500)
+    if args.routine_list:
+        # local_and_cloud_command_msg({"type": "routine", "action": "list"},
+        # 500)
+        local_and_cloud_command_msg(
+            # Command(_json={"type": "routine", "action": "list"})
+            RoutineListCommand()
+        )
 
-    # if args.routine_put and args.routine_id is not None:
-    #     routine_put(args, local_and_cloud_command_msg)
+    if args.routine_put and args.routine_id is not None:
+        routine_put(args, local_and_cloud_command_msg)
 
-    # if args.routine_delete and args.routine_id is not None:
-    #     local_and_cloud_command_msg(
-    #         {"type": "routine", "action": "delete", "id": args.routine_id},
-    # 500
-    #     )
-    # if args.routine_start and args.routine_id is not None:
-    #     local_and_cloud_command_msg(
-    #         {"type": "routine", "action": "start", "id": args.routine_id},
-    # 500
-    #     )
+    if args.routine_delete and args.routine_id is not None:
+        local_and_cloud_command_msg(
+            RoutineDeleteCommand(id=args.routine_id)
+            # {"type": "routine", "action": "delete", "id": args.routine_id},
+            # 500
+        )
+    if args.routine_start and args.routine_id is not None:
+        local_and_cloud_command_msg(
+            RoutineStartCommand(id=args.routine_id)
+            # {"type": "routine", "action": "start", "id": args.routine_id},
+            # 500
+        )
 
     return True
 
@@ -916,7 +937,7 @@ def command_color(
     #     r, g, b, 0 if args.brightness is not None else tt)
     msg: ColorCommand = ColorCommand(
         transition_time=tt,
-        force=args.force,
+        _force=args.force,
         color=RgbColor(int(r), int(g), int(b)),
     )
 
@@ -964,7 +985,7 @@ def command_brightness(
     # msg: tuple[str, int] | tuple [str, int, Callable] = brightness_message(
     # brightness_str, tt)#
     msg: BrightnessCommand = BrightnessCommand(
-        transition_time=tt, force=args.force, brightness=int(brightness_str)
+        transition_time=tt, _force=args.force, brightness=int(brightness_str)
     )
 
     # check_brightness: functools.partial[bool] = functools.partial(
@@ -999,7 +1020,7 @@ def command_temperature(
 
     # temperature = json.loads(msg[0])["temperature"]
     msg: TemperatureCommand = TemperatureCommand(
-        transition_time=tt, force=args.force, temperature=int(temperature)
+        transition_time=tt, _force=args.force, temperature=int(temperature)
     )
 
     message_queue_tx_local.append(msg)
@@ -1107,27 +1128,138 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
     )
 
 
+@dataclass
+class PowerCommand(RequestCommand):
+    status: str = "on"
+
+
+@dataclass
+class RebootCommand(CommandTyped):
+    def __post_init__(self) -> None:
+        self.type = CommandType.REBOOT.value
+
+
+@dataclass
+class FactoryResetCommand(CommandTyped):
+    def __post_init__(self) -> None:
+        self.type = CommandType.FACTORY_RESET.value
+
+
+@dataclass
+class FadeCommand(RequestCommand):
+    fade_in: int = 0
+    fade_out: int = 0
+
+
+@dataclass
+class RoutineCommand(CommandTyped):
+    action: str = "list"
+
+    def __post_init__(self) -> None:
+        self.type = CommandType.ROUTINE.value
+
+    def json(self) -> TypeJson:
+        return TypeJson(
+            {
+                k: v
+                for k, v in self.__dict__.items()
+                if not k.startswith("_") and v != "" and v is not None
+            }
+        )
+
+
+@dataclass
+class RoutineListCommand(RoutineCommand):
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        self.action = "list"
+
+
+@dataclass
+class RoutineStartCommand(RoutineCommand, TransitionCommand):
+    id: str = ""  # routine_id
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        self.action = "start"
+
+
+@dataclass
+class RoutineDeleteCommand(RoutineCommand, TransitionCommand):
+    id: str = ""  # routine_id
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        self.action = "delete"
+
+
+@dataclass
+class RoutinePutCommand(
+    RoutineCommand, CommandWithCheckValuesLight, TransitionCommand
+):
+    id: str = ""  # routine_id
+    scene: str = ""  # scene_id
+    commands: str = ""  # routine_commands
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        self.action = "put"
+
+    def check_values(self, device: Device) -> bool:
+        # check_scene: functools.partial[Any] = functools.partial(
+        #     check_device_parameter,
+        #     args.force,
+        #     CheckDeviceParameter.SCENE,
+        #     args.routine_scene,
+        # )
+        """Check device scene support."""
+        # if force:
+        #     return True
+        if not device.ident:
+            return False
+        try:
+            scene_result: list[dict[str, Any]] = [
+                x for x in SCENES if x["id"] == int(self.scene)
+            ]
+            scene: dict[str, Any] = scene_result[0]
+
+            # bulb has no colors, therefore only cwww scenes are allowed
+            if ".rgb" not in device.ident.product_id and "cwww" not in scene:
+                return forced_continue(
+                    self._force,
+                    f"Scene {scene['label']} not supported by device product"
+                    + f"{device.acc_sets['productId']}. Coldwhite/Warmwhite"
+                    " Scenes only.",
+                )
+
+        except Exception:
+            return not missing_config(self._force, device.ident.product_id)
+        return True
+
+
 def routine_put(
     args: argparse.Namespace, local_and_cloud_command_msg: Callable
 ) -> None:
     """Put routine to device."""
-    check_scene: functools.partial[Any] = functools.partial(
-        check_device_parameter,
-        args.force,
-        CheckDeviceParameter.SCENE,
-        args.routine_scene,
-    )
+
     # msg = msg + (check_scene,) # fix check routine before putting
     local_and_cloud_command_msg(
-        {
-            "type": "routine",
-            "action": "put",
-            "id": args.routine_id,
-            "scene": args.routine_scene,
-            "commands": args.routine_commands,
-        },
-        500,
-        check_scene,
+        # RoutinePutCommand(
+        #     _json={
+        #         "type": "routine",
+        #         "action": "put",
+        #         "id": args.routine_id,
+        #         "scene": args.routine_scene,
+        #         "commands": args.routine_commands,
+        #     }
+        # ),
+        RoutinePutCommand(
+            id=args.routine_id,
+            scene=args.routine_scene,
+            commands=args.routine_commands,
+        ),
+        # 500,
+        # check_scene,
     )
 
 

@@ -656,7 +656,7 @@ class LocalConnectionHandler(ConnectionHandler):
                         text: str = command.msg_str()
                         if isinstance(command, CommandWithCheckValues):
                             cwcv: CommandWithCheckValues = command
-                            if not cwcv.force and not cwcv.check_values(
+                            if not cwcv._force and not cwcv.check_values(
                                 device=device
                             ):
                                 self.remove_msg_from_queue(msg, device)

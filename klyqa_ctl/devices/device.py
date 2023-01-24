@@ -16,7 +16,7 @@ from klyqa_ctl.general.unit_id import UnitId
 
 @dataclass
 class CommandWithCheckValues(CommandTyped):
-    force: bool = False
+    _force: bool = False
 
     @abstractmethod
     def check_values(self, device: Device) -> bool:
