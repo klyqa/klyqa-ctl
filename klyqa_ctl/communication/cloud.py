@@ -777,7 +777,7 @@ class CloudBackend:
 
     @classmethod
     def create_default(
-        cls: Any, controller_data: ControllerData, host: str = ""
+        cls: Any, controller_data: ControllerData, host: str = PROD_HOST
     ) -> CloudBackend:
         """Factory for CloudBackend."""
         cb: CloudBackend = CloudBackend(controller_data=controller_data)
