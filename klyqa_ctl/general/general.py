@@ -116,11 +116,18 @@ class Command:
 class CommandTyped(Command):
     """General command class."""
 
-    type: CommandType = CommandType.REQUEST
+    type: str = CommandType.REQUEST.value
 
     def json(self) -> TypeJson:
         """Return json command."""
-        return TypeJson({"type": self.type})
+        # return TypeJson(
+        #     {
+        #         k: v
+        #         for k, v in self.__dict__.items()
+        #         if not k.startswith("_") and v != "" and v is not None
+        #     }
+        # )  # json.dumps(self.__dict__)
+        return TypeJson({"type": self.type} | super().json())
 
 
 class EventQueuePrinter:
