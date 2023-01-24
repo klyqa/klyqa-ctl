@@ -118,9 +118,7 @@ class Account:
         self._attr__settings_loaded_ts = _settings_loaded_ts
 
     @classmethod
-    def create_default(
-        cls: Any, username: str = "", password: str = ""
-    ) -> Account:
+    def create_default(cls: Any, username: str, password: str) -> Account:
         """Factory for account."""
         acc: Account = Account(
             username=username,
