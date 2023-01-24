@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 
-class CloudConnection:
-    """CloudConnection"""
+class DeviceCloudState:
+    """Device cloud connection state"""
 
     _attr_received_packages: list[Any]
     _attr_connected: bool

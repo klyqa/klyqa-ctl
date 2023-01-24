@@ -7,9 +7,9 @@ from dataclasses import dataclass
 import traceback
 from typing import Any
 
+from klyqa_ctl.devices.cloud_state import DeviceCloudState
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
-from klyqa_ctl.general.connections import CloudConnection
 from klyqa_ctl.general.general import LOGGER, AsyncIoLock, CommandTyped
 from klyqa_ctl.general.unit_id import UnitId
 
@@ -28,7 +28,8 @@ class Device:
 
     def __init__(self) -> None:
         self._attr_local_addr: dict[str, Any] = {"ip": "", "port": -1}
-        self._attr_cloud: CloudConnection = CloudConnection()
+        # device specific cloud connection results
+        self._attr_cloud: DeviceCloudState = DeviceCloudState()
         self._attr_ident: ResponseIdentityMessage | None = (
             ResponseIdentityMessage()
         )
@@ -55,11 +56,11 @@ class Device:
         self._attr_local_addr = local_addr
 
     @property
-    def cloud(self) -> CloudConnection:
+    def cloud(self) -> DeviceCloudState:
         return self._attr_cloud
 
     @cloud.setter
-    def cloud(self, cloud: CloudConnection) -> None:
+    def cloud(self, cloud: DeviceCloudState) -> None:
         self._attr_cloud = cloud
 
     @property
