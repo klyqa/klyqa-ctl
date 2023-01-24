@@ -757,7 +757,7 @@ async def main() -> None:
         ):
             account = klyqa_accs[args_parsed.username[0]]
         else:
-            account = Account(
+            account = Account.create_default(
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
                 # controller_data.device_configs
@@ -809,12 +809,8 @@ async def main() -> None:
     ):
         exit_ret = 1
 
+    LOGGER.debug("Shutting down..")
     await client.shutdown()
-    LOGGER.debug("Closing ports")
-    await local_con_hdl.shutdown()
-
-    if cloud_backend:
-        await cloud_backend.shutdown()
 
     sys.exit(exit_ret)
 

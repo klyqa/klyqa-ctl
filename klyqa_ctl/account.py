@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import datetime
+from typing import Any
 
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import TypeJson
@@ -30,7 +31,7 @@ class Account:
         self,
         username: str = "",
         password: str = "",
-        settings_lock: asyncio.Lock | None = asyncio.Lock(),
+        settings_lock: asyncio.Lock | None = None,
     ) -> None:
         """! Initialize the account with the login data, tcp, udp
         datacommunicator and tcp
@@ -115,3 +116,15 @@ class Account:
         self, _settings_loaded_ts: datetime.datetime
     ) -> None:
         self._attr__settings_loaded_ts = _settings_loaded_ts
+
+    @classmethod
+    def create_default(
+        cls: Any, username: str = "", password: str = ""
+    ) -> Account:
+        """Factory for account."""
+        acc: Account = Account(
+            username=username,
+            password=password,
+            settings_lock=asyncio.Lock(),
+        )
+        return acc

@@ -10,7 +10,12 @@ from klyqa_ctl.devices.light.commands import (
     PingCommand,
     RequestCommand,
 )
-from klyqa_ctl.general.general import LOGGER, TRACE, RgbColor, set_debug_logger
+from klyqa_ctl.general.general import (  # AES_KEY_DEV,
+    LOGGER,
+    TRACE,
+    RgbColor,
+    set_debug_logger,
+)
 from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
 
@@ -24,9 +29,8 @@ async def main() -> None:
         network_interface="eth0", interactive_prompts=False
     )
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
-
     unit_id: UnitId = UnitId("00ac629de9ad2f4409dc")
-    dev_aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
+    aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
 
     req_color: ColorCommand = ColorCommand(
         color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
@@ -35,17 +39,17 @@ async def main() -> None:
     sends: list = [
         (
             unit_id,
-            dev_aes_key,
+            aes_key,
             PingCommand(),
         ),
         (
             unit_id,
-            dev_aes_key,
+            aes_key,
             req_color,
         ),
         (
             unit_id,
-            dev_aes_key,
+            aes_key,
             RequestCommand(),
         ),
         # (UnitId("3cbca9af8989582f2a75"),
