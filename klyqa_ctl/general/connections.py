@@ -33,4 +33,3 @@ class CloudConnection:
 
 
 PROD_HOST: str = "https://app-api.prod.qconnex.io"
-TEST_HOST: str = "https://app-api.test.qconnex.io"

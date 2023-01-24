@@ -162,18 +162,7 @@ def add_config_args(parser: argparse.ArgumentParser) -> None:
         default=False,
     )
     parser.add_argument(
-        "--test",
-        help="Test host server.",
-        action="store_const",
-        const=True,
-        default=False,
-    )
-    parser.add_argument(
-        "--prod",
-        help="Production host server.",
-        action="store_const",
-        const=True,
-        default=True,
+        "--host", help="Set cloud backend host server.", nargs=1
     )
     parser.add_argument(
         "--local",
