@@ -32,7 +32,6 @@ from klyqa_ctl.general.general import (
     format_uid,
     task_log_trace_ex,
 )
-from klyqa_ctl.general.unit_id import UnitId
 
 DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
@@ -48,12 +47,10 @@ class CloudBackend:
     def __init__(
         self,
         controller_data: ControllerData,
-        account: Account,
         host: str = "",
         offline: bool = False,
     ) -> None:
         self._attr_controller_data: ControllerData = controller_data
-        self._attr_account: Account = account
         self._attr_offline: bool = offline
         self._attr_host: str = PROD_HOST if not host else host
         self._attr_access_token: str = ""
@@ -84,9 +81,9 @@ class CloudBackend:
         return self._attr_offline
 
     @property
-    def account(self) -> Account:
+    def account(self) -> Account | None:
         """Return or set the account object."""
-        return self._attr_account
+        return self._attr_controller_data.account
 
     @property
     def controller_data(self) -> ControllerData:
@@ -99,7 +96,8 @@ class CloudBackend:
     async def login_cache(self) -> bool:
         """Get cached account data for login and check existing username and
         password."""
-
+        if not self.account:
+            return False
         cached: bool
         if not self.account.username:
             try:
@@ -168,6 +166,8 @@ class CloudBackend:
         return True
 
     async def run_login(self) -> bool:
+        if not self.account:
+            return False
 
         if not self.offline and (
             self.account.username is not None
@@ -330,7 +330,8 @@ class CloudBackend:
             return None
 
         if (
-            self.account.settings
+            self.account
+            and self.account.settings
             and device_product_ids
             and self.controller_data.device_configs
         ):
@@ -372,6 +373,8 @@ class CloudBackend:
     ) -> None:
         """Print onboarded devices, get device configs and remember
         aes_keys."""
+        if not self.account:
+            return
         device_tasks: list[Task] = []
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
@@ -402,6 +405,8 @@ class CloudBackend:
     ) -> bool:
         """Request all onboarded device configs and print the device
         attributes. Use cached device configs when offline."""
+        if not self.account:
+            return False
         device_configs_cache: dict[Any, Any] | None
         product_ids: set[str] = set()
 
@@ -452,6 +457,10 @@ class CloudBackend:
             true:  on success of the login
             false: on error
         """
+
+        if not self.account:
+            return False
+
         if not await self.login_cache():
             return False
 
@@ -553,6 +562,10 @@ class CloudBackend:
     ) -> bool:
         """Only send a new account settings http request when the last update
         was after the scan interval."""
+
+        if not self.account:
+            return False
+
         if self.account.settings_lock:
             await self.account.settings_lock.acquire()
         ret: bool = True
@@ -572,6 +585,10 @@ class CloudBackend:
 
     async def request_account_settings(self) -> None:
         """Request the account settings via http."""
+
+        if not self.account:
+            return
+
         try:
             acc_settings: TypeJson | None = await self.request_beared(
                 RequestMethod.GET, "settings"
@@ -611,8 +628,8 @@ class CloudBackend:
     async def cloud_send(
         self,
         args: argparse.Namespace,
-        target_device_uids: set[UnitId],
-        to_send_device_uids: set[UnitId],
+        target_device_uids: set[str],
+        to_send_device_uids: set[str],
         timeout_ms: int,
         message_queue_tx_state_cloud: list,
         message_queue_tx_command_cloud: list,
@@ -672,7 +689,7 @@ class CloudBackend:
         started: datetime.datetime = datetime.datetime.now()
         # timeout_ms = 30000
 
-        async def process_cloud_messages(target_uids: set[UnitId]) -> None:
+        async def process_cloud_messages(target_uids: set[str]) -> None:
 
             loop: AbstractEventLoop = asyncio.get_event_loop()
             threads: list[Any] = []

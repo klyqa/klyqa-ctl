@@ -49,6 +49,8 @@ try:
 except ImportError:
     from Crypto.Cipher import AES  # provided by pycryptodome
 
+SO_BINDTODEVICE_LINUX: int = 25
+
 
 class LocalConnectionHandler(ConnectionHandler):
     """Data communicator for local device connection.
@@ -68,18 +70,16 @@ class LocalConnectionHandler(ConnectionHandler):
     def __init__(
         self,
         controller_data: ControllerData,
-        account: Account | None,
         server_ip: str = "0.0.0.0",
-        broadcast_ntw_intf: str | None = None,
+        network_interface: str | None = None,
     ) -> None:
         self._attr_controller_data: ControllerData = controller_data
-        self._attr_account: Account | None = account
         self._attr_devices: dict[str, Device] = controller_data.devices
         self._attr_tcp: socket.socket | None = None
         self._attr_udp: socket.socket | None = None
         self._attr_server_ip: str = server_ip
-        # here message queue needs to be string not UnitId to be hashable
-        # for dictionary
+        # here message queue key needs to be string not UnitId to be hashable
+        # for dictionaries and sets
         self._attr_message_queue: dict[str, list[Message]] = {}
         self.__attr_send_loop_sleep: Task | None = None
         self.__attr_tasks_done: list[
@@ -90,19 +90,16 @@ class LocalConnectionHandler(ConnectionHandler):
         self._attr_handle_connections_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
         self.msg_ttl_task: Task | None = None
-        self._attr_acc_settings: TypeJson | None = (
-            account.settings if account else None
-        )
         self._attr_current_addr_connections = set()
-        self._attr_broadcast_ntw_intf: str | None = broadcast_ntw_intf
+        self._attr_network_interface: str | None = network_interface
 
     @property
-    def broadcast_ntw_intf(self) -> str | None:
-        return self._attr_broadcast_ntw_intf
+    def network_interface(self) -> str | None:
+        return self._attr_network_interface
 
-    @broadcast_ntw_intf.setter
-    def broadcast_ntw_intf(self, _attr_broadcast_ntw_intf: str | None) -> None:
-        self._attr_broadcast_ntw_intf = _attr_broadcast_ntw_intf
+    @network_interface.setter
+    def network_interface(self, network_interface: str | None) -> None:
+        self._attr_network_interface = network_interface
 
     @property
     def controller_data(self) -> ControllerData:
@@ -114,11 +111,7 @@ class LocalConnectionHandler(ConnectionHandler):
 
     @property
     def account(self) -> Account | None:
-        return self._attr_account
-
-    @account.setter
-    def account(self, account: Account) -> None:
-        self._attr_account = account
+        return self.controller_data.account
 
     @property
     def devices(self) -> dict[str, Device]:
@@ -223,11 +216,7 @@ class LocalConnectionHandler(ConnectionHandler):
 
     @property
     def acc_settings(self) -> dict[str, Any] | None:
-        return self._attr_acc_settings
-
-    @acc_settings.setter
-    def acc_settings(self, acc_settings: TypeJson | None) -> None:
-        self._attr_acc_settings = acc_settings
+        return self.account.settings if self.account else None
 
     @property
     def current_addr_connections(self) -> set[str]:
@@ -264,7 +253,6 @@ class LocalConnectionHandler(ConnectionHandler):
 
     async def bind_ports(self) -> bool:
         """bind ports."""
-        # await self.shutdown()
         server_address: tuple[str, int]
 
         if (
@@ -273,11 +261,11 @@ class LocalConnectionHandler(ConnectionHandler):
             self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            if self.broadcast_ntw_intf is not None:
+            if self.network_interface is not None:
                 self.udp.setsockopt(
                     socket.SOL_SOCKET,
-                    25,
-                    self.broadcast_ntw_intf.encode("utf-8"),
+                    SO_BINDTODEVICE_LINUX,
+                    str(self.network_interface + "\0").encode("utf-8"),
                 )
             server_address = (self.server_ip, 2222)
             try:
@@ -294,6 +282,13 @@ class LocalConnectionHandler(ConnectionHandler):
         if not self.tcp:  # or self.tcp.closed() or self.tcp.fileno() == -1:
             self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+            if self.network_interface is not None:
+                self.tcp.setsockopt(
+                    socket.SOL_SOCKET,
+                    SO_BINDTODEVICE_LINUX,
+                    str(self.network_interface + "\0").encode("utf-8"),
+                )
             server_address = ("0.0.0.0", 3333)
             try:
                 self.tcp.bind(server_address)
@@ -1286,15 +1281,18 @@ class LocalConnectionHandler(ConnectionHandler):
         #     target_device_uids = set(
         #         u_id for u_id, v in self.devices.items())
 
-    # @classmethod
-    # async def create_default(
-    #     cls: Any, interactive_prompts: bool = False, offline: bool = False
-    # ) -> LocalCommunicator:
-    #     """Factory for local only controller."""
-    #     controller_data: ControllerData = ControllerData(
-    #         interactive_prompts = interactive_prompts, offline = offline)
-    #     await controller_data.init()
-    #     lcc: LocalCommunicator = LocalCommunicator(
-    #         controller_data, None, server_ip = "0.0.0.0")
+    @classmethod
+    async def create_default(
+        cls: Any,
+        controller_data: ControllerData,
+        server_ip: str = "0.0.0.0",
+        network_interface: str | None = None,
+    ) -> LocalConnectionHandler:
+        """Factory for local only controller."""
+        lc_hdl: LocalConnectionHandler = LocalConnectionHandler(
+            controller_data,
+            server_ip=server_ip,
+            network_interface=network_interface,
+        )
 
-    #     return lcc
+        return lc_hdl

@@ -8,7 +8,12 @@ Author: Frederick Stallmeyer
 
 E-Mail: frederick.stallmeyer@gmx.de
 
-nice to haves/missing:
+Information:
+The network_interface parameter for local connection handling (in
+LocalConnectionHandler) will ONLY work on LINUX systems, as it uses the linux
+specific socket option SO_BINDTODEVICE for communication.
+
+Nice to haves/missing:
   -   list cloud connected devices in discovery.
   -   offer for selected devices possible commands and arguments in
       interactive mode based on their device profile
@@ -16,7 +21,7 @@ nice to haves/missing:
       check on send.
   -   start scene support in cloud mode
 
-current bugs:
+Current bugs:
  - vc1 interactive command selection support.
  - interactive light selection, command not applied
 
@@ -82,9 +87,8 @@ class Client:
     def __init__(
         self,
         controller_data: ControllerData,
-        local_connection_hdl: LocalConnectionHandler | None,
-        cloud_backend: CloudBackend | None,
-        account: Account | None,
+        local_connection_hdl: LocalConnectionHandler | None = None,
+        cloud_backend: CloudBackend | None = None,
         devices: dict = dict(),
     ) -> None:
         """! Initialize the account with the login data, tcp, udp
@@ -93,7 +97,6 @@ class Client:
         self._attr_local_con_hdl: LocalConnectionHandler | None = (
             local_connection_hdl
         )
-        self._attr_account: Account | None = account
         self._attr_devices: dict[str, Device] = devices
         self._attr_cloud_backend: CloudBackend | None = cloud_backend
 
@@ -117,11 +120,7 @@ class Client:
 
     @property
     def account(self) -> Account | None:
-        return self._attr_account
-
-    @account.setter
-    def account(self, account: Account) -> None:
-        self._attr_account = account
+        return self._attr_controller_data.account
 
     @property
     def devices(self) -> dict[str, Device]:
@@ -192,7 +191,7 @@ class Client:
         # some code missing
 
     def device_name_to_uid(
-        self, args: argparse.Namespace, target_device_uids: set[UnitId]
+        self, args: argparse.Namespace, target_device_uids: set[str]
     ) -> bool:
         """Set target device uid by device name argument."""
 
@@ -370,7 +369,7 @@ class Client:
                     args.aes[0]
                 )
 
-            target_device_uids: set[UnitId] = set()
+            target_device_uids: set[str] = set()
 
             message_queue_tx_local: list[Any] = []
             message_queue_tx_state_cloud: list[Any] = []
@@ -382,7 +381,7 @@ class Client:
 
             if args.device_unitids is not None:
                 target_device_uids = set(
-                    map(UnitId, set(args.device_unitids[0].split(",")))
+                    map(str, set(args.device_unitids[0].split(",")))
                 )
                 LOGGER.info(
                     "Send to device: "
@@ -433,7 +432,7 @@ class Client:
                 return False
 
             success: bool = True
-            to_send_device_uids: set[UnitId] = set()
+            to_send_device_uids: set[str] = set()
 
             if self.local_con_hdl and (args.local or args.tryLocalThanCloud):
                 if args.passive:
@@ -498,7 +497,7 @@ class Client:
 
                         await self.local_con_hdl.add_message(
                             send_msgs=message_queue_tx_local.copy(),
-                            target_device_uid=uid,
+                            target_device_uid=UnitId(uid),
                             callback=async_answer_callback_local,
                             time_to_live_secs=(timeout_ms / 1000),
                         )
@@ -739,11 +738,6 @@ async def main() -> None:
         and not args_parsed.quiet
     )
 
-    controller_data: ControllerData = ControllerData(
-        interactive_prompts=True, offline=args_parsed.offline
-    )
-    await controller_data.init()
-
     account: Account | None = None
 
     host: str = PROD_HOST
@@ -757,7 +751,6 @@ async def main() -> None:
         print_onboarded_devices = False
 
     else:
-        LOGGER.debug("login")
         if (
             args_parsed.username is not None
             and args_parsed.username[0] in klyqa_accs
@@ -770,6 +763,12 @@ async def main() -> None:
                 # controller_data.device_configs
             )
 
+    controller_data: ControllerData = await ControllerData.create_default(
+        interactive_prompts=True,
+        user_account=account,
+        offline=args_parsed.offline,
+    )
+
     exit_ret = 0
 
     intf: str | None = None
@@ -777,13 +776,13 @@ async def main() -> None:
         intf = args_parsed.interface[0]
 
     local_con_hdl: LocalConnectionHandler = LocalConnectionHandler(
-        controller_data, account, server_ip, broadcast_ntw_intf=intf
+        controller_data, server_ip, network_interface=intf
     )
 
     cloud_backend: CloudBackend | None = None
     if account:
         cloud_backend = CloudBackend(
-            controller_data, account, host, args_parsed.offline
+            controller_data, host, args_parsed.offline
         )
 
         if cloud_backend and not account.access_token:
@@ -800,9 +799,7 @@ async def main() -> None:
                 task_log_trace_ex()
                 sys.exit(1)
 
-    client: Client = Client(
-        controller_data, local_con_hdl, cloud_backend, account
-    )
+    client: Client = Client(controller_data, local_con_hdl, cloud_backend)
 
     if (
         await client.send_to_devices_wrapped(
