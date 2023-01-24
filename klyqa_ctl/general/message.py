@@ -35,6 +35,7 @@ class Message:
     answer_json: TypeJson = field(default_factory=lambda: {})
     # callback on error event or answer
     callback: Callable[[Message | None, str], Awaitable] | None = None
+    cb_called: bool = False
     time_to_live_secs: float = -1
     msg_counter: int = -1
     send_try: int = 0
@@ -46,8 +47,9 @@ class Message:
         MSG_COUNTER = MSG_COUNTER + 1
 
     async def call_cb(self) -> None:
-        if self.callback is not None:
+        if self.callback is not None and not self.cb_called:
             await self.callback(self, self.target_uid)
+            self.cb_called = True
 
     async def check_msg_ttl(self) -> bool:
         """Verify time to live, if exceeded call the callback"""
