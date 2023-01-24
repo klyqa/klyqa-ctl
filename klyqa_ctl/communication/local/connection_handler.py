@@ -577,7 +577,10 @@ class LocalConnectionHandler(ConnectionHandler):
             del self.message_queue[device.u_id]
 
     async def handle_connection(
-        self, device_ref: ReferenceParse, connection: TcpConnection
+        self,
+        device_ref: ReferenceParse,
+        connection: TcpConnection,
+        msg_sent_r: ReferenceParse,
     ) -> DeviceTcpReturn:
         """
         FIX: return type! sometimes return value sometimes tuple...
@@ -619,11 +622,11 @@ class LocalConnectionHandler(ConnectionHandler):
 
         return_val: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
-        msg_sent: Message | None = None
+        # msg_sent_r.ref: Message | None = None
         communication_finished: bool = False
 
         async def __send_msg() -> None:
-            nonlocal last_send, pause, return_val, device, msg_sent
+            nonlocal last_send, pause, return_val, device, msg_sent_r
 
             send_next: bool = elapsed >= pause
             sleep: float = (pause - elapsed).total_seconds()
@@ -673,7 +676,7 @@ class LocalConnectionHandler(ConnectionHandler):
                             ):
 
                                 return_val = DeviceTcpReturn.SENT
-                                msg_sent = msg
+                                msg_sent_r.ref = msg
                                 last_send = datetime.datetime.now()
                                 j = j + 1
                                 msg.msg_queue_sent.append(text)
@@ -701,22 +704,25 @@ class LocalConnectionHandler(ConnectionHandler):
                 else:
                     self.remove_msg_from_queue(msg, device)
 
-        if msg_sent and msg_sent.state == MessageState.ANSWERED:
-            msg_sent = None
+        if msg_sent_r.ref and msg_sent_r.ref.state == MessageState.ANSWERED:
+            msg_sent_r.ref = None
 
         while not communication_finished and (
             device.u_id == "no_uid"
             or type(device) == Device
             or device.u_id in self.message_queue
-            or msg_sent
+            or msg_sent_r.ref
         ):
 
-            if msg_sent and msg_sent.state == MessageState.ANSWERED:
-                msg_sent = None
+            if (
+                msg_sent_r.ref
+                and msg_sent_r.ref.state == MessageState.ANSWERED
+            ):
+                msg_sent_r.ref = None
 
             if (
                 connection.state == AesConnectionState.CONNECTED
-                and msg_sent is None
+                and msg_sent_r.ref is None
             ):
                 await __send_msg()
                 if return_val == DeviceTcpReturn.SEND_ERROR:
@@ -739,12 +745,12 @@ class LocalConnectionHandler(ConnectionHandler):
                 )
 
                 return_val = await self.process_tcp_package(
-                    connection, data_ref, msg_sent, device_ref
+                    connection, data_ref, msg_sent_r.ref, device_ref
                 )
                 data = data_ref.ref
                 device = device_ref.ref
                 if return_val == DeviceTcpReturn.ANSWERED:
-                    msg_sent = None
+                    msg_sent_r.ref = None
                     communication_finished = True
                 elif return_val != DeviceTcpReturn.NO_ERROR:
                     return return_val
@@ -810,13 +816,14 @@ class LocalConnectionHandler(ConnectionHandler):
 
         try:
             r_device: ReferenceParse = ReferenceParse(device)
+            msg_sent_ref: ReferenceParse = ReferenceParse(None)
 
             task_log_debug(
                 f"New tcp connection to device at {connection.address}"
             )
             try:
                 return_state = await self.handle_connection(
-                    r_device, connection=connection
+                    r_device, connection=connection, msg_sent_r=msg_sent_ref
                 )
             except CancelledError:
                 LOGGER.error(
@@ -839,6 +846,21 @@ class LocalConnectionHandler(ConnectionHandler):
                 unit_id: str = (
                     f" Unit-ID: {device.u_id}" if device.u_id else ""
                 )
+
+                # if return_state not in [
+                #     DeviceTcpReturn.SENT,
+                #     DeviceTcpReturn.ANSWERED,
+                # ]:
+                if return_state in [
+                    DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
+                ]:
+                    # Something bad could have happened with the device.
+                    # Remove the message precautiously from the
+                    # message queue.
+                    msg_sent: Message = msg_sent_ref.ref
+                    if msg_sent:
+                        await msg_sent.call_cb()
+                        self.remove_msg_from_queue(msg_sent, device)
 
                 if device.u_id in self.devices:
                     device_b: Device = self.devices[device.u_id]
@@ -1282,7 +1304,7 @@ class LocalConnectionHandler(ConnectionHandler):
         #         u_id for u_id, v in self.devices.items())
 
     @classmethod
-    async def create_default(
+    def create_default(
         cls: Any,
         controller_data: ControllerData,
         server_ip: str = "0.0.0.0",

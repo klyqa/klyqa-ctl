@@ -16,15 +16,16 @@ from klyqa_ctl.general.unit_id import UnitId
 class LocalController:
     def __init__(
         self,
-        local_communicator: LocalConnectionHandler,
         controller_data: ControllerData,
     ) -> None:
-        self.connection_hdl: LocalConnectionHandler = local_communicator
+        self.connection_hdl: LocalConnectionHandler | None = None
         self.controller_data: ControllerData = controller_data
 
     async def sendToDevice(
         self, unit_id: UnitId, key: str, command: str
     ) -> str:
+        if not self.connection_hdl:
+            return ""
 
         self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
 
@@ -53,6 +54,8 @@ class LocalController:
     async def sendToDeviceNative(
         self, unit_id: UnitId, key: str, command: Command
     ) -> str:
+        if not self.connection_hdl:
+            return ""
 
         self.connection_hdl.controller_data.aes_keys[
             str(unit_id)
@@ -81,10 +84,35 @@ class LocalController:
         return msg_answer
 
     async def shutdown(self) -> None:
-        await self.connection_hdl.shutdown()
+        if self.connection_hdl:
+            await self.connection_hdl.shutdown()
 
     @classmethod
-    async def create_local_only(
+    def create_default(
+        cls: Any,
+        controller_data: ControllerData,
+        server_ip: str = "0.0.0.0",
+        network_interface: str | None = None,
+    ) -> LocalController:
+        """Factory for local only controller.
+
+        param:
+            network_interface: leave it on None if you are unsure, else e. g.
+                eth0, wlan0, etc.
+        """
+        lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(
+            controller_data=controller_data,
+            server_ip=server_ip,
+            network_interface=network_interface,
+        )
+
+        lc: LocalController = LocalController(controller_data)
+        lc.connection_hdl = lc_hdl
+
+        return lc
+
+    @classmethod
+    async def create_standalone(
         cls: Any,
         server_ip: str = "0.0.0.0",
         network_interface: str | None = None,
@@ -97,16 +125,10 @@ class LocalController:
                 eth0, wlan0, etc.
         """
         controller_data: ControllerData = await ControllerData.create_default(
-            interactive_prompts=False, offline=True
-        )
-        lc_hdl: LocalConnectionHandler = (
-            await LocalConnectionHandler.create_default(
-                controller_data,
-                server_ip=server_ip,
-                network_interface=network_interface,
-            )
+            interactive_prompts=interactive_prompts, offline=True
         )
 
-        lc: LocalController = cls(lc_hdl, controller_data)
-
+        lc: LocalController = LocalController.create_default(
+            controller_data, server_ip, network_interface
+        )
         return lc

@@ -27,25 +27,19 @@ class Account:
     # queue, send a new broadcast and establish a new connection.
     #
 
-    def __init__(
-        self,
-        username: str = "",
-        password: str = "",
-        settings_lock: asyncio.Lock | None = None,
-    ) -> None:
+    def __init__(self) -> None:
         """! Initialize the account with the login data, tcp, udp
         datacommunicator and tcp
         communication tasks."""
-        self._attr_username: str = username
-        self._attr_password: str = password
+        self._attr_username: str = ""
+        self._attr_password: str = ""
         self._attr_devices: dict[str, Device] = {}
         self._attr_settings: TypeJson | None = {}
         self._attr_access_token: str = ""
         self._attr_username_cached: bool = False
         self._attr_settings_cached: bool = False
         self._attr__settings_loaded_ts: datetime.datetime | None = None
-        # self._attr_device_configs: dict[Any, Any] | None = device_configs
-        self._attr_settings_lock: asyncio.Lock | None = settings_lock
+        self._attr_settings_lock: asyncio.Lock | None = None
 
     @property
     def settings_lock(self) -> asyncio.Lock | None:
@@ -120,9 +114,8 @@ class Account:
     @classmethod
     def create_default(cls: Any, username: str, password: str) -> Account:
         """Factory for account."""
-        acc: Account = Account(
-            username=username,
-            password=password,
-            settings_lock=asyncio.Lock(),
-        )
+        acc: Account = Account()
+        acc.username = username
+        acc.password = password
+        acc._attr_settings_lock = asyncio.Lock()
         return acc

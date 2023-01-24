@@ -57,12 +57,12 @@ from klyqa_ctl.devices.vacuum.commands import (
 )
 from klyqa_ctl.devices.vacuum.commands import add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
-from klyqa_ctl.general.connections import PROD_HOST, TEST_HOST
 from klyqa_ctl.general.general import (
     AES_KEY_DEV,
     DEFAULT_SEND_TIMEOUT_MS,
     KLYQA_CTL_VERSION,
     LOGGER,
+    PROD_HOST,
     SEPARATION_WIDTH,
     TRACE,
     DeviceType,

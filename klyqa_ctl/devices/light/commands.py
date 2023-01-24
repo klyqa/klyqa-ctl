@@ -178,13 +178,13 @@ class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
         if not super().check_values(device) or not self.light:
             return False
         value: int = self.temperature
-        if (
+
+        if (not self.light.ident or not self.light.temperature_range) and (
             not self.light.ident
-            or not self.light.temperature_range
             or missing_config(self.force, self.light.ident.product_id)
         ):
             return False
-        else:
+        elif self.light.temperature_range:
             if (
                 int(value) < self.light.temperature_range.min
                 or int(value) > self.light.temperature_range.max
@@ -216,13 +216,13 @@ class BrightnessCommand(CommandWithCheckValuesLight, TransitionCommand):
         if not super().check_values(device) or not self.light:
             return False
         value: int = self.brightness
-        if (
+
+        if (not self.light.ident or not self.light.brightness_range) and (
             not self.light.ident
-            or not self.light.brightness_range
             or missing_config(self.force, self.light.ident.product_id)
         ):
             return False
-        else:
+        elif self.light.brightness_range:
             if (
                 int(value) < self.light.brightness_range.min
                 or int(value) > self.light.brightness_range.max

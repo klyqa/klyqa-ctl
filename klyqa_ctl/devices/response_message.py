@@ -16,8 +16,9 @@ class ResponseMessage:
 
     def update(self, **kwargs: Any) -> None:
         self.ts = datetime.datetime.now()
-        # Walk through parsed kwargs dict and look if names in dict exists as attribute in class,
-        # then apply the value in kwargs to the value in class.
+        # Walk through parsed kwargs dict and look if names in dict exists as
+        # attribute in class, then apply the value in kwargs to the value in
+        # class.
         for attr in kwargs:
             if hasattr(self, attr):
                 setattr(self, attr, kwargs[attr])

@@ -40,6 +40,7 @@ class DeviceTcpReturn(Enum):
     NO_UNIT_ID = auto()
     WRONG_AES = auto()
     TCP_ERROR = auto()
+    TCP_SOCKET_CLOSED_UNEXPECTEDLY = auto()
     UNKNOWN_ERROR = auto()
     SOCKET_TIMEOUT = auto()
     NOTHING_DONE = auto()
@@ -180,7 +181,7 @@ class TcpConnection:
             data_ref.ref = await loop.sock_recv(self.socket, 4096)
             if len(data_ref.ref) == 0:
                 task_log("TCP connection ended unexpectedly!", LOGGER.error)
-                return DeviceTcpReturn.TCP_ERROR
+                return DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
         except socket.timeout:
             task_log("socket.timeout.")
         except socket.error:
