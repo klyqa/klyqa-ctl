@@ -86,29 +86,27 @@ class LocalController:
     @classmethod
     async def create_local_only(
         cls: Any,
+        server_ip: str = "0.0.0.0",
+        network_interface: str | None = None,
         interactive_prompts: bool = False,
-        broadcast_ntw_intf: str | None = None,
     ) -> LocalController:
-        """Factory for local only controller."""
-        controller_data: ControllerData = ControllerData(
-            interactive_prompts=interactive_prompts, offline=True
+        """Factory for local only controller.
+
+        param:
+            network_interface: leave it on None if you are unsure, else e. g.
+                eth0, wlan0, etc.
+        """
+        controller_data: ControllerData = await ControllerData.create_default(
+            interactive_prompts=False, offline=True
         )
-        await controller_data.init()
-        lcc: LocalConnectionHandler = LocalConnectionHandler(
-            controller_data,
-            None,
-            server_ip="0.0.0.0",
-            broadcast_ntw_intf=broadcast_ntw_intf,
+        lc_hdl: LocalConnectionHandler = (
+            await LocalConnectionHandler.create_default(
+                controller_data,
+                server_ip=server_ip,
+                network_interface=network_interface,
+            )
         )
 
-        # lc: LocalController = LocalController(lcc)
-        # lc: LocalController = LocalController(lcc)
-        lc: LocalController = cls(lcc, controller_data)
+        lc: LocalController = cls(lc_hdl, controller_data)
 
-        # if cls._instance is None:
-        #     LOGGER.debug("Creating new AsyncIOLock instance")
-        #     cls._instance = cls.__new__(cls)
-        #     # Put any initialization here.
-        #     cls._instance.__init__()
-        # return self
         return lc

@@ -16,30 +16,36 @@ from klyqa_ctl.local_controller import LocalController
 
 
 async def main() -> None:
-    lc: LocalController = await LocalController.create_local_only(
-        interactive_prompts=False, broadcast_ntw_intf="eth0"
-    )
+    set_debug_logger(TRACE)
+
     loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
+
+    lc: LocalController = await LocalController.create_local_only(
+        network_interface="eth0", interactive_prompts=False
+    )
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
 
-    set_debug_logger(TRACE)
-    REQ: ColorCommand = ColorCommand(
-        color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=0
+    unit_id: UnitId = UnitId("00ac629de9ad2f4409dc")
+    dev_aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
+
+    req_color: ColorCommand = ColorCommand(
+        color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
     )  # , force=True)
+
     sends: list = [
         (
-            UnitId("00ac629de9ad2f4409dc"),
-            "e901f036a5a119a91ca1f30ef5c207d6",
+            unit_id,
+            dev_aes_key,
             PingCommand(),
         ),
         (
-            UnitId("00ac629de9ad2f4409dc"),
-            "e901f036a5a119a91ca1f30ef5c207d6",
-            REQ,
+            unit_id,
+            dev_aes_key,
+            req_color,
         ),
         (
-            UnitId("00ac629de9ad2f4409dc"),
-            "e901f036a5a119a91ca1f30ef5c207d6",
+            unit_id,
+            dev_aes_key,
             RequestCommand(),
         ),
         # (UnitId("3cbca9af8989582f2a75"),

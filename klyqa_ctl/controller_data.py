@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from klyqa_ctl.account import Account
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     AsyncIoLock,
@@ -18,6 +19,7 @@ class ControllerData:
         self,
         interactive_prompts: bool = False,
         offline: bool = False,
+        user_account: Account | None = None,
         add_devices_lock: AsyncIoLock | None = AsyncIoLock("add_devices_lock"),
     ) -> None:
         self._attr_aes_keys: dict[str, bytes] = {}
@@ -26,6 +28,15 @@ class ControllerData:
         self._attr_device_configs: dict[Any, Any] = {}
         self._attr_devices: dict[str, Device] = {}
         self._attr_add_devices_lock: AsyncIoLock | None = add_devices_lock
+        self._attr_account: Account | None = user_account
+
+    @property
+    def account(self) -> Account | None:
+        return self._attr_account
+
+    @account.setter
+    def account(self, account: Account | None) -> None:
+        self._attr_account = account
 
     @property
     def aes_keys(self) -> dict[str, bytes]:
@@ -74,11 +85,14 @@ class ControllerData:
     async def create_default(
         cls: Any,
         interactive_prompts: bool = False,
+        user_account: Account | None = None,
         offline: bool = False,
     ) -> ControllerData:
         """Factory for local only controller."""
         controller_data: ControllerData = ControllerData(
-            interactive_prompts=interactive_prompts, offline=True
+            interactive_prompts=interactive_prompts,
+            user_account=user_account,
+            offline=True,
         )
         await controller_data.init()
         return controller_data
