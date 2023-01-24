@@ -757,7 +757,7 @@ async def main() -> None:
         ):
             account = klyqa_accs[args_parsed.username[0]]
         else:
-            account = Account(
+            account = Account.create_default(
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
                 # controller_data.device_configs
