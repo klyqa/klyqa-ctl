@@ -740,14 +740,9 @@ async def main() -> None:
 
     account: Account | None = None
 
-    host: str = PROD_HOST
-    if args_parsed.test:
-        host = TEST_HOST
-
     if args_parsed.dev:
         if args_parsed.dev:
             LOGGER.info("development mode. Using default aes key.")
-        # account = Account()
         print_onboarded_devices = False
 
     else:
@@ -760,7 +755,6 @@ async def main() -> None:
             account = Account.create_default(
                 args_parsed.username[0] if args_parsed.username else "",
                 args_parsed.password[0] if args_parsed.password else "",
-                # controller_data.device_configs
             )
 
     controller_data: ControllerData = await ControllerData.create_default(
@@ -780,10 +774,14 @@ async def main() -> None:
     )
 
     cloud_backend: CloudBackend | None = None
-    if account:
-        cloud_backend = CloudBackend(
-            controller_data, host, args_parsed.offline
-        )
+
+    if account and not args_parsed.offline:
+
+        host: str = PROD_HOST
+        if args_parsed.host:
+            host = args_parsed.host[0]
+
+        cloud_backend = CloudBackend.create_default(controller_data, host)
 
         if cloud_backend and not account.access_token:
             try:
