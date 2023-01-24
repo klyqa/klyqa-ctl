@@ -1304,7 +1304,7 @@ class LocalConnectionHandler(ConnectionHandler):
         #         u_id for u_id, v in self.devices.items())
 
     @classmethod
-    async def create_default(
+    def create_default(
         cls: Any,
         controller_data: ControllerData,
         server_ip: str = "0.0.0.0",
