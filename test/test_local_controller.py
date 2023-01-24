@@ -28,7 +28,7 @@ async def main() -> None:
 
     loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
 
-    lc: LocalController = await LocalController.create_local_only(
+    lc: LocalController = await LocalController.create_standalone(
         network_interface="eth0", interactive_prompts=False
     )
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
@@ -45,21 +45,21 @@ async def main() -> None:
         #     aes_key,
         #     BrightnessCommand(brightness=random.randrange(0, 100)),
         # ),
-        # (
-        #     unit_id,
-        #     aes_key,
-        #     TemperatureCommand(temperature=random.randrange(2500, 6000)),
-        # ),
         (
             unit_id,
             aes_key,
-            FwUpdateCommand(
-                url=(
-                    "http://firmware.prod.qconnex.io/firmware/download/"
-                    "814c9be3-b929-4848-bc80-709da52a14c6?inline=true"
-                )
-            ),
+            TemperatureCommand(temperature=random.randrange(2500, 6000)),
         ),
+        # (
+        #     unit_id,
+        #     aes_key,
+        #     FwUpdateCommand(
+        #         url=(
+        #             "http://firmware.prod.qconnex.io/firmware/download/"
+        #             "814c9be3-b929-4848-bc80-709da52a14c6?inline=true"
+        #         )
+        #     ),
+        # ),
         # (
         #     unit_id,
         #     aes_key,
