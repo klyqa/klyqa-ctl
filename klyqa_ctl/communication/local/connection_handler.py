@@ -52,7 +52,7 @@ except ImportError:
 SO_BINDTODEVICE_LINUX: int = 25
 
 
-class LocalConnectionHandler(ConnectionHandler):
+class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     """Data communicator for local device connection.
 
     Important: Call async function shutdown() after using send method,
@@ -1224,33 +1224,38 @@ class LocalConnectionHandler(ConnectionHandler):
         except Exception:
             task_log_trace_ex()
 
-    async def add_message(
+    async def send_message(
         self,
         send_msgs: list[Command],
         target_device_uid: UnitId,
-        callback: Callable | None = None,
         time_to_live_secs: float = -1.0,
         **kwargs: Any,
-    ) -> bool:
+    ) -> Message | None:
         """Add message to message's queue."""
-        if not send_msgs and callback is not None:
+        if not send_msgs:
             LOGGER.error(
                 f"No message queue to send in message to {target_device_uid}!"
             )
-            await callback(None, target_device_uid)
-            return False
+            return None
+
+        response_event: asyncio.Event = asyncio.Event()
+
+        async def answer(
+            msg: Message | None = None, unit_id: str = ""
+        ) -> None:
+            response_event.set()
 
         msg: Message = Message(
             datetime.datetime.now(),
             target_device_uid,
             msg_queue=send_msgs,
-            callback=callback,
+            callback=answer,
             time_to_live_secs=time_to_live_secs,
             **kwargs,
         )
 
         if not await msg.check_msg_ttl():
-            return False
+            return msg
 
         task_log_trace(
             f"new message {msg.msg_counter} target"
@@ -1260,12 +1265,10 @@ class LocalConnectionHandler(ConnectionHandler):
         self.message_queue.setdefault(str(target_device_uid), []).append(msg)
 
         await self.send_udp_broadcast()
-        # if self.__read_tcp_task:
-        #     # if still waiting for incoming connections, restart the process
-        #     # with a new udp broadcast
-        #     self.__read_tcp_task.cancel()
         self.search_and_send_loop_task_alive()
-        return True
+
+        await response_event.wait()
+        return msg
 
     async def discover_devices(
         self,
@@ -1279,29 +1282,18 @@ class LocalConnectionHandler(ConnectionHandler):
         print("Search local network for devices ...")
         print(SEPARATION_WIDTH * "-")
 
-        discover_end_event: asyncio.Event = asyncio.Event()
         discover_timeout_secs: float = 2.5
-
-        async def discover_answer_end(answer: TypeJson, uid: str) -> None:
-            LOGGER.debug("discover ping end")
-            discover_end_event.set()
 
         LOGGER.debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.add_message(
+        await self.send_message(
             message_queue_tx_local,
             UnitId("all"),
-            discover_answer_end,
             discover_timeout_secs,
         )
-
-        await discover_end_event.wait()
-        # if self.devices:
-        #     target_device_uids = set(
-        #         u_id for u_id, v in self.devices.items())
 
     @classmethod
     def create_default(

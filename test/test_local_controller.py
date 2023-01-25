@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import random
 from typing import Any
 
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
     BrightnessCommand,
     ColorCommand,
@@ -18,6 +20,7 @@ from klyqa_ctl.devices.light.commands import (
     RoutineStartCommand,
     TemperatureCommand,
 )
+from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import (  # AES_KEY_DEV,
     LOGGER,
@@ -25,28 +28,63 @@ from klyqa_ctl.general.general import (  # AES_KEY_DEV,
     RgbColor,
     set_debug_logger,
 )
+from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
 
 
-async def main() -> None:
+def main() -> None:
     set_debug_logger(TRACE)
-    rc: RoutinePutCommand = RoutinePutCommand(action="put")
-    print(rc.json())
+    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
-    rc2 = RoutineListCommand()
-    print(rc2.json())
-
-    rcp = RoutinePutCommand(
-        id="ok", commands=SCENES[0]["commands"], scene=SCENES[0]["label"]
+    lc: LocalController = loop.run_until_complete(
+        LocalController.create_standalone(
+            network_interface="eth0", interactive_prompts=False
+        )
     )
-    print(rcp.json())
+    # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
+    unit_id: UnitId = UnitId("00ac629de9ad2f4409dc")
+    aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
 
-    rc3 = RoutineStartCommand(id="ok")
-    print(rc3.json())
+    req_color: ColorCommand = ColorCommand(
+        color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
+    )  # , force=True)json
+    reply: str = lc.send_to_device(
+        str(unit_id), aes_key, json.dumps(req_color.json())
+    )
+    dev: Device | None = lc.controller_data.devices["00ac629de9ad2f4409dc"]
+    if dev:
+        light: Light = dev
 
-    rdc = RoutineDeleteCommand(id="ok")
-    print(rdc.json())
+        light.local_con = lc.connection_hdl
+        if light.local_con:
+            ret: Message | None = loop.run_until_complete(
+                light.send_msg_local([PingCommand()], 3333)
+            )
+            if ret:
+                reply = ret.answer_utf8
+            pass
+    print(reply)
+
+
+async def async_main() -> None:
+    set_debug_logger(TRACE)
+    # rc: RoutinePutCommand = RoutinePutCommand(action="put")
+    # print(rc.json())
+
+    # rc2 = RoutineListCommand()
+    # print(rc2.json())
+
+    # rcp = RoutinePutCommand(
+    #     id="ok", commands=SCENES[0]["commands"], scene=SCENES[0]["label"]
+    # )
+    # print(rcp.json())
+
+    # rc3 = RoutineStartCommand(id="ok")
+    # print(rc3.json())
+
+    # rdc = RoutineDeleteCommand(id="ok")
+    # print(rdc.json())
 
     loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
 
@@ -59,7 +97,8 @@ async def main() -> None:
 
     req_color: ColorCommand = ColorCommand(
         color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
-    )  # , force=True)
+    )  # , force=True)json
+    lc.send_to_device(str(unit_id), aes_key, json.dumps(req_color.json()))
 
     sends: list = [
         # (
@@ -122,7 +161,7 @@ async def main() -> None:
     #     count = count + 1
     for s in sends:
         tasks.append(
-            (count, s[0], loop.create_task(lc.sendToDeviceNative(*s)))
+            (count, s[0], loop.create_task(lc.send_to_device_native(*s)))
         )
         count = count + 1
 
@@ -140,4 +179,9 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import uvloop
+
+    uvloop.install()
+    main()
+    # loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    # loop.run_until_complete(async_main())
