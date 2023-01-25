@@ -21,37 +21,21 @@ class LocalController:
         self.connection_hdl: LocalConnectionHandler | None = None
         self.controller_data: ControllerData = controller_data
 
-    async def sendToDevice(
-        self, unit_id: UnitId, key: str, command: str
-    ) -> str:
+    def send_to_device(self, unit_id: str, key: str, command: str) -> str:
         if not self.connection_hdl:
             return ""
 
-        self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
-        response_event: asyncio.Event = asyncio.Event()
-        msg_answer: str = ""
-
-        async def answer(
-            msg: Message | None = None, unit_id: str = ""
-        ) -> None:
-            nonlocal msg_answer
-            if msg is not None:
-                msg_answer = msg.answer_utf8
-            response_event.set()
-
-        await self.connection_hdl.add_message(
-            send_msgs=[Command(_json=json.loads(command))],
-            target_device_uid=unit_id,
-            callback=answer,
-            time_to_live_secs=11111,  # DEFAULT_SEND_TIMEOUT_MS
+        result: str = loop.run_until_complete(
+            self.send_to_device_native(
+                UnitId(unit_id), key, Command(_json=json.loads(command))
+            )
         )
 
-        await response_event.wait()
+        return result
 
-        return msg_answer
-
-    async def sendToDeviceNative(
+    async def send_to_device_native(
         self, unit_id: UnitId, key: str, command: Command
     ) -> str:
         if not self.connection_hdl:
@@ -61,25 +45,15 @@ class LocalController:
             str(unit_id)
         ] = bytes.fromhex(key)
 
-        response_event: asyncio.Event = asyncio.Event()
         msg_answer: str = ""
 
-        async def answer(
-            msg: Message | None = None, unit_id: str = ""
-        ) -> None:
-            nonlocal msg_answer
-            if msg is not None:
-                msg_answer = msg.answer_utf8
-            response_event.set()
-
-        await self.connection_hdl.add_message(
+        msg: Message | None = await self.connection_hdl.send_message(
             send_msgs=[command],
             target_device_uid=unit_id,
-            callback=answer,
             time_to_live_secs=11111,
         )
-
-        await response_event.wait()
+        if msg:
+            msg_answer = msg.answer_utf8
 
         return msg_answer
 

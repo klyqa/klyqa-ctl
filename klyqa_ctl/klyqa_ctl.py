@@ -30,7 +30,6 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-from asyncio.exceptions import CancelledError
 from collections.abc import Callable
 import datetime
 import json
@@ -38,6 +37,8 @@ import logging
 import sys
 import time
 from typing import Any
+
+import uvloop
 
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
@@ -66,14 +67,14 @@ from klyqa_ctl.general.general import (
     SEPARATION_WIDTH,
     TRACE,
     DeviceType,
-    TypeJson,
     format_uid,
     get_obj_attrs_as_string,
     logging_hdl,
     set_debug_logger,
+    task_log_debug,
     task_log_trace_ex,
 )
-from klyqa_ctl.general.message import Message
+from klyqa_ctl.general.message import Message, MessageState
 from klyqa_ctl.general.parameters import (
     add_config_args,
     get_description_parser,
@@ -165,26 +166,19 @@ class Client:
         print("Search local network for devices ...")
         print(SEPARATION_WIDTH * "-")
 
-        discover_end_event: asyncio.Event = asyncio.Event()
         discover_timeout_secs: float = 2.5
-
-        async def discover_answer_end(answer: TypeJson, uid: str) -> None:
-            LOGGER.debug("discover ping end")
-            discover_end_event.set()
 
         LOGGER.debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search and
         # send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local_con_hdl.add_message(
+        await self.local_con_hdl.send_message(
             message_queue_tx_local,
             UnitId("all"),
-            discover_answer_end,
             discover_timeout_secs,
         )
-
-        await discover_end_event.wait()
+        task_log_debug("discover ping end")
         # if self.devices:
         #     target_device_uids = set(
         # u_id for u_id, v in self.devices.items())
@@ -467,52 +461,33 @@ class Client:
                             args, message_queue_tx_local, target_device_uids
                         )
 
-                    msg_wait_tasks: dict[str, asyncio.Task] = {}
-
                     to_send_device_uids = target_device_uids.copy()
 
-                    async def sleep_task(uid: str) -> None:
-                        """Sleep task for timeout."""
-                        try:
-                            await asyncio.sleep(timeout_ms / 1000)
-                        except CancelledError:
-                            LOGGER.debug(f"sleep uid {uid} cancelled.")
-
-                    for uid in target_device_uids:
-                        msg_wait_tasks[uid] = loop.create_task(sleep_task(uid))
-
-                    async def async_answer_callback_local(
-                        msg: Message, uid: str
-                    ) -> None:
-                        if msg and msg.msg_queue_sent:
-                            LOGGER.debug(f"{uid} msg callback.")
-
-                        if uid in to_send_device_uids:
-                            to_send_device_uids.remove(UnitId(uid))
-                        msg_wait_tasks[uid].cancel()
-                        if async_answer_callback:
-                            await async_answer_callback(msg, uid)
-
+                    send_tasks: list[asyncio.Task] = []
                     for uid in target_device_uids:
 
-                        await self.local_con_hdl.add_message(
-                            send_msgs=message_queue_tx_local.copy(),
-                            target_device_uid=UnitId(uid),
-                            callback=async_answer_callback_local,
-                            time_to_live_secs=(timeout_ms / 1000),
+                        send_tasks.append(
+                            loop.create_task(
+                                self.local_con_hdl.send_message(
+                                    send_msgs=message_queue_tx_local.copy(),
+                                    target_device_uid=UnitId(uid),
+                                    # callback=async_answer_callback_local,
+                                    time_to_live_secs=(timeout_ms / 1000),
+                                )
+                            )
                         )
 
-                    for uid in target_device_uids:
-                        LOGGER.debug(f"wait for send task {uid}.")
-                        try:
-                            await asyncio.wait([msg_wait_tasks[uid]])
-                        except CancelledError:
-                            LOGGER.debug(
-                                f"sleep wait for uid {uid} cancelled."
-                            )
-                        LOGGER.debug(f"wait for send task {uid} end.")
-
                     LOGGER.debug("wait for all target device uids done.")
+                    for task in send_tasks:
+                        try:
+                            await asyncio.wait_for(
+                                task, timeout=(timeout_ms / 1000)
+                            )
+                        except asyncio.CancelledError:
+                            task_log_debug("Timeout for send.")
+                        msg: Message = task.result()
+                        if msg.state == MessageState.SENT:
+                            to_send_device_uids.remove(UnitId(msg.target_uid))
 
                     if args.selectDevice:
                         return await self.select_device(
@@ -814,4 +789,7 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    uvloop.install()
+    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+
+    loop.run_until_complete(main())

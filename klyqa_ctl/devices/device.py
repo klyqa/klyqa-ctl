@@ -7,10 +7,19 @@ from dataclasses import dataclass
 import traceback
 from typing import Any
 
+from klyqa_ctl.communication.device_connection_handler import (
+    DeviceConnectionHandler,
+)
 from klyqa_ctl.devices.cloud_state import DeviceCloudState
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
-from klyqa_ctl.general.general import LOGGER, AsyncIoLock, CommandTyped
+from klyqa_ctl.general.general import (
+    LOGGER,
+    AsyncIoLock,
+    Command,
+    CommandTyped,
+)
+from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -45,6 +54,28 @@ class Device:
             "status": ResponseMessage,
         }
         self._attr_device_config: dict[str, Any] = {}
+
+        self.local_con: DeviceConnectionHandler | None = None
+
+    async def send_msg(
+        self,
+        commands: list[Command],
+        time_to_live_secs: int,
+        con: DeviceConnectionHandler,
+    ) -> Message | None:
+
+        return await con.send_message(  # type: ignore[no-any-return]
+            commands, UnitId(self.u_id), time_to_live_secs
+        )
+
+    async def send_msg_local(
+        self,
+        commands: list[Command],
+        time_to_live_secs: int,
+    ) -> Message | None:
+        if not self.local_con:
+            return None
+        return await self.send_msg(commands, time_to_live_secs, self.local_con)
 
     @property
     def local_addr(self) -> dict[str, Any]:

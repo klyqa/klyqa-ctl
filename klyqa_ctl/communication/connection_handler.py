@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
+from klyqa_ctl.communication.device_connection_handler import (
+    DeviceConnectionHandler,
+)
 from klyqa_ctl.communication.local.connection import (
     DeviceTcpReturn,
     TcpConnection,
@@ -11,7 +14,9 @@ from klyqa_ctl.communication.local.connection import (
 from klyqa_ctl.general.general import ReferenceParse
 
 
-class ConnectionHandler(ABC):
+class ConnectionHandler(DeviceConnectionHandler):  # type: ignore[misc]
+    """Abstract class for a general connection handler class."""
+
     @abstractmethod
     async def handle_connection(
         self, device_ref: ReferenceParse, connection: TcpConnection
