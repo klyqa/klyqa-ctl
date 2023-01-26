@@ -11,6 +11,6 @@
 #
 ###################################################################
 
-__version__: str = "1.0.17"
-__author__ : str = "Frederick Stallmeyer <fraizy@gmx.de>"
+__version__: str = "1.0.17-next"
+__author__: str = "Frederick Stallmeyer <fraizy@gmx.de>"
 __license__: str = "MIT"

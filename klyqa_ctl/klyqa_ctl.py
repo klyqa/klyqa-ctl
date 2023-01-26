@@ -40,6 +40,7 @@ from typing import Any
 
 import uvloop
 
+from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.communication.local.connection_handler import (
@@ -61,7 +62,6 @@ from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     AES_KEY_DEV,
     DEFAULT_SEND_TIMEOUT_MS,
-    KLYQA_CTL_VERSION,
     LOGGER,
     PROD_HOST,
     SEPARATION_WIDTH,
@@ -684,7 +684,7 @@ async def main() -> None:
     args_parsed: argparse.Namespace = parser.parse_args(args=args_in)
 
     if args_parsed.version:
-        print(KLYQA_CTL_VERSION)
+        print(__version__)
         sys.exit(0)
 
     if not args_parsed:
