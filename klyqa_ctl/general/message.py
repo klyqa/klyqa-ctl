@@ -8,6 +8,7 @@ from enum import Enum
 from typing import Awaitable, Callable
 
 from klyqa_ctl.general.general import LOGGER, Command, TypeJson, format_uid
+from klyqa_ctl.general.unit_id import UnitId
 
 
 class MessageState(Enum):
@@ -72,3 +73,13 @@ class Message:
     @target_uid.setter
     def target_uid(self, target_uid: str) -> None:
         self._attr_target_uid = format_uid(target_uid)
+
+
+@dataclass
+class BroadCastMessage(Message):
+    sent_to_uids: set[str] = field(default_factory=lambda: set())
+
+
+# @dataclass
+# class DiscoverMessage(Message):
+#     discovered_uids: set[str] = set()

@@ -41,7 +41,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
     task_name,
 )
-from klyqa_ctl.general.message import Message, MessageState
+from klyqa_ctl.general.message import BroadCastMessage, Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
 try:
@@ -625,7 +625,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # msg_sent_r.ref: Message | None = None
         communication_finished: bool = False
 
-        async def __send_msg() -> None:
+        async def __send_next_msg() -> None:
             nonlocal last_send, pause, return_val, device, msg_sent_r
 
             send_next: bool = elapsed >= pause
@@ -637,72 +637,111 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             if (
                 send_next
                 and device
-                and device.u_id in self.message_queue
-                and len(self.message_queue[device.u_id]) > 0
+                # and (
+                #     (
+                #         device.u_id in self.message_queue
+                #         and len(self.message_queue[device.u_id]) > 0
+                #     )
+                #     or (
+                #         "all" in self.message_queue
+                #         and len(self.message_queue["all"]) > 0
+                #     )
+                # )
             ):
-                msg: Message = self.message_queue[device.u_id][0]
+                msg: Message | None = None
+                if (
+                    "all" in self.message_queue
+                    and len(self.message_queue["all"]) > 0
+                ):
+                    m: Message
+                    for m in self.message_queue["all"]:
+                        bcm: BroadCastMessage = m
+                        if device.u_id not in bcm.sent_to_uids:
+                            msg = bcm
+                            break
+                # if (
+                #     "all" in self.message_queue
+                #     and len(self.message_queue["discover"]) > 0
+                # ):
+                #     m: Message
+                #     for m in self.message_queue["discover"]:
+                #         dcm: DiscoverMessage = m
+                #         if device.u_id not in bcm.discovered_uids:
+                #             msg = dcm
+                #             break
+                if (
+                    not msg
+                    and device.u_id in self.message_queue
+                    and len(self.message_queue[device.u_id]) > 0
+                ):
+                    msg = self.message_queue[device.u_id][0]
 
-                task_log(
-                    f"Process msg to send '{msg.msg_queue}' to device"
-                    f" '{device.u_id}'."
-                )
-                j: int = 0
+                if msg:
+                    task_log(
+                        f"Process msg to send '{msg.msg_queue}' to device"
+                        f" '{device.u_id}'."
+                    )
+                    j: int = 0
 
-                if msg.state == MessageState.UNSENT:
+                    if msg.state == MessageState.UNSENT:
 
-                    while j < len(msg.msg_queue):
+                        while j < len(msg.msg_queue):
 
-                        command: Command = msg.msg_queue[j]
-                        text: str = command.msg_str()
-                        if isinstance(command, CommandWithCheckValues):
-                            cwcv: CommandWithCheckValues = command
-                            if not cwcv._force and not cwcv.check_values(
-                                device=device
-                            ):
-                                self.remove_msg_from_queue(msg, device)
-                                break
+                            command: Command = msg.msg_queue[j]
+                            text: str = command.msg_str()
+                            if isinstance(command, CommandWithCheckValues):
+                                cwcv: CommandWithCheckValues = command
+                                if not cwcv._force and not cwcv.check_values(
+                                    device=device
+                                ):
+                                    self.remove_msg_from_queue(msg, device)
+                                    break
 
-                        if isinstance(command, TransitionCommand):
-                            tc: TransitionCommand = command
-                            pause = datetime.timedelta(
-                                milliseconds=float(tc.transition_time)
-                            )
+                            if isinstance(command, TransitionCommand):
+                                tc: TransitionCommand = command
+                                pause = datetime.timedelta(
+                                    milliseconds=float(tc.transition_time)
+                                )
 
-                        try:
-                            # if await loop.run_in_executor(None, connection.
-                            # encrypt_and_send_msg, text, device):
-                            if await connection.encrypt_and_send_msg(
-                                text, device
-                            ):
+                            try:
+                                # if await loop.run_in_executor(None, connection.
+                                # encrypt_and_send_msg, text, device):
+                                if await connection.encrypt_and_send_msg(
+                                    text, device
+                                ):
 
-                                return_val = DeviceTcpReturn.SENT
-                                msg_sent_r.ref = msg
-                                last_send = datetime.datetime.now()
-                                j = j + 1
-                                msg.msg_queue_sent.append(text)
-                                # don't process the next message, but if
-                                # still elements in the msg_queue send them as
-                                # well
-                                send_next = False
-                                # break
-                            else:
-                                LOGGER.error("Could not send message!")
+                                    return_val = DeviceTcpReturn.SENT
+                                    if isinstance(msg, BroadCastMessage):
+                                        bcm: BroadCastMessage = msg
+                                        bcm.sent_to_uids.add(device.u_id)
+                                    msg_sent_r.ref = msg
+                                    last_send = datetime.datetime.now()
+                                    j = j + 1
+                                    msg.msg_queue_sent.append(text)
+                                    # don't process the next message, but if
+                                    # still elements in the msg_queue send them as
+                                    # well
+                                    send_next = False
+                                    # break
+                                else:
+                                    LOGGER.error("Could not send message!")
+                                    return_val = DeviceTcpReturn.SEND_ERROR
+                                    break
+                            except socket.error:
+                                LOGGER.error(
+                                    "Socket error while trying to send"
+                                    " message!"
+                                )
+                                task_log_trace_ex()
                                 return_val = DeviceTcpReturn.SEND_ERROR
                                 break
-                        except socket.error:
-                            LOGGER.error(
-                                "Socket error while trying to send message!"
-                            )
-                            task_log_trace_ex()
-                            return_val = DeviceTcpReturn.SEND_ERROR
-                            break
 
-                    if len(msg.msg_queue) == len(msg.msg_queue_sent):
-                        msg.state = MessageState.SENT
-                        # all messages , break now for reading response
+                        if len(msg.msg_queue) == len(msg.msg_queue_sent):
+                            msg.state = MessageState.SENT
+                            # all messages , break now for reading response
+                            self.remove_msg_from_queue(msg, device)
+                    else:
                         self.remove_msg_from_queue(msg, device)
-                else:
-                    self.remove_msg_from_queue(msg, device)
 
         if msg_sent_r.ref and msg_sent_r.ref.state == MessageState.ANSWERED:
             msg_sent_r.ref = None
@@ -724,7 +763,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 connection.state == AesConnectionState.CONNECTED
                 and msg_sent_r.ref is None
             ):
-                await __send_msg()
+                await __send_next_msg()
                 if return_val == DeviceTcpReturn.SEND_ERROR:
                     return return_val
 
@@ -956,18 +995,21 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def check_messages_time_to_live(self) -> None:
         """Check message queue for end of live messages."""
+        to_del: list[str] = []
         try:
-            to_del: list[str] = []
-            for uid, msgs in self.message_queue.items():
-                for msg in msgs:
-                    if not await msg.check_msg_ttl():
-                        msgs.remove(msg)
-                    if not self.message_queue[uid]:
-                        # del self.message_queue[uid]
-                        to_del.append(uid)
-                        break
-            for uid in to_del:
-                del self.message_queue[uid]
+            while True:
+                to_del = []
+                for uid, msgs in self.message_queue.items():
+                    for msg in msgs:
+                        if not await msg.check_msg_ttl():
+                            msgs.remove(msg)
+                        if not self.message_queue[uid]:
+                            # del self.message_queue[uid]
+                            to_del.append(uid)
+                            break
+                for uid in to_del:
+                    del self.message_queue[uid]
+                await asyncio.sleep(0.05)
         except asyncio.CancelledError:
             task_log_debug("Message queue time to live task ended.")
 
@@ -1272,9 +1314,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def discover_devices(
         self,
-        args: argparse.Namespace,
+        # args: argparse.Namespace,
         message_queue_tx_local: list,
-        target_device_uids: set,
+        # target_device_uids: set,
+        timeout_secs: float = 2.5,
     ) -> None:
         """Discover devices."""
 
@@ -1292,7 +1335,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         await self.send_message(
             message_queue_tx_local,
             UnitId("all"),
-            discover_timeout_secs,
+            timeout_secs,
         )
 
     @classmethod

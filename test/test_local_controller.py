@@ -7,6 +7,9 @@ import json
 import random
 from typing import Any
 
+from klyqa_ctl.communication.local.connection_handler import (
+    LocalConnectionHandler,
+)
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
     BrightnessCommand,
@@ -33,8 +36,24 @@ from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
 
 
+async def discover(con: LocalConnectionHandler) -> None:
+
+    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    if con:
+        try:
+            await asyncio.wait_for(
+                loop.create_task(
+                    con.send_message([PingCommand()], UnitId("all"), 0.3)
+                ),
+                timeout=0.3,
+            )
+        except asyncio.TimeoutError:
+            pass
+
+
 def main() -> None:
     set_debug_logger(TRACE)
+
     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
     lc: LocalController = loop.run_until_complete(
@@ -42,6 +61,13 @@ def main() -> None:
             network_interface="eth0", interactive_prompts=False
         )
     )
+    if lc.connection_hdl:
+        loop.run_until_complete(discover(lc.connection_hdl))
+
+    dev: Device | None = None
+    if "00ac629de9ad2f4409dc" in lc.controller_data.devices:
+        dev = lc.controller_data.devices["00ac629de9ad2f4409dc"]
+
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
     unit_id: UnitId = UnitId("00ac629de9ad2f4409dc")
     aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
@@ -52,7 +78,6 @@ def main() -> None:
     reply: str = lc.send_to_device(
         str(unit_id), aes_key, json.dumps(req_color.json())
     )
-    dev: Device | None = lc.controller_data.devices["00ac629de9ad2f4409dc"]
     if dev:
         light: Light = dev
 
