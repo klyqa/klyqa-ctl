@@ -485,14 +485,9 @@ class TraceLogger(logging.Logger):
 
 logging.setLoggerClass(TraceLogger)
 
-LOGGER: TraceLogger = TraceLogger.manager.getLogger(
-    __package__
-)  # type: ignore[assignment]
-LOGGER.setLevel(level=logging.INFO)
+LOGGER: logging.Logger = logging.getLogger(__package__)
 
-debug_formatter: logging.Formatter = logging.Formatter(
-    "%(asctime)s %(levelname)-8s - %(message)s"
-)
+LOGGER.setLevel(level=logging.INFO)
 
 info_formatter: logging.Formatter = logging.Formatter("%(message)s")
 
@@ -504,22 +499,29 @@ logging_hdl.setFormatter(fmt=info_formatter)
 
 LOGGER.addHandler(logging_hdl)
 
+LOGGER_debug: TraceLogger = TraceLogger.manager.getLogger(
+    "klyqa_ctl_trace"
+)  # type: ignore[assignment]
+LOGGER_debug.setLevel(logging.INFO)
+
+debug_formatter: logging.Formatter = logging.Formatter(
+    "%(asctime)s %(levelname)-8s - %(message)s"
+)
+
 
 def set_debug_logger(level: int = logging.DEBUG) -> None:
     """Stream logging handler to stderr pipe."""
-    if len(LOGGER.handlers) >= 2:
-        return
     trace_log_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
         stream=sys.stderr
     )
-    LOGGER.setLevel(level)
+    LOGGER_debug.setLevel(level)
     trace_log_hdl.setLevel(level)
     trace_log_hdl.setFormatter(debug_formatter)
-    LOGGER.addHandler(trace_log_hdl)
+    LOGGER_debug.addHandler(trace_log_hdl)
 
 
 def task_log(
-    msg: str, output_func: Callable = LOGGER.debug, *args: Any, **kwargs: Any
+    msg: str, output_func: Callable = LOGGER.info, *args: Any, **kwargs: Any
 ) -> None:
     """Output task name and logging string."""
     task_name_str: str = task_name()
@@ -532,12 +534,12 @@ def task_log(
 
 def task_log_debug(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
-    task_log(msg, LOGGER.debug, *args, **kwargs)
+    task_log(msg, LOGGER_debug.debug, *args, **kwargs)
 
 
 def task_log_trace(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
-    task_log(msg, LOGGER.trace, *args, **kwargs)
+    task_log(msg, LOGGER_debug.trace, *args, **kwargs)
 
 
 def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
