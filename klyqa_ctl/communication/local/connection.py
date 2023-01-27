@@ -12,7 +12,7 @@ from typing import Any
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
-    ReferenceParse,
+    ReferencePass,
     task_log,
     task_log_debug,
     task_log_trace_ex,
@@ -168,7 +168,7 @@ class TcpConnection:
         self._attr_started = started
 
     async def read_local_tcp_socket(
-        self, data_ref: ReferenceParse
+        self, data_ref: ReferencePass
     ) -> DeviceTcpReturn:
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         if self.socket is None:

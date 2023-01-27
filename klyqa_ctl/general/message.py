@@ -29,6 +29,7 @@ class Message:
     msg_queue: list[Command]
     msg_queue_sent: list[str] = field(default_factory=lambda: [])
     state: MessageState = MessageState.UNSENT
+    exception: Exception | None = None
     answered_datetime: datetime.datetime | None = None
     local_pause_after_answer_secs: float | None = None
     answer: bytes = b""

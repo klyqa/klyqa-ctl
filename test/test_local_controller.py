@@ -36,16 +36,16 @@ from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
 
 
-async def discover(con: LocalConnectionHandler) -> None:
+async def discover(con: LocalConnectionHandler, timeout: float = 0.3) -> None:
 
     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
     if con:
         try:
             await asyncio.wait_for(
                 loop.create_task(
-                    con.send_message([PingCommand()], UnitId("all"), 0.3)
+                    con.send_message([PingCommand()], UnitId("all"), timeout)
                 ),
-                timeout=0.3,
+                timeout=timeout,
             )
         except asyncio.TimeoutError:
             pass

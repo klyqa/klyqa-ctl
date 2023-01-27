@@ -332,8 +332,8 @@ def task_name() -> str:
 #         return cls._instance
 
 
-class ReferenceParse:
-    """Reference parse for parameter in function calls."""
+class ReferencePass:
+    """Reference passing to functions."""
 
     _attr_ref: Any = None
 

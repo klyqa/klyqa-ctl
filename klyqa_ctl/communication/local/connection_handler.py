@@ -2,16 +2,14 @@
 
 from __future__ import annotations
 
-import argparse
 import asyncio
 from asyncio import AbstractEventLoop, CancelledError, Task
 import datetime
 import json
 import select
 import socket
-from typing import Any, Callable
+from typing import Any
 
-from klyqa_ctl.account import Account
 from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
     AesConnectionState,
@@ -21,7 +19,7 @@ from klyqa_ctl.communication.local.connection import (
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
-from klyqa_ctl.devices.light.commands import TransitionCommand
+from klyqa_ctl.devices.light.commands import PingCommand, TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
@@ -31,9 +29,8 @@ from klyqa_ctl.general.general import (
     SEND_LOOP_MAX_SLEEP_TIME,
     SEPARATION_WIDTH,
     Command,
-    ReferenceParse,
+    ReferencePass,
     TypeJson,
-    format_uid,
     task_log,
     task_log_debug,
     task_log_error,
@@ -109,9 +106,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def controller_data(self, controller_data: ControllerData) -> None:
         self._attr_controller_data = controller_data
 
-    @property
-    def account(self) -> Account | None:
-        return self.controller_data.account
+    # @property
+    # def account(self) -> Account | None:
+    #     return self.controller_data.account
 
     @property
     def devices(self) -> dict[str, Device]:
@@ -214,9 +211,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def __read_tcp_task(self, read_tcp_task: Task | None) -> None:
         self.__attr_read_tcp_task = read_tcp_task
 
-    @property
-    def acc_settings(self) -> dict[str, Any] | None:
-        return self.account.settings if self.account else None
+    # @property
+    # def acc_settings(self) -> dict[str, Any] | None:
+    #     return self.account.settings if self.account else None
 
     @property
     def current_addr_connections(self) -> set[str]:
@@ -307,7 +304,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self,
         connection: TcpConnection,
         data: bytes,
-        device_ref: ReferenceParse,
+        device_ref: ReferencePass,
     ) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for
@@ -364,15 +361,15 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         ]
                     )
 
-                if self.acc_settings:
-                    dev: list[dict] = [
-                        dev_acc_sets
-                        for dev_acc_sets in self.acc_settings["devices"]
-                        if format_uid(dev_acc_sets["localDeviceId"])
-                        == format_uid(device.u_id)
-                    ]
-                    if dev:
-                        new_dev.acc_sets = dev[0]
+                # if self.acc_settings:
+                #     dev: list[dict] = [
+                #         dev_acc_sets
+                #         for dev_acc_sets in self.acc_settings["devices"]
+                #         if format_uid(dev_acc_sets["localDeviceId"])
+                #         == format_uid(device.u_id)
+                #     ]
+                #     if dev:
+                #         new_dev.acc_sets = dev[0]
                 self.devices[device.u_id] = new_dev
 
         if self.controller_data.add_devices_lock:
@@ -412,27 +409,27 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 del self.message_queue[device.u_id]
             return DeviceTcpReturn.NO_MESSAGE_TO_SEND
 
-        found: str = ""
-        settings_device: list[TypeJson] = []
-        if (
-            self.account
-            and self.account.settings
-            and "devices" in self.account.settings
-        ):
-            settings_device = [
-                TypeJson(device_settings)
-                for device_settings in self.account.settings["devices"]
-                if format_uid(device_settings["localDeviceId"])
-                == format_uid(device.u_id)
-            ]
-        if settings_device:
-            name: str = settings_device[0]["name"]
-            found = found + ' "' + name + '"'
-        elif device.ident:
-            found = found + f" {device.ident.unit_id}"
+        # found: str = ""
+        # settings_device: list[TypeJson] = []
+        # if (
+        #     self.account
+        #     and self.account.settings
+        #     and "devices" in self.account.settings
+        # ):
+        #     settings_device = [
+        #         TypeJson(device_settings)
+        #         for device_settings in self.account.settings["devices"]
+        #         if format_uid(device_settings["localDeviceId"])
+        #         == format_uid(device.u_id)
+        #     ]
+        # if settings_device:
+        #     name: str = settings_device[0]["name"]
+        #     found = found + ' "' + name + '"'
+        # elif device.ident:
+        #     found = found + f" {device.ident.unit_id}"
 
-        if not is_new_device:
-            task_log(f"Found device {found}")
+        if not is_new_device and device.ident:
+            task_log(f"Found device {device.ident.unit_id}")
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
         if "all" in self.controller_data.aes_keys:
@@ -578,9 +575,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def handle_connection(
         self,
-        device_ref: ReferenceParse,
+        device_ref: ReferencePass,
         connection: TcpConnection,
-        msg_sent_r: ReferenceParse,
+        msg_sent_r: ReferencePass,
     ) -> DeviceTcpReturn:
         """
         FIX: return type! sometimes return value sometimes tuple...
@@ -616,7 +613,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         data: bytes = b""
         last_send: datetime.datetime = datetime.datetime.now()
-        # connection.socket.settimeout(0.001)
         pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
         elapsed: datetime.timedelta = datetime.datetime.now() - last_send
 
@@ -767,7 +763,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if return_val == DeviceTcpReturn.SEND_ERROR:
                     return return_val
 
-            data_ref: ReferenceParse = ReferenceParse(data)
+            data_ref: ReferencePass = ReferencePass(data)
             read_data_ret: DeviceTcpReturn = (
                 await connection.read_local_tcp_socket(data_ref)
             )
@@ -799,9 +795,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def process_tcp_package(
         self,
         connection: TcpConnection,
-        data_ref: ReferenceParse,
+        data_ref: ReferencePass,
         msg_sent: Message | None,
-        device_ref: ReferenceParse,
+        device_ref: ReferencePass,
     ) -> DeviceTcpReturn:
         """Read tcp socket and process packages."""
 
@@ -854,8 +850,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
         try:
-            r_device: ReferenceParse = ReferenceParse(device)
-            msg_sent_ref: ReferenceParse = ReferenceParse(None)
+            r_device: ReferencePass = ReferencePass(device)
+            msg_sent_ref: ReferencePass = ReferencePass(None)
 
             task_log_debug(
                 f"New tcp connection to device at {connection.address}"
@@ -868,8 +864,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 LOGGER.error(
                     f"Cancelled local send to {connection.address['ip']}!"
                 )
-            except Exception:
+            except Exception as exception:
                 task_log_trace_ex()
+                task_log_error(
+                    "Unhandled exception during local communication! "
+                    + str(type(exception))
+                )
+                msg_sent_ref.ref.exception = exception
             finally:
                 device = r_device.ref
                 if connection.socket is not None:
@@ -1045,8 +1046,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         except CancelledError:
             task_log_debug("__tasks_undone check cancelled.")
-        # except Exception as e:
-        #     LOGGER.debug(f"{e}")
 
     async def handle_incoming_tcp_connection(
         self, proc_timeout_secs: int
@@ -1314,9 +1313,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def discover_devices(
         self,
-        # args: argparse.Namespace,
-        message_queue_tx_local: list,
-        # target_device_uids: set,
         timeout_secs: float = 2.5,
     ) -> None:
         """Discover devices."""
@@ -1325,15 +1321,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         print("Search local network for devices ...")
         print(SEPARATION_WIDTH * "-")
 
-        discover_timeout_secs: float = 2.5
-
         LOGGER.debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
         # request message to these discovered devices.
         await self.send_message(
-            message_queue_tx_local,
+            [PingCommand()],
             UnitId("all"),
             timeout_secs,
         )
