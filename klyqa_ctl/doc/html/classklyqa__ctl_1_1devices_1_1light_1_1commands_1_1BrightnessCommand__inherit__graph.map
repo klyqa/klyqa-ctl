@@ -1,0 +1,9 @@
+<map id="klyqa_ctl.devices.light.commands.BrightnessCommand" name="klyqa_ctl.devices.light.commands.BrightnessCommand">
+<area shape="rect" id="node1" title=" " alt="" coords="1075,39,1323,80"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight.html" title=" " alt="" coords="779,5,1027,47"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues.html" title=" " alt="" coords="505,5,708,47"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1general_1_1general_1_1CommandTyped.html" title=" " alt="" coords="244,39,435,80"/>
+<area shape="rect" id="node7" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand.html" title=" " alt="" coords="483,71,731,112"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1general_1_1general_1_1Command.html" title=" " alt="" coords="5,39,196,80"/>
+<area shape="rect" id="node6" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand.html" title=" " alt="" coords="779,71,1027,112"/>
+</map>

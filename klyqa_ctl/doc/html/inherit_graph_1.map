@@ -1,6 +1,19 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDeviceResponse.html" title=" " alt="" coords="5,71,192,112"/>
-<area shape="rect" id="node2" href="$classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDeviceResponseIdent.html" title=" " alt="" coords="240,5,440,47"/>
-<area shape="rect" id="node3" href="$classklyqa__ctl_1_1devices_1_1light_1_1KlyqaBulbResponseStatus.html" title=" " alt="" coords="244,71,436,112"/>
-<area shape="rect" id="node4" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1KlyqaVCResponseStatus.html" title=" " alt="" coords="243,136,437,177"/>
+<area shape="rect" id="node1" title=" " alt="" coords="15,209,54,235"/>
+<area shape="rect" id="node2" href="$classcloud_1_1RequestMethod.html" title=" " alt="" coords="166,267,329,294"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol.html" title=" " alt="" coords="123,319,371,360"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions.html" title=" " alt="" coords="112,384,383,425"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1general_1_1general_1_1CommandType.html" title=" " alt="" coords="152,71,343,112"/>
+<area shape="rect" id="node6" href="$classklyqa__ctl_1_1general_1_1general_1_1DeviceType.html" title=" " alt="" coords="152,136,343,177"/>
+<area shape="rect" id="node7" href="$classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId.html" title=" " alt="" coords="166,5,329,47"/>
+<area shape="rect" id="node8" href="$classlocal_1_1connection_1_1AesConnectionState.html" title=" " alt="" coords="133,201,362,243"/>
+<area shape="rect" id="node9" title=" " alt="" coords="5,489,64,515"/>
+<area shape="rect" id="node10" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CheckDeviceParameter.html" title=" " alt="" coords="123,763,371,804"/>
+<area shape="rect" id="node11" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1CommandType.html" title=" " alt="" coords="112,828,383,869"/>
+<area shape="rect" id="node12" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths.html" title=" " alt="" coords="123,893,371,935"/>
+<area shape="rect" id="node13" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode.html" title=" " alt="" coords="123,449,371,491"/>
+<area shape="rect" id="node14" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus.html" title=" " alt="" coords="123,515,371,556"/>
+<area shape="rect" id="node15" href="$classklyqa__ctl_1_1general_1_1message_1_1MessageState.html" title=" " alt="" coords="147,580,348,621"/>
+<area shape="rect" id="node16" href="$classlocal_1_1connection_1_1DeviceTcpReturn.html" title=" " alt="" coords="148,645,347,687"/>
+<area shape="rect" id="node17" href="$classlocal_1_1data__package_1_1PackageType.html" title=" " alt="" coords="130,711,365,738"/>
 </map>

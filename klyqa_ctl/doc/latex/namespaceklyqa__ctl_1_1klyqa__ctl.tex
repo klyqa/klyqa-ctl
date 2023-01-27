@@ -3,51 +3,55 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1EventQueuePrinter}{Event\+Queue\+Printer}}
-\item 
-class \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account}{Klyqa\+\_\+account}}
+class \mbox{\hyperlink{classklyqa__ctl_1_1klyqa__ctl_1_1Client}{Client}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_adbbb9c8aca5cc35345d5d67f20ebaee5}\label{namespaceklyqa__ctl_1_1klyqa__ctl_adbbb9c8aca5cc35345d5d67f20ebaee5}} 
-int {\bfseries tests} (klyqa\+\_\+acc)
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}\label{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}} 
-None {\bfseries main} ()
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}{main}} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_aa34b55c8c48e730ba9a2bdd5bbb29626}\label{namespaceklyqa__ctl_1_1klyqa__ctl_aa34b55c8c48e730ba9a2bdd5bbb29626}} 
-{\bfseries Async\+IOLock}
-\item 
-{\bfseries Device\+\_\+\+TCP\+\_\+return}
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_a225a48004c6dbf7c83d8f8d394c21368}\label{namespaceklyqa__ctl_1_1klyqa__ctl_a225a48004c6dbf7c83d8f8d394c21368}} 
-{\bfseries Return\+Tuple} = Type\+Var(\char`\"{}Return\+Tuple\char`\"{}, tuple\mbox{[}int, str\mbox{]}, tuple\mbox{[}int, dict\mbox{]})
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_a551a41cd294651caee5e217e7feba3f6}\label{namespaceklyqa__ctl_1_1klyqa__ctl_a551a41cd294651caee5e217e7feba3f6}} 
-{\bfseries S} = Type\+Var(\char`\"{}S\char`\"{}, argparse.\+Argument\+Parser, type(None))
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_ab6c1a4b950d3c6e69d273cbb9a602266}\label{namespaceklyqa__ctl_1_1klyqa__ctl_ab6c1a4b950d3c6e69d273cbb9a602266}} 
+{\bfseries Abstract\+Event\+Loop}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\begin{DoxyVerb}Klyqa control client.\end{DoxyVerb}
+\begin{DoxyVerb}Klyqa control client.
+
+Interactive Klyqa Control commandline client
+
+Company: QConnex GmbH / Klyqa
+Author: Frederick Stallmeyer
+
+E-Mail: frederick.stallmeyer@gmx.de
+
+Information:
+The network_interface parameter for local connection handling (in
+LocalConnectionHandler) will ONLY work on LINUX systems, as it uses the linux
+specific socket option SO_BINDTODEVICE for communication.
+
+Nice to haves/missing:
+  -   list cloud connected devices in discovery.
+  -   offer for selected devices possible commands and arguments in
+      interactive mode based on their device profile
+  -   Implementation for the different device config profile versions and
+      check on send.
+  -   start scene support in cloud mode
+
+Current bugs:
+ - vc1 interactive command selection support.
+ - interactive light selection, command not applied\end{DoxyVerb}
  
 
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_adf8f95affa329b1bd977bcc8f2e64c24}\label{namespaceklyqa__ctl_1_1klyqa__ctl_adf8f95affa329b1bd977bcc8f2e64c24}} 
-\index{klyqa\_ctl.klyqa\_ctl@{klyqa\_ctl.klyqa\_ctl}!Device\_TCP\_return@{Device\_TCP\_return}}
-\index{Device\_TCP\_return@{Device\_TCP\_return}!klyqa\_ctl.klyqa\_ctl@{klyqa\_ctl.klyqa\_ctl}}
-\doxysubsubsection{\texorpdfstring{Device\_TCP\_return}{Device\_TCP\_return}}
-{\footnotesize\ttfamily klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+Device\+\_\+\+TCP\+\_\+return}
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}\label{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}} 
+\index{klyqa\_ctl.klyqa\_ctl@{klyqa\_ctl.klyqa\_ctl}!main@{main}}
+\index{main@{main}!klyqa\_ctl.klyqa\_ctl@{klyqa\_ctl.klyqa\_ctl}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+klyqa\+\_\+ctl.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-{\bfseries Initial value\+:}
-\begin{DoxyCode}{0}
-\DoxyCodeLine{1 =  Enum(}
-\DoxyCodeLine{2     \textcolor{stringliteral}{"{}Device\_TCP\_return"{}},}
-\DoxyCodeLine{3     \textcolor{stringliteral}{"{}sent answered wrong\_uid no\_uid\_device wrong\_aes tcp\_error unknown\_error timeout nothing\_done sent\_error no\_message\_to\_send device\_lock\_timeout err\_local\_iv missing\_aes\_key response\_error"{}},}
-\DoxyCodeLine{4 )}
-
-\end{DoxyCode}
+\begin{DoxyVerb}Main function.\end{DoxyVerb}
+ 
