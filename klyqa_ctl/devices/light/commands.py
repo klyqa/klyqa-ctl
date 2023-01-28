@@ -15,6 +15,7 @@ from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import (
     LOGGER,
+    CloudStateCommand,
     Command,
     CommandType,
     CommandTyped,
@@ -125,7 +126,9 @@ class CommandWithCheckValuesLight(CommandWithCheckValues):
 
 
 @dataclass
-class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
+class ColorCommand(
+    CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
+):
     color: RgbColor = RgbColor(0, 0, 0)
 
     def color_json(self) -> TypeJson:
@@ -166,7 +169,9 @@ class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
 
 
 @dataclass
-class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
+class TemperatureCommand(
+    CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
+):
     temperature: int = 0
 
     def temperature_json(self) -> TypeJson:
@@ -201,7 +206,9 @@ class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
 
 
 @dataclass
-class BrightnessCommand(CommandWithCheckValuesLight, TransitionCommand):
+class BrightnessCommand(
+    CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
+):
     brightness: int = 0
 
     def brightness_json(self) -> TypeJson:
@@ -1130,7 +1137,7 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
 
 
 @dataclass
-class PowerCommand(RequestCommand):
+class PowerCommand(RequestCommand, CloudStateCommand):
     status: str = "on"
 
 
