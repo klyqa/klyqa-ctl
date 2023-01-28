@@ -52,6 +52,7 @@ class Device:
             "status": ResponseMessage,
         }
         self._attr_device_config: dict[str, Any] = {}
+        self._attr_product_id: str = ""
 
         self.local_con: DeviceConnectionHandler | None = None
 
@@ -154,6 +155,14 @@ class Device:
     @device_config.setter
     def device_config(self, device_config: dict[str, Any]) -> None:
         self._attr_device_config = device_config
+
+    @property
+    def product_id(self) -> str:
+        return self._attr_product_id
+
+    @product_id.setter
+    def product_id(self, product_id: str) -> None:
+        self._attr_product_id = product_id
 
     def get_name(self) -> str:
         return (
