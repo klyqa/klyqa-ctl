@@ -846,7 +846,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def device_handle_local_tcp(
         self, device: Device, connection: TcpConnection
     ) -> DeviceTcpReturn:
-        """! Handle the incoming tcp connection to the device."""
+        """Handle the incoming tcp connection to the device."""
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
         try:
@@ -1085,7 +1085,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def handle_connections(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
-        """! Send broadcast and make tasks for incoming tcp connections.
+        """ Send broadcast and make tasks for incoming tcp connections.
 
         Params:
             proc_timeout_secs: max timeout in seconds for a device

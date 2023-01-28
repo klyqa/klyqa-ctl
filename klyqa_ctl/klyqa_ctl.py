@@ -92,7 +92,7 @@ class Client:
         devices: dict = dict(),
         accounts: dict[str, Account] = dict(),
     ) -> None:
-        """! Initialize the account with the login data, tcp, udp
+        """Initialize the account with the login data, tcp, udp
         datacommunicator and tcp communication tasks."""
         self._attr_controller_data: ControllerData = controller_data
         self._attr_local_con_hdl: LocalConnectionHandler | None = (

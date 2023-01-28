@@ -1,11 +1,10 @@
-"""! @brief Contains all functions for light commands."""
+"""Contains all functions for light commands."""
 from __future__ import annotations
 
 from abc import abstractmethod
 import argparse
 from dataclasses import dataclass
 from enum import Enum
-import functools
 import json
 import sys
 from typing import Any, Callable

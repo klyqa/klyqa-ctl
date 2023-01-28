@@ -1,4 +1,4 @@
-"""Connection handler for device"""
+"""Connection handler for device."""
 
 from __future__ import annotations
 
