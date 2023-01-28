@@ -26,7 +26,8 @@ def create_device(unit_id: str, product_id: str) -> Device:
 def get_or_create_device(
     controller_data: ControllerData, unit_id: str, product_id: str
 ) -> Device:
-    """Get or create a device from the controller data."""
+    """Get or create a device from the controller data. Read in device
+    config when new device is created."""
 
     if unit_id in controller_data.devices:
         return controller_data.devices[unit_id]
