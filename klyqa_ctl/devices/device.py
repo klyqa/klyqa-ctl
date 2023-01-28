@@ -39,9 +39,7 @@ class Device:
         self._attr_local_addr: dict[str, Any] = {"ip": "", "port": -1}
         # device specific cloud connection results
         self._attr_cloud: DeviceCloudState = DeviceCloudState()
-        self._attr_ident: ResponseIdentityMessage | None = (
-            ResponseIdentityMessage()
-        )
+        self._attr_ident: ResponseIdentityMessage = ResponseIdentityMessage()
 
         self._attr_u_id: str = UnitId("no_uid")
         self._attr_acc_sets: dict[Any, Any] = {}
@@ -94,11 +92,11 @@ class Device:
         self._attr_cloud = cloud
 
     @property
-    def ident(self) -> ResponseIdentityMessage | None:
+    def ident(self) -> ResponseIdentityMessage:
         return self._attr_ident
 
     @ident.setter
-    def ident(self, ident: ResponseIdentityMessage | None) -> None:
+    def ident(self, ident: ResponseIdentityMessage) -> None:
         self._attr_ident = ident
 
     @property
