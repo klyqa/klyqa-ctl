@@ -1097,8 +1097,9 @@ def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
         ]
         if not len(scene_result) or len(scene_result) > 1:
             LOGGER.error(
-                f"Scene {scene} not found or more than one scene with the name"
-                " found."
+                "Scene %s not found or more than one scene with the name"
+                " found.",
+                scene,
             )
             return False
         scene_obj: dict[str, Any] = scene_result[0]
@@ -1213,15 +1214,7 @@ class RoutinePutCommand(
         self.action = "put"
 
     def check_values(self, device: Device) -> bool:
-        # check_scene: functools.partial[Any] = functools.partial(
-        #     check_device_parameter,
-        #     args.force,
-        #     CheckDeviceParameter.SCENE,
-        #     args.routine_scene,
-        # )
         """Check device scene support."""
-        # if force:
-        #     return True
         if not device.ident:
             return False
         try:
@@ -1249,7 +1242,6 @@ def routine_put(
 ) -> None:
     """Put routine to device."""
 
-    # msg = msg + (check_scene,) # fix check routine before putting
     local_and_cloud_command_msg(
         # RoutinePutCommand(
         #     _json={
@@ -1265,13 +1257,12 @@ def routine_put(
             scene=args.routine_scene,
             commands=args.routine_commands,
         ),
-        # 500,
-        # check_scene,
     )
 
 
 def forced_continue(force: bool, reason: str) -> bool:
     """Force argument."""
+
     if not force:
         LOGGER.error(reason)
         return False
@@ -1283,6 +1274,7 @@ def forced_continue(force: bool, reason: str) -> bool:
 
 def missing_config(force: bool, product_id: str) -> bool:
     """Missing device config."""
+
     if not forced_continue(
         force,
         "Missing or faulty config values for device "
@@ -1291,96 +1283,3 @@ def missing_config(force: bool, product_id: str) -> bool:
     ):
         return True
     return False
-
-
-# Needing config profile versions implementation for checking trait ranges ###
-
-# def check_color_range(force: bool, device: Light, values: list[int]) -> bool:
-#     """Check device color range."""
-#     if not device.color_range:
-#         missing_config(force, device.device.ident.product_id)
-#     else:
-#         for value in values:
-#             if int(value) < device.color_range.min or int(value) >
-# device.color_range.max:
-#                 return forced_continue(force,
-#                     f"Color {value} out of range [{device.color_range.min}.."
-#                     f"{device.color_range.max}]."
-#                 )
-#     return True
-
-# def check_brightness_range(force: bool, device: Light, value: int) -> bool:
-#     """Check device brightness range."""
-#     if not device.brightness_range:
-#         missing_config(force, device.device.ident.product_id)
-#     else:
-#         if int(value) < device.brightness_range.min or int(value) >
-#         device.brightness_range.max:
-#             return forced_continue(force,
-#                 f"Brightness {value} out of range
-# [{device.brightness_range.min}"
-#                 f"..{device.brightness_range.max}]."
-#             )
-#     return True
-
-# def check_temp_range(force: bool, device: Light, value: int) -> bool:
-#     """Check device temperature range."""
-#     if not device.temperature_range:
-#         missing_config(force, device.device.ident.product_id)
-#     else:
-#         if int(value) < device.temperature_range.min or int(value) >
-# device.temperature_range.max:
-#             return forced_continue(force,
-#                 f"Temperature {value} out of range
-# [{device.temperature_range.min}.."
-#                 f"{device.temperature_range.max}]."
-#             )
-#     return True
-
-
-def check_scene_support(force: bool, device: Device, scene_id: str) -> bool:
-    """Check device scene support."""
-    if force:
-        return True
-    if not device.ident:
-        return False
-    try:
-        scene_result: list[dict[str, Any]] = [
-            x for x in SCENES if x["id"] == int(scene_id)
-        ]
-        scene: dict[str, Any] = scene_result[0]
-
-        # bulb has no colors, therefore only cwww scenes are allowed
-        if ".rgb" not in device.ident.product_id and "cwww" not in scene:
-            return forced_continue(
-                force,
-                f"Scene {scene['label']} not supported by device product"
-                + f"{device.acc_sets['productId']}. Coldwhite/Warmwhite Scenes"
-                " only.",
-            )
-
-    except Exception:
-        return not missing_config(force, device.ident.product_id)
-    return True
-
-
-CHECK_RANGE: dict[Any, Any] = {
-    # CheckDeviceParameter.COLOR: check_color_range,
-    # CheckDeviceParameter.BRIGHTNESS: check_brightness_range,
-    # CheckDeviceParameter.TEMPERATURE: check_temp_range,
-    CheckDeviceParameter.SCENE: check_scene_support,
-}
-
-
-def check_device_parameter(
-    force: bool, parameter: CheckDeviceParameter, values: Any, device: Device
-) -> bool:
-    """Check device configs."""
-    if not device.device_config and not forced_continue(
-        force, "Missing configs for devices."
-    ):
-        return False
-
-    if not CHECK_RANGE[parameter](force, device, values):
-        return False
-    return True
