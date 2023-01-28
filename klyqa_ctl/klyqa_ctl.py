@@ -67,7 +67,6 @@ from klyqa_ctl.general.general import (
     SEPARATION_WIDTH,
     TRACE,
     DeviceType,
-    format_uid,
     get_obj_attrs_as_string,
     logging_hdl,
     set_debug_logger,
@@ -91,6 +90,7 @@ class Client:
         local_connection_hdl: LocalConnectionHandler | None = None,
         cloud_backend: CloudBackend | None = None,
         devices: dict = dict(),
+        accounts: dict[str, Account] = dict(),
     ) -> None:
         """! Initialize the account with the login data, tcp, udp
         datacommunicator and tcp communication tasks."""
@@ -100,6 +100,7 @@ class Client:
         )
         self._attr_devices: dict[str, Device] = devices
         self._attr_cloud_backend: CloudBackend | None = cloud_backend
+        self._attr_accounts: dict[str, Account] = accounts
 
     @property
     def controller_data(self) -> ControllerData:
@@ -120,8 +121,12 @@ class Client:
         self._attr_local_con_hdl = local_con_hdl
 
     @property
-    def account(self) -> Account | None:
-        return self._attr_controller_data.account
+    def accounts(self) -> dict[str, Account]:
+        return self._attr_accounts
+
+    @accounts.setter
+    def accounts(self, accounts: dict[str, Account]) -> None:
+        self._attr_accounts = accounts
 
     @property
     def devices(self) -> dict[str, Device]:
@@ -139,16 +144,16 @@ class Client:
     def cloud_backend(self, cloud_backend: CloudBackend) -> None:
         self._attr_cloud_backend = cloud_backend
 
-    def backend_connected(self) -> bool:
-        if self.cloud_backend:
-            return bool(self.cloud_backend.access_token != "")
-        return False
+    # def backend_connected(self) -> bool:
+    #     if self.cloud_backend:
+    #         return bool(self.cloud_backend.access_token != "")
+    #     return False
 
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
 
-        if self.cloud_backend:
-            await self.cloud_backend.shutdown()
+        for user, acc in self.accounts.items():
+            await acc.shutdown()
         if self.local_con_hdl:
             await self.local_con_hdl.shutdown()
 
@@ -184,33 +189,33 @@ class Client:
         # u_id for u_id, v in self.devices.items())
         # some code missing
 
-    def device_name_to_uid(
-        self, args: argparse.Namespace, target_device_uids: set[str]
-    ) -> bool:
-        """Set target device uid by device name argument."""
+    # def device_name_to_uid(
+    #     self, args: argparse.Namespace, target_device_uids: set[str]
+    # ) -> bool:
+    #     """Set target device uid by device name argument."""
 
-        if not self.account or not self.account.settings:
-            LOGGER.error(
-                'Missing account settings to resolve device name  "'
-                + args.device_name
-                + '"to unit id.'
-            )
-            return False
-        dev: list[str] = [
-            format_uid(device["localDeviceId"])
-            for device in self.account.settings["devices"]
-            if device["name"] == args.device_name
-        ]
-        if not dev:
-            LOGGER.error(
-                'Device name "'
-                + args.device_name
-                + '" not found in account settings.'
-            )
-            return False
-        else:
-            target_device_uids.add(format_uid(dev[0]))
-        return True
+    #     if not self.account or not self.account.settings:
+    #         LOGGER.error(
+    #             'Missing account settings to resolve device name  "'
+    #             + args.device_name
+    #             + '"to unit id.'
+    #         )
+    #         return False
+    #     dev: list[str] = [
+    #         format_uid(device["localDeviceId"])
+    #         for device in self.account.settings["devices"]
+    #         if device["name"] == args.device_name
+    #     ]
+    #     if not dev:
+    #         LOGGER.error(
+    #             'Device name "'
+    #             + args.device_name
+    #             + '" not found in account settings.'
+    #         )
+    #         return False
+    #     else:
+    #         target_device_uids.add(format_uid(dev[0]))
+    #     return True
 
     async def select_device(
         self, args: argparse.Namespace, send_started_local: datetime.datetime
@@ -369,9 +374,9 @@ class Client:
             message_queue_tx_state_cloud: list[Any] = []
             message_queue_tx_command_cloud: list[Any] = []
 
-            if args.device_name is not None:
-                if not self.device_name_to_uid(args, target_device_uids):
-                    return False
+            # if args.device_name is not None:
+            #     if not self.device_name_to_uid(args, target_device_uids):
+            #         return False
 
             if args.device_unitids is not None:
                 target_device_uids = set(
@@ -382,12 +387,12 @@ class Client:
                     + ", ".join(args.device_unitids[0].split(","))
                 )
 
-            if (
-                not args.selectDevice
-                and self.cloud_backend
-                and self.backend_connected()
-            ):
-                await self.cloud_backend.update_device_configs()
+            # if (
+            #     not args.selectDevice
+            #     and self.cloud_backend
+            #     # and self.backend_connected()
+            # ):
+            #     await self.cloud_backend.update_device_configs()
 
             # device specific commands #
 
@@ -706,14 +711,47 @@ async def main() -> None:
 
     server_ip: str = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
 
-    print_onboarded_devices: bool = (
+    controller_data: ControllerData = await ControllerData.create_default(
+        interactive_prompts=True,
+        # user_account=account,
+        offline=args_parsed.offline,
+    )
+
+    print_onboarded_devices: bool = controller_data.interactive_prompts
+
+    print_onboarded_devices = (
         not args_parsed.device_name
         and not args_parsed.device_unitids
         and not args_parsed.allDevices
         and not args_parsed.quiet
     )
 
+    cloud_backend: CloudBackend | None = None
+
+    if not args_parsed.offline:
+
+        host: str = PROD_HOST
+        if args_parsed.host:
+            host = args_parsed.host[0]
+
+        cloud_backend = CloudBackend.create_default(controller_data, host)
+
+        # if cloud_backend and not account.access_token:
+        #     try:
+        #         if await cloud_backend.login(
+        #             print_onboarded_devices=print_onboarded_devices
+        #         ):
+        #             LOGGER.debug("login finished")
+        #             klyqa_accs[account.username] = account
+        #         else:
+        #             raise Exception()
+        #     except Exception:
+        #         LOGGER.error("Error during login.")
+        #         task_log_trace_ex()
+        #         sys.exit(1)
+
     account: Account | None = None
+    accounts: dict[str, Account] = dict()
 
     if args_parsed.dev:
         if args_parsed.dev:
@@ -727,16 +765,18 @@ async def main() -> None:
         ):
             account = klyqa_accs[args_parsed.username[0]]
         else:
-            account = Account.create_default(
-                args_parsed.username[0] if args_parsed.username else "",
-                args_parsed.password[0] if args_parsed.password else "",
+            account = await Account.create_default(
+                controller_data,
+                username=args_parsed.username[0]
+                if args_parsed.username
+                else "",
+                password=args_parsed.password[0]
+                if args_parsed.password
+                else "",
+                cloud=cloud_backend,
+                print_onboarded_devices=print_onboarded_devices,
             )
-
-    controller_data: ControllerData = await ControllerData.create_default(
-        interactive_prompts=True,
-        user_account=account,
-        offline=args_parsed.offline,
-    )
+            accounts[account.username] = account
 
     exit_ret = 0
 
@@ -748,31 +788,9 @@ async def main() -> None:
         controller_data, server_ip, network_interface=intf
     )
 
-    cloud_backend: CloudBackend | None = None
-
-    if account and not args_parsed.offline:
-
-        host: str = PROD_HOST
-        if args_parsed.host:
-            host = args_parsed.host[0]
-
-        cloud_backend = CloudBackend.create_default(controller_data, host)
-
-        if cloud_backend and not account.access_token:
-            try:
-                if await cloud_backend.login(
-                    print_onboarded_devices=print_onboarded_devices
-                ):
-                    LOGGER.debug("login finished")
-                    klyqa_accs[account.username] = account
-                else:
-                    raise Exception()
-            except Exception:
-                LOGGER.error("Error during login.")
-                task_log_trace_ex()
-                sys.exit(1)
-
-    client: Client = Client(controller_data, local_con_hdl, cloud_backend)
+    client: Client = Client(
+        controller_data, local_con_hdl, cloud_backend, accounts
+    )
 
     if (
         await client.send_to_devices_wrapped(
