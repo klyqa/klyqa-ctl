@@ -35,20 +35,19 @@ from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
 
+# async def discover(con: LocalConnectionHandler, timeout: float = 0.3) -> None:
 
-async def discover(con: LocalConnectionHandler, timeout: float = 0.3) -> None:
-
-    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-    if con:
-        try:
-            await asyncio.wait_for(
-                loop.create_task(
-                    con.send_message([PingCommand()], UnitId("all"), timeout)
-                ),
-                timeout=timeout,
-            )
-        except asyncio.TimeoutError:
-            pass
+#     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+#     if con:
+#         try:
+#             await asyncio.wait_for(
+#                 loop.create_task(
+#                     con.send_message([PingCommand()], UnitId("all"), timeout)
+#                 ),
+#                 timeout=timeout,
+#             )
+#         except asyncio.TimeoutError:
+#             pass
 
 
 def main() -> None:
@@ -62,7 +61,7 @@ def main() -> None:
         )
     )
     if lc.connection_hdl:
-        loop.run_until_complete(discover(lc.connection_hdl))
+        loop.run_until_complete(lc.connection_hdl.discover_devices(0.3))
 
     dev: Device | None = None
     if "00ac629de9ad2f4409dc" in lc.controller_data.devices:
