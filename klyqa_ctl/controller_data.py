@@ -6,6 +6,7 @@ from typing import Any
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     AsyncIoLock,
+    TypeJson,
     async_json_cache,
     task_log_debug,
 )
@@ -20,10 +21,12 @@ class ControllerData:
         offline: bool = False,
         add_devices_lock: AsyncIoLock | None = None,
     ) -> None:
+        """Initialize controller data."""
+
         self._attr_aes_keys: dict[str, bytes] = {}
         self._attr_interactive_prompts: bool = interactive_prompts
         self._attr_offline: bool = offline
-        self._attr_device_configs: dict[Any, Any] = {}
+        self._attr_device_configs: TypeJson = {}
         self._attr_devices: dict[str, Device] = {}
         self._attr_add_devices_lock: AsyncIoLock | None = add_devices_lock
 

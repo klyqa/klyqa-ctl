@@ -89,8 +89,8 @@ class Client:
         controller_data: ControllerData,
         local_connection_hdl: LocalConnectionHandler | None = None,
         cloud_backend: CloudBackend | None = None,
-        devices: dict = dict(),
-        accounts: dict[str, Account] = dict(),
+        devices: dict = dict().copy(),
+        accounts: dict[str, Account] = dict().copy(),
     ) -> None:
         """Initialize the account with the login data, tcp, udp
         datacommunicator and tcp communication tasks."""
@@ -152,7 +152,7 @@ class Client:
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
 
-        for user, acc in self.accounts.items():
+        for _, acc in self.accounts.items():
             await acc.shutdown()
         if self.local_con_hdl:
             await self.local_con_hdl.shutdown()
@@ -313,7 +313,7 @@ class Client:
                         )
             return target_device_uids_lcl
 
-        """ no devices found. Exit script. """
+        # No devices found. Exit script.
         sys.exit(0)
 
     async def send_to_devices(
@@ -500,7 +500,7 @@ class Client:
                         )
 
                 if target_device_uids and len(to_send_device_uids) > 0:
-                    """error"""
+                    # Error
                     sent_locally_error: str = (
                         "The commands "
                         + str([f"{k}={v}" for k, v in vars(args).items() if v])
