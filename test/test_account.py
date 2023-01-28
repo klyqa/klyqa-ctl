@@ -80,9 +80,9 @@ async def main() -> None:
     # )
 
     client: Client = Client(
-        controller_data=controller_data,
-        local_connection_hdl=None,
-        cloud_backend=cloud_backend,
+        ctl_data=controller_data,
+        local=None,
+        cloud=cloud_backend,
         accounts=accounts,
     )
     # unit_id: str = "00ac629de9ad2f4409dc"
