@@ -18,6 +18,7 @@ def create_device(unit_id: str, product_id: str) -> Device:
     else:
         device = Device()
     device.u_id = unit_id
+    device.product_id = product_id
 
     return device
 
