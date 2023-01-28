@@ -103,12 +103,20 @@ class Command:
         """Return json command."""
         return self._json
 
+    def cloud(self) -> TypeJson:
+        return self.json()
+
     def msg_str(self) -> str:
         """Return json command as string."""
         return json.dumps(self.json())
 
     def __str__(self) -> str:
         return self.msg_str()
+
+
+class CloudStateCommand(Command):
+    def cloud(self) -> TypeJson:
+        return {"payload": self.json()}
 
 
 @dataclass
