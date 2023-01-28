@@ -11,7 +11,7 @@ from klyqa_ctl.communication.local.connection import (
     DeviceTcpReturn,
     TcpConnection,
 )
-from klyqa_ctl.general.general import ReferenceParse
+from klyqa_ctl.general.general import ReferencePass
 
 
 class ConnectionHandler(DeviceConnectionHandler):  # type: ignore[misc]
@@ -19,6 +19,6 @@ class ConnectionHandler(DeviceConnectionHandler):  # type: ignore[misc]
 
     @abstractmethod
     async def handle_connection(
-        self, device_ref: ReferenceParse, connection: TcpConnection
+        self, device_ref: ReferencePass, connection: TcpConnection
     ) -> DeviceTcpReturn:
         pass

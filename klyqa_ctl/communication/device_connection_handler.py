@@ -1,9 +1,9 @@
-"""General connection handler"""
+"""Connection handler for device."""
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, Callable
+from typing import Any
 
 from klyqa_ctl.general.general import Command
 from klyqa_ctl.general.message import Message

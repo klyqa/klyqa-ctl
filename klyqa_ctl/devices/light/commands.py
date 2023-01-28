@@ -1,11 +1,10 @@
-"""! @brief Contains all functions for light commands."""
+"""Contains all functions for light commands."""
 from __future__ import annotations
 
 from abc import abstractmethod
 import argparse
 from dataclasses import dataclass
 from enum import Enum
-import functools
 import json
 import sys
 from typing import Any, Callable
@@ -15,6 +14,7 @@ from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import (
     LOGGER,
+    CloudStateCommand,
     Command,
     CommandType,
     CommandTyped,
@@ -125,7 +125,9 @@ class CommandWithCheckValuesLight(CommandWithCheckValues):
 
 
 @dataclass
-class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
+class ColorCommand(
+    CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
+):
     color: RgbColor = RgbColor(0, 0, 0)
 
     def color_json(self) -> TypeJson:
@@ -166,7 +168,9 @@ class ColorCommand(CommandWithCheckValuesLight, TransitionCommand):
 
 
 @dataclass
-class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
+class TemperatureCommand(
+    CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
+):
     temperature: int = 0
 
     def temperature_json(self) -> TypeJson:
@@ -201,7 +205,9 @@ class TemperatureCommand(CommandWithCheckValuesLight, TransitionCommand):
 
 
 @dataclass
-class BrightnessCommand(CommandWithCheckValuesLight, TransitionCommand):
+class BrightnessCommand(
+    CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
+):
     brightness: int = 0
 
     def brightness_json(self) -> TypeJson:
@@ -633,20 +639,21 @@ async def create_device_message(
         message_queue_tx_local.append(json_msg)
         message_queue_tx_command_cloud.append(json_msg.json())
 
-    # TODO: Missing cloud discovery and interactive device selection. Send to
-    # devices if given as argument working.
-    if (args.local or args.tryLocalThanCloud) and (
-        not args.device_name
-        and not args.device_unitids
-        and not args.allDevices
-        and not args.discover
-    ):
-        args_ret: argparse.Namespace | None = await discover_devices(
-            args, args_in, send_to_devices_callable
-        )
+    # needs rewrite
+    ## TODO: Missing cloud discovery and interactive device selection. Send to
+    ## devices if given as argument working.
+    # if (args.local or args.tryLocalThanCloud) and (
+    #     not args.device_name
+    #     and not args.device_unitids
+    #     and not args.allDevices
+    #     and not args.discover
+    # ):
+    #     args_ret: argparse.Namespace | None = await self.discover_devices(
+    #         args, args_in, send_to_devices_callable
+    #     )
 
-        if isinstance(args_ret, argparse.Namespace):
-            args = args_ret
+    #     if isinstance(args_ret, argparse.Namespace):
+    #         args = args_ret
 
     commands_to_send: list[str] = [
         i for i in COMMANDS_TO_SEND if hasattr(args, i) and getattr(args, i)
@@ -1129,7 +1136,7 @@ def enable_tb(args: argparse.Namespace, message_queue_tx_local: list) -> None:
 
 
 @dataclass
-class PowerCommand(RequestCommand):
+class PowerCommand(RequestCommand, CloudStateCommand):
     status: str = "on"
 
 

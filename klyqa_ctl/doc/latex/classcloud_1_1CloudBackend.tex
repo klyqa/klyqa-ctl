@@ -1,0 +1,107 @@
+\hypertarget{classcloud_1_1CloudBackend}{}\doxysection{cloud.\+Cloud\+Backend Class Reference}
+\label{classcloud_1_1CloudBackend}\index{cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_ac0d15541a884bfef94e99527d3c171ee}\label{classcloud_1_1CloudBackend_ac0d15541a884bfef94e99527d3c171ee}} 
+None {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}{controller\+\_\+data}})
+\item 
+str \mbox{\hyperlink{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}{host}} (self)
+\item 
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1}\label{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1}} 
+None {\bfseries host} (self, str host)
+\item 
+bool \mbox{\hyperlink{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175}{offline}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}{controller\+\_\+data}} (self)
+\item 
+None \mbox{\hyperlink{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1}{get\+\_\+device\+\_\+config}} (self, str product\+\_\+id, Type\+Json device\+\_\+configs)
+\item 
+None \mbox{\hyperlink{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2}{get\+\_\+device\+\_\+configs}} (self, set\mbox{[}str\mbox{]} device\+\_\+product\+\_\+ids)
+\item 
+Type\+Json \mbox{\hyperlink{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0}{get\+\_\+header\+\_\+default}} (self)
+\item 
+httpx.\+Response$\vert$None \mbox{\hyperlink{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2}{request}} (self, \mbox{\hyperlink{classcloud_1_1RequestMethod}{Request\+Method}} method, str url, Type\+Json$\vert$None headers=None, $\ast$$\ast$Any kwargs)
+\item 
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4}\label{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4}} 
+Type\+Json$\vert$None {\bfseries load\+\_\+http\+\_\+response} (self, httpx.\+Response response)
+\item 
+bool \mbox{\hyperlink{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101}{cloud\+\_\+send}} (self, argparse.\+Namespace args, set\mbox{[}str\mbox{]} target\+\_\+device\+\_\+uids, set\mbox{[}str\mbox{]} to\+\_\+send\+\_\+device\+\_\+uids, int timeout\+\_\+ms, list message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud, list message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud)
+\item 
+\mbox{\hyperlink{classcloud_1_1CloudBackend}{Cloud\+Backend}} \mbox{\hyperlink{classcloud_1_1CloudBackend_a549f101de99a135607eace6d67482c1f}{create\+\_\+default}} (Any cls, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}{controller\+\_\+data}}, str \mbox{\hyperlink{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}{host}}=PROD\+\_\+\+HOST)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Cloud backend\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101}\label{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!cloud\_send@{cloud\_send}}
+\index{cloud\_send@{cloud\_send}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{cloud\_send()}{cloud\_send()}}
+{\footnotesize\ttfamily  bool cloud.\+Cloud\+Backend.\+cloud\+\_\+send (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{argparse.\+Namespace}]{args,  }\item[{set\mbox{[}str\mbox{]}}]{target\+\_\+device\+\_\+uids,  }\item[{set\mbox{[}             str         \mbox{]}}]{to\+\_\+send\+\_\+device\+\_\+uids,  }\item[{int}]{timeout\+\_\+ms,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Cloud message processing.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}\label{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!controller\_data@{controller\_data}}
+\index{controller\_data@{controller\_data}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{controller\_data()}{controller\_data()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} cloud.\+Cloud\+Backend.\+controller\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the controller data object.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_a549f101de99a135607eace6d67482c1f}\label{classcloud_1_1CloudBackend_a549f101de99a135607eace6d67482c1f}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!create\_default@{create\_default}}
+\index{create\_default@{create\_default}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{create\_default()}{create\_default()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classcloud_1_1CloudBackend}{Cloud\+Backend}} cloud.\+Cloud\+Backend.\+create\+\_\+default (\begin{DoxyParamCaption}\item[{Any}]{cls,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data,  }\item[{str }]{host = {\ttfamily PROD\+\_\+HOST} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Factory for CloudBackend.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1}\label{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!get\_device\_config@{get\_device\_config}}
+\index{get\_device\_config@{get\_device\_config}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{get\_device\_config()}{get\_device\_config()}}
+{\footnotesize\ttfamily  None cloud.\+Cloud\+Backend.\+get\+\_\+device\+\_\+config (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{product\+\_\+id,  }\item[{Type\+Json     }]{device\+\_\+configs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request device config from the cloud.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2}\label{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!get\_device\_configs@{get\_device\_configs}}
+\index{get\_device\_configs@{get\_device\_configs}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{get\_device\_configs()}{get\_device\_configs()}}
+{\footnotesize\ttfamily  None cloud.\+Cloud\+Backend.\+get\+\_\+device\+\_\+configs (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{set\mbox{[}str\mbox{]}}]{device\+\_\+product\+\_\+ids }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request device configs by product id from the cloud.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0}\label{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!get\_header\_default@{get\_header\_default}}
+\index{get\_header\_default@{get\_header\_default}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{get\_header\_default()}{get\_header\_default()}}
+{\footnotesize\ttfamily  Type\+Json cloud.\+Cloud\+Backend.\+get\+\_\+header\+\_\+default (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get default request header for cloud request.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}\label{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!host@{host}}
+\index{host@{host}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{host()}{host()}}
+{\footnotesize\ttfamily  str cloud.\+Cloud\+Backend.\+host (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the host.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175}\label{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!offline@{offline}}
+\index{offline@{offline}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{offline()}{offline()}}
+{\footnotesize\ttfamily  bool cloud.\+Cloud\+Backend.\+offline (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the offline attribute.\end{DoxyVerb}
+ \mbox{\Hypertarget{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2}\label{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!request@{request}}
+\index{request@{request}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{request()}{request()}}
+{\footnotesize\ttfamily  httpx.\+Response $\vert$ None cloud.\+Cloud\+Backend.\+request (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classcloud_1_1RequestMethod}{Request\+Method}}}]{method,  }\item[{str}]{url,  }\item[{Type\+Json $\vert$ None }]{headers = {\ttfamily None},  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Send http request with request method to url with headers.\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+communication/cloud.\+py\end{DoxyCompactItemize}

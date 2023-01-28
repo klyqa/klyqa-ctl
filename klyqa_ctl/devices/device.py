@@ -39,9 +39,7 @@ class Device:
         self._attr_local_addr: dict[str, Any] = {"ip": "", "port": -1}
         # device specific cloud connection results
         self._attr_cloud: DeviceCloudState = DeviceCloudState()
-        self._attr_ident: ResponseIdentityMessage | None = (
-            ResponseIdentityMessage()
-        )
+        self._attr_ident: ResponseIdentityMessage = ResponseIdentityMessage()
 
         self._attr_u_id: str = UnitId("no_uid")
         self._attr_acc_sets: dict[Any, Any] = {}
@@ -54,6 +52,7 @@ class Device:
             "status": ResponseMessage,
         }
         self._attr_device_config: dict[str, Any] = {}
+        self._attr_product_id: str = ""
 
         self.local_con: DeviceConnectionHandler | None = None
 
@@ -94,11 +93,11 @@ class Device:
         self._attr_cloud = cloud
 
     @property
-    def ident(self) -> ResponseIdentityMessage | None:
+    def ident(self) -> ResponseIdentityMessage:
         return self._attr_ident
 
     @ident.setter
-    def ident(self, ident: ResponseIdentityMessage | None) -> None:
+    def ident(self, ident: ResponseIdentityMessage) -> None:
         self._attr_ident = ident
 
     @property
@@ -156,6 +155,14 @@ class Device:
     @device_config.setter
     def device_config(self, device_config: dict[str, Any]) -> None:
         self._attr_device_config = device_config
+
+    @property
+    def product_id(self) -> str:
+        return self._attr_product_id
+
+    @product_id.setter
+    def product_id(self, product_id: str) -> None:
+        self._attr_product_id = product_id
 
     def get_name(self) -> str:
         return (

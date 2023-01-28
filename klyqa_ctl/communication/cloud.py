@@ -226,12 +226,9 @@ class CloudBackend:
                 return False
 
             try:
-                acc_settings_cache = {
-                    **self.account.settings,
-                    **{
-                        "time_cached": datetime.datetime.now(),
-                        "password": self.account.password,
-                    },
+                acc_settings_cache = self.account.settings | {
+                    "time_cached": datetime.datetime.now(),
+                    "password": self.account.password,
                 }
 
                 """save current account settings in cache"""
@@ -311,11 +308,14 @@ class CloudBackend:
             f"Try request device config for {product_id} from server."
         )
         try:
-            config: TypeJson | None = await self.request_beared(
+            config: TypeJson | None = None
+            config_http: httpx.Response | None = await self.request(
                 RequestMethod.GET,
                 "config/product/" + product_id,
                 timeout=DEFAULT_HTTP_REQUEST_TIMEOUT_SECS,
             )
+            if config_http:
+                config = await self.load_http_response(config_http)
         except asyncio.TimeoutError:
             LOGGER.error("Timed out get device config http request!")
             return None
@@ -477,7 +477,7 @@ class CloudBackend:
 
         return True
 
-    def get_header_default(self) -> dict[str, str]:
+    def get_header_default(self) -> TypeJson:
         """Get default request header for cloud request."""
         header: dict[str, str] = {
             "X-Request-Id": str(uuid.uuid4()),
@@ -487,11 +487,14 @@ class CloudBackend:
         }
         return header
 
-    def get_beared_request_header(self) -> dict[str, str]:
+    def get_beared_request_header(self) -> TypeJson:
         """Set default request header with cloud access token."""
-        return {
-            **self.get_header_default(),
-            **{"Authorization": "Bearer " + self.access_token},
+        # return {
+        #     **self.get_header_default(),
+        #     **{"Authorization": "Bearer " + self.access_token},
+        # }
+        return self.get_header_default() | {
+            "Authorization": "Bearer " + self.access_token
         }
 
     async def request(
@@ -508,7 +511,7 @@ class CloudBackend:
                 response = await client.request(
                     method,
                     url=self.host + "/" + url,
-                    headers=headers,
+                    headers=headers if headers else self.get_header_default(),
                     **kwargs,
                 )
 
@@ -524,28 +527,21 @@ class CloudBackend:
                 " backend!"
             )
             task_log_trace_ex()
-
         return response
 
-    async def request_beared(
-        self, method: RequestMethod, url: str, **kwargs: Any
+    async def load_http_response(
+        self, response: httpx.Response
     ) -> TypeJson | None:
-        """When the user logged in and an access token exists, use it for http
-        requests."""
         answer: TypeJson | None = None
-        response: httpx.Response | None = await self.request(
-            method,
-            url,
-            self.get_beared_request_header()
-            if self.access_token
-            else self.get_header_default(),
-            **kwargs,
-        )
-
         if not response:
             LOGGER.error("No response from cloud request.")
             return None
-        if response.status_code != 200:
+        # Maybe more? https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/
+        if int(str(response.status_code)[0]) not in [
+            1,
+            2,
+            3,
+        ]:  # != 200 and response.status_code != 201:
             LOGGER.error("Unvalid response from cloud request.")
             raise Exception(response.text)
         try:
@@ -555,6 +551,24 @@ class CloudBackend:
             LOGGER.debug(f"{traceback.format_exc()} {err.msg}")
             answer = None
         return answer
+
+    async def request_beared(
+        self, method: RequestMethod, url: str, **kwargs: Any
+    ) -> TypeJson | None:
+        """When the user logged in and an access token exists, use it for http
+        requests."""
+        h: httpx.Response | None = await self.request(
+            method,
+            url,
+            self.get_beared_request_header()
+            if self.access_token
+            else self.get_header_default(),
+            **kwargs,
+        )
+        if h:
+            answer: TypeJson | None = await self.load_http_response(h)
+            return answer
+        return None
 
     async def request_account_settings_eco(
         self, scan_interval: int = 60

@@ -3,61 +3,77 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RGBColor}{RGBColor}}
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1DeviceType}{Device\+Type}}
 \item 
-class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1AsyncIOLock}{Async\+IOLock}}
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1CommandType}{Command\+Type}}
 \item 
-class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RefParse}{Ref\+Parse}}
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1CommandTyped}{Command\+Typed}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter}{Event\+Queue\+Printer}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Range}{Range}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1RgbColor}{Rgb\+Color}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock}{Async\+Io\+Lock}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1ReferencePass}{Reference\+Pass}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger}{Trace\+Logger}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-tuple\mbox{[}dict, bool\mbox{]} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a7c572ca3a2a591b12279df67a531d745}{async\+\_\+json\+\_\+cache}} (json\+\_\+data, json\+\_\+file)
+str \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aea905150cafee39fa2ca211f1e60f012}{task\+\_\+name}} ()
 \item 
-def \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aadd24a1cc5f8d9383ce82bcb677af9af}{get\+\_\+fields}} (object)
+tuple\mbox{[}dict$\vert$None, bool\mbox{]} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\+\_\+json\+\_\+cache}} (Type\+Json$\vert$None json\+\_\+data, str json\+\_\+file)
 \item 
-str \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a0de3f30f763315c117163ebee8946cb9}{get\+\_\+obj\+\_\+attrs\+\_\+as\+\_\+string}} (object)
+Any$\vert$list\mbox{[}str\mbox{]} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a59231019cd9e7c0089ff0471363c039a}{get\+\_\+fields}} (Any object)
 \item 
-str \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a32bef8fc2ef0df00aba1073ef09b69fa}{get\+\_\+obj\+\_\+attr\+\_\+values\+\_\+as\+\_\+string}} (object)
+str \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a478a761c65763ffa478642d11af1eade}{get\+\_\+obj\+\_\+attrs\+\_\+as\+\_\+string}} (Any object)
+\item 
+str \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1760fa3fc6c355d2f804d6feb8f9b23c}{get\+\_\+obj\+\_\+attr\+\_\+values\+\_\+as\+\_\+string}} (Any object)
+\item 
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}\label{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}} 
+Any {\bfseries format\+\_\+uid} (str text, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}{set\+\_\+debug\+\_\+logger}} (int level=logging.\+DEBUG)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}{task\+\_\+log}} (str msg, Callable output\+\_\+func=LOGGER.\+info, $\ast$Any args, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\+\_\+log\+\_\+debug}} (str msg, $\ast$Any args, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ab2f9a22e98cd16d0d284d22382cfcb02}{task\+\_\+log\+\_\+trace}} (str msg, $\ast$Any args, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}{task\+\_\+log\+\_\+error}} (str msg, $\ast$Any args, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\+\_\+log\+\_\+trace\+\_\+ex}} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a2b131d52bb0e6b636b72bd3d5c02349f}\label{namespaceklyqa__ctl_1_1general_1_1general_a2b131d52bb0e6b636b72bd3d5c02349f}} 
-{\bfseries Logger}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_aecc98cca1d71db805652dfed7731f41c}\label{namespaceklyqa__ctl_1_1general_1_1general_aecc98cca1d71db805652dfed7731f41c}} 
+int {\bfseries TRACE} = 5
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_aad7f4393d6bd40cdb587b527e1ac5edc}\label{namespaceklyqa__ctl_1_1general_1_1general_aad7f4393d6bd40cdb587b527e1ac5edc}} 
-{\bfseries level}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_ac1d7946ecd2135959d9dc1c950d3e99b}\label{namespaceklyqa__ctl_1_1general_1_1general_ac1d7946ecd2135959d9dc1c950d3e99b}} 
+{\bfseries int}
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_ab2ecd4153b83b8130380d149bf55c384}\label{namespaceklyqa__ctl_1_1general_1_1general_ab2ecd4153b83b8130380d149bf55c384}} 
-{\bfseries Formatter}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}\label{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}} 
+{\bfseries Type\+Json} = dict\mbox{[}str, Any\mbox{]}
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a4337ffcc6bc16dc30dff719774af0094}\label{namespaceklyqa__ctl_1_1general_1_1general_a4337ffcc6bc16dc30dff719774af0094}} 
-{\bfseries logging\+\_\+hdl} = logging.\+Stream\+Handler()
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a1f24788927fc8dbdae8e5aec7b9ae255}\label{namespaceklyqa__ctl_1_1general_1_1general_a1f24788927fc8dbdae8e5aec7b9ae255}} 
+{\bfseries str}
 \item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a5f4da4da7ea66956e3fbd9490191711c}\label{namespaceklyqa__ctl_1_1general_1_1general_a5f4da4da7ea66956e3fbd9490191711c}} 
-int {\bfseries DEFAULT\+\_\+\+SEND\+\_\+\+TIMEOUT\+\_\+\+MS} = 30
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a91236ca4cedca0c96d05601caf6dc575}\label{namespaceklyqa__ctl_1_1general_1_1general_a91236ca4cedca0c96d05601caf6dc575}} 
-int {\bfseries DEFAULT\+\_\+\+MAX\+\_\+\+COM\+\_\+\+PROC\+\_\+\+TIMEOUT\+\_\+\+SECS} = 600
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_ad544fcf28c371e835be740bcdca7a4b4}\label{namespaceklyqa__ctl_1_1general_1_1general_ad544fcf28c371e835be740bcdca7a4b4}} 
-{\bfseries Type\+JSON} = dict\mbox{[}str, Any\mbox{]}
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a37d15a01cf42705c134585b32307f4dc}\label{namespaceklyqa__ctl_1_1general_1_1general_a37d15a01cf42705c134585b32307f4dc}} 
-int {\bfseries sep\+\_\+width} = 0
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_ab904787d70b55ef90b7e7569f34734cd}\label{namespaceklyqa__ctl_1_1general_1_1general_ab904787d70b55ef90b7e7569f34734cd}} 
-float {\bfseries SEND\+\_\+\+LOOP\+\_\+\+MAX\+\_\+\+SLEEP\+\_\+\+TIME} = 0.\+05
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a73e95cdeb6ddbdef31f0ba81fdecbf8f}\label{namespaceklyqa__ctl_1_1general_1_1general_a73e95cdeb6ddbdef31f0ba81fdecbf8f}} 
-string {\bfseries KLYQA\+\_\+\+CTL\+\_\+\+VERSION} = \char`\"{}1.\+0.\+17\char`\"{}
-\item 
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a18fcc5f75a270fd854b8a35cca50fa64}\label{namespaceklyqa__ctl_1_1general_1_1general_a18fcc5f75a270fd854b8a35cca50fa64}} 
-{\bfseries Device\+Type} = Enum(\char`\"{}Device\+Type\char`\"{}, \char`\"{}cleaner lighting\char`\"{})
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_acc51622ce1f8c7a6b4f56f70f907ae40}\label{namespaceklyqa__ctl_1_1general_1_1general_acc51622ce1f8c7a6b4f56f70f907ae40}} 
+{\bfseries float}
 \item 
 \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a199d42aeb5404a13cfee81a040deaa2b}\label{namespaceklyqa__ctl_1_1general_1_1general_a199d42aeb5404a13cfee81a040deaa2b}} 
 {\bfseries Device\+\_\+config} = dict
+\item 
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a6d6ceaf75e590bd9a01c91853b60d8ab}\label{namespaceklyqa__ctl_1_1general_1_1general_a6d6ceaf75e590bd9a01c91853b60d8ab}} 
+{\bfseries Return\+Tuple} = Type\+Var(\char`\"{}Return\+Tuple\char`\"{}, tuple\mbox{[}int, str\mbox{]}, tuple\mbox{[}int, dict\mbox{]})
 \end{DoxyCompactItemize}
 
 
@@ -66,34 +82,83 @@ string {\bfseries KLYQA\+\_\+\+CTL\+\_\+\+VERSION} = \char`\"{}1.\+0.\+17\char`\
  
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a7c572ca3a2a591b12279df67a531d745}\label{namespaceklyqa__ctl_1_1general_1_1general_a7c572ca3a2a591b12279df67a531d745}} 
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}\label{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}} 
 \index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!async\_json\_cache@{async\_json\_cache}}
 \index{async\_json\_cache@{async\_json\_cache}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
 \doxysubsubsection{\texorpdfstring{async\_json\_cache()}{async\_json\_cache()}}
-{\footnotesize\ttfamily  tuple\mbox{[}dict, bool\mbox{]} klyqa\+\_\+ctl.\+general.\+general.\+async\+\_\+json\+\_\+cache (\begin{DoxyParamCaption}\item[{}]{json\+\_\+data,  }\item[{}]{json\+\_\+file }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  tuple\mbox{[}dict $\vert$ None, bool\mbox{]} klyqa\+\_\+ctl.\+general.\+general.\+async\+\_\+json\+\_\+cache (\begin{DoxyParamCaption}\item[{Type\+Json $\vert$ None}]{json\+\_\+data,  }\item[{str }]{json\+\_\+file }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}If json data is given write it to cache json_file.
 Else try to read from json_file the cache.
 \end{DoxyVerb}
- \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_aadd24a1cc5f8d9383ce82bcb677af9af}\label{namespaceklyqa__ctl_1_1general_1_1general_aadd24a1cc5f8d9383ce82bcb677af9af}} 
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a59231019cd9e7c0089ff0471363c039a}\label{namespaceklyqa__ctl_1_1general_1_1general_a59231019cd9e7c0089ff0471363c039a}} 
 \index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!get\_fields@{get\_fields}}
 \index{get\_fields@{get\_fields}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
 \doxysubsubsection{\texorpdfstring{get\_fields()}{get\_fields()}}
-{\footnotesize\ttfamily def klyqa\+\_\+ctl.\+general.\+general.\+get\+\_\+fields (\begin{DoxyParamCaption}\item[{}]{object }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  Any $\vert$ list\mbox{[}str\mbox{]} klyqa\+\_\+ctl.\+general.\+general.\+get\+\_\+fields (\begin{DoxyParamCaption}\item[{Any}]{object }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}get_fields\end{DoxyVerb}
- \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a32bef8fc2ef0df00aba1073ef09b69fa}\label{namespaceklyqa__ctl_1_1general_1_1general_a32bef8fc2ef0df00aba1073ef09b69fa}} 
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a1760fa3fc6c355d2f804d6feb8f9b23c}\label{namespaceklyqa__ctl_1_1general_1_1general_a1760fa3fc6c355d2f804d6feb8f9b23c}} 
 \index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!get\_obj\_attr\_values\_as\_string@{get\_obj\_attr\_values\_as\_string}}
 \index{get\_obj\_attr\_values\_as\_string@{get\_obj\_attr\_values\_as\_string}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
 \doxysubsubsection{\texorpdfstring{get\_obj\_attr\_values\_as\_string()}{get\_obj\_attr\_values\_as\_string()}}
-{\footnotesize\ttfamily  str klyqa\+\_\+ctl.\+general.\+general.\+get\+\_\+obj\+\_\+attr\+\_\+values\+\_\+as\+\_\+string (\begin{DoxyParamCaption}\item[{}]{object }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  str klyqa\+\_\+ctl.\+general.\+general.\+get\+\_\+obj\+\_\+attr\+\_\+values\+\_\+as\+\_\+string (\begin{DoxyParamCaption}\item[{Any}]{object }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}get_obj_attr_values_as_string\end{DoxyVerb}
- \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a0de3f30f763315c117163ebee8946cb9}\label{namespaceklyqa__ctl_1_1general_1_1general_a0de3f30f763315c117163ebee8946cb9}} 
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a478a761c65763ffa478642d11af1eade}\label{namespaceklyqa__ctl_1_1general_1_1general_a478a761c65763ffa478642d11af1eade}} 
 \index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!get\_obj\_attrs\_as\_string@{get\_obj\_attrs\_as\_string}}
 \index{get\_obj\_attrs\_as\_string@{get\_obj\_attrs\_as\_string}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
 \doxysubsubsection{\texorpdfstring{get\_obj\_attrs\_as\_string()}{get\_obj\_attrs\_as\_string()}}
-{\footnotesize\ttfamily  str klyqa\+\_\+ctl.\+general.\+general.\+get\+\_\+obj\+\_\+attrs\+\_\+as\+\_\+string (\begin{DoxyParamCaption}\item[{}]{object }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily  str klyqa\+\_\+ctl.\+general.\+general.\+get\+\_\+obj\+\_\+attrs\+\_\+as\+\_\+string (\begin{DoxyParamCaption}\item[{Any}]{object }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}get_obj_attrs_as_string\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}\label{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!set\_debug\_logger@{set\_debug\_logger}}
+\index{set\_debug\_logger@{set\_debug\_logger}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{set\_debug\_logger()}{set\_debug\_logger()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+set\+\_\+debug\+\_\+logger (\begin{DoxyParamCaption}\item[{int }]{level = {\ttfamily logging.DEBUG} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Stream logging handler to stderr pipe.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}\label{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!task\_log@{task\_log}}
+\index{task\_log@{task\_log}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{task\_log()}{task\_log()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+task\+\_\+log (\begin{DoxyParamCaption}\item[{str}]{msg,  }\item[{Callable }]{output\+\_\+func = {\ttfamily LOGGER.info},  }\item[{$\ast$Any}]{args,  }\item[{$\ast$$\ast$Any }]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Output task name and logging string.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}\label{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!task\_log\_debug@{task\_log\_debug}}
+\index{task\_log\_debug@{task\_log\_debug}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{task\_log\_debug()}{task\_log\_debug()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+task\+\_\+log\+\_\+debug (\begin{DoxyParamCaption}\item[{str}]{msg,  }\item[{$\ast$Any}]{args,  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Output debug message with task name.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}\label{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!task\_log\_error@{task\_log\_error}}
+\index{task\_log\_error@{task\_log\_error}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{task\_log\_error()}{task\_log\_error()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+task\+\_\+log\+\_\+error (\begin{DoxyParamCaption}\item[{str}]{msg,  }\item[{$\ast$Any}]{args,  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Output error message with task name.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_ab2f9a22e98cd16d0d284d22382cfcb02}\label{namespaceklyqa__ctl_1_1general_1_1general_ab2f9a22e98cd16d0d284d22382cfcb02}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!task\_log\_trace@{task\_log\_trace}}
+\index{task\_log\_trace@{task\_log\_trace}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{task\_log\_trace()}{task\_log\_trace()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+task\+\_\+log\+\_\+trace (\begin{DoxyParamCaption}\item[{str}]{msg,  }\item[{$\ast$Any}]{args,  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Output debug message with task name.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}\label{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!task\_log\_trace\_ex@{task\_log\_trace\_ex}}
+\index{task\_log\_trace\_ex@{task\_log\_trace\_ex}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{task\_log\_trace\_ex()}{task\_log\_trace\_ex()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+task\+\_\+log\+\_\+trace\+\_\+ex (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Log exception trace within task.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1general_1_1general_aea905150cafee39fa2ca211f1e60f012}\label{namespaceklyqa__ctl_1_1general_1_1general_aea905150cafee39fa2ca211f1e60f012}} 
+\index{klyqa\_ctl.general.general@{klyqa\_ctl.general.general}!task\_name@{task\_name}}
+\index{task\_name@{task\_name}!klyqa\_ctl.general.general@{klyqa\_ctl.general.general}}
+\doxysubsubsection{\texorpdfstring{task\_name()}{task\_name()}}
+{\footnotesize\ttfamily  str klyqa\+\_\+ctl.\+general.\+general.\+task\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return asyncio task name.\end{DoxyVerb}
  

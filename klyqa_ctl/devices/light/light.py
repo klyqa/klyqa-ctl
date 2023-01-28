@@ -1,4 +1,4 @@
-"""! @brief Contains all functions, constants and classes regarding
+""" Contains all functions, constants and classes regarding
 lighting."""
 from __future__ import annotations
 

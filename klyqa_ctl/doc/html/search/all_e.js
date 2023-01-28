@@ -1,9 +1,13 @@
 var searchData=
 [
-  ['save_5fdevice_5fmessage_49',['save_device_message',['../classklyqa__ctl_1_1devices_1_1device_1_1KlyqaDevice.html#ac5e0bd363c3145b0be4ec26afc2975d3',1,'klyqa_ctl::devices::device::KlyqaDevice']]],
-  ['search_5fand_5fsend_5fto_5fdevice_50',['search_and_send_to_device',['../classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a6d8fe4c2c0444ad70fc331b2d0b42754',1,'klyqa_ctl::klyqa_ctl::Klyqa_account']]],
-  ['send_5fto_5fdevices_51',['send_to_devices',['../classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#a13f9543a910eefb806d27e49c78a8e61',1,'klyqa_ctl::klyqa_ctl::Klyqa_account']]],
-  ['send_5fto_5fdevices_5fwrapped_52',['send_to_devices_wrapped',['../classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af38871d34880500b54fe5d27f509c861',1,'klyqa_ctl::klyqa_ctl::Klyqa_account']]],
-  ['shutdown_53',['shutdown',['../classklyqa__ctl_1_1klyqa__ctl_1_1Klyqa__account.html#af7986a859a2a34e701c7c061dab8965a',1,'klyqa_ctl::klyqa_ctl::Klyqa_account']]],
-  ['stop_54',['stop',['../classklyqa__ctl_1_1klyqa__ctl_1_1EventQueuePrinter.html#ab4fd0e684fb4fcf431d8e2cc5476565e',1,'klyqa_ctl::klyqa_ctl::EventQueuePrinter']]]
+  ['packagetype_116',['PackageType',['../classlocal_1_1data__package_1_1PackageType.html',1,'local::data_package']]],
+  ['percent_5fcolor_5fmessage_117',['percent_color_message',['../namespaceklyqa__ctl_1_1devices_1_1light_1_1commands.html#a421107b65283514d7c08c8dc635a7793',1,'klyqa_ctl::devices::light::commands']]],
+  ['pingcommand_118',['PingCommand',['../classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand.html',1,'klyqa_ctl::devices::light::commands']]],
+  ['powercommand_119',['PowerCommand',['../classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand.html',1,'klyqa_ctl::devices::light::commands']]],
+  ['print_120',['print',['../classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter.html#a9cb7d11758b93fa02911321f66044d7c',1,'klyqa_ctl::general::general::EventQueuePrinter']]],
+  ['process_5faes_5finitial_5fvector_5fpackage_121',['process_aes_initial_vector_package',['../classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#ad1b4bfaedd513acfccbf1b12e36d5469',1,'local::connection_handler::LocalConnectionHandler']]],
+  ['process_5fdevice_5fidentity_5fpackage_122',['process_device_identity_package',['../classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a4ce11db96280d000941a91cb37df2842',1,'local::connection_handler::LocalConnectionHandler']]],
+  ['process_5fmessage_5fanswer_5fpackage_123',['process_message_answer_package',['../classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a46f68728bc59f0e5991bc390f67f2685',1,'local::connection_handler::LocalConnectionHandler']]],
+  ['process_5ftcp_5fpackage_124',['process_tcp_package',['../classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#aaa28266e241c2e30e8acd468fab06fde',1,'local::connection_handler::LocalConnectionHandler']]],
+  ['productinfocommand_125',['ProductinfoCommand',['../classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand.html',1,'klyqa_ctl::devices::vacuum::commands']]]
 ];

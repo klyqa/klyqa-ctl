@@ -53,6 +53,8 @@ class LocalController:
             time_to_live_secs=11111,
         )
         if msg:
+            if msg.exception:
+                raise msg.exception
             msg_answer = msg.answer_utf8
 
         return msg_answer

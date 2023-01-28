@@ -2,16 +2,14 @@
 
 from __future__ import annotations
 
-import argparse
 import asyncio
 from asyncio import AbstractEventLoop, CancelledError, Task
 import datetime
 import json
 import select
 import socket
-from typing import Any, Callable
+from typing import Any
 
-from klyqa_ctl.account import Account
 from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
     AesConnectionState,
@@ -21,7 +19,7 @@ from klyqa_ctl.communication.local.connection import (
 from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
-from klyqa_ctl.devices.light.commands import TransitionCommand
+from klyqa_ctl.devices.light.commands import PingCommand, TransitionCommand
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
@@ -31,9 +29,8 @@ from klyqa_ctl.general.general import (
     SEND_LOOP_MAX_SLEEP_TIME,
     SEPARATION_WIDTH,
     Command,
-    ReferenceParse,
+    ReferencePass,
     TypeJson,
-    format_uid,
     task_log,
     task_log_debug,
     task_log_error,
@@ -41,7 +38,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
     task_name,
 )
-from klyqa_ctl.general.message import Message, MessageState
+from klyqa_ctl.general.message import BroadCastMessage, Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
 try:
@@ -109,9 +106,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def controller_data(self, controller_data: ControllerData) -> None:
         self._attr_controller_data = controller_data
 
-    @property
-    def account(self) -> Account | None:
-        return self.controller_data.account
+    # @property
+    # def account(self) -> Account | None:
+    #     return self.controller_data.account
 
     @property
     def devices(self) -> dict[str, Device]:
@@ -214,9 +211,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def __read_tcp_task(self, read_tcp_task: Task | None) -> None:
         self.__attr_read_tcp_task = read_tcp_task
 
-    @property
-    def acc_settings(self) -> dict[str, Any] | None:
-        return self.account.settings if self.account else None
+    # @property
+    # def acc_settings(self) -> dict[str, Any] | None:
+    #     return self.account.settings if self.account else None
 
     @property
     def current_addr_connections(self) -> set[str]:
@@ -307,7 +304,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self,
         connection: TcpConnection,
         data: bytes,
-        device_ref: ReferenceParse,
+        device_ref: ReferencePass,
     ) -> DeviceTcpReturn:
         """Process the device identity package."""
         # Check identification package from device, lock the device object for
@@ -364,15 +361,15 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         ]
                     )
 
-                if self.acc_settings:
-                    dev: list[dict] = [
-                        dev_acc_sets
-                        for dev_acc_sets in self.acc_settings["devices"]
-                        if format_uid(dev_acc_sets["localDeviceId"])
-                        == format_uid(device.u_id)
-                    ]
-                    if dev:
-                        new_dev.acc_sets = dev[0]
+                # if self.acc_settings:
+                #     dev: list[dict] = [
+                #         dev_acc_sets
+                #         for dev_acc_sets in self.acc_settings["devices"]
+                #         if format_uid(dev_acc_sets["localDeviceId"])
+                #         == format_uid(device.u_id)
+                #     ]
+                #     if dev:
+                #         new_dev.acc_sets = dev[0]
                 self.devices[device.u_id] = new_dev
 
         if self.controller_data.add_devices_lock:
@@ -412,27 +409,27 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 del self.message_queue[device.u_id]
             return DeviceTcpReturn.NO_MESSAGE_TO_SEND
 
-        found: str = ""
-        settings_device: list[TypeJson] = []
-        if (
-            self.account
-            and self.account.settings
-            and "devices" in self.account.settings
-        ):
-            settings_device = [
-                TypeJson(device_settings)
-                for device_settings in self.account.settings["devices"]
-                if format_uid(device_settings["localDeviceId"])
-                == format_uid(device.u_id)
-            ]
-        if settings_device:
-            name: str = settings_device[0]["name"]
-            found = found + ' "' + name + '"'
-        elif device.ident:
-            found = found + f" {device.ident.unit_id}"
+        # found: str = ""
+        # settings_device: list[TypeJson] = []
+        # if (
+        #     self.account
+        #     and self.account.settings
+        #     and "devices" in self.account.settings
+        # ):
+        #     settings_device = [
+        #         TypeJson(device_settings)
+        #         for device_settings in self.account.settings["devices"]
+        #         if format_uid(device_settings["localDeviceId"])
+        #         == format_uid(device.u_id)
+        #     ]
+        # if settings_device:
+        #     name: str = settings_device[0]["name"]
+        #     found = found + ' "' + name + '"'
+        # elif device.ident:
+        #     found = found + f" {device.ident.unit_id}"
 
-        if not is_new_device:
-            task_log(f"Found device {found}")
+        if not is_new_device and device.ident:
+            task_log(f"Found device {device.ident.unit_id}")
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
         if "all" in self.controller_data.aes_keys:
@@ -578,9 +575,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def handle_connection(
         self,
-        device_ref: ReferenceParse,
+        device_ref: ReferencePass,
         connection: TcpConnection,
-        msg_sent_r: ReferenceParse,
+        msg_sent_r: ReferencePass,
     ) -> DeviceTcpReturn:
         """
         FIX: return type! sometimes return value sometimes tuple...
@@ -616,7 +613,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         data: bytes = b""
         last_send: datetime.datetime = datetime.datetime.now()
-        # connection.socket.settimeout(0.001)
         pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
         elapsed: datetime.timedelta = datetime.datetime.now() - last_send
 
@@ -625,7 +621,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # msg_sent_r.ref: Message | None = None
         communication_finished: bool = False
 
-        async def __send_msg() -> None:
+        async def __send_next_msg() -> None:
             nonlocal last_send, pause, return_val, device, msg_sent_r
 
             send_next: bool = elapsed >= pause
@@ -637,72 +633,111 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             if (
                 send_next
                 and device
-                and device.u_id in self.message_queue
-                and len(self.message_queue[device.u_id]) > 0
+                # and (
+                #     (
+                #         device.u_id in self.message_queue
+                #         and len(self.message_queue[device.u_id]) > 0
+                #     )
+                #     or (
+                #         "all" in self.message_queue
+                #         and len(self.message_queue["all"]) > 0
+                #     )
+                # )
             ):
-                msg: Message = self.message_queue[device.u_id][0]
+                msg: Message | None = None
+                if (
+                    "all" in self.message_queue
+                    and len(self.message_queue["all"]) > 0
+                ):
+                    m: Message
+                    for m in self.message_queue["all"]:
+                        bcm: BroadCastMessage = m
+                        if device.u_id not in bcm.sent_to_uids:
+                            msg = bcm
+                            break
+                # if (
+                #     "all" in self.message_queue
+                #     and len(self.message_queue["discover"]) > 0
+                # ):
+                #     m: Message
+                #     for m in self.message_queue["discover"]:
+                #         dcm: DiscoverMessage = m
+                #         if device.u_id not in bcm.discovered_uids:
+                #             msg = dcm
+                #             break
+                if (
+                    not msg
+                    and device.u_id in self.message_queue
+                    and len(self.message_queue[device.u_id]) > 0
+                ):
+                    msg = self.message_queue[device.u_id][0]
 
-                task_log(
-                    f"Process msg to send '{msg.msg_queue}' to device"
-                    f" '{device.u_id}'."
-                )
-                j: int = 0
+                if msg:
+                    task_log(
+                        f"Process msg to send '{msg.msg_queue}' to device"
+                        f" '{device.u_id}'."
+                    )
+                    j: int = 0
 
-                if msg.state == MessageState.UNSENT:
+                    if msg.state == MessageState.UNSENT:
 
-                    while j < len(msg.msg_queue):
+                        while j < len(msg.msg_queue):
 
-                        command: Command = msg.msg_queue[j]
-                        text: str = command.msg_str()
-                        if isinstance(command, CommandWithCheckValues):
-                            cwcv: CommandWithCheckValues = command
-                            if not cwcv._force and not cwcv.check_values(
-                                device=device
-                            ):
-                                self.remove_msg_from_queue(msg, device)
-                                break
+                            command: Command = msg.msg_queue[j]
+                            text: str = command.msg_str()
+                            if isinstance(command, CommandWithCheckValues):
+                                cwcv: CommandWithCheckValues = command
+                                if not cwcv._force and not cwcv.check_values(
+                                    device=device
+                                ):
+                                    self.remove_msg_from_queue(msg, device)
+                                    break
 
-                        if isinstance(command, TransitionCommand):
-                            tc: TransitionCommand = command
-                            pause = datetime.timedelta(
-                                milliseconds=float(tc.transition_time)
-                            )
+                            if isinstance(command, TransitionCommand):
+                                tc: TransitionCommand = command
+                                pause = datetime.timedelta(
+                                    milliseconds=float(tc.transition_time)
+                                )
 
-                        try:
-                            # if await loop.run_in_executor(None, connection.
-                            # encrypt_and_send_msg, text, device):
-                            if await connection.encrypt_and_send_msg(
-                                text, device
-                            ):
+                            try:
+                                # if await loop.run_in_executor(None, connection.
+                                # encrypt_and_send_msg, text, device):
+                                if await connection.encrypt_and_send_msg(
+                                    text, device
+                                ):
 
-                                return_val = DeviceTcpReturn.SENT
-                                msg_sent_r.ref = msg
-                                last_send = datetime.datetime.now()
-                                j = j + 1
-                                msg.msg_queue_sent.append(text)
-                                # don't process the next message, but if
-                                # still elements in the msg_queue send them as
-                                # well
-                                send_next = False
-                                # break
-                            else:
-                                LOGGER.error("Could not send message!")
+                                    return_val = DeviceTcpReturn.SENT
+                                    if isinstance(msg, BroadCastMessage):
+                                        bcm: BroadCastMessage = msg
+                                        bcm.sent_to_uids.add(device.u_id)
+                                    msg_sent_r.ref = msg
+                                    last_send = datetime.datetime.now()
+                                    j = j + 1
+                                    msg.msg_queue_sent.append(text)
+                                    # don't process the next message, but if
+                                    # still elements in the msg_queue send them as
+                                    # well
+                                    send_next = False
+                                    # break
+                                else:
+                                    LOGGER.error("Could not send message!")
+                                    return_val = DeviceTcpReturn.SEND_ERROR
+                                    break
+                            except socket.error:
+                                LOGGER.error(
+                                    "Socket error while trying to send"
+                                    " message!"
+                                )
+                                task_log_trace_ex()
                                 return_val = DeviceTcpReturn.SEND_ERROR
                                 break
-                        except socket.error:
-                            LOGGER.error(
-                                "Socket error while trying to send message!"
-                            )
-                            task_log_trace_ex()
-                            return_val = DeviceTcpReturn.SEND_ERROR
-                            break
 
-                    if len(msg.msg_queue) == len(msg.msg_queue_sent):
-                        msg.state = MessageState.SENT
-                        # all messages , break now for reading response
+                        if len(msg.msg_queue) == len(msg.msg_queue_sent):
+                            msg.state = MessageState.SENT
+                            # all messages , break now for reading response
+                            self.remove_msg_from_queue(msg, device)
+                    else:
                         self.remove_msg_from_queue(msg, device)
-                else:
-                    self.remove_msg_from_queue(msg, device)
 
         if msg_sent_r.ref and msg_sent_r.ref.state == MessageState.ANSWERED:
             msg_sent_r.ref = None
@@ -724,11 +759,11 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 connection.state == AesConnectionState.CONNECTED
                 and msg_sent_r.ref is None
             ):
-                await __send_msg()
+                await __send_next_msg()
                 if return_val == DeviceTcpReturn.SEND_ERROR:
                     return return_val
 
-            data_ref: ReferenceParse = ReferenceParse(data)
+            data_ref: ReferencePass = ReferencePass(data)
             read_data_ret: DeviceTcpReturn = (
                 await connection.read_local_tcp_socket(data_ref)
             )
@@ -760,9 +795,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def process_tcp_package(
         self,
         connection: TcpConnection,
-        data_ref: ReferenceParse,
+        data_ref: ReferencePass,
         msg_sent: Message | None,
-        device_ref: ReferenceParse,
+        device_ref: ReferencePass,
     ) -> DeviceTcpReturn:
         """Read tcp socket and process packages."""
 
@@ -811,12 +846,12 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def device_handle_local_tcp(
         self, device: Device, connection: TcpConnection
     ) -> DeviceTcpReturn:
-        """! Handle the incoming tcp connection to the device."""
+        """Handle the incoming tcp connection to the device."""
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
         try:
-            r_device: ReferenceParse = ReferenceParse(device)
-            msg_sent_ref: ReferenceParse = ReferenceParse(None)
+            r_device: ReferencePass = ReferencePass(device)
+            msg_sent_ref: ReferencePass = ReferencePass(None)
 
             task_log_debug(
                 f"New tcp connection to device at {connection.address}"
@@ -829,8 +864,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 LOGGER.error(
                     f"Cancelled local send to {connection.address['ip']}!"
                 )
-            except Exception:
+            except Exception as exception:
                 task_log_trace_ex()
+                task_log_error(
+                    "Unhandled exception during local communication! "
+                    + str(type(exception))
+                )
+                msg_sent_ref.ref.exception = exception
             finally:
                 device = r_device.ref
                 if connection.socket is not None:
@@ -956,18 +996,21 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def check_messages_time_to_live(self) -> None:
         """Check message queue for end of live messages."""
+        to_del: list[str] = []
         try:
-            to_del: list[str] = []
-            for uid, msgs in self.message_queue.items():
-                for msg in msgs:
-                    if not await msg.check_msg_ttl():
-                        msgs.remove(msg)
-                    if not self.message_queue[uid]:
-                        # del self.message_queue[uid]
-                        to_del.append(uid)
-                        break
-            for uid in to_del:
-                del self.message_queue[uid]
+            while True:
+                to_del = []
+                for uid, msgs in self.message_queue.items():
+                    for msg in msgs:
+                        if not await msg.check_msg_ttl():
+                            msgs.remove(msg)
+                        if not self.message_queue[uid]:
+                            # del self.message_queue[uid]
+                            to_del.append(uid)
+                            break
+                for uid in to_del:
+                    del self.message_queue[uid]
+                await asyncio.sleep(0.05)
         except asyncio.CancelledError:
             task_log_debug("Message queue time to live task ended.")
 
@@ -1003,8 +1046,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         except CancelledError:
             task_log_debug("__tasks_undone check cancelled.")
-        # except Exception as e:
-        #     LOGGER.debug(f"{e}")
 
     async def handle_incoming_tcp_connection(
         self, proc_timeout_secs: int
@@ -1044,7 +1085,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def handle_connections(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
-        """! Send broadcast and make tasks for incoming tcp connections.
+        """ Send broadcast and make tasks for incoming tcp connections.
 
         Params:
             proc_timeout_secs: max timeout in seconds for a device
@@ -1272,9 +1313,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def discover_devices(
         self,
-        args: argparse.Namespace,
-        message_queue_tx_local: list,
-        target_device_uids: set,
+        timeout_secs: float = 2.5,
     ) -> None:
         """Discover devices."""
 
@@ -1282,17 +1321,15 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         print("Search local network for devices ...")
         print(SEPARATION_WIDTH * "-")
 
-        discover_timeout_secs: float = 2.5
-
         LOGGER.debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
         # request message to these discovered devices.
         await self.send_message(
-            message_queue_tx_local,
+            [PingCommand()],
             UnitId("all"),
-            discover_timeout_secs,
+            timeout_secs,
         )
 
     @classmethod

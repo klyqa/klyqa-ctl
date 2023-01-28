@@ -1,0 +1,244 @@
+\hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands}{}\doxysection{klyqa\+\_\+ctl.\+devices.\+light.\+commands Namespace Reference}
+\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands}\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+
+
+Contains all functions for light commands.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CheckDeviceParameter}{Check\+Device\+Parameter}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand}{Request\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand}{Ping\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand}{Fw\+Update\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand}{Transition\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight}{Command\+With\+Check\+Values\+Light}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand}{Color\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand}{Temperature\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand}{Brightness\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol}{External\+Source\+Protocol}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand}{External\+Source\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand}{Power\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RebootCommand}{Reboot\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand}{Factory\+Reset\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FadeCommand}{Fade\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand}{Routine\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand}{Routine\+List\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand}{Routine\+Start\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand}{Routine\+Delete\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand}{Routine\+Put\+Command}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+tuple\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}, int\mbox{]} \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a421107b65283514d7c08c8dc635a7793}{percent\+\_\+color\+\_\+message}} (\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} red, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} green, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} blue, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} warm, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} cold, int transition\+\_\+time)
+\item 
+Type\+Json \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_acee533c9ef67c4c4d41aa9c73e519276}{external\+\_\+source\+\_\+message}} (int protocol, int port, int channel)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\+\_\+command\+\_\+args\+\_\+bulb}} (argparse.\+Argument\+Parser parser)
+\item 
+argparse.\+Namespace$\vert$None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008}{discover\+\_\+devices}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+cb)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a82ef93ea01a8427f2f917bc47b2e68e7}{create\+\_\+device\+\_\+message}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+callable, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+local, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud, list\mbox{[}Any\mbox{]} message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud, list\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}\mbox{]} scene\+\_\+list)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}{commands\+\_\+select}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}\mbox{]} args\+\_\+in, Callable send\+\_\+to\+\_\+devices\+\_\+callable)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a6f3f21370e677e068a1499b8fc48a413}{command\+\_\+color}} (argparse.\+Namespace args, list message\+\_\+queue\+\_\+tx\+\_\+local, list message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a310548bc2fc8f69ccebd547575ce570a}{command\+\_\+color\+\_\+percent}} (argparse.\+Namespace args, list message\+\_\+queue\+\_\+tx\+\_\+local, list message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abebdd37e88dc1277a346e9026e375a94}{command\+\_\+brightness}} (argparse.\+Namespace args, list message\+\_\+queue\+\_\+tx\+\_\+local, list message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a3cf433b7e0a7096f770a3d03ce1621ad}{command\+\_\+temperature}} (argparse.\+Namespace args, list message\+\_\+queue\+\_\+tx\+\_\+local, list message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}{routine\+\_\+scene}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}\mbox{]} scene\+\_\+list)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a2ae6b7f2d511bca7421904d45952cc8a}{enable\+\_\+tb}} (argparse.\+Namespace args, list message\+\_\+queue\+\_\+tx\+\_\+local)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a7962c776e7872b6c5b8d03c714ac3ad5}{routine\+\_\+put}} (argparse.\+Namespace args, Callable local\+\_\+and\+\_\+cloud\+\_\+command\+\_\+msg)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}{forced\+\_\+continue}} (bool force, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} reason)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}{missing\+\_\+config}} (bool force, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} product\+\_\+id)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a1446d8c9b053544dc96f6f717376bed8}{check\+\_\+scene\+\_\+support}} (bool force, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}} device, \mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}} scene\+\_\+id)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a75b985cb7af1d5645f9bbb7b7f05c3ec}{check\+\_\+device\+\_\+parameter}} (bool force, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CheckDeviceParameter}{Check\+Device\+Parameter}} parameter, Any values, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}} device)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains all functions for light commands. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!add\_command\_args\_bulb@{add\_command\_args\_bulb}}
+\index{add\_command\_args\_bulb@{add\_command\_args\_bulb}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{add\_command\_args\_bulb()}{add\_command\_args\_bulb()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+add\+\_\+command\+\_\+args\+\_\+bulb (\begin{DoxyParamCaption}\item[{argparse.\+Argument\+Parser}]{parser }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Add arguments to the argument parser object.
+
+Args:
+    parser: Parser object
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a75b985cb7af1d5645f9bbb7b7f05c3ec}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a75b985cb7af1d5645f9bbb7b7f05c3ec}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!check\_device\_parameter@{check\_device\_parameter}}
+\index{check\_device\_parameter@{check\_device\_parameter}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{check\_device\_parameter()}{check\_device\_parameter()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+check\+\_\+device\+\_\+parameter (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CheckDeviceParameter}{Check\+Device\+Parameter}}}]{parameter,  }\item[{Any}]{values,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}} }]{device }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check device configs.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a1446d8c9b053544dc96f6f717376bed8}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a1446d8c9b053544dc96f6f717376bed8}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!check\_scene\_support@{check\_scene\_support}}
+\index{check\_scene\_support@{check\_scene\_support}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{check\_scene\_support()}{check\_scene\_support()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+check\+\_\+scene\+\_\+support (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}}}]{device,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{scene\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check device scene support.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abebdd37e88dc1277a346e9026e375a94}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abebdd37e88dc1277a346e9026e375a94}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_brightness@{command\_brightness}}
+\index{command\_brightness@{command\_brightness}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_brightness()}{command\_brightness()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+brightness (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for brightness.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a6f3f21370e677e068a1499b8fc48a413}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a6f3f21370e677e068a1499b8fc48a413}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_color@{command\_color}}
+\index{command\_color@{command\_color}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_color()}{command\_color()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+color (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for setting the color.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a310548bc2fc8f69ccebd547575ce570a}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a310548bc2fc8f69ccebd547575ce570a}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_color\_percent@{command\_color\_percent}}
+\index{command\_color\_percent@{command\_color\_percent}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_color\_percent()}{command\_color\_percent()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+color\+\_\+percent (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for color in percentage numbers.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a3cf433b7e0a7096f770a3d03ce1621ad}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a3cf433b7e0a7096f770a3d03ce1621ad}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_temperature@{command\_temperature}}
+\index{command\_temperature@{command\_temperature}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_temperature()}{command\_temperature()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+temperature (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for temperature.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!commands\_select@{commands\_select}}
+\index{commands\_select@{commands\_select}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{commands\_select()}{commands\_select()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+commands\+\_\+select (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}\mbox{]}}]{args\+\_\+in,  }\item[{Callable}]{send\+\_\+to\+\_\+devices\+\_\+callable }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Interactive command select.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a82ef93ea01a8427f2f917bc47b2e68e7}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a82ef93ea01a8427f2f917bc47b2e68e7}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!create\_device\_message@{create\_device\_message}}
+\index{create\_device\_message@{create\_device\_message}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{create\_device\_message()}{create\_device\_message()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+create\+\_\+device\+\_\+message (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}Any\mbox{]}}]{args\+\_\+in,  }\item[{Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]}}]{send\+\_\+to\+\_\+devices\+\_\+callable,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+local,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud,  }\item[{list\mbox{[}Any\mbox{]}}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud,  }\item[{list\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}\mbox{]}}]{scene\+\_\+list }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Process arguments for communicating with lights. Fill message queues for
+local and cloud communication. Discover devices to communicate with.
+
+Params:
+    args: Parsed arguments to be processed.
+    args_in: Original arguments as a list, if we want to reparse and add
+        arguments.
+    send_to_devices_callable: If we need to send something to the lamps,
+        use this callable.
+    message_queue_tx_local: Queue to be filled with messages for local
+        communication.
+    message_queue_tx_command_cloud: Queue for cloud command messages.
+    message_queue_tx_state_cloud: Queue for cloud state messages.
+    scene_list: If a scene is applied, add it to the scene list, so the
+        klyqa-ctl send function can process it.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!discover\_devices@{discover\_devices}}
+\index{discover\_devices@{discover\_devices}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{discover\_devices()}{discover\_devices()}}
+{\footnotesize\ttfamily  argparse.\+Namespace $\vert$ None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+discover\+\_\+devices (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}Any\mbox{]}}]{args\+\_\+in,  }\item[{Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]}}]{send\+\_\+to\+\_\+devices\+\_\+cb }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Send out klyqa broadcast to discover all devices. Tries to set
+device_unitids in args parse. The user can select them.
+
+Params:
+    args (Argsparse): Parsed args object
+    args_in (list): List of arguments parsed to the script call
+    timeout_ms (int, optional): Timeout to send. Defaults to 5000.
+
+Raises:
+    Exception: Network or file errors
+
+Returns:
+    bool: True if succeeded.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a2ae6b7f2d511bca7421904d45952cc8a}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a2ae6b7f2d511bca7421904d45952cc8a}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!enable\_tb@{enable\_tb}}
+\index{enable\_tb@{enable\_tb}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{enable\_tb()}{enable\_tb()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+enable\+\_\+tb (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+local }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Enable thingsboard to device.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_acee533c9ef67c4c4d41aa9c73e519276}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_acee533c9ef67c4c4d41aa9c73e519276}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!external\_source\_message@{external\_source\_message}}
+\index{external\_source\_message@{external\_source\_message}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{external\_source\_message()}{external\_source\_message()}}
+{\footnotesize\ttfamily  Type\+Json klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+external\+\_\+source\+\_\+message (\begin{DoxyParamCaption}\item[{int}]{protocol,  }\item[{int}]{port,  }\item[{int }]{channel }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create external source protocol message.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!forced\_continue@{forced\_continue}}
+\index{forced\_continue@{forced\_continue}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{forced\_continue()}{forced\_continue()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+forced\+\_\+continue (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{reason }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Force argument.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!missing\_config@{missing\_config}}
+\index{missing\_config@{missing\_config}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{missing\_config()}{missing\_config()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+missing\+\_\+config (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{product\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Missing device config.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a421107b65283514d7c08c8dc635a7793}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a421107b65283514d7c08c8dc635a7793}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!percent\_color\_message@{percent\_color\_message}}
+\index{percent\_color\_message@{percent\_color\_message}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{percent\_color\_message()}{percent\_color\_message()}}
+{\footnotesize\ttfamily  tuple\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}, int\mbox{]} klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+percent\+\_\+color\+\_\+message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{red,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{green,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{blue,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{warm,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}}]{cold,  }\item[{int }]{transition\+\_\+time }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create message for color change in percent.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a7962c776e7872b6c5b8d03c714ac3ad5}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a7962c776e7872b6c5b8d03c714ac3ad5}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!routine\_put@{routine\_put}}
+\index{routine\_put@{routine\_put}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{routine\_put()}{routine\_put()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+routine\+\_\+put (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{Callable }]{local\+\_\+and\+\_\+cloud\+\_\+command\+\_\+msg }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Put routine to device.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!routine\_scene@{routine\_scene}}
+\index{routine\_scene@{routine\_scene}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{routine\_scene()}{routine\_scene()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+routine\+\_\+scene (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{namespaceklyqa__ctl_ac1f9191d30b35ab942096351e56b3c07}{str}}\mbox{]}}]{scene\+\_\+list }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for select scene.\end{DoxyVerb}
+ 

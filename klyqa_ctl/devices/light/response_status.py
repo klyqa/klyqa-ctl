@@ -24,6 +24,7 @@ class ResponseStatus(ResponseMessage):
     _attr_temperature: int | None = None
     _attr_brightness: int | None
     _attr_color: RgbColor | None
+    connected: bool = False
 
     def __str__(self) -> str:
         """__str__"""
