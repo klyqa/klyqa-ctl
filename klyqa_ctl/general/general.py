@@ -403,7 +403,7 @@ async def async_json_cache(
                 klyqa_data_path + f"/{json_file}", mode="w"
             ) as f:
                 await f.write(s)
-        except Exception:
+        except IOError:
             LOGGER.warning(
                 f'Could not save cache for json file "{json_file}".'
             )

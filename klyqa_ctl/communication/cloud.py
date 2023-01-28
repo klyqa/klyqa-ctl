@@ -9,7 +9,6 @@ from asyncio import AbstractEventLoop, CancelledError, Task
 from collections import ChainMap
 import datetime
 from enum import Enum
-import getpass
 import json
 import traceback
 from typing import Any
@@ -17,14 +16,12 @@ import uuid
 
 import httpx
 
-from klyqa_ctl.account import Account
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.devices.light.light import Light
-from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     LOGGER,
     PROD_HOST,
+    Command,
     Device_config,
     EventQueuePrinter,
     TypeJson,
@@ -32,6 +29,7 @@ from klyqa_ctl.general.general import (
     format_uid,
     task_log_trace_ex,
 )
+from klyqa_ctl.general.message import Message
 
 DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
@@ -48,22 +46,6 @@ class CloudBackend:
         self._attr_controller_data: ControllerData = controller_data
         self._attr_offline: bool = False
         self._attr_host: str = PROD_HOST
-        self._attr_access_token: str = ""
-        self._attr_devices: dict[str, Device] = controller_data.devices
-
-    @property
-    def devices(self) -> dict[str, Device]:
-        """Return or set the devices dictionary."""
-        return self._attr_devices
-
-    @property
-    def access_token(self) -> str:
-        """Return or set the cloud access token."""
-        return self._attr_access_token
-
-    @access_token.setter
-    def access_token(self, access_token: str) -> None:
-        self._attr_access_token = access_token
 
     @property
     def host(self) -> str:
@@ -80,225 +62,13 @@ class CloudBackend:
         return self._attr_offline
 
     @property
-    def account(self) -> Account | None:
-        """Return or set the account object."""
-        return self._attr_controller_data.account
-
-    @property
     def controller_data(self) -> ControllerData:
         """Return or set the controller data object."""
         return self._attr_controller_data
 
     def backend_connected(self) -> bool:
-        return self.access_token != ""
-
-    async def login_cache(self) -> bool:
-        """Get cached account data for login and check existing username and
-        password."""
-        if not self.account:
-            return False
-        cached: bool
-        if not self.account.username:
-            try:
-                user_name_cache: dict | None
-                user_name_cache, cached = await async_json_cache(
-                    None, "last_username.json"
-                )
-                if cached and user_name_cache:
-                    self.account.username = user_name_cache["username"]
-                    LOGGER.info(
-                        "Using Klyqa account %s.", self.account.username
-                    )
-                else:
-                    LOGGER.error("Username missing, username cache empty.")
-
-                    if (
-                        self.controller_data
-                        and self.controller_data.interactive_prompts
-                    ):
-                        self.account.username = input(
-                            " Please enter your Klyqa Account username (will"
-                            " be cached for the script invoke): "
-                        )
-                    else:
-                        LOGGER.info(
-                            "Missing Klyqa account username. No login."
-                        )
-                        return False
-            except Exception:
-                task_log_trace_ex()
-                return False
-
-        try:
-            acc_settings: dict | None
-            acc_settings, cached = await async_json_cache(
-                None, f"{self.account.username}.acc_settings.cache.json"
-            )
-            if cached:
-                self.account.settings = acc_settings
-                if (
-                    self.account
-                    and self.account.settings
-                    and not self.account.password
-                ):
-                    self.account.password = self.account.settings["password"]
-
-            if not self.account.password:
-                raise Exception()
-
-        except Exception:
-            if (
-                self.controller_data
-                and self.controller_data.interactive_prompts
-            ):
-                self.account.password = getpass.getpass(
-                    prompt=(
-                        " Please enter your Klyqa Account password (will be"
-                        " saved): "
-                    ),
-                    stream=None,
-                )
-            else:
-                LOGGER.error("Missing Klyqa account password. Login failed.")
-                return False
-
-        return True
-
-    async def run_login(self) -> bool:
-        if not self.account:
-            return False
-
-        if not self.offline and (
-            self.account.username is not None
-            and self.account.password is not None
-        ):
-            login_response: httpx.Response | None = None
-            login_data: dict[str, str] = {
-                "email": self.account.username,
-                "password": self.account.password,
-            }
-            try:
-
-                login_response = await self.request(
-                    RequestMethod.POST,
-                    "auth/login",
-                    json=login_data,
-                    timeout=10,
-                )
-
-                if not login_response or (
-                    login_response.status_code != 200
-                    and login_response.status_code != 201
-                ):
-                    if login_response:
-                        LOGGER.error(
-                            str(login_response.status_code)
-                            + ", "
-                            + str(login_response.text)
-                        )
-                        raise Exception(login_response.text)
-                    else:
-                        raise Exception("missing login response")
-
-                login_json: TypeJson = json.loads(login_response.text)
-                self.access_token = str(login_json.get("accessToken"))
-
-                acc_settings: TypeJson | None = await self.request_beared(
-                    RequestMethod.GET, "settings", timeout=30
-                )
-                if acc_settings:
-                    self.account.settings = acc_settings
-
-            except Exception:
-                if self.account.settings:
-                    LOGGER.info(
-                        "Error during login. Using account settings for"
-                        f" account {self.account.username} from cache."
-                    )
-                else:
-                    LOGGER.error(
-                        "Unable to login into account"
-                        f" {self.account.username}."
-                    )
-                    return False
-
-            if not self.account.settings:
-                return False
-
-            try:
-                acc_settings_cache = self.account.settings | {
-                    "time_cached": datetime.datetime.now(),
-                    "password": self.account.password,
-                }
-
-                """save current account settings in cache"""
-                await async_json_cache(
-                    acc_settings_cache,
-                    f"{self.account.username}.acc_settings.cache.json",
-                )
-
-            except Exception:
-                pass
-
-        return True
-
-    async def request_cloud_device_state(
-        self, device_id: str
-    ) -> TypeJson | None:
-        response: TypeJson | None = await self.request_beared(
-            RequestMethod.GET,
-            f"device/{device_id}/state",
-            timeout=30,
-        )
-        return response
-
-    async def device_request_and_print(
-        self, device_settings: TypeJson, print_onboarded_devices: bool = False
-    ) -> None:
-        state_str: str = (
-            f'Name: "{device_settings["name"]}"'
-            + f'\tAES-KEY: {device_settings["aesKey"]}'
-            + f'\tUnit-ID: {device_settings["localDeviceId"]}'
-            + f'\tCloud-ID: {device_settings["cloudDeviceId"]}'
-            + f'\tType: {device_settings["productId"]}'
-        )
-        cloud_state: TypeJson | None = None
-
-        device: Device
-        if ".lighting" in device_settings["productId"]:
-            device = Light()
-        elif ".cleaning" in device_settings["productId"]:
-            device = VacuumCleaner()
-        else:
-            return
-        device.u_id = format_uid(device_settings["localDeviceId"])
-        device.acc_sets = device_settings
-
-        self.devices[format_uid(device_settings["localDeviceId"])] = device
-
-        if self.backend_connected():
-            cloud_state = await self.request_cloud_device_state(
-                device_settings["cloudDeviceId"]
-            )
-            if cloud_state:
-                if "connected" in cloud_state:
-                    state_str = (
-                        state_str
-                        + f'\tCloud-Connected: {cloud_state["connected"]}'
-                    )
-                device.cloud.connected = cloud_state["connected"]
-
-                device.save_device_message(
-                    {**cloud_state, **{"type": "status"}}
-                )
-            else:
-                LOGGER.info(
-                    "No answer for cloud device state request"
-                    f' {device_settings["localDeviceId"]}'
-                )
-
-        if print_onboarded_devices:
-            print(state_str)
+        """General cloud intended to be there check."""
+        return not self.offline and self.host != ""
 
     async def get_device_config(
         self, product_id: str, device_configs: TypeJson
@@ -325,15 +95,8 @@ class CloudBackend:
 
     async def get_device_configs(self, device_product_ids: set[str]) -> None:
         """Request device configs by product id from the cloud."""
-        if not self.backend_connected():
-            return None
 
-        if (
-            self.account
-            and self.account.settings
-            and device_product_ids
-            and self.controller_data.device_configs
-        ):
+        if device_product_ids and self.controller_data.device_configs:
             device_tasks: list[Task] = [
                 asyncio.create_task(
                     self.get_device_config(
@@ -354,129 +117,6 @@ class CloudBackend:
             LOGGER.info("No server reply for device configs. Using cache.")
         return None
 
-    async def get_device_configs_cached(self) -> bool:
-        device_configs_cache, cached = await async_json_cache(
-            None, "device.configs.json"
-        )
-        if cached and not self.controller_data.device_configs:
-            # using again not device_configs check cause asyncio await
-            # scheduling
-            LOGGER.info("Using devices config cache.")
-            if device_configs_cache:
-                self.controller_data.device_configs = device_configs_cache
-                return True
-        return False
-
-    async def device_request_and_print_action(
-        self, product_ids: set[str], print_onboarded_devices: bool = False
-    ) -> None:
-        """Print onboarded devices, get device configs and remember
-        aes_keys."""
-        if not self.account:
-            return
-        device_tasks: list[Task] = []
-        loop: AbstractEventLoop = asyncio.get_event_loop()
-
-        if self.account.settings:
-            for device_sets in self.account.settings["devices"]:
-
-                device_tasks.append(
-                    loop.create_task(
-                        self.device_request_and_print(
-                            device_sets, print_onboarded_devices
-                        )
-                    )
-                )
-
-                self.controller_data.aes_keys[
-                    format_uid(device_sets["localDeviceId"])
-                ] = bytes.fromhex(device_sets["aesKey"])
-                product_ids.add(device_sets["productId"])
-
-            for task in device_tasks:
-                if not task.done():
-                    await asyncio.wait_for(
-                        task, timeout=DEFAULT_HTTP_REQUEST_TIMEOUT_SECS
-                    )
-
-    async def request_account_device_configs_and_print(
-        self, print_onboarded_devices: bool = False
-    ) -> bool:
-        """Request all onboarded device configs and print the device
-        attributes. Use cached device configs when offline."""
-        if not self.account:
-            return False
-        device_configs_cache: dict[Any, Any] | None
-        product_ids: set[str] = set()
-
-        klyqa_acc_string: str = (
-            "Klyqa account " + self.account.username + ". Onboarded devices:"
-        )
-        sep_width: int = len(klyqa_acc_string)
-
-        if print_onboarded_devices:
-            print(sep_width * "-")
-            print(klyqa_acc_string)
-            print(sep_width * "-")
-
-        if self.account.settings and "devices" in self.account.settings:
-            await self.device_request_and_print_action(product_ids)
-
-        if not self.backend_connected():
-            if not self.controller_data.device_configs:
-                await self.get_device_configs_cached()
-
-        elif self.backend_connected():
-            await self.get_device_configs(product_ids)
-
-        for uid in self.devices:
-            if (
-                self.devices[uid].ident is not None
-                and "productId" in self.devices[uid].acc_sets
-                and self.devices[uid].ident.product_id
-                in self.controller_data.device_configs
-            ):
-                self.devices[uid].read_device_config(
-                    device_config=self.controller_data.device_configs[
-                        self.devices[uid].ident.product_id
-                    ]
-                )
-
-        return True
-
-    async def login(self, print_onboarded_devices: bool = False) -> bool:
-        """! Login on klyqa account, get account settings, get onboarded
-        device profiles, print all devices if parameter set.
-
-        Params:
-            print_onboarded_devices:   print onboarded devices from the
-                klyqa account to the stdout
-
-        Returns:
-            true:  on success of the login
-            false: on error
-        """
-
-        if not self.account:
-            return False
-
-        if not await self.login_cache():
-            return False
-
-        if not await self.run_login():
-            return False
-
-        await async_json_cache(
-            {"username": self.account.username}, "last_username.json"
-        )
-
-        if not await self.request_account_device_configs_and_print(
-            print_onboarded_devices
-        ):
-            return False
-
-        return True
-
     def get_header_default(self) -> TypeJson:
         """Get default request header for cloud request."""
         header: dict[str, str] = {
@@ -486,16 +126,6 @@ class CloudBackend:
             "accept-encoding": "gzip, deflate, utf-8",
         }
         return header
-
-    def get_beared_request_header(self) -> TypeJson:
-        """Set default request header with cloud access token."""
-        # return {
-        #     **self.get_header_default(),
-        #     **{"Authorization": "Bearer " + self.access_token},
-        # }
-        return self.get_header_default() | {
-            "Authorization": "Bearer " + self.access_token
-        }
 
     async def request(
         self,
@@ -509,7 +139,7 @@ class CloudBackend:
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.request(
-                    method,
+                    method.value,
                     url=self.host + "/" + url,
                     headers=headers if headers else self.get_header_default(),
                     **kwargs,
@@ -536,14 +166,15 @@ class CloudBackend:
         if not response:
             LOGGER.error("No response from cloud request.")
             return None
-        # Maybe more? https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/
+
         if int(str(response.status_code)[0]) not in [
             1,
             2,
             3,
-        ]:  # != 200 and response.status_code != 201:
+        ]:
             LOGGER.error("Unvalid response from cloud request.")
             raise Exception(response.text)
+
         try:
             answer = json.loads(response.text)
         except json.JSONDecodeError as err:
@@ -552,97 +183,19 @@ class CloudBackend:
             answer = None
         return answer
 
-    async def request_beared(
-        self, method: RequestMethod, url: str, **kwargs: Any
-    ) -> TypeJson | None:
-        """When the user logged in and an access token exists, use it for http
-        requests."""
-        h: httpx.Response | None = await self.request(
-            method,
-            url,
-            self.get_beared_request_header()
-            if self.access_token
-            else self.get_header_default(),
-            **kwargs,
-        )
-        if h:
-            answer: TypeJson | None = await self.load_http_response(h)
-            return answer
-        return None
+    # async def cloud_send_command(self, command: Command) -> Message:
+    #     msg: Message = Message(
+    #         datetime.datetime.now(),
 
-    async def request_account_settings_eco(
-        self, scan_interval: int = 60
-    ) -> bool:
-        """Only send a new account settings http request when the last update
-        was after the scan interval."""
-
-        if not self.account:
-            return False
-
-        if self.account.settings_lock:
-            await self.account.settings_lock.acquire()
-        ret: bool = True
-        try:
-            now: datetime.datetime = datetime.datetime.now()
-            if not self.account._settings_loaded_ts or (
-                now - self.account._settings_loaded_ts
-                >= datetime.timedelta(seconds=scan_interval)
-            ):
-                """look that the settings are loaded only once in the scan
-                interval"""
-                await self.request_account_settings()
-        finally:
-            if self.account.settings_lock:
-                self.account.settings_lock.release()
-        return ret
-
-    async def request_account_settings(self) -> None:
-        """Request the account settings via http."""
-
-        if not self.account:
-            return
-
-        try:
-            acc_settings: TypeJson | None = await self.request_beared(
-                RequestMethod.GET, "settings"
-            )
-            if acc_settings:
-                self.account.settings = acc_settings
-        except Exception:
-            task_log_trace_ex()
-
-    async def update_device_configs(self) -> None:
-        """Request the account settings from the cloud."""
-
-        product_ids: set[str] = {
-            device.ident.product_id
-            for uid, device in self.devices.items()
-            if device.ident and device.ident.product_id
-        }
-
-        for product_id in list(product_ids):
-            if (
-                self.controller_data.device_configs
-                and product_id in self.controller_data.device_configs
-            ):
-                continue
-            LOGGER.debug("Try to request device config from server.")
-            try:
-                config: TypeJson | None = await self.request_beared(
-                    RequestMethod.GET,
-                    "config/product/" + product_id,
-                    timeout=30,
-                )
-                device_config: Device_config | None = config
-                self.controller_data.device_configs[product_id] = device_config
-            except Exception:
-                task_log_trace_ex()
+    #     )
 
     async def cloud_send(
         self,
         args: argparse.Namespace,
         target_device_uids: set[str],
-        to_send_device_uids: set[str],
+        to_send_device_uids: set[
+            str
+        ],  # the device unit ids remaining to send from --tryLocalThanCloud
         timeout_ms: int,
         message_queue_tx_state_cloud: list,
         message_queue_tx_command_cloud: list,
@@ -656,6 +209,8 @@ class CloudBackend:
         async def _cloud_post(
             device: Device, json_message: TypeJson, target: str
         ) -> None:
+            # TODO: distinguish between standalone devicesettings like
+            # cloudDeviceId and localDeviceId, and account settings per account
             cloud_device_id: str = device.acc_sets["cloudDeviceId"]
             unit_id: str = format_uid(device.acc_sets["localDeviceId"])
             LOGGER.info(
@@ -663,7 +218,7 @@ class CloudBackend:
                 f" {unit_id}) over the cloud."
             )
             response: TypeJson = {
-                cloud_device_id: await self.request_beared(
+                cloud_device_id: await self.request(
                     RequestMethod.POST,
                     url=f"device/{cloud_device_id}/{target}",
                     json=json_message,
@@ -708,7 +263,7 @@ class CloudBackend:
             threads: list[Any] = []
             target_devices: list[Device] = [
                 b
-                for b in self.devices.values()
+                for b in self.controller_data.devices.values()
                 for t in target_uids
                 if b.u_id == t
             ]
@@ -778,16 +333,6 @@ class CloudBackend:
         if len(response_queue):
             success = True
         return success
-
-    async def shutdown(self) -> None:
-        """Logout again from klyqa account."""
-        if self.access_token:
-            LOGGER.debug("Logout user from cloud backend.")
-            await self.request(
-                RequestMethod.POST,
-                "/auth/logout",
-                headers=self.get_header_default(),
-            )
 
     @classmethod
     def create_default(

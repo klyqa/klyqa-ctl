@@ -32,10 +32,19 @@
       ]
     },
     {
-      "name": "Python: test local controller ",
+      "name": "Python: test local controller",
       "type": "python",
       "request": "launch",
       "program": "test/test_local_controller.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": []
+    },
+    {
+      "name": "Python: test account",
+      "type": "python",
+      "request": "launch",
+      "program": "test/test_account.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": []
