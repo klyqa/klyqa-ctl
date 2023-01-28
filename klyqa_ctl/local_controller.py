@@ -14,14 +14,20 @@ from klyqa_ctl.general.unit_id import UnitId
 
 
 class LocalController:
+    """Local controller."""
+
     def __init__(
         self,
         controller_data: ControllerData,
     ) -> None:
+        """Initialize local controller."""
+
         self.connection_hdl: LocalConnectionHandler | None = None
         self.controller_data: ControllerData = controller_data
 
     def send_to_device(self, unit_id: str, key: str, command: str) -> str:
+        """Send command string to device with unit id and aes key."""
+
         if not self.connection_hdl:
             return ""
 
@@ -38,6 +44,8 @@ class LocalController:
     async def send_to_device_native(
         self, unit_id: UnitId, key: str, command: Command
     ) -> str:
+        """Send json message from command object to device with unit id and aes key."""
+
         if not self.connection_hdl:
             return ""
 
@@ -60,6 +68,8 @@ class LocalController:
         return msg_answer
 
     async def shutdown(self) -> None:
+        """Shut down local controller."""
+
         if self.connection_hdl:
             await self.connection_hdl.shutdown()
 
@@ -72,10 +82,13 @@ class LocalController:
     ) -> LocalController:
         """Factory for local only controller.
 
-        param:
+        Params:
             network_interface: leave it on None if you are unsure, else e. g.
                 eth0, wlan0, etc.
+            server_ip: The host IP to bind the server for incoming tcp
+                connections on port 3333.
         """
+
         lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(
             controller_data=controller_data,
             server_ip=server_ip,
