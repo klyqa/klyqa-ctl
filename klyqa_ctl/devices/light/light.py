@@ -11,6 +11,7 @@ from klyqa_ctl.general.general import (
     Range,
     TypeJson,
     task_log_debug,
+    task_log_trace,
     task_log_trace_ex,
 )
 
@@ -75,7 +76,7 @@ class Light(Device):
                     )
                 except Exception:
                     self.brightness_range = Range(0, 100)
-                    LOGGER.trace(
+                    task_log_trace(
                         "Can't read brightness range%s. Falling back to"
                         " default Range.",
                         f" for product id {self.ident.product_id}"
@@ -119,12 +120,12 @@ class Light(Device):
                     )
                     task_log_debug("Temperature range setted.")
                 except KeyError:
-                    LOGGER.debug(
+                    task_log_debug(
                         "Bulb product id trait search failed using default"
                         " temperature numbers."
                     )
                     self.temperature_range = Range(2000, 6500)
-                    LOGGER.trace(
+                    task_log_trace(
                         "Can't read temperature range%s. Falling back to"
                         " default Range.",
                         f" for product id {self.ident.product_id}"
@@ -163,7 +164,7 @@ class Light(Device):
                     )
                 except KeyError:
                     self.color_range = Range(0, 255)
-                    LOGGER.trace(
+                    task_log_trace(
                         "Can't read color range%s. Falling back to "
                         + "default Range.",
                         f" for product id {self.ident.product_id}"

@@ -177,7 +177,7 @@ class Account:
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
         if self.access_token and self.cloud:
-            LOGGER.debug("Logout user from cloud backend.")
+            task_log_debug"Logout user from cloud backend.")
             await self.cloud.request(RequestMethod.POST, "/auth/logout")
 
     def run_password_prompt(self) -> bool:
@@ -539,7 +539,7 @@ class Account:
                 and product_id in self.controller_data.device_configs
             ):
                 continue
-            LOGGER.debug("Try to request device config from server.")
+            task_log_debug("Try to request device config from server.")
 
             config: TypeJson | None = await self.request_beared(
                 RequestMethod.GET,

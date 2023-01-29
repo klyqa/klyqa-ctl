@@ -43,9 +43,7 @@ import uvloop
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.connection_handler import (
-    LocalConnectionHandler,
-)
+from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
@@ -74,10 +72,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message, MessageState
-from klyqa_ctl.general.parameters import (
-    add_config_args,
-    get_description_parser,
-)
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -173,12 +168,12 @@ class Client:
 
         discover_timeout_secs: float = 2.5
 
-        LOGGER.debug("discover ping start")
+        task_log_debug("discover ping start")
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search and
         # send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local.send_message(
+        task_log_debug(cal.send_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_timeout_secs,
@@ -432,22 +427,22 @@ class Client:
             if self.local and (args.local or args.tryLocalThanCloud):
                 if args.passive:
                     if self.local and self.local.udp:
-                        LOGGER.debug("Waiting for UDP broadcast")
+                        task_log_debug("Waiting for UDP broadcast")
                         data, address = self.local.udp.recvfrom(4096)
-                        LOGGER.debug(
+                        task_log_debug(
                             "\n\n 2. UDP server received: ",
                             data.decode("utf-8"),
-                            "from",
+                        task_log_debug(
                             address,
                             "\n\n",
                         )
 
-                        LOGGER.debug("3a. Sending UDP ack.\n")
+                        task_log_debug("3a. Sending UDP ack.\n")
                         self.local.udp.sendto(
                             "QCX-ACK".encode("utf-8"), address
                         )
                         time.sleep(1)
-                        LOGGER.debug("3b. Sending UDP ack.\n")
+                        task_log_debug("3b. Sending UDP ack.\n")
                         self.local.udp.sendto(
                             "QCX-ACK".encode("utf-8"), address
                         )
@@ -479,7 +474,7 @@ class Client:
                             )
                         )
 
-                    LOGGER.debug("wait for all target device uids done.")
+                    task_log_debug("wait for all target device uids done.")
                     for task in send_tasks:
                         try:
                             await asyncio.wait_for(
@@ -560,7 +555,7 @@ class Client:
                 )
 
                 async def async_print_answer(msg: Message, uid: str) -> None:
-                    LOGGER.debug(f"{uid}: ")
+                    task_log_debug(f"{uid}: ")
                     if msg:
                         try:
                             LOGGER.info(f"Answer received from {uid}.")
@@ -632,7 +627,7 @@ class Client:
         exit_ret: int = 0
 
         async def async_answer_callback(msg: Message, uid: str) -> None:
-            LOGGER.debug(f"{uid}: ")
+            task_log_debug(f"{uid}: ")
             if msg:
                 try:
                     LOGGER.info(f"Answer received from {uid}.")
@@ -656,7 +651,7 @@ class Client:
         ):
             exit_ret = 1
 
-        LOGGER.debug("Closing ports")
+        task_log_debug("Closing ports")
         if self.local:
             await self.local.shutdown()
 
@@ -789,7 +784,7 @@ async def main() -> None:
         #         if await cloud_backend.login(
         #             print_onboarded_devices=print_onboarded_devices
         #         ):
-        #             LOGGER.debug("login finished")
+        #             task_log_debug("login finished")
         #             klyqa_accs[account.username] = account
         #         else:
         #             raise Exception()
@@ -848,7 +843,7 @@ async def main() -> None:
     ):
         exit_ret = 1
 
-    LOGGER.debug("Shutting down..")
+    task_log_debug("Shutting down..")
     await client.shutdown()
 
     sys.exit(exit_ret)

@@ -5,7 +5,11 @@ import datetime
 from typing import Any
 
 from klyqa_ctl.devices.device import ResponseMessage
-from klyqa_ctl.general.general import LOGGER, get_obj_attr_values_as_string
+from klyqa_ctl.general.general import (
+    LOGGER,
+    get_obj_attr_values_as_string,
+    task_log_debug,
+)
 
 
 class ResponseStatus(ResponseMessage):
@@ -56,7 +60,7 @@ class ResponseStatus(ResponseMessage):
         self.workingmode: int | None = None
         self.workingstatus: int | None = None
 
-        LOGGER.debug(f"save status {self}")
+        task_log_debug(f"save status {self}")
         super().__init__(**kwargs)
 
     def update(self, **kwargs: Any) -> None:
