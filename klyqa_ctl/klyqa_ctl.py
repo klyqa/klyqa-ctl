@@ -89,16 +89,20 @@ class Client:
         ctl_data: ControllerData,
         local: LocalConnectionHandler | None = None,
         cloud: CloudBackend | None = None,
-        devices: dict = dict().copy(),
-        accounts: dict[str, Account] = dict().copy(),
+        devices: dict[str, Device] | None = None,
+        accounts: dict[str, Account] | None = None,
     ) -> None:
         """Initialize the client."""
 
         self._attr_ctl_data: ControllerData = ctl_data
         self._attr_local: LocalConnectionHandler | None = local
-        self._attr_devices: dict[str, Device] = devices
+        self._attr_devices: dict[str, Device] = (
+            {} if devices is None else devices
+        )
         self._attr_cloud: CloudBackend | None = cloud
-        self._attr_accounts: dict[str, Account] = accounts
+        self._attr_accounts: dict[str, Account] = (
+            {} if accounts is None else accounts
+        )
 
     @property
     def ctl_data(self) -> ControllerData:

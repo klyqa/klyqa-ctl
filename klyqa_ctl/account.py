@@ -296,10 +296,13 @@ class Account:
         self,
         unit_id: str,
         product_id: str = "",
-        device_sets: TypeJson = TypeJson(),
+        device_sets: TypeJson | None = None,
     ) -> AccountDevice:
         """Look for account device or create it. Create connected controller
         device as well."""
+
+        if device_sets is None:
+            device_sets = TypeJson()
 
         dev: AccountDevice
         if unit_id in self.devices:

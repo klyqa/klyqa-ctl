@@ -184,7 +184,7 @@ class Light(Device):
     def set_temperature(self, temp: int) -> bool:
         if not self.device_config:
             return False
-        temperature_enum = []
+        temperature_enum: list[Any] = []
         try:
             if self.ident:
                 temperature_enum = [
