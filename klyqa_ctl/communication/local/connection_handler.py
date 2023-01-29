@@ -20,9 +20,7 @@ from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.commands import PingCommand, TransitionCommand
-from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
-from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
     LOGGER,
@@ -218,6 +216,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_current_addr_connections = current_addr_connections
 
     async def shutdown(self) -> None:
+        """bind ports."""
 
         await self.handle_connections_task_stop()
 
@@ -242,6 +241,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def bind_ports(self) -> bool:
         """bind ports."""
+
         server_address: tuple[str, int]
 
         if (
@@ -290,6 +290,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 return False
             LOGGER.debug("Bound TCP port 3333")
             self.tcp.listen(1)
+
         return True
 
     async def process_device_identity_package(
@@ -299,12 +300,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         device_ref: ReferencePass,
     ) -> DeviceTcpReturn:
         """Process the device identity package."""
+
         # Check identification package from device, lock the device object for
         # changes, safe the idenfication to device object if it is a not known
         # device, send the local initial vector for the encrypted communication
         # to the device.
 
         device: Device = device_ref.ref
+        log: list
 
         task_log_debug("Plain: %s", str(data))
         try:
@@ -317,46 +320,30 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             return DeviceTcpReturn.NO_UNIT_ID
 
         is_new_device: bool = False
-        if self.controller_data.add_devices_lock:
-            await self.controller_data.add_devices_lock.acquire_within_task()
 
         if device.u_id != "no_uid" and device.u_id not in self.devices:
+
             is_new_device = True
-            new_dev: Device | None = None
-            if ".lighting" in identity.product_id:
-                new_dev = Light()
-            elif ".cleaning" in identity.product_id:
-                new_dev = VacuumCleaner()
-            if not new_dev:
-                LOGGER.info(
-                    f"Found new device {identity.unit_id} but don't know the"
-                    f" product id {identity.product_id}."
-                )
-                task_log_debug(
-                    f"Found new device {identity.unit_id} but don't know the"
-                    f" product id {identity.product_id}."
-                )
+            new_dev: Device = await self.controller_data.get_or_create_device(
+                unit_id=identity.unit_id, product_id=identity.product_id
+            )
+            new_dev.ident = identity
+            if (
+                type(new_dev)  # pylint: disable=unidiomatic-typecheck
+                == Device
+            ):
+                log = [
+                    "Found new device %s but don't know the product id %s.",
+                    identity.unit_id,
+                    identity.product_id,
+                ]
+                LOGGER.info(*log)
+                task_log_debug(*log)
             else:
                 if is_new_device:
-                    LOGGER.info(f"Found new device {identity.unit_id}")
-                    task_log_debug(f"Found new device {identity.unit_id}")
-                new_dev.ident = identity
-                new_dev.u_id = UnitId(identity.unit_id)
-                if (
-                    new_dev.ident
-                    and new_dev.ident.product_id
-                    in self.controller_data.device_configs
-                ):
-                    new_dev.read_device_config(
-                        device_config=self.controller_data.device_configs[
-                            new_dev.ident.product_id
-                        ]
-                    )
-
-                self.devices[device.u_id] = new_dev
-
-        if self.controller_data.add_devices_lock:
-            self.controller_data.add_devices_lock.release_within_task()
+                    log = ["Found new device %s", identity.unit_id]
+                    LOGGER.info(*log)
+                    task_log_debug(*log)
 
         # cached client device (self.devices), incoming device object created
         # on tcp connection acception
@@ -378,6 +365,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         connection.received_packages.append(json_response)
         device.save_device_message(json_response)
+        device.local_con = self
 
         if (
             device.u_id not in self.message_queue
@@ -861,7 +849,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         await msg_sent.call_cb()
                         self.remove_msg_from_queue(msg_sent, device)
 
-                if device.u_id in self.devices:
+                if str(device.u_id) in self.devices:
                     device_b: Device = self.devices[device.u_id]
                     device_b.use_unlock()
 

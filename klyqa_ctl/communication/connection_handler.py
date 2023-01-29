@@ -21,4 +21,4 @@ class ConnectionHandler(DeviceConnectionHandler):  # type: ignore[misc]
     async def handle_connection(
         self, device_ref: ReferencePass, connection: TcpConnection
     ) -> DeviceTcpReturn:
-        pass
+        """Handle connection."""

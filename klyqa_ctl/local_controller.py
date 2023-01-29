@@ -44,7 +44,8 @@ class LocalController:
     async def send_to_device_native(
         self, unit_id: UnitId, key: str, command: Command
     ) -> str:
-        """Send json message from command object to device with unit id and aes key."""
+        """Send json message from command object to device with unit id and
+        aes key."""
 
         if not self.connection_hdl:
             return ""

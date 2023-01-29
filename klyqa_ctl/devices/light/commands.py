@@ -73,18 +73,24 @@ COMMANDS_TO_SEND: list[str] = [
 
 @dataclass
 class RequestCommand(CommandTyped):
+    """Request command."""
+
     def __post_init__(self) -> None:
         self.type = CommandType.REQUEST.value
 
 
 @dataclass
 class PingCommand(CommandTyped):
+    """Ping command."""
+
     def __post_init__(self) -> None:
         self.type = CommandType.PING.value
 
 
 @dataclass
 class FwUpdateCommand(CommandTyped):
+    """Firmware update command."""
+
     url: str = ""
 
     def __post_init__(self) -> None:
@@ -99,6 +105,8 @@ class FwUpdateCommand(CommandTyped):
 
 @dataclass
 class TransitionCommand(RequestCommand):
+    """Transition command."""
+
     transition_time: int = 0
 
     def json(self) -> TypeJson:
@@ -107,6 +115,8 @@ class TransitionCommand(RequestCommand):
 
 @dataclass
 class CommandWithCheckValuesLight(CommandWithCheckValues):
+    """Check command values range limits."""
+
     _light: Light | None = None
 
     @abstractmethod
@@ -121,6 +131,8 @@ class CommandWithCheckValuesLight(CommandWithCheckValues):
 class ColorCommand(
     CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
 ):
+    """Color command."""
+
     color: RgbColor = RgbColor(0, 0, 0)
 
     def color_json(self) -> TypeJson:
@@ -164,6 +176,8 @@ class ColorCommand(
 class TemperatureCommand(
     CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
 ):
+    """Temperature command."""
+
     temperature: int = 0
 
     def temperature_json(self) -> TypeJson:
@@ -201,6 +215,8 @@ class TemperatureCommand(
 class BrightnessCommand(
     CommandWithCheckValuesLight, TransitionCommand, CloudStateCommand
 ):
+    """Brightness command."""
+
     brightness: int = 0
 
     def brightness_json(self) -> TypeJson:
@@ -238,6 +254,8 @@ class BrightnessCommand(
 
 
 class ExternalSourceProtocol(str, Enum):
+    """External source protocol."""
+
     EXT_OFF = "EXT_OFF"
     EXT_UDP = "EXT_UDP"
     EXT_E131 = "EXT_E131"
@@ -246,6 +264,8 @@ class ExternalSourceProtocol(str, Enum):
 
 @dataclass
 class ExternalSourceCommand(CommandWithCheckValues, RequestCommand):
+    """Brightness command."""
+
     protocol: ExternalSourceProtocol = ExternalSourceProtocol.EXT_OFF
     port: int = 0
     channel: int = 0
@@ -269,30 +289,49 @@ class ExternalSourceCommand(CommandWithCheckValues, RequestCommand):
 
 @dataclass
 class PowerCommand(RequestCommand, CloudStateCommand):
+    """Power command."""
+
     status: str = "on"
 
 
 @dataclass
 class RebootCommand(CommandTyped):
+    """Reboot command."""
+
     def __post_init__(self) -> None:
         self.type = CommandType.REBOOT.value
 
 
 @dataclass
 class FactoryResetCommand(CommandTyped):
+    """Factory reset command."""
+
     def __post_init__(self) -> None:
         self.type = CommandType.FACTORY_RESET.value
 
 
 @dataclass
 class FadeCommand(RequestCommand):
+    """Fade command."""
+
     fade_in: int = 0
     fade_out: int = 0
 
 
+class RoutineAction(str, Enum):
+    """Routine action."""
+
+    LIST = "list"
+    PUT = "put"
+    START = "start"
+    DELETE = "delete"
+
+
 @dataclass
 class RoutineCommand(CommandTyped):
-    action: str = "list"
+    """Routine command."""
+
+    action: str = RoutineAction.LIST.value
 
     def __post_init__(self) -> None:
         self.type = CommandType.ROUTINE.value
@@ -307,15 +346,10 @@ class RoutineCommand(CommandTyped):
         )
 
 
-class RoutineAction(str, Enum):
-    LIST = "list"
-    PUT = "put"
-    START = "start"
-    DELETE = "delete"
-
-
 @dataclass
 class RoutineListCommand(RoutineCommand):
+    """Routine list command."""
+
     def __post_init__(self) -> None:
         super().__post_init__()
         self.action = RoutineAction.LIST.value
@@ -323,6 +357,8 @@ class RoutineListCommand(RoutineCommand):
 
 @dataclass
 class RoutineStartCommand(RoutineCommand, TransitionCommand):
+    """Routine start command."""
+
     id: str = ""  # routine_id
 
     def __post_init__(self) -> None:
@@ -332,6 +368,8 @@ class RoutineStartCommand(RoutineCommand, TransitionCommand):
 
 @dataclass
 class RoutineDeleteCommand(RoutineCommand, TransitionCommand):
+    """Routine delete command."""
+
     id: str = ""  # routine_id
 
     def __post_init__(self) -> None:
@@ -343,6 +381,8 @@ class RoutineDeleteCommand(RoutineCommand, TransitionCommand):
 class RoutinePutCommand(
     RoutineCommand, CommandWithCheckValuesLight, TransitionCommand
 ):
+    """Routine put command."""
+
     id: str = ""  # routine_id
     scene: str = ""  # scene_id
     commands: str = ""  # routine_commands
@@ -379,6 +419,7 @@ def percent_color_message(
     red: str, green: str, blue: str, warm: str, cold: str, transition_time: int
 ) -> tuple[str, int]:
     """Create message for color change in percent."""
+
     return (
         json.dumps(
             {
@@ -402,6 +443,7 @@ def external_source_message(
     protocol: int, port: int, channel: int
 ) -> TypeJson:
     """Create external source protocol message."""
+
     protocol_str: str
     if protocol == 0:
         protocol_str = "EXT_OFF"
@@ -1020,7 +1062,9 @@ def command_brightness(
     tt: int = int(args.transitionTime[0])
 
     msg: BrightnessCommand = BrightnessCommand(
-        transition_time=tt, _force=args.force, brightness=int(brightness_str)
+        transition_time=tt,
+        _force=args.force,
+        brightness=int(brightness_str),
     )
 
     msg_queue.append(msg)
@@ -1036,7 +1080,9 @@ def command_temperature(
     tt: Any = args.transitionTime[0]
 
     msg: TemperatureCommand = TemperatureCommand(
-        transition_time=tt, _force=args.force, temperature=int(temperature)
+        transition_time=tt,
+        _force=args.force,
+        temperature=int(temperature),
     )
 
     msg_queue.append(msg)

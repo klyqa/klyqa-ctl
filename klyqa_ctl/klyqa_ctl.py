@@ -41,7 +41,7 @@ from typing import Any
 import uvloop
 
 from klyqa_ctl.__init__ import __version__
-from klyqa_ctl.account import Account
+from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
@@ -89,16 +89,20 @@ class Client:
         ctl_data: ControllerData,
         local: LocalConnectionHandler | None = None,
         cloud: CloudBackend | None = None,
-        devices: dict = dict().copy(),
-        accounts: dict[str, Account] = dict().copy(),
+        devices: dict[str, Device] | None = None,
+        accounts: dict[str, Account] | None = None,
     ) -> None:
         """Initialize the client."""
 
         self._attr_ctl_data: ControllerData = ctl_data
         self._attr_local: LocalConnectionHandler | None = local
-        self._attr_devices: dict[str, Device] = devices
+        self._attr_devices: dict[str, Device] = (
+            {} if devices is None else devices
+        )
         self._attr_cloud: CloudBackend | None = cloud
-        self._attr_accounts: dict[str, Account] = accounts
+        self._attr_accounts: dict[str, Account] = (
+            {} if accounts is None else accounts
+        )
 
     @property
     def ctl_data(self) -> ControllerData:
@@ -510,7 +514,9 @@ class Client:
                 if args.username and args.username in self.accounts:
                     acc: Account = self.accounts[args.username]
                     for uid in target_device_uids:
-                        acc_dev = acc.get_or_create_device(uid)
+                        acc_dev: AccountDevice = (
+                            await acc.get_or_create_device(uid)
+                        )
                         for command in message_queue_tx_local:
                             await acc.cloud_post_command_to_dev(
                                 acc_dev, command

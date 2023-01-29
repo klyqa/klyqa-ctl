@@ -14,7 +14,6 @@ import httpx
 from klyqa_ctl.communication.cloud import CloudBackend, RequestMethod
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
-from klyqa_ctl.devices.device_control import get_or_create_device
 from klyqa_ctl.general.general import (
     LOGGER,
     CloudStateCommand,
@@ -292,21 +291,24 @@ class Account:
             )
         )
 
-    def get_or_create_device(
+    async def get_or_create_device(
         self,
         unit_id: str,
         product_id: str = "",
-        device_sets: TypeJson = TypeJson(),
+        device_sets: TypeJson | None = None,
     ) -> AccountDevice:
         """Look for account device or create it. Create connected controller
         device as well."""
+
+        if device_sets is None:
+            device_sets = TypeJson()
 
         dev: AccountDevice
         if unit_id in self.devices:
             dev = self.devices[unit_id]
         else:
-            device: Device = get_or_create_device(
-                self.controller_data, unit_id, product_id
+            device: Device = await self.controller_data.get_or_create_device(
+                unit_id, product_id
             )
             dev = AccountDevice(device_sets, device)
             self.devices[unit_id] = dev
@@ -335,7 +337,7 @@ class Account:
 
             unit_id: str = format_uid(device_sets["localDeviceId"])
 
-            self.get_or_create_device(
+            await self.get_or_create_device(
                 unit_id, device_sets["productId"], device_sets
             )
 
