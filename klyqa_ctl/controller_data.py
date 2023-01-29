@@ -4,6 +4,8 @@ from __future__ import annotations
 from typing import Any
 
 from klyqa_ctl.devices.device import Device
+from klyqa_ctl.devices.light.light import Light
+from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     AsyncIoLock,
     TypeJson,
@@ -64,6 +66,8 @@ class ControllerData:
         return self._attr_devices
 
     async def init(self) -> None:
+        """Initialize."""
+
         device_configs_cache: dict | None = None
         cached: bool = False
         device_configs_cache, cached = await async_json_cache(
@@ -72,6 +76,47 @@ class ControllerData:
         if cached and device_configs_cache:
             self.device_configs = device_configs_cache
             task_log_debug("Read device configs cache.")
+
+    def create_device(self, unit_id: str, product_id: str) -> Device:
+        """Create a device by product id in the controller data."""
+
+        device: Device
+
+        if ".lighting" in product_id:
+            device = Light()
+        elif ".cleaning" in product_id:
+            device = VacuumCleaner()
+        else:
+            device = Device()
+        device.u_id = unit_id
+        device.product_id = product_id
+
+        return device
+
+    async def get_or_create_device(
+        self, unit_id: str, product_id: str
+    ) -> Device:
+        """Get or create a device from the controller data. Read in device
+        config when new device is created."""
+
+        if unit_id in self.devices:
+            return self.devices[unit_id]
+        else:
+            dev: Device = self.create_device(unit_id, product_id)
+            if product_id in self.device_configs:
+                dev.read_device_config(
+                    device_config=self.device_configs[product_id]
+                )
+
+            if self.add_devices_lock:
+                await self.add_devices_lock.acquire_within_task()
+
+            self.devices[unit_id] = dev
+
+            if self.add_devices_lock:
+                self.add_devices_lock.release_within_task()
+
+            return dev
 
     @classmethod
     async def create_default(

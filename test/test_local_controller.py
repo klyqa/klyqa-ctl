@@ -87,7 +87,6 @@ def main() -> None:
             )
             if ret:
                 reply = ret.answer_utf8
-            pass
     print(reply)
 
 

@@ -24,7 +24,10 @@ from klyqa_ctl.general.general import (
     set_debug_logger,
     task_log_debug,
 )
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
+from klyqa_ctl.general.parameters import (
+    add_config_args,
+    get_description_parser,
+)
 from klyqa_ctl.klyqa_ctl import Client
 
 
@@ -120,9 +123,7 @@ async def main() -> None:
     async def cal(args: argparse.Namespace) -> None:
         return
 
-    await add_device_command_to_queue(
-        args_parsed, args_in, cal, msg_queue, []
-    )
+    await add_device_command_to_queue(args_parsed, args_in, cal, msg_queue, [])
     s: set[str] = set([unit_id])
     ret = await cloud_backend.cloud_send(
         args_parsed,
