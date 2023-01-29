@@ -14,9 +14,14 @@ from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
     AesConnectionState,
     DeviceTcpReturn,
+    PackageType,
     TcpConnection,
 )
-from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
+from klyqa_ctl.communication.local.data_package import (
+    DataPackage,
+    PackageException,
+    PackageType,
+)
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.commands import PingCommand, TransitionCommand
@@ -398,9 +403,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 #     bytes([0, 8, 0, 1]) + connection.local_iv
                 # ):
                 task_log_debug("Sending local initial vector.")
+                iv_data: bytes = DataPackage.create(
+                    connection.local_iv, PackageType.IV
+                ).serialize()
                 await loop.sock_sendall(
                     connection.socket,
-                    bytes([0, 8, 0, 1]) + connection.local_iv,
+                    iv_data
+                    # bytes([0, 8, 0, 1]) + connection.local_iv,
                 )
                 # return DeviceTcpReturn.ERROR_LOCAL_IV
         except socket.error:
@@ -749,16 +758,16 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         """Read tcp socket and process packages."""
 
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
-        package: DataPackage = DataPackage(data_ref.ref)
-
-        if not package.read_raw_data():
+        try:
+            package: DataPackage = DataPackage.deserialize(data_ref.ref)
+        except PackageException:
             return DeviceTcpReturn.RESPONSE_ERROR
 
         data_ref.ref = data_ref.ref[4 + package.length :]
 
         if (
             connection.state == AesConnectionState.WAIT_IV
-            and package.type == PackageType.IDENTITY
+            and package.ptype == PackageType.PLAIN
         ):
 
             return_val = await self.process_device_identity_package(
@@ -769,7 +778,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         if (
             connection.state == AesConnectionState.WAIT_IV
-            and package.type == PackageType.AES_INITIAL_VECTOR
+            and package.ptype == PackageType.IV
         ):
             return_val = await self.process_aes_initial_vector_package(
                 connection, package.data, device_ref.ref
@@ -779,7 +788,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         elif (
             connection.state == AesConnectionState.CONNECTED
-            and package.type == PackageType.DATA
+            and package.ptype == PackageType.ENC
         ):
             return_val = await self.process_message_answer_package(
                 connection, package.data, device_ref.ref, msg_sent
