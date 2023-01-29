@@ -25,6 +25,8 @@ from klyqa_ctl.general.unit_id import UnitId
 
 @dataclass
 class CommandWithCheckValues(CommandTyped):
+    """Command with check values range limits."""
+
     _force: bool = False
 
     @abstractmethod
