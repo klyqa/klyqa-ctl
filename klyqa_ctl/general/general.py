@@ -251,7 +251,7 @@ class AsyncIoLock(asyncio.Lock):
         """Get asyncio lock."""
 
         try:
-            LOGGER.debug(f"wait for lock... {self.name}")
+            task_log_debug(f"wait for lock... {self.name}")
 
             await asyncio.wait_for(self.acquire(), timeout)
 
@@ -333,7 +333,7 @@ def task_name() -> str:
 #     ) -> Any:
 #         """instance"""
 #         if cls._instance is None:
-#             LOGGER.debug("Creating new AsyncIOLock instance")
+#             task_log_debug("Creating new AsyncIOLock instance")
 #             cls._instance = cls.__new__(cls)
 #             # Put any initialization here.
 #             cls._instance.__init__()
@@ -510,7 +510,7 @@ LOGGER.addHandler(logging_hdl)
 LOGGER_debug: TraceLogger = TraceLogger.manager.getLogger(
     "klyqa_ctl_trace"
 )  # type: ignore[assignment]
-LOGGER_debug.setLevel(logging.INFO)
+LOGGER_debug.setLevel(level=logging.INFO)
 
 debug_formatter: logging.Formatter = logging.Formatter(
     "%(asctime)s %(levelname)-8s - %(message)s"

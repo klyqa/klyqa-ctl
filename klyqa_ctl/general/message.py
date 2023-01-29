@@ -7,7 +7,13 @@ import datetime
 from enum import Enum
 from typing import Awaitable, Callable
 
-from klyqa_ctl.general.general import LOGGER, Command, TypeJson, format_uid
+from klyqa_ctl.general.general import (
+    LOGGER,
+    Command,
+    TypeJson,
+    format_uid,
+    task_log_debug,
+)
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -58,7 +64,7 @@ class Message:
         if datetime.datetime.now() - self.started > datetime.timedelta(
             seconds=self.time_to_live_secs
         ):
-            LOGGER.debug(
+            task_log_debug(
                 f"time to live {self.time_to_live_secs} seconds for message"
                 f" {self.msg_counter} {self.msg_queue} ended."
             )

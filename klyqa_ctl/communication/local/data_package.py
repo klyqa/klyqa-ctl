@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 from klyqa_ctl.general.general import task_log
 
@@ -10,35 +11,65 @@ from klyqa_ctl.general.general import task_log
 class PackageType(Enum):
     """Data package types"""
 
-    IDENTITY = 0
-    AES_INITIAL_VECTOR = 1
-    DATA = 2
+    PLAIN = 0
+    IV = 1
+    ENC = 2
+
+
+class PackageException(Exception):
+    """Package exception"""
 
 
 @dataclass
 class DataPackage:
     """Data package"""
 
-    _attr_raw_data: bytes
     _attr_data: bytes = b""
     _attr_length: int = 0
-    _attr_type: PackageType | None = None
-    _attr__valid: bool = False
+    _attr_type: PackageType = PackageType.PLAIN
 
-    def read_raw_data(self) -> bool:
+    def serialize(self, aes_obj: Any = None) -> bytes:
+        """Write package to bytes stream."""
+
+        data: bytes = self.data
+
+        if self.ptype != PackageType.IV:
+            while len(data) % 16:
+                data = data + bytes([0x20])  # space
+
+        if aes_obj and self.ptype == PackageType.ENC:
+            data = aes_obj.encrypt(data)
+
+        return (
+            bytes([len(data) // 256, len(data) % 256, 0, self.ptype.value])
+            + data
+        )
+
+    @classmethod
+    def create(
+        cls: Any, data: bytes, ptype: PackageType = PackageType.PLAIN
+    ) -> DataPackage:
+        """Create"""
+        pkg: DataPackage = DataPackage(data)
+        pkg.length = len(data)
+        pkg.ptype = ptype
+        return pkg
+
+    @classmethod
+    def deserialize(cls: Any, data: bytes) -> DataPackage:
         """Read out the data package as follows: package length, package type
         and package data."""
-        self.length = self.raw_data[0] * 256 + self.raw_data[1]
-        self.type = PackageType(self.raw_data[3])
 
-        self.data = self.raw_data[4 : 4 + self.length]
-        if len(self.data) < self.length:
+        pkg: DataPackage = DataPackage()
+        pkg.length = data[0] * 256 + data[1]
+        pkg.ptype = PackageType(data[3])
+
+        pkg.data = data[4 : 4 + pkg.length]
+        if len(pkg.data) < pkg.length:
             task_log("Incomplete packet, waiting for more...")
-            self._valid = False
-            return False
+            raise PackageException
 
-        self._valid = True
-        return True
+        return pkg
 
     @property
     def raw_data(self) -> bytes:
@@ -65,21 +96,9 @@ class DataPackage:
         self._attr_length = length
 
     @property
-    def type(self) -> PackageType | None:
+    def ptype(self) -> PackageType:
         return self._attr_type
 
-    @type.setter
-    def type(self, pkg_type: PackageType | None) -> None:
+    @ptype.setter
+    def ptype(self, pkg_type: PackageType) -> None:
         self._attr_type = pkg_type
-
-    @property
-    def valid(self) -> bool:
-        return self._attr__valid
-
-    @property
-    def _valid(self) -> bool:
-        return self._valid
-
-    @_valid.setter
-    def _valid(self, _valid: bool) -> None:
-        self._attr__valid = _valid

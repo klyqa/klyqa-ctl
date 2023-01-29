@@ -8,6 +8,7 @@ from klyqa_ctl.general.general import (
     LOGGER,
     RgbColor,
     get_obj_attr_values_as_string,
+    task_log_debug,
 )
 
 
@@ -43,7 +44,7 @@ class ResponseStatus(ResponseMessage):
         self._attr_open_slots = None
         self._attr_color = None
         super().__init__(**kwargs)
-        LOGGER.debug(f"save status {self}")
+        task_log_debug(f"save status {self}")
 
     @property
     def active_command(self) -> int | None:

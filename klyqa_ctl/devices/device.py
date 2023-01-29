@@ -18,6 +18,7 @@ from klyqa_ctl.general.general import (
     AsyncIoLock,
     Command,
     CommandTyped,
+    task_log_debug,
 )
 from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
@@ -27,7 +28,7 @@ from klyqa_ctl.general.unit_id import UnitId
 class CommandWithCheckValues(CommandTyped):
     """Command with check values range limits."""
 
-    _force: bool = False
+    _force: bool = False  # protected vars for non json msg usage
 
     @abstractmethod
     def check_values(self, device: Device) -> bool:
@@ -196,7 +197,9 @@ class Device:
             msg["type"] = "status"
         if "type" in msg and hasattr(self, msg["type"]):
             try:
-                LOGGER.debug(f"save device msg {msg} {self.ident} {self.u_id}")
+                task_log_debug(
+                    f"save device msg {msg} {self.ident} {self.u_id}"
+                )
                 if msg["type"] == "ident" and self.ident:
                     self.ident.update(**msg["ident"])
                 elif msg["type"] in status_update_types:

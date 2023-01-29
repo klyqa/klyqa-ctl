@@ -24,6 +24,7 @@ from klyqa_ctl.general.general import (
     TypeJson,
     async_json_cache,
     format_uid,
+    task_log_debug,
     task_log_trace_ex,
 )
 
@@ -70,7 +71,7 @@ class CloudBackend:
         self, product_id: str, device_configs: TypeJson
     ) -> None:
         """Request device config from the cloud."""
-        LOGGER.debug(
+        task_log_debug(
             f"Try request device config for {product_id} from server."
         )
         try:
@@ -175,7 +176,7 @@ class CloudBackend:
             answer = json.loads(response.text)
         except json.JSONDecodeError as err:
             LOGGER.error(f"{err.msg}")
-            LOGGER.debug(f"{traceback.format_exc()} {err.msg}")
+            task_log_debug(f"{traceback.format_exc()} {err.msg}")
             answer = None
         return answer
 

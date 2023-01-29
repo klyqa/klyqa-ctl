@@ -19,6 +19,9 @@ class ConnectionHandler(DeviceConnectionHandler):  # type: ignore[misc]
 
     @abstractmethod
     async def handle_connection(
-        self, device_ref: ReferencePass, connection: TcpConnection
+        self,
+        device_ref: ReferencePass,
+        connection: TcpConnection,
+        msg_sent_r: ReferencePass,
     ) -> DeviceTcpReturn:
         """Handle connection."""

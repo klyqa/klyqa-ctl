@@ -9,6 +9,7 @@ import logging
 import socket
 from typing import Any
 
+from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
@@ -176,9 +177,6 @@ class TcpConnection:
         if self.socket is None:
             return DeviceTcpReturn.SOCKET_ERROR
         try:
-            # data_ref.ref = await loop.run_in_executor(
-            #     None, self.socket.recv, 4096
-            # )
             task_log_debug("Read tcp socket to device.")
             data_ref.ref = await loop.sock_recv(self.socket, 4096)
             if len(data_ref.ref) == 0:
@@ -193,6 +191,7 @@ class TcpConnection:
 
     async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
         """Encrypt the msg with aes and send it over the socket."""
+
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         info_str: str = (
             (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
@@ -204,29 +203,16 @@ class TcpConnection:
 
         LOGGER.info(info_str)
         plain: bytes = msg.encode("utf-8")
-        while len(plain) % 16:
-            plain = plain + bytes([0x20])
 
-        cipher: bytes = self.sending_aes.encrypt(plain)
-        package: bytes = (
-            bytes([len(cipher) // 256, len(cipher) % 256, 0, 2]) + cipher
+        package: bytes = DataPackage.create(plain, PackageType.ENC).serialize(
+            self.sending_aes
         )
 
         while self.socket:
             try:
                 await loop.sock_sendall(self.socket, package)
-                # await loop.run_in_executor(
-                #     None,
-                #     self.socket.send,
-                #     bytes([len(cipher) // 256, len(cipher) % 256, 0, 2])
-                #     + cipher,
-                # )
-                # self.socket.send(
-                #     bytes([len(cipher) // 256, len(cipher) % 256, 0, 2])
-                #     + cipher
-                # )
                 return True
             except socket.timeout:
-                LOGGER.debug("Send timed out, retrying...")
+                task_log_debug("Send timed out, retrying...")
 
         return False
