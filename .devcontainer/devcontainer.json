@@ -17,13 +17,14 @@
     "explorer.fileNesting.expand": true,
     "python.pythonPath": "/usr/local/bin/python",
     "python.languageServer": "Pylance",
+    "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "editor.formatOnSave": true,
     "python.linting.flake8Enabled": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": true,
+      "source.addMissingImports": true
     },
-    "python.linting.pylintEnabled": false,
     "python.linting.mypyEnabled": true,
     "python.testing.pytestEnabled": false,
     "python.formatting.blackPath": "/usr/local/py-utils/bin/black",

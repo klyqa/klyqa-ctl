@@ -106,10 +106,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def controller_data(self, controller_data: ControllerData) -> None:
         self._attr_controller_data = controller_data
 
-    # @property
-    # def account(self) -> Account | None:
-    #     return self.controller_data.account
-
     @property
     def devices(self) -> dict[str, Device]:
         return self._attr_devices
@@ -211,10 +207,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def __read_tcp_task(self, read_tcp_task: Task | None) -> None:
         self.__attr_read_tcp_task = read_tcp_task
 
-    # @property
-    # def acc_settings(self) -> dict[str, Any] | None:
-    #     return self.account.settings if self.account else None
-
     @property
     def current_addr_connections(self) -> set[str]:
         return self._attr_current_addr_connections
@@ -254,7 +246,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         if (
             not self.udp
-        ):  # or self.udp._closed or self.udp.__getstate__()() == -1:
+        ):  # or self.udp._closed or self.udp.__getstate__() == -1:
             self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -361,15 +353,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         ]
                     )
 
-                # if self.acc_settings:
-                #     dev: list[dict] = [
-                #         dev_acc_sets
-                #         for dev_acc_sets in self.acc_settings["devices"]
-                #         if format_uid(dev_acc_sets["localDeviceId"])
-                #         == format_uid(device.u_id)
-                #     ]
-                #     if dev:
-                #         new_dev.acc_sets = dev[0]
                 self.devices[device.u_id] = new_dev
 
         if self.controller_data.add_devices_lock:
@@ -382,12 +365,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         device_repl: Device = self.devices[device.u_id]
 
         if await device_repl.use_lock():
-            # debug test cancel task sleep. remove on prod
-            # await asyncio.sleep(80000)
             device_repl.local_addr = connection.address
-            # if is_new_device:
-            #     device_b.ident = identity
-            #     device_b.u_id = identity.unit_id
             device = device_repl
             device_ref.ref = device_repl
         else:
@@ -408,25 +386,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             if device.u_id in self.message_queue:
                 del self.message_queue[device.u_id]
             return DeviceTcpReturn.NO_MESSAGE_TO_SEND
-
-        # found: str = ""
-        # settings_device: list[TypeJson] = []
-        # if (
-        #     self.account
-        #     and self.account.settings
-        #     and "devices" in self.account.settings
-        # ):
-        #     settings_device = [
-        #         TypeJson(device_settings)
-        #         for device_settings in self.account.settings["devices"]
-        #         if format_uid(device_settings["localDeviceId"])
-        #         == format_uid(device.u_id)
-        #     ]
-        # if settings_device:
-        #     name: str = settings_device[0]["name"]
-        #     found = found + ' "' + name + '"'
-        # elif device.ident:
-        #     found = found + f" {device.ident.unit_id}"
 
         if not is_new_device and device.ident:
             task_log(f"Found device {device.ident.unit_id}")
@@ -1085,7 +1044,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def handle_connections(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
-        """ Send broadcast and make tasks for incoming tcp connections.
+        """Send broadcast and make tasks for incoming tcp connections.
 
         Params:
             proc_timeout_secs: max timeout in seconds for a device
@@ -1177,33 +1136,11 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
                 if not len(self.message_queue):
                     await self.standby()
-                    # try:
-                    #     LOGGER.debug(
-                    #         f"sleep task create2 (searchandsendloop).."
-                    #     )
-                    #     self.__send_loop_sleep = loop.create_task(
-                    #         asyncio.sleep(
-                    #             SEND_LOOP_MAX_SLEEP_TIME
-                    #             if len(self.message_queue) > 0
-                    #             else 1000000000
-                    #         )
-                    #     )
-                    #     LOGGER.debug(f"sleep task wait..")
-                    #     done, pending = await asyncio.wait(
-                    #         [self.__send_loop_sleep]
-                    #     )
-                    #     LOGGER.debug(f"sleep task done..")
-                    # except CancelledError as e:
-                    #     LOGGER.debug(f"sleep cancelled2.")
-                    # except Exception as e:
-                    #     LOGGER.debug(f"{e}")
-                    #     pass
-                pass
 
         except CancelledError:
             task_log_debug("search and send to device loop cancelled.")
             self.message_queue = {}
-            for task, started in self.__tasks_undone:
+            for task, _ in self.__tasks_undone:
                 task.cancel(msg="Search and send loop cancelled.")
         except Exception as exception:
             LOGGER.error(

@@ -170,6 +170,8 @@ class TcpConnection:
     async def read_local_tcp_socket(
         self, data_ref: ReferencePass
     ) -> DeviceTcpReturn:
+        """Read from tcp socket and handle some exceptions."""
+
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         if self.socket is None:
             return DeviceTcpReturn.SOCKET_ERROR
@@ -190,6 +192,7 @@ class TcpConnection:
         return DeviceTcpReturn.NO_ERROR
 
     async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
+        """Encrypt the msg with aes and send it over the socket."""
         loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         info_str: str = (
             (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
@@ -225,5 +228,5 @@ class TcpConnection:
                 return True
             except socket.timeout:
                 LOGGER.debug("Send timed out, retrying...")
-                pass
+
         return False

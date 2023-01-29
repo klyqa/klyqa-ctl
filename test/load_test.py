@@ -29,7 +29,7 @@ from klyqa_ctl.klyqa_ctl import Client
 
 async def load_test(client: Client) -> int:
 
-    if client.local_con_hdl and not await client.local_con_hdl.bind_ports():
+    if client.local and not await client.local.bind_ports():
         return 1
 
     started: datetime.datetime = datetime.datetime.now()

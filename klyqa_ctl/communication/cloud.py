@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-
-"""Local and cloud connections"""
+"""Cloud connection handling"""
 from __future__ import annotations
 
 import argparse
@@ -21,7 +19,6 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
     PROD_HOST,
-    Command,
     Device_config,
     EventQueuePrinter,
     TypeJson,
@@ -29,7 +26,6 @@ from klyqa_ctl.general.general import (
     format_uid,
     task_log_trace_ex,
 )
-from klyqa_ctl.general.message import Message
 
 DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
@@ -308,8 +304,8 @@ class CloudBackend:
             timeout: float = timeout_ms / 1000
             for t, device in threads:
                 count = count + 1
-                """wait at most timeout_ms wanted minus seconds elapsed since
-                sending"""
+                # wait at most timeout_ms wanted minus seconds elapsed since
+                # sending
                 try:
                     await asyncio.wait_for(
                         t,
@@ -325,8 +321,8 @@ class CloudBackend:
         await process_cloud_messages(
             target_device_uids if args.cloud else to_send_device_uids
         )
-        """if there are still target devices that the local send couldn't
-        reach, try send the to_send_device_uids via cloud"""
+        # if there are still target devices that the local send couldn't
+        # reach, try send the to_send_device_uids via cloud
 
         queue_printer.stop()
 
@@ -338,7 +334,7 @@ class CloudBackend:
     def create_default(
         cls: Any, controller_data: ControllerData, host: str = PROD_HOST
     ) -> CloudBackend:
-        """Factory for CloudBackend."""
+        """Factory for cloud backend."""
         cb: CloudBackend = CloudBackend(controller_data=controller_data)
         cb.host = host
         return cb

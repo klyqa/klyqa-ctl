@@ -69,8 +69,8 @@ class DataPackage:
         return self._attr_type
 
     @type.setter
-    def type(self, type: PackageType | None) -> None:
-        self._attr_type = type
+    def type(self, pkg_type: PackageType | None) -> None:
+        self._attr_type = pkg_type
 
     @property
     def valid(self) -> bool:

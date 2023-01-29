@@ -49,7 +49,7 @@ from klyqa_ctl.communication.local.connection_handler import (
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
-    create_device_message as create_device_message_light,
+    add_device_command_to_queue as add_device_command_to_queue_light,
 )
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.devices.light.light import Light
@@ -86,39 +86,35 @@ class Client:
 
     def __init__(
         self,
-        controller_data: ControllerData,
-        local_connection_hdl: LocalConnectionHandler | None = None,
-        cloud_backend: CloudBackend | None = None,
-        devices: dict = dict(),
-        accounts: dict[str, Account] = dict(),
+        ctl_data: ControllerData,
+        local: LocalConnectionHandler | None = None,
+        cloud: CloudBackend | None = None,
+        devices: dict = dict().copy(),
+        accounts: dict[str, Account] = dict().copy(),
     ) -> None:
-        """Initialize the account with the login data, tcp, udp
-        datacommunicator and tcp communication tasks."""
-        self._attr_controller_data: ControllerData = controller_data
-        self._attr_local_con_hdl: LocalConnectionHandler | None = (
-            local_connection_hdl
-        )
+        """Initialize the client."""
+
+        self._attr_ctl_data: ControllerData = ctl_data
+        self._attr_local: LocalConnectionHandler | None = local
         self._attr_devices: dict[str, Device] = devices
-        self._attr_cloud_backend: CloudBackend | None = cloud_backend
+        self._attr_cloud: CloudBackend | None = cloud
         self._attr_accounts: dict[str, Account] = accounts
 
     @property
-    def controller_data(self) -> ControllerData:
-        return self._attr_controller_data
+    def ctl_data(self) -> ControllerData:
+        return self._attr_ctl_data
 
-    @controller_data.setter
-    def controller_data(self, controller_data: ControllerData) -> None:
-        self._attr_controller_data = controller_data
+    @ctl_data.setter
+    def ctl_data(self, ctl_data: ControllerData) -> None:
+        self._attr_ctl_data = ctl_data
 
     @property
-    def local_con_hdl(self) -> LocalConnectionHandler | None:
-        return self._attr_local_con_hdl
+    def local(self) -> LocalConnectionHandler | None:
+        return self._attr_local
 
-    @local_con_hdl.setter
-    def local_con_hdl(
-        self, local_con_hdl: LocalConnectionHandler | None
-    ) -> None:
-        self._attr_local_con_hdl = local_con_hdl
+    @local.setter
+    def local(self, local: LocalConnectionHandler | None) -> None:
+        self._attr_local = local
 
     @property
     def accounts(self) -> dict[str, Account]:
@@ -137,12 +133,12 @@ class Client:
         self._attr_devices = devices
 
     @property
-    def cloud_backend(self) -> CloudBackend | None:
-        return self._attr_cloud_backend
+    def cloud(self) -> CloudBackend | None:
+        return self._attr_cloud
 
-    @cloud_backend.setter
-    def cloud_backend(self, cloud_backend: CloudBackend) -> None:
-        self._attr_cloud_backend = cloud_backend
+    @cloud.setter
+    def cloud(self, cloud: CloudBackend) -> None:
+        self._attr_cloud = cloud
 
     # def backend_connected(self) -> bool:
     #     if self.cloud_backend:
@@ -152,10 +148,10 @@ class Client:
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
 
-        for user, acc in self.accounts.items():
+        for _, acc in self.accounts.items():
             await acc.shutdown()
-        if self.local_con_hdl:
-            await self.local_con_hdl.shutdown()
+        if self.local:
+            await self.local.shutdown()
 
     async def discover_devices(
         self,
@@ -164,7 +160,7 @@ class Client:
         target_device_uids: set[Any],
     ) -> None:
         """Discover devices."""
-        if not self.local_con_hdl:
+        if not self.local:
             return
 
         print(SEPARATION_WIDTH * "-")
@@ -178,7 +174,7 @@ class Client:
         # identification message from the devices in the aes_search and
         # send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local_con_hdl.send_message(
+        await self.local.send_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_timeout_secs,
@@ -313,7 +309,7 @@ class Client:
                         )
             return target_device_uids_lcl
 
-        """ no devices found. Exit script. """
+        # No devices found. Exit script.
         sys.exit(0)
 
     async def send_to_devices(
@@ -364,9 +360,7 @@ class Client:
                 args.tryLocalThanCloud = False
 
             if args.aes is not None:
-                self.controller_data.aes_keys["all"] = bytes.fromhex(
-                    args.aes[0]
-                )
+                self.ctl_data.aes_keys["all"] = bytes.fromhex(args.aes[0])
 
             target_device_uids: set[str] = set()
 
@@ -408,13 +402,11 @@ class Client:
 
             scene: list[str] = []
             if args.type == DeviceType.LIGHTING.value:
-                await create_device_message_light(
+                await add_device_command_to_queue_light(
                     args,
                     args_in,
                     send_to_devices_cb,
                     message_queue_tx_local,
-                    message_queue_tx_command_cloud,
-                    message_queue_tx_state_cloud,
                     scene,
                 )
             elif args.type == DeviceType.CLEANER.value:
@@ -433,11 +425,11 @@ class Client:
             success: bool = True
             to_send_device_uids: set[str] = set()
 
-            if self.local_con_hdl and (args.local or args.tryLocalThanCloud):
+            if self.local and (args.local or args.tryLocalThanCloud):
                 if args.passive:
-                    if self.local_con_hdl and self.local_con_hdl.udp:
+                    if self.local and self.local.udp:
                         LOGGER.debug("Waiting for UDP broadcast")
-                        data, address = self.local_con_hdl.udp.recvfrom(4096)
+                        data, address = self.local.udp.recvfrom(4096)
                         LOGGER.debug(
                             "\n\n 2. UDP server received: ",
                             data.decode("utf-8"),
@@ -447,12 +439,12 @@ class Client:
                         )
 
                         LOGGER.debug("3a. Sending UDP ack.\n")
-                        self.local_con_hdl.udp.sendto(
+                        self.local.udp.sendto(
                             "QCX-ACK".encode("utf-8"), address
                         )
                         time.sleep(1)
                         LOGGER.debug("3b. Sending UDP ack.\n")
-                        self.local_con_hdl.udp.sendto(
+                        self.local.udp.sendto(
                             "QCX-ACK".encode("utf-8"), address
                         )
                 else:
@@ -462,9 +454,10 @@ class Client:
                     )
 
                     if args.discover:
-                        await self.discover_devices(
-                            args, message_queue_tx_local, target_device_uids
-                        )
+                        await self.local.discover_devices()
+                        # await self.discover_devices(
+                        #     args, message_queue_tx_local, target_device_uids
+                        # )
 
                     to_send_device_uids = target_device_uids.copy()
 
@@ -473,7 +466,7 @@ class Client:
 
                         send_tasks.append(
                             loop.create_task(
-                                self.local_con_hdl.send_message(
+                                self.local.send_message(
                                     send_msgs=message_queue_tx_local.copy(),
                                     target_device_uid=UnitId(uid),
                                     # callback=async_answer_callback_local,
@@ -500,7 +493,7 @@ class Client:
                         )
 
                 if target_device_uids and len(to_send_device_uids) > 0:
-                    """error"""
+                    # Error
                     sent_locally_error: str = (
                         "The commands "
                         + str([f"{k}={v}" for k, v in vars(args).items() if v])
@@ -513,15 +506,24 @@ class Client:
                         LOGGER.error(sent_locally_error)
                     success = False
 
-            if self.cloud_backend and (args.cloud or args.tryLocalThanCloud):
-                success = await self.cloud_backend.cloud_send(
-                    args,
-                    target_device_uids,
-                    to_send_device_uids,
-                    timeout_ms,
-                    message_queue_tx_state_cloud,
-                    message_queue_tx_command_cloud,
-                )
+            if self.cloud and (args.cloud or args.tryLocalThanCloud):
+                if args.username and args.username in self.accounts:
+                    acc: Account = self.accounts[args.username]
+                    for uid in target_device_uids:
+                        acc_dev = acc.get_or_create_device(uid)
+                        for command in message_queue_tx_local:
+                            await acc.cloud_post_command_to_dev(
+                                acc_dev, command
+                            )
+                else:
+                    success = await self.cloud.cloud_send(
+                        args,
+                        target_device_uids,
+                        to_send_device_uids,
+                        timeout_ms,
+                        message_queue_tx_state_cloud,
+                        message_queue_tx_command_cloud,
+                    )
 
             if success and scene:
                 scene_start_args: list[str] = [
@@ -611,14 +613,14 @@ class Client:
             logging_hdl.setLevel(TRACE)
 
         if args_parsed.dev:
-            self.controller_data.aes_keys["dev"] = AES_KEY_DEV
+            self.ctl_data.aes_keys["dev"] = AES_KEY_DEV
 
         local_communication: bool = (
             args_parsed.local or args_parsed.tryLocalThanCloud
         )
 
-        if local_communication and self.local_con_hdl:
-            if not await self.local_con_hdl.bind_ports():
+        if local_communication and self.local:
+            if not await self.local.bind_ports():
                 return 1
 
         exit_ret: int = 0
@@ -649,10 +651,50 @@ class Client:
             exit_ret = 1
 
         LOGGER.debug("Closing ports")
-        if self.local_con_hdl:
-            await self.local_con_hdl.shutdown()
+        if self.local:
+            await self.local.shutdown()
 
         return exit_ret
+
+    @classmethod
+    async def create(
+        cls: Any,
+        interactive_prompts: bool = False,
+        offline: bool = False,
+        server_ip: str = "0.0.0.0",
+        network_interface: str | None = None,
+    ) -> Client:
+        """Client factory."""
+
+        ctl_data: ControllerData = await ControllerData.create_default(
+            interactive_prompts=interactive_prompts, offline=offline
+        )
+
+        lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(
+            ctl_data,
+            server_ip=server_ip,
+            network_interface=network_interface,
+        )
+
+        cloud: CloudBackend = CloudBackend.create_default(ctl_data)
+
+        cl: Client = Client(ctl_data=ctl_data, local=lc_hdl, cloud=cloud)
+
+        return cl
+
+    @classmethod
+    async def create_lib(
+        cls: Any,
+        server_ip: str = "0.0.0.0",
+        network_interface: str | None = None,
+    ) -> Client:
+        """Factory client used as a non-interactive library."""
+        return await Client.create(
+            interactive_prompts=False,
+            offline=False,
+            server_ip=server_ip,
+            network_interface=network_interface,
+        )
 
 
 async def main() -> None:
