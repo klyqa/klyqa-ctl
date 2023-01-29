@@ -49,7 +49,7 @@ from klyqa_ctl.communication.local.connection_handler import (
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
-    create_device_message as create_device_message_light,
+    add_device_command_to_queue as add_device_command_to_queue_light,
 )
 from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.devices.light.light import Light
@@ -402,13 +402,11 @@ class Client:
 
             scene: list[str] = []
             if args.type == DeviceType.LIGHTING.value:
-                await create_device_message_light(
+                await add_device_command_to_queue_light(
                     args,
                     args_in,
                     send_to_devices_cb,
                     message_queue_tx_local,
-                    message_queue_tx_command_cloud,
-                    message_queue_tx_state_cloud,
                     scene,
                 )
             elif args.type == DeviceType.CLEANER.value:
@@ -456,9 +454,10 @@ class Client:
                     )
 
                     if args.discover:
-                        await self.discover_devices(
-                            args, message_queue_tx_local, target_device_uids
-                        )
+                        await self.local.discover_devices()
+                        # await self.discover_devices(
+                        #     args, message_queue_tx_local, target_device_uids
+                        # )
 
                     to_send_device_uids = target_device_uids.copy()
 
@@ -508,14 +507,23 @@ class Client:
                     success = False
 
             if self.cloud and (args.cloud or args.tryLocalThanCloud):
-                success = await self.cloud.cloud_send(
-                    args,
-                    target_device_uids,
-                    to_send_device_uids,
-                    timeout_ms,
-                    message_queue_tx_state_cloud,
-                    message_queue_tx_command_cloud,
-                )
+                if args.username and args.username in self.accounts:
+                    acc: Account = self.accounts[args.username]
+                    for uid in target_device_uids:
+                        acc_dev = acc.get_or_create_device(uid)
+                        for command in message_queue_tx_local:
+                            await acc.cloud_post_command_to_dev(
+                                acc_dev, command
+                            )
+                else:
+                    success = await self.cloud.cloud_send(
+                        args,
+                        target_device_uids,
+                        to_send_device_uids,
+                        timeout_ms,
+                        message_queue_tx_state_cloud,
+                        message_queue_tx_command_cloud,
+                    )
 
             if success and scene:
                 scene_start_args: list[str] = [
