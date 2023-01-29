@@ -13,23 +13,19 @@ from klyqa_ctl.devices.light.commands import (
     ColorCommand,
     PingCommand,
     add_command_args_bulb,
-    create_device_message,
+    add_device_command_to_queue,
 )
 from klyqa_ctl.general.general import (
     DEFAULT_SEND_TIMEOUT_MS,
     PROD_HOST,
     TRACE,
+    Command,
     RgbColor,
     set_debug_logger,
     task_log_debug,
 )
-from klyqa_ctl.general.parameters import (
-    add_config_args,
-    get_description_parser,
-)
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import Client
-
-client: Client | None = None
 
 
 async def main() -> None:
@@ -112,8 +108,7 @@ async def main() -> None:
     add_command_args_bulb(parser=parser)
     args_parsed: argparse.Namespace = parser.parse_args(args=args_in)
 
-    msg_q_s: list = []
-    msg_q_c: list = []
+    msg_queue: list[Command] = []
 
     # args: argparse.Namespace,
     # args_in: list[Any],
@@ -125,8 +120,8 @@ async def main() -> None:
     async def cal(args: argparse.Namespace) -> None:
         return
 
-    await create_device_message(
-        args_parsed, args_in, cal, [], msg_q_c, msg_q_s, []
+    await add_device_command_to_queue(
+        args_parsed, args_in, cal, msg_queue, []
     )
     s: set[str] = set([unit_id])
     ret = await cloud_backend.cloud_send(
@@ -134,8 +129,8 @@ async def main() -> None:
         s,
         s,
         300000,
-        msg_q_s,
-        msg_q_c,
+        msg_queue,
+        [],
     )
 
     # args: argparse.Namespace,
