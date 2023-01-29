@@ -14,7 +14,6 @@ from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
     AesConnectionState,
     DeviceTcpReturn,
-    PackageType,
     TcpConnection,
 )
 from klyqa_ctl.communication.local.data_package import (
@@ -73,6 +72,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         server_ip: str = "0.0.0.0",
         network_interface: str | None = None,
     ) -> None:
+        """Initialize local connection handler."""
+
         self._attr_controller_data: ControllerData = controller_data
         self._attr_devices: dict[str, Device] = controller_data.devices
         self._attr_tcp: socket.socket | None = None
@@ -221,7 +222,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_current_addr_connections = current_addr_connections
 
     async def shutdown(self) -> None:
-        """bind ports."""
+        """Close sockets and Unbind local ports."""
 
         await self.handle_connections_task_stop()
 
@@ -386,32 +387,19 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         if "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
-        # elif use_dev_aes or "dev" in self.controller_data.aes_keys:
-        #     connection.aes_key = AES_KEY_DEV
         elif (
             isinstance(self.controller_data.aes_keys, dict)
             and device.u_id in self.controller_data.aes_keys
         ):
             connection.aes_key = self.controller_data.aes_keys[device.u_id]
+
         try:
             if connection.socket is not None:
-                # for prod do in executor or task for more asyncio schedule
-                # task executions
-                # await loop.run_in_executor(None, connection.socket.send,
-                # bytes([0, 8, 0, 1]) + connection.localIv)
-                # if not connection.socket.send(
-                #     bytes([0, 8, 0, 1]) + connection.local_iv
-                # ):
                 task_log_debug("Sending local initial vector.")
                 iv_data: bytes = DataPackage.create(
                     connection.local_iv, PackageType.IV
                 ).serialize()
-                await loop.sock_sendall(
-                    connection.socket,
-                    iv_data
-                    # bytes([0, 8, 0, 1]) + connection.local_iv,
-                )
-                # return DeviceTcpReturn.ERROR_LOCAL_IV
+                await loop.sock_sendall(connection.socket, iv_data)
         except socket.error:
             return DeviceTcpReturn.SOCKET_ERROR
 
@@ -492,9 +480,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
 
-            # device.recv_msg_unproc.append(msg_sent)
-            # device.process_msgs()
-
             if (
                 msg_sent
                 and msg_sent.callback is not None
@@ -514,6 +499,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def remove_msg_from_queue(
         self, msg: Message, device: Device | None
     ) -> None:
+        """Remove message from message queue."""
+
         if not device:
             return
         if msg not in self.message_queue[device.u_id]:
@@ -521,7 +508,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         task_log("remove message from queue")
         self.message_queue[device.u_id].remove(msg)
-        msg.state = MessageState.SENT
+        # msg.state = MessageState.SENT
 
         if (
             device.u_id in self.message_queue
@@ -542,7 +529,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         or to any device.
 
         Params:
-            device: Device reference - (initial) device object with the tcp connection
+            device: Device reference - (initial) device object with the tcp
+                connection
             connection - TCP connection tunnel to the device
             msg_sent_r - Message reference object to send
 
@@ -622,8 +610,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                                     j = j + 1
                                     msg.msg_queue_sent.append(text)
                                     # don't process the next message, but if
-                                    # still elements in the msg_queue send them as
-                                    # well
+                                    # still elements in the msg_queue send
+                                    # them as well
                                     send_next = False
                                     # break
                                 else:
@@ -651,7 +639,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         while not communication_finished and (
             device.u_id == "no_uid"
-            or type(device) == Device
+            or type(device) == Device  # pylint: disable=unidiomatic-typecheck
             or device.u_id in self.message_queue
             or msg_sent_r.ref
         ):
@@ -754,6 +742,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self, device: Device, connection: TcpConnection
     ) -> DeviceTcpReturn:
         """Handle the incoming tcp connection to the device."""
+
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
         try:
@@ -833,6 +822,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def send_udp_broadcast(self) -> bool:
         """Send qcx-syn broadcast on udp socket."""
+
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
         try:
@@ -858,6 +848,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def standby(self) -> None:
         """Standby search devices and create incoming connection tasks."""
+
         loop: AbstractEventLoop = asyncio.get_event_loop()
         try:
             task_log_debug("sleep task create (broadcasts)..")
@@ -879,6 +870,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def read_incoming_tcp_con_task(
         self,
     ) -> tuple[list[Any], list[Any], list[Any]] | None:
+        """Read incoming connections on tcp socket."""
+
         loop: AbstractEventLoop = asyncio.get_event_loop()
 
         timeout_read: float = 0.3
@@ -1082,7 +1075,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
                 await self.connection_tasks_time_to_live(proc_timeout_secs)
 
-                if not len(self.message_queue):
+                if not self.message_queue:
                     await self.standby()
 
         except CancelledError:
@@ -1125,7 +1118,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             except Exception:
                 task_log_trace_ex()
             task_log_debug("wait end for send and search loop.")
-        pass
 
     def search_and_send_loop_task_alive(self) -> None:
         """Ensure broadcast's and connection handler's task is alive."""
