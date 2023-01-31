@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1account_1_1AccountDevice" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::account::AccountDevice</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Account device</verbatim> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.account.AccountDevice</label>
+        <link refid="classklyqa__ctl_1_1account_1_1AccountDevice"/>
+      </node>
+    </collaborationgraph>
+    <location file="account.py" line="37" column="1" bodyfile="account.py" bodystart="37" bodyend="44"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

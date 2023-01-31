@@ -95,7 +95,12 @@ class CommandType(str, Enum):
 
 @dataclass
 class Command:
-    """General command class."""
+    """General command class.
+    Used as default cloud command class as well.
+    (Normal cloud commands in json are the same as local commands)
+
+    Private or protected attributes shouldn't be printed into the json
+    command message and are just for logical control usage."""
 
     _json: TypeJson = field(default_factory=lambda: {})
 
@@ -115,6 +120,8 @@ class Command:
 
 
 class CloudStateCommand(Command):
+    """Cloud state command class."""
+
     def cloud(self) -> TypeJson:
         return {"payload": self.json()}
 

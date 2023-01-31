@@ -1,0 +1,60 @@
+\hypertarget{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction}{}\doxysection{klyqa\+\_\+ctl.\+vc1\+\_\+vapp.\+\_\+\+Help\+Action Class Reference}
+\label{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction}\index{klyqa\_ctl.vc1\_vapp.\_HelpAction@{klyqa\_ctl.vc1\_vapp.\_HelpAction}}
+
+
+Inheritance diagram for klyqa\+\_\+ctl.\+vc1\+\_\+vapp.\+\_\+\+Help\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+vc1\+\_\+vapp.\+\_\+\+Help\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction_a712e4308217168eb40669ecb3055817e}{\+\_\+\+\_\+call\+\_\+\+\_\+}} (self, \mbox{\hyperlink{namespaceklyqa__ctl_1_1vc1__vapp_aa8ed03cf9e3547fe591134b6be065523}{parser}}, namespace, values, option\+\_\+string=None)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction_a712e4308217168eb40669ecb3055817e}\label{classklyqa__ctl_1_1vc1__vapp_1_1__HelpAction_a712e4308217168eb40669ecb3055817e}} 
+\index{klyqa\_ctl.vc1\_vapp.\_HelpAction@{klyqa\_ctl.vc1\_vapp.\_HelpAction}!\_\_call\_\_@{\_\_call\_\_}}
+\index{\_\_call\_\_@{\_\_call\_\_}!klyqa\_ctl.vc1\_vapp.\_HelpAction@{klyqa\_ctl.vc1\_vapp.\_HelpAction}}
+\doxysubsubsection{\texorpdfstring{\_\_call\_\_()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def klyqa\+\_\+ctl.\+vc1\+\_\+vapp.\+\_\+\+Help\+Action.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{parser,  }\item[{}]{namespace,  }\item[{}]{values,  }\item[{}]{option\+\_\+string = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{66     \textcolor{keyword}{def }\_\_call\_\_(self, parser, namespace, values, option\_string=None):}
+\DoxyCodeLine{67         parser.print\_help()}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69         \textcolor{comment}{\# retrieve subparsers from parser}}
+\DoxyCodeLine{70         subparsers\_actions = [}
+\DoxyCodeLine{71             action \textcolor{keywordflow}{for} action \textcolor{keywordflow}{in} parser.\_actions}
+\DoxyCodeLine{72             \textcolor{keywordflow}{if} isinstance(action, argparse.\_SubParsersAction)]}
+\DoxyCodeLine{73         \textcolor{comment}{\# there will probably only be one subparser\_action,}}
+\DoxyCodeLine{74         \textcolor{comment}{\# but better save than sorry}}
+\DoxyCodeLine{75         \textcolor{keywordflow}{for} subparsers\_action \textcolor{keywordflow}{in} subparsers\_actions:}
+\DoxyCodeLine{76             \textcolor{comment}{\# get all subparsers and print help}}
+\DoxyCodeLine{77             \textcolor{keywordflow}{for} choice, subparser \textcolor{keywordflow}{in} subparsers\_action.choices.items():}
+\DoxyCodeLine{78                 print(\textcolor{stringliteral}{"{}subcommand \{\}:"{}}.format(choice))}
+\DoxyCodeLine{79                 print(subparser.format\_help())}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81         parser.exit()}
+\DoxyCodeLine{82 }
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{vc1__vapp_8py}{vc1\+\_\+vapp.\+py}}\end{DoxyCompactItemize}

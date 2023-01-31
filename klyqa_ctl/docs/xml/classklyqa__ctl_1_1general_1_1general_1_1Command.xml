@@ -1,0 +1,381 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1general_1_1Command" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::general::Command</compoundname>
+    <derivedcompoundref refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand" prot="public" virt="non-virtual">klyqa_ctl.general.general.CloudStateCommand</derivedcompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped" prot="public" virt="non-virtual">klyqa_ctl.general.general.CommandTyped</derivedcompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.Command::TypeJson</definition>
+        <argsstring></argsstring>
+        <name>TypeJson</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="105" column="1" bodyfile="general/general.py" bodystart="105" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1af3395a663a3dbdff8117ee708f80adec" compoundref="light_2commands_8py" startline="339" endline="349">klyqa_ctl.devices.light.commands.RoutineCommand.json</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" compoundref="general_2general_8py" startline="135" endline="146">klyqa_ctl.general.general.CommandTyped.json</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1acaf3db880f88d37bb1cf8218a309e52c" compoundref="vacuum_2commands_8py" startline="72" endline="82">klyqa_ctl.devices.vacuum.commands.RoutineCommand.routine_json</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.Command::default_factory</definition>
+        <argsstring></argsstring>
+        <name>default_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="105" column="1" bodyfile="general/general.py" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1Command_1a8c8ad93fedd0da0e0021f58714ec7fb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" kindref="member">TypeJson</ref></type>
+        <definition> TypeJson klyqa_ctl.general.general.Command.json</definition>
+        <argsstring>(self)</argsstring>
+        <name>json</name>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1a9de3441c7fbba5f5a19ea914970a3db7">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_1aaf9d8431e346c86b9959102c2d7f3316">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1afa8f262e4047666707237c4dfe8615c3">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1a946e7180dd8f3bd4621c23b24e63469a">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1a393710b54f709b852bfd0f3769c39ce6">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1af3395a663a3dbdff8117ee708f80adec">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand_1a23d375f048835d4b0f12602764d2a6c1">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand_1a216966811184b718a4659bf081113f38">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_1a1ac56b80427d60d9f55079ae846ae25e">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand_1a354b74be46f4b7d8a56811eaab910959">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1a926a94c8cc5104275078e438fb301028">json</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca">json</reimplementedby>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return json command.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="107" column="1" bodyfile="general/general.py" bodystart="107" bodyend="110"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" compoundref="general_2general_8py" startline="114" endline="117">klyqa_ctl.general.general.Command.msg_str</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" kindref="member">TypeJson</ref></type>
+        <definition> TypeJson klyqa_ctl.general.general.Command.cloud</definition>
+        <argsstring>(self)</argsstring>
+        <name>cloud</name>
+        <reimplementedby refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1">cloud</reimplementedby>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="111" column="1" bodyfile="general/general.py" bodystart="111" bodyend="113"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1a9de3441c7fbba5f5a19ea914970a3db7" compoundref="light_2commands_8py" startline="102" endline="106">klyqa_ctl.devices.light.commands.FwUpdateCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_1aaf9d8431e346c86b9959102c2d7f3316" compoundref="light_2commands_8py" startline="112" endline="116">klyqa_ctl.devices.light.commands.TransitionCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1afa8f262e4047666707237c4dfe8615c3" compoundref="light_2commands_8py" startline="147" endline="149">klyqa_ctl.devices.light.commands.ColorCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0" compoundref="light_2commands_8py" startline="186" endline="188">klyqa_ctl.devices.light.commands.TemperatureCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1a946e7180dd8f3bd4621c23b24e63469a" compoundref="light_2commands_8py" startline="229" endline="231">klyqa_ctl.devices.light.commands.BrightnessCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1a393710b54f709b852bfd0f3769c39ce6" compoundref="light_2commands_8py" startline="273" endline="281">klyqa_ctl.devices.light.commands.ExternalSourceCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1af3395a663a3dbdff8117ee708f80adec" compoundref="light_2commands_8py" startline="339" endline="349">klyqa_ctl.devices.light.commands.RoutineCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand_1a23d375f048835d4b0f12602764d2a6c1" compoundref="vacuum_2commands_8py" startline="27" endline="30">klyqa_ctl.devices.vacuum.commands.ProductinfoCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand_1a216966811184b718a4659bf081113f38" compoundref="vacuum_2commands_8py" startline="35" endline="38">klyqa_ctl.devices.vacuum.commands.RequestGetCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_1a1ac56b80427d60d9f55079ae846ae25e" compoundref="vacuum_2commands_8py" startline="43" endline="46">klyqa_ctl.devices.vacuum.commands.RequestResetCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand_1a354b74be46f4b7d8a56811eaab910959" compoundref="vacuum_2commands_8py" startline="51" endline="54">klyqa_ctl.devices.vacuum.commands.RequestSetCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1a926a94c8cc5104275078e438fb301028" compoundref="vacuum_2commands_8py" startline="83" endline="86">klyqa_ctl.devices.vacuum.commands.RoutineCommand.json</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a8c8ad93fedd0da0e0021f58714ec7fb5" compoundref="general_2general_8py" startline="107" endline="110">klyqa_ctl.general.general.Command.json</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" compoundref="general_2general_8py" startline="135" endline="146">klyqa_ctl.general.general.CommandTyped.json</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.general.general.Command.msg_str</definition>
+        <argsstring>(self)</argsstring>
+        <name>msg_str</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return json command as string.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="114" column="1" bodyfile="general/general.py" bodystart="114" bodyend="117"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1a9de3441c7fbba5f5a19ea914970a3db7" compoundref="light_2commands_8py" startline="102" endline="106">klyqa_ctl.devices.light.commands.FwUpdateCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_1aaf9d8431e346c86b9959102c2d7f3316" compoundref="light_2commands_8py" startline="112" endline="116">klyqa_ctl.devices.light.commands.TransitionCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1afa8f262e4047666707237c4dfe8615c3" compoundref="light_2commands_8py" startline="147" endline="149">klyqa_ctl.devices.light.commands.ColorCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0" compoundref="light_2commands_8py" startline="186" endline="188">klyqa_ctl.devices.light.commands.TemperatureCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1a946e7180dd8f3bd4621c23b24e63469a" compoundref="light_2commands_8py" startline="229" endline="231">klyqa_ctl.devices.light.commands.BrightnessCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1a393710b54f709b852bfd0f3769c39ce6" compoundref="light_2commands_8py" startline="273" endline="281">klyqa_ctl.devices.light.commands.ExternalSourceCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1af3395a663a3dbdff8117ee708f80adec" compoundref="light_2commands_8py" startline="339" endline="349">klyqa_ctl.devices.light.commands.RoutineCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand_1a23d375f048835d4b0f12602764d2a6c1" compoundref="vacuum_2commands_8py" startline="27" endline="30">klyqa_ctl.devices.vacuum.commands.ProductinfoCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand_1a216966811184b718a4659bf081113f38" compoundref="vacuum_2commands_8py" startline="35" endline="38">klyqa_ctl.devices.vacuum.commands.RequestGetCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_1a1ac56b80427d60d9f55079ae846ae25e" compoundref="vacuum_2commands_8py" startline="43" endline="46">klyqa_ctl.devices.vacuum.commands.RequestResetCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand_1a354b74be46f4b7d8a56811eaab910959" compoundref="vacuum_2commands_8py" startline="51" endline="54">klyqa_ctl.devices.vacuum.commands.RequestSetCommand.json</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1a926a94c8cc5104275078e438fb301028" compoundref="vacuum_2commands_8py" startline="83" endline="86">klyqa_ctl.devices.vacuum.commands.RoutineCommand.json</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a8c8ad93fedd0da0e0021f58714ec7fb5" compoundref="general_2general_8py" startline="107" endline="110">klyqa_ctl.general.general.Command.json</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" compoundref="general_2general_8py" startline="135" endline="146">klyqa_ctl.general.general.CommandTyped.json</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" compoundref="general_2general_8py" startline="118" endline="121">klyqa_ctl.general.general.Command.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.general.general.Command.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="118" column="1" bodyfile="general/general.py" bodystart="118" bodyend="121"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" compoundref="general_2general_8py" startline="114" endline="117">klyqa_ctl.general.general.Command.msg_str</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>General command class.
+Used as default cloud command class as well.
+(Normal cloud commands in json are the same as local commands)
+
+Private or protected attributes shouldn&apos;t be printed into the json
+command message and are just for logical control usage.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="26">
+        <label>klyqa_ctl.devices.light.commands.RoutineCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>klyqa_ctl.devices.light.commands.ColorCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>klyqa_ctl.devices.light.commands.RoutinePutCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>klyqa_ctl.devices.light.commands.PingCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>klyqa_ctl.devices.vacuum.commands.RoutineCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>klyqa_ctl.devices.light.commands.RequestCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.general.general.CloudStateCommand</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>klyqa_ctl.devices.light.commands.ExternalSourceCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>klyqa_ctl.devices.light.commands.TransitionCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>klyqa_ctl.devices.light.commands.RoutineStartCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>klyqa_ctl.devices.light.commands.PowerCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>klyqa_ctl.devices.light.commands.BrightnessCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="22">
+        <label>klyqa_ctl.devices.vacuum.commands.RequestGetCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>klyqa_ctl.devices.light.commands.FactoryResetCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>klyqa_ctl.devices.vacuum.commands.RequestResetCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>klyqa_ctl.devices.vacuum.commands.RequestSetCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>klyqa_ctl.devices.light.commands.RebootCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RebootCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>klyqa_ctl.devices.light.commands.TemperatureCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>klyqa_ctl.devices.device.CommandWithCheckValues</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>klyqa_ctl.devices.light.commands.FadeCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FadeCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>klyqa_ctl.devices.light.commands.FwUpdateCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>klyqa_ctl.devices.light.commands.RoutineListCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>klyqa_ctl.devices.vacuum.commands.ProductinfoCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>klyqa_ctl.devices.light.commands.RoutineDeleteCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+    </collaborationgraph>
+    <location file="general/general.py" line="97" column="1" bodyfile="general/general.py" bodystart="97" bodyend="122"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::Command</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::Command</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::Command</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a8c8ad93fedd0da0e0021f58714ec7fb5" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::Command</scope><name>json</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::Command</scope><name>msg_str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::Command</scope><name>TypeJson</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

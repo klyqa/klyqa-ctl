@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1test__bind__socket" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::test_bind_socket</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1test__bind__socket_1a90de9b52de5b15b4cd86378028abccd6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl::test_bind_socket.tcp</definition>
+        <argsstring></argsstring>
+        <name>tcp</name>
+        <initializer>=  socket.socket(socket.AF_INET, socket.SOCK_STREAM)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="test_bind_socket.py" line="5" column="1" bodyfile="test_bind_socket.py" bodystart="5" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1test__bind__socket_1a166df9af2c037ff4a0ac3fceccbef0e3" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple klyqa_ctl::test_bind_socket.server_address</definition>
+        <argsstring></argsstring>
+        <name>server_address</name>
+        <initializer>=  (&quot;0.0.0.0&quot;, 80)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="test_bind_socket.py" line="7" column="1" bodyfile="test_bind_socket.py" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="test_bind_socket.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

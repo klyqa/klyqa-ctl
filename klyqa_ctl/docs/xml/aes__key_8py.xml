@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="aes__key_8py" kind="file" language="Python">
+    <compoundname>aes_key.py</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey" prot="public">klyqa_ctl::general::aes_key::AesKey</innerclass>
+    <innernamespace refid="namespaceklyqa__ctl_1_1general_1_1aes__key">klyqa_ctl::general::aes_key</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespaceklyqa__ctl_1_1general_1_1aes__key" refkind="compound"><highlight class="stringliteral">&quot;&quot;&quot;AesKey<sp/>class&quot;&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>__future__<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>annotations</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey" kindref="compound">AesKey</ref>(<ref refid="classbytes" kindref="compound">bytes</ref>):</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a8869062df2d14c8b590f3316501e607d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>_attr_aes_key:<sp/>bytes<sp/>=<sp/>b</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1af02def269ba02833f11b2876a818172d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1af02def269ba02833f11b2876a818172d" kindref="member">__init__</ref>(self,<sp/>aes_key:<sp/>str<sp/>|<sp/>bytes<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">None</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="11" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" kindref="member">aes_key</ref><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" kindref="member">aes_key</ref><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a9e79b38e6e36e73aae9465cdc33adab6" kindref="member">aes_key</ref>aes_key<sp/>=<sp/>(</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1ae7c1b2b8199a5dff047cf345e2c77b88" kindref="member">from_string</ref>from_string(aes_key)<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>isinstance(aes_key,<sp/>str)<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>aes_key</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">@property</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" kindref="member">aes_key</ref>(self)<sp/>-&gt;<sp/>bytes<sp/>|<sp/>None:</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>self.<ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" kindref="member">_attr_aes_key</ref>_attr_aes_key</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">@aes_key.setter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a9e79b38e6e36e73aae9465cdc33adab6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" kindref="member">aes_key</ref>(self,<sp/>aes_key:<sp/>bytes)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">None</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="21" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" kindref="member">_attr_aes_key</ref>_attr_aes_key<sp/>=<sp/>aes_key</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1ae7c1b2b8199a5dff047cf345e2c77b88" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1ae7c1b2b8199a5dff047cf345e2c77b88" kindref="member">from_string</ref>(self,<sp/>aes_key:<sp/>str)<sp/>-&gt;<sp/>bytes:</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>bytes.fromhex(aes_key)</highlight></codeline>
+    </programlisting>
+    <location file="general/aes_key.py"/>
+  </compounddef>
+</doxygen>

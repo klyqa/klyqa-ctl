@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacelocal_1_1connection__handler" kind="namespace" language="Python">
+    <compoundname>local::connection_handler</compoundname>
+    <innerclass refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler" prot="public">local::connection_handler::LocalConnectionHandler</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacelocal_1_1connection__handler_1a41af5c536a6af4617df5c96742204c77" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>local::connection_handler.int</definition>
+        <argsstring></argsstring>
+        <name>int</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/local/connection_handler.py" line="51" column="1" bodyfile="communication/local/connection_handler.py" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Local device communication</verbatim> </para>
+    </detaileddescription>
+    <location file="communication/local/connection_handler.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

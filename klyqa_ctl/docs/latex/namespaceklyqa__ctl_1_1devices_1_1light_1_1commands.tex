@@ -1,0 +1,1083 @@
+\hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands}{}\doxysection{klyqa\+\_\+ctl.\+devices.\+light.\+commands Namespace Reference}
+\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands}\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand}{Request\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand}{Ping\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand}{Fw\+Update\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand}{Transition\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight}{Command\+With\+Check\+Values\+Light}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand}{Color\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand}{Temperature\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand}{Brightness\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol}{External\+Source\+Protocol}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand}{External\+Source\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand}{Power\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RebootCommand}{Reboot\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand}{Factory\+Reset\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FadeCommand}{Fade\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineAction}{Routine\+Action}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand}{Routine\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand}{Routine\+List\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand}{Routine\+Start\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand}{Routine\+Delete\+Command}}
+\item 
+class \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand}{Routine\+Put\+Command}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+tuple\mbox{[}\mbox{\hyperlink{classstr}{str}}, int\mbox{]} \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a421107b65283514d7c08c8dc635a7793}{percent\+\_\+color\+\_\+message}} (\mbox{\hyperlink{classstr}{str}} red, \mbox{\hyperlink{classstr}{str}} green, \mbox{\hyperlink{classstr}{str}} blue, \mbox{\hyperlink{classstr}{str}} warm, \mbox{\hyperlink{classstr}{str}} cold, int transition\+\_\+time)
+\item 
+Type\+Json \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_acee533c9ef67c4c4d41aa9c73e519276}{external\+\_\+source\+\_\+message}} (int protocol, int port, int channel)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\+\_\+command\+\_\+args\+\_\+bulb}} (argparse.\+Argument\+Parser parser)
+\item 
+argparse.\+Namespace$\vert$None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008}{discover\+\_\+devices}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+cb)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aff98bf7ababf8435cade44d35a76b211}{add\+\_\+device\+\_\+command\+\_\+to\+\_\+queue}} (argparse.\+Namespace args, list\mbox{[}Any\mbox{]} args\+\_\+in, Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]} send\+\_\+to\+\_\+devices\+\_\+callable, list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]} msg\+\_\+queue, list\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]} scene\+\_\+list)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}{commands\+\_\+select}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]} args\+\_\+in, Callable send\+\_\+to\+\_\+devices\+\_\+callable)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aad49b95001375441b25d985c2b0f076b}{command\+\_\+color}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]} msg\+\_\+queue)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a277af033cb7643026a8d6c40c31dadc7}{command\+\_\+brightness}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]} msg\+\_\+queue)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a78c65871bbbacf71dd826f6b4929e34f}{command\+\_\+temperature}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]} msg\+\_\+queue)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}{routine\+\_\+scene}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]} scene\+\_\+list)
+\item 
+None \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a0040ed2bfdedb53610f55b08161f363e}{enable\+\_\+tb}} (argparse.\+Namespace args, list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]} msg\+\_\+queue)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}{forced\+\_\+continue}} (bool force, \mbox{\hyperlink{classstr}{str}} reason)
+\item 
+bool \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}{missing\+\_\+config}} (bool force, \mbox{\hyperlink{classstr}{str}} product\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Contains all functions for light commands.\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!add\_command\_args\_bulb@{add\_command\_args\_bulb}}
+\index{add\_command\_args\_bulb@{add\_command\_args\_bulb}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{add\_command\_args\_bulb()}{add\_command\_args\_bulb()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+add\+\_\+command\+\_\+args\+\_\+bulb (\begin{DoxyParamCaption}\item[{argparse.\+Argument\+Parser}]{parser }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Add arguments to the argument parser object.
+
+Args:
+    parser: Parser object
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{468 \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\_command\_args\_bulb}}(parser: argparse.ArgumentParser) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{469     \textcolor{stringliteral}{"{}"{}"{}Add arguments to the argument parser object.}}
+\DoxyCodeLine{470 \textcolor{stringliteral}{}}
+\DoxyCodeLine{471 \textcolor{stringliteral}{    Args:}}
+\DoxyCodeLine{472 \textcolor{stringliteral}{        parser: Parser object}}
+\DoxyCodeLine{473 \textcolor{stringliteral}{    "{}"{}"{}}}
+\DoxyCodeLine{474     parser.add\_argument(}
+\DoxyCodeLine{475         \textcolor{stringliteral}{"{}-\/-\/transitionTime"{}},}
+\DoxyCodeLine{476         nargs=1,}
+\DoxyCodeLine{477         help=\textcolor{stringliteral}{"{}transition time in milliseconds"{}},}
+\DoxyCodeLine{478         default=[0],}
+\DoxyCodeLine{479     )}
+\DoxyCodeLine{480 }
+\DoxyCodeLine{481     parser.add\_argument(}
+\DoxyCodeLine{482         \textcolor{stringliteral}{"{}-\/-\/color"{}}, nargs=3, help=\textcolor{stringliteral}{"{}set color command (r,g,b) 0-\/255"{}}}
+\DoxyCodeLine{483     )}
+\DoxyCodeLine{484     parser.add\_argument(}
+\DoxyCodeLine{485         \textcolor{stringliteral}{"{}-\/-\/temperature"{}},}
+\DoxyCodeLine{486         nargs=1,}
+\DoxyCodeLine{487         help=(}
+\DoxyCodeLine{488             \textcolor{stringliteral}{"{}set temperature command (in kelvin, range depends on lamp"{}}}
+\DoxyCodeLine{489             \textcolor{stringliteral}{"{} profile) (lower: warm, higher: cold)"{}}}
+\DoxyCodeLine{490         ),}
+\DoxyCodeLine{491     )}
+\DoxyCodeLine{492     parser.add\_argument(}
+\DoxyCodeLine{493         \textcolor{stringliteral}{"{}-\/-\/brightness"{}}, nargs=1, help=\textcolor{stringliteral}{"{}set brightness in percent 0-\/100"{}}}
+\DoxyCodeLine{494     )}
+\DoxyCodeLine{495     parser.add\_argument(}
+\DoxyCodeLine{496         \textcolor{stringliteral}{"{}-\/-\/percent\_color"{}},}
+\DoxyCodeLine{497         nargs=5,}
+\DoxyCodeLine{498         metavar=(\textcolor{stringliteral}{"{}RED"{}}, \textcolor{stringliteral}{"{}GREEN"{}}, \textcolor{stringliteral}{"{}BLUE"{}}, \textcolor{stringliteral}{"{}WARM"{}}, \textcolor{stringliteral}{"{}COLD"{}}),}
+\DoxyCodeLine{499         help=\textcolor{stringliteral}{"{}set colors and white tones in percent 0 -\/ 100"{}},}
+\DoxyCodeLine{500     )}
+\DoxyCodeLine{501     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/ota"{}}, nargs=1, help=\textcolor{stringliteral}{"{}specify http URL for ota"{}})}
+\DoxyCodeLine{502     parser.add\_argument(}
+\DoxyCodeLine{503         \textcolor{stringliteral}{"{}-\/-\/ping"{}},}
+\DoxyCodeLine{504         help=\textcolor{stringliteral}{"{}send ping"{}},}
+\DoxyCodeLine{505         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{506         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{507         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{508     )}
+\DoxyCodeLine{509     parser.add\_argument(}
+\DoxyCodeLine{510         \textcolor{stringliteral}{"{}-\/-\/request"{}},}
+\DoxyCodeLine{511         help=\textcolor{stringliteral}{"{}send status request"{}},}
+\DoxyCodeLine{512         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{513         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{514         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{515     )}
+\DoxyCodeLine{516 }
+\DoxyCodeLine{517     \textcolor{comment}{\# TODO: currently not fully implemented}}
+\DoxyCodeLine{518     \textcolor{comment}{\# parser.add\_argument(}}
+\DoxyCodeLine{519     \textcolor{comment}{\#     "{}-\/-\/identity"{},}}
+\DoxyCodeLine{520     \textcolor{comment}{\#     help="{}send status request"{},}}
+\DoxyCodeLine{521     \textcolor{comment}{\#     action="{}store\_const"{},}}
+\DoxyCodeLine{522     \textcolor{comment}{\#     const=True,}}
+\DoxyCodeLine{523     \textcolor{comment}{\#     default=False,}}
+\DoxyCodeLine{524     \textcolor{comment}{\# )}}
+\DoxyCodeLine{525 }
+\DoxyCodeLine{526     parser.add\_argument(}
+\DoxyCodeLine{527         \textcolor{stringliteral}{"{}-\/-\/factory\_reset"{}},}
+\DoxyCodeLine{528         help=(}
+\DoxyCodeLine{529             \textcolor{stringliteral}{"{}trigger a factory reset on the device (Warning: device has to be"{}}}
+\DoxyCodeLine{530             \textcolor{stringliteral}{"{} onboarded again afterwards)"{}}}
+\DoxyCodeLine{531         ),}
+\DoxyCodeLine{532         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{533         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{534         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{535     )}
+\DoxyCodeLine{536     parser.add\_argument(}
+\DoxyCodeLine{537         \textcolor{stringliteral}{"{}-\/-\/routine\_list"{}},}
+\DoxyCodeLine{538         help=\textcolor{stringliteral}{"{}lists stored routines"{}},}
+\DoxyCodeLine{539         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{540         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{541         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{542     )}
+\DoxyCodeLine{543     parser.add\_argument(}
+\DoxyCodeLine{544         \textcolor{stringliteral}{"{}-\/-\/routine\_put"{}},}
+\DoxyCodeLine{545         help=\textcolor{stringliteral}{"{}store new routine"{}},}
+\DoxyCodeLine{546         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{547         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{548         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{549     )}
+\DoxyCodeLine{550     parser.add\_argument(}
+\DoxyCodeLine{551         \textcolor{stringliteral}{"{}-\/-\/routine\_delete"{}},}
+\DoxyCodeLine{552         help=\textcolor{stringliteral}{"{}delete routine"{}},}
+\DoxyCodeLine{553         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{554         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{555         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{556     )}
+\DoxyCodeLine{557     parser.add\_argument(}
+\DoxyCodeLine{558         \textcolor{stringliteral}{"{}-\/-\/routine\_start"{}},}
+\DoxyCodeLine{559         help=\textcolor{stringliteral}{"{}start routine"{}},}
+\DoxyCodeLine{560         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{561         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{562         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{563     )}
+\DoxyCodeLine{564     parser.add\_argument(}
+\DoxyCodeLine{565         \textcolor{stringliteral}{"{}-\/-\/routine\_id"{}},}
+\DoxyCodeLine{566         help=\textcolor{stringliteral}{"{}specify routine id to act on (for put, start, delete)"{}},}
+\DoxyCodeLine{567     )}
+\DoxyCodeLine{568     parser.add\_argument(}
+\DoxyCodeLine{569         \textcolor{stringliteral}{"{}-\/-\/routine\_scene"{}}, help=\textcolor{stringliteral}{"{}specify routine scene label (for put)"{}}}
+\DoxyCodeLine{570     )}
+\DoxyCodeLine{571     parser.add\_argument(}
+\DoxyCodeLine{572         \textcolor{stringliteral}{"{}-\/-\/routine\_commands"{}}, help=\textcolor{stringliteral}{"{}specify routine program (for put)"{}}}
+\DoxyCodeLine{573     )}
+\DoxyCodeLine{574     parser.add\_argument(}
+\DoxyCodeLine{575         \textcolor{stringliteral}{"{}-\/-\/reboot"{}},}
+\DoxyCodeLine{576         help=\textcolor{stringliteral}{"{}trigger a reboot"{}},}
+\DoxyCodeLine{577         action=\textcolor{stringliteral}{"{}store\_const"{}},}
+\DoxyCodeLine{578         const=\textcolor{keyword}{True},}
+\DoxyCodeLine{579         default=\textcolor{keyword}{False},}
+\DoxyCodeLine{580     )}
+\DoxyCodeLine{581     parser.add\_argument(}
+\DoxyCodeLine{582         \textcolor{stringliteral}{"{}-\/-\/power"{}}, nargs=1, metavar=\textcolor{stringliteral}{'"{}on"{}/"{}off"{}'}, help=\textcolor{stringliteral}{"{}turns the bulb on/off"{}}}
+\DoxyCodeLine{583     )}
+\DoxyCodeLine{584     parser.add\_argument(}
+\DoxyCodeLine{585         \textcolor{stringliteral}{"{}-\/-\/enable\_tb"{}}, nargs=1, help=\textcolor{stringliteral}{"{}enable thingsboard connection (yes/no)"{}}}
+\DoxyCodeLine{586     )}
+\DoxyCodeLine{587 }
+\DoxyCodeLine{588     parser.add\_argument(}
+\DoxyCodeLine{589         \textcolor{stringliteral}{"{}-\/-\/fade"{}},}
+\DoxyCodeLine{590         nargs=2,}
+\DoxyCodeLine{591         help=\textcolor{stringliteral}{"{}fade in/out time in milliseconds on powering device on/off"{}},}
+\DoxyCodeLine{592         metavar=(\textcolor{stringliteral}{"{}IN"{}}, \textcolor{stringliteral}{"{}OUT"{}}),}
+\DoxyCodeLine{593     )}
+\DoxyCodeLine{594 }
+\DoxyCodeLine{595     parser.add\_argument(}
+\DoxyCodeLine{596         \textcolor{stringliteral}{"{}-\/-\/external\_source"{}},}
+\DoxyCodeLine{597         nargs=3,}
+\DoxyCodeLine{598         metavar=(\textcolor{stringliteral}{"{}MODE"{}}, \textcolor{stringliteral}{"{}PORT"{}}, \textcolor{stringliteral}{"{}CHANNEL"{}}),}
+\DoxyCodeLine{599         help=\textcolor{stringliteral}{"{}set external protocol receiver 0=OFF 1=RAWUDP 2=E131 2=TMP2"{}},}
+\DoxyCodeLine{600     )}
+\DoxyCodeLine{601 }
+\DoxyCodeLine{602     \textcolor{comment}{\# parser.add\_argument("{}-\/-\/loop"{}, help="{}loop"{}, action="{}store\_true"{})}}
+\DoxyCodeLine{603     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/WW"{}}, help=\textcolor{stringliteral}{"{}Warm White"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{604     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/daylight"{}}, help=\textcolor{stringliteral}{"{}daylight"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{605     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/CW"{}}, help=\textcolor{stringliteral}{"{}Cold White"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{606     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/nightlight"{}}, help=\textcolor{stringliteral}{"{}nightlight"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{607     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/relax"{}}, help=\textcolor{stringliteral}{"{}relax"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{608     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/TVtime"{}}, help=\textcolor{stringliteral}{"{}TVtime"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{609     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/comfort"{}}, help=\textcolor{stringliteral}{"{}comfort"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{610     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/focused"{}}, help=\textcolor{stringliteral}{"{}focused"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{611     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/fireplace"{}}, help=\textcolor{stringliteral}{"{}fireplace"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{612     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/club"{}}, help=\textcolor{stringliteral}{"{}club"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{613     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/romantic"{}}, help=\textcolor{stringliteral}{"{}romantic"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{614     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/gentle"{}}, help=\textcolor{stringliteral}{"{}gentle"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{615     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/summer"{}}, help=\textcolor{stringliteral}{"{}summer"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{616     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/jungle"{}}, help=\textcolor{stringliteral}{"{}jungle"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{617     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/ocean"{}}, help=\textcolor{stringliteral}{"{}ocean"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{618     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/fall"{}}, help=\textcolor{stringliteral}{"{}fall"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{619     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/sunset"{}}, help=\textcolor{stringliteral}{"{}sunset"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{620     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/party"{}}, help=\textcolor{stringliteral}{"{}party"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{621     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/spring"{}}, help=\textcolor{stringliteral}{"{}spring"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{622     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/forest"{}}, help=\textcolor{stringliteral}{"{}forest"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{623     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/deep\_sea"{}}, help=\textcolor{stringliteral}{"{}deep\_sea"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{624     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/tropical"{}}, help=\textcolor{stringliteral}{"{}tropical"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{625     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/magic"{}}, help=\textcolor{stringliteral}{"{}magic Mood"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{626     parser.add\_argument(}
+\DoxyCodeLine{627         \textcolor{stringliteral}{"{}-\/-\/mystic"{}}, help=\textcolor{stringliteral}{"{}Mystic Mountain"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}}}
+\DoxyCodeLine{628     )}
+\DoxyCodeLine{629     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/cotton"{}}, help=\textcolor{stringliteral}{"{}Cotton Candy"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{630     parser.add\_argument(\textcolor{stringliteral}{"{}-\/-\/ice"{}}, help=\textcolor{stringliteral}{"{}Ice Cream"{}}, action=\textcolor{stringliteral}{"{}store\_true"{}})}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{632 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aff98bf7ababf8435cade44d35a76b211}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aff98bf7ababf8435cade44d35a76b211}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!add\_device\_command\_to\_queue@{add\_device\_command\_to\_queue}}
+\index{add\_device\_command\_to\_queue@{add\_device\_command\_to\_queue}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{add\_device\_command\_to\_queue()}{add\_device\_command\_to\_queue()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+add\+\_\+device\+\_\+command\+\_\+to\+\_\+queue (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}Any\mbox{]}}]{args\+\_\+in,  }\item[{Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]}}]{send\+\_\+to\+\_\+devices\+\_\+callable,  }\item[{list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]}}]{msg\+\_\+queue,  }\item[{list\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]}}]{scene\+\_\+list }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Process arguments for communicating with lights. Fill message queues for
+local and cloud communication. Discover devices to communicate with.
+
+Params:
+    args: Parsed arguments to be processed.
+    args_in: Original arguments as a list, if we want to reparse and add
+        arguments.
+    send_to_devices_callable: If we need to send something to the lamps,
+        use this callable.
+    message_queue_tx_local: Queue to be filled with messages for local
+        communication.
+    message_queue_tx_command_cloud: Queue for cloud command messages.
+    message_queue_tx_state_cloud: Queue for cloud state messages.
+    scene_list: If a scene is applied, add it to the scene list, so the
+        klyqa-ctl send function can process it.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{703 ) -\/> bool:}
+\DoxyCodeLine{704     \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{705 \textcolor{stringliteral}{}}
+\DoxyCodeLine{706 \textcolor{stringliteral}{    Process arguments for communicating with lights. Fill message queues for}}
+\DoxyCodeLine{707 \textcolor{stringliteral}{    local and cloud communication. Discover devices to communicate with.}}
+\DoxyCodeLine{708 \textcolor{stringliteral}{}}
+\DoxyCodeLine{709 \textcolor{stringliteral}{    Params:}}
+\DoxyCodeLine{710 \textcolor{stringliteral}{        args: Parsed arguments to be processed.}}
+\DoxyCodeLine{711 \textcolor{stringliteral}{        args\_in: Original arguments as a list, if we want to reparse and add}}
+\DoxyCodeLine{712 \textcolor{stringliteral}{            arguments.}}
+\DoxyCodeLine{713 \textcolor{stringliteral}{        send\_to\_devices\_callable: If we need to send something to the lamps,}}
+\DoxyCodeLine{714 \textcolor{stringliteral}{            use this callable.}}
+\DoxyCodeLine{715 \textcolor{stringliteral}{        message\_queue\_tx\_local: Queue to be filled with messages for local}}
+\DoxyCodeLine{716 \textcolor{stringliteral}{            communication.}}
+\DoxyCodeLine{717 \textcolor{stringliteral}{        message\_queue\_tx\_command\_cloud: Queue for cloud command messages.}}
+\DoxyCodeLine{718 \textcolor{stringliteral}{        message\_queue\_tx\_state\_cloud: Queue for cloud state messages.}}
+\DoxyCodeLine{719 \textcolor{stringliteral}{        scene\_list: If a scene is applied, add it to the scene list, so the}}
+\DoxyCodeLine{720 \textcolor{stringliteral}{            klyqa-\/ctl send function can process it.}}
+\DoxyCodeLine{721 \textcolor{stringliteral}{}}
+\DoxyCodeLine{722 \textcolor{stringliteral}{    "{}"{}"{}}}
+\DoxyCodeLine{723 }
+\DoxyCodeLine{724     \textcolor{comment}{\# needs rewrite}}
+\DoxyCodeLine{725     }
+\DoxyCodeLine{736 }
+\DoxyCodeLine{737     \textcolor{comment}{\#     if isinstance(args\_ret, argparse.Namespace):}}
+\DoxyCodeLine{738     \textcolor{comment}{\#         args = args\_ret}}
+\DoxyCodeLine{739 }
+\DoxyCodeLine{740     commands\_to\_send: list[str] = [}
+\DoxyCodeLine{741         i \textcolor{keywordflow}{for} i \textcolor{keywordflow}{in} COMMANDS\_TO\_SEND \textcolor{keywordflow}{if} hasattr(args, i) \textcolor{keywordflow}{and} getattr(args, i)}
+\DoxyCodeLine{742     ]}
+\DoxyCodeLine{743 }
+\DoxyCodeLine{744     \textcolor{keywordflow}{if} commands\_to\_send:}
+\DoxyCodeLine{745         LOGGER.info(}
+\DoxyCodeLine{746             \textcolor{stringliteral}{"{}Commands to send to devices: \%s"{}}, \textcolor{stringliteral}{"{}, "{}}.join(commands\_to\_send)}
+\DoxyCodeLine{747         )}
+\DoxyCodeLine{748     \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{749         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}{commands\_select}}(args, args\_in, send\_to\_devices\_callable):}
+\DoxyCodeLine{750             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{751 }
+\DoxyCodeLine{752     \textcolor{keywordflow}{if} args.ota \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{753         msg\_queue.append(FwUpdateCommand(args.ota))}
+\DoxyCodeLine{754 }
+\DoxyCodeLine{755     \textcolor{keywordflow}{if} args.ping:}
+\DoxyCodeLine{756         msg\_queue.append(PingCommand())}
+\DoxyCodeLine{757 }
+\DoxyCodeLine{758     \textcolor{keywordflow}{if} args.request:}
+\DoxyCodeLine{759         msg\_queue.append(RequestCommand())}
+\DoxyCodeLine{760 }
+\DoxyCodeLine{761     \textcolor{comment}{\# needs new command class}}
+\DoxyCodeLine{762     \textcolor{comment}{\# if args.external\_source:}}
+\DoxyCodeLine{763     \textcolor{comment}{\#     mode, port, channel = args.external\_source}}
+\DoxyCodeLine{764     \textcolor{comment}{\#     message\_queue\_tx\_local.append(}}
+\DoxyCodeLine{765     \textcolor{comment}{\#         \# ExternalSourceCommand(protocol=, port=int(port),}}
+\DoxyCodeLine{766     \textcolor{comment}{\# channel=int(channel)).json()}}
+\DoxyCodeLine{767     \textcolor{comment}{\#         external\_source\_message(int(mode), port, channel)}}
+\DoxyCodeLine{768     \textcolor{comment}{\#         , 0}}
+\DoxyCodeLine{769     \textcolor{comment}{\#     )}}
+\DoxyCodeLine{770 }
+\DoxyCodeLine{771     \textcolor{keywordflow}{if} args.enable\_tb \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{772         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a0040ed2bfdedb53610f55b08161f363e}{enable\_tb}}(args, msg\_queue)}
+\DoxyCodeLine{773 }
+\DoxyCodeLine{774     \textcolor{keywordflow}{if} args.passive:}
+\DoxyCodeLine{775         \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{776 }
+\DoxyCodeLine{777     \textcolor{keywordflow}{if} args.power:}
+\DoxyCodeLine{778         msg\_queue.append(}
+\DoxyCodeLine{779             PowerCommand(status=args.power[0])}
+\DoxyCodeLine{780             \textcolor{comment}{\# Command(\_json=\{"{}type"{}: "{}request"{}, "{}status"{}: args.power[0]\})}}
+\DoxyCodeLine{781         )}
+\DoxyCodeLine{782 }
+\DoxyCodeLine{783     \textcolor{keywordflow}{if} args.color \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{784         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aad49b95001375441b25d985c2b0f076b}{command\_color}}(args, msg\_queue)}
+\DoxyCodeLine{785 }
+\DoxyCodeLine{786     \textcolor{comment}{\# if args.percent\_color is not None:}}
+\DoxyCodeLine{787     \textcolor{comment}{\#     command\_color\_percent(args, msg\_queue)}}
+\DoxyCodeLine{788 }
+\DoxyCodeLine{789     \textcolor{keywordflow}{if} args.temperature \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{790         msg\_queue.append(}
+\DoxyCodeLine{791             TemperatureCommand(}
+\DoxyCodeLine{792                 transition\_time=args.transitionTime[0],}
+\DoxyCodeLine{793                 \_force=args.force,}
+\DoxyCodeLine{794                 temperature=\mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(args.temperature[0]),}
+\DoxyCodeLine{795             )}
+\DoxyCodeLine{796         )}
+\DoxyCodeLine{797 }
+\DoxyCodeLine{798     \textcolor{keywordflow}{if} args.brightness \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{799         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a277af033cb7643026a8d6c40c31dadc7}{command\_brightness}}(args, msg\_queue)}
+\DoxyCodeLine{800 }
+\DoxyCodeLine{801     \textcolor{keywordflow}{if} args.factory\_reset:}
+\DoxyCodeLine{802         msg\_queue.append(}
+\DoxyCodeLine{803             FactoryResetCommand()}
+\DoxyCodeLine{804             \textcolor{comment}{\# Command(\_json=\{"{}type"{}: "{}factory\_reset"{}, "{}status"{}: args.power[0]\})}}
+\DoxyCodeLine{805         )}
+\DoxyCodeLine{806 }
+\DoxyCodeLine{807     \textcolor{comment}{\# needs new command classes}}
+\DoxyCodeLine{808     \textcolor{keywordflow}{if} args.fade \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None} \textcolor{keywordflow}{and} len(args.fade) == 2:}
+\DoxyCodeLine{809         \textcolor{comment}{\#     message\_queue\_tx\_local.append(}}
+\DoxyCodeLine{810         \textcolor{comment}{\#         \{"{}type"{}: "{}request"{}, "{}fade\_out"{}: args.fade[1],}}
+\DoxyCodeLine{811         \textcolor{comment}{\# "{}fade\_in"{}: args.fade[0]\}, 500}}
+\DoxyCodeLine{812         \textcolor{comment}{\#     )}}
+\DoxyCodeLine{813         msg\_queue.append(}
+\DoxyCodeLine{814             FadeCommand(fade\_in=args.fade[0], fade\_out=args.fade[1])}
+\DoxyCodeLine{815             \textcolor{comment}{\# Command(}}
+\DoxyCodeLine{816             \textcolor{comment}{\#     \_json=\{}}
+\DoxyCodeLine{817             \textcolor{comment}{\#         "{}type"{}: "{}request"{},}}
+\DoxyCodeLine{818             \textcolor{comment}{\#         "{}fade\_out"{}: args.fade[1],}}
+\DoxyCodeLine{819             \textcolor{comment}{\#         "{}fade\_in"{}: args.fade[0],}}
+\DoxyCodeLine{820             \textcolor{comment}{\#     \}}}
+\DoxyCodeLine{821             \textcolor{comment}{\# )}}
+\DoxyCodeLine{822         )}
+\DoxyCodeLine{823 }
+\DoxyCodeLine{824     \textcolor{keywordflow}{if} args.reboot:}
+\DoxyCodeLine{825         \textcolor{comment}{\# message\_queue\_tx\_local.append(Command(\_json=\{"{}type"{}: "{}reboot"{}\}))}}
+\DoxyCodeLine{826         msg\_queue.append(RebootCommand())}
+\DoxyCodeLine{827 }
+\DoxyCodeLine{828     \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}{routine\_scene}}(args, scene\_list)}
+\DoxyCodeLine{829     \textcolor{comment}{\# return False}}
+\DoxyCodeLine{830 }
+\DoxyCodeLine{831     \textcolor{keywordflow}{if} args.routine\_list:}
+\DoxyCodeLine{832         \textcolor{comment}{\# message\_queue\_tx\_local.append(\{"{}type"{}: "{}routine"{}, "{}action"{}: "{}list"{}\},}}
+\DoxyCodeLine{833         \textcolor{comment}{\# 500)}}
+\DoxyCodeLine{834         msg\_queue.append(}
+\DoxyCodeLine{835             \textcolor{comment}{\# Command(\_json=\{"{}type"{}: "{}routine"{}, "{}action"{}: "{}list"{}\})}}
+\DoxyCodeLine{836             RoutineListCommand()}
+\DoxyCodeLine{837         )}
+\DoxyCodeLine{838 }
+\DoxyCodeLine{839     \textcolor{keywordflow}{if} args.routine\_put \textcolor{keywordflow}{and} args.routine\_id \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{840         msg\_queue.append(}
+\DoxyCodeLine{841             RoutinePutCommand(}
+\DoxyCodeLine{842                 id=args.routine\_id,}
+\DoxyCodeLine{843                 scene=args.routine\_scene,}
+\DoxyCodeLine{844                 commands=args.routine\_commands,}
+\DoxyCodeLine{845             )}
+\DoxyCodeLine{846         )}
+\DoxyCodeLine{847 }
+\DoxyCodeLine{848     \textcolor{keywordflow}{if} args.routine\_delete \textcolor{keywordflow}{and} args.routine\_id \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{849         msg\_queue.append(}
+\DoxyCodeLine{850             RoutineDeleteCommand(id=args.routine\_id)}
+\DoxyCodeLine{851             \textcolor{comment}{\# \{"{}type"{}: "{}routine"{}, "{}action"{}: "{}delete"{}, "{}id"{}: args.routine\_id\},}}
+\DoxyCodeLine{852             \textcolor{comment}{\# 500}}
+\DoxyCodeLine{853         )}
+\DoxyCodeLine{854     \textcolor{keywordflow}{if} args.routine\_start \textcolor{keywordflow}{and} args.routine\_id \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{855         msg\_queue.append(}
+\DoxyCodeLine{856             RoutineStartCommand(id=args.routine\_id)}
+\DoxyCodeLine{857             \textcolor{comment}{\# \{"{}type"{}: "{}routine"{}, "{}action"{}: "{}start"{}, "{}id"{}: args.routine\_id\},}}
+\DoxyCodeLine{858             \textcolor{comment}{\# 500}}
+\DoxyCodeLine{859         )}
+\DoxyCodeLine{860 }
+\DoxyCodeLine{861     \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{862 }
+\DoxyCodeLine{863 }
+\DoxyCodeLine{864 \textcolor{comment}{\# Needs clean up}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aff98bf7ababf8435cade44d35a76b211_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a277af033cb7643026a8d6c40c31dadc7}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a277af033cb7643026a8d6c40c31dadc7}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_brightness@{command\_brightness}}
+\index{command\_brightness@{command\_brightness}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_brightness()}{command\_brightness()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+brightness (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]}}]{msg\+\_\+queue }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for brightness.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1057 ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{1058     \textcolor{stringliteral}{"{}"{}"{}Command for brightness."{}"{}"{}}}
+\DoxyCodeLine{1059 }
+\DoxyCodeLine{1060     brightness\_str: str = args.brightness[0]}
+\DoxyCodeLine{1061 }
+\DoxyCodeLine{1062     tt: int = \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(args.transitionTime[0])}
+\DoxyCodeLine{1063 }
+\DoxyCodeLine{1064     msg: BrightnessCommand = BrightnessCommand(}
+\DoxyCodeLine{1065         transition\_time=tt,}
+\DoxyCodeLine{1066         \_force=args.force,}
+\DoxyCodeLine{1067         brightness=\mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(brightness\_str),}
+\DoxyCodeLine{1068     )}
+\DoxyCodeLine{1069 }
+\DoxyCodeLine{1070     msg\_queue.append(msg)}
+\DoxyCodeLine{1071 }
+\DoxyCodeLine{1072 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a277af033cb7643026a8d6c40c31dadc7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aad49b95001375441b25d985c2b0f076b}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aad49b95001375441b25d985c2b0f076b}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_color@{command\_color}}
+\index{command\_color@{command\_color}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_color()}{command\_color()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+color (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]}}]{msg\+\_\+queue }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for setting the color.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1019 ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{1020     \textcolor{stringliteral}{"{}"{}"{}Command for setting the color."{}"{}"{}}}
+\DoxyCodeLine{1021     r: str}
+\DoxyCodeLine{1022     g: str}
+\DoxyCodeLine{1023     b: str}
+\DoxyCodeLine{1024     r, g, b = args.color}
+\DoxyCodeLine{1025 }
+\DoxyCodeLine{1026     tt: int = \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(args.transitionTime[0])}
+\DoxyCodeLine{1027     msg: ColorCommand = ColorCommand(}
+\DoxyCodeLine{1028         transition\_time=tt,}
+\DoxyCodeLine{1029         \_force=args.force,}
+\DoxyCodeLine{1030         color=RgbColor(\mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(r), \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(g), \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(b)),}
+\DoxyCodeLine{1031     )}
+\DoxyCodeLine{1032 }
+\DoxyCodeLine{1033     msg\_queue.append(msg)}
+\DoxyCodeLine{1034 }
+\DoxyCodeLine{1035 }
+\DoxyCodeLine{1036 \textcolor{comment}{\# def command\_color\_percent(}}
+\DoxyCodeLine{1037 \textcolor{comment}{\#     args: argparse.Namespace,}}
+\DoxyCodeLine{1038 \textcolor{comment}{\#     msg\_queue: list[Command],}}
+\DoxyCodeLine{1039 \textcolor{comment}{\# ) -\/> None:}}
+\DoxyCodeLine{1040 \textcolor{comment}{\#     "{}"{}"{}Command for color in percentage numbers."{}"{}"{}}}
+\DoxyCodeLine{1041 \textcolor{comment}{\#     r: Any}}
+\DoxyCodeLine{1042 \textcolor{comment}{\#     g: Any}}
+\DoxyCodeLine{1043 \textcolor{comment}{\#     b: Any}}
+\DoxyCodeLine{1044 \textcolor{comment}{\#     w: Any}}
+\DoxyCodeLine{1045 \textcolor{comment}{\#     c: Any}}
+\DoxyCodeLine{1046 \textcolor{comment}{\#     r, g, b, w, c = args.percent\_color}}
+\DoxyCodeLine{1047 \textcolor{comment}{\#     tt: Any = args.transitionTime[0]}}
+\DoxyCodeLine{1048 \textcolor{comment}{\#     msg: tuple[str, int] = percent\_color\_message(}}
+\DoxyCodeLine{1049 \textcolor{comment}{\#         r, g, b, w, c, 0 if args.brightness is not None else tt}}
+\DoxyCodeLine{1050 \textcolor{comment}{\#     )}}
+\DoxyCodeLine{1051 \textcolor{comment}{\#     msg\_queue.append(msg)}}
+\DoxyCodeLine{1052 }
+\DoxyCodeLine{1053 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aad49b95001375441b25d985c2b0f076b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a78c65871bbbacf71dd826f6b4929e34f}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a78c65871bbbacf71dd826f6b4929e34f}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!command\_temperature@{command\_temperature}}
+\index{command\_temperature@{command\_temperature}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{command\_temperature()}{command\_temperature()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+command\+\_\+temperature (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]}}]{msg\+\_\+queue }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for temperature.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1076 ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{1077     \textcolor{stringliteral}{"{}"{}"{}Command for temperature."{}"{}"{}}}
+\DoxyCodeLine{1078 }
+\DoxyCodeLine{1079     temperature: str = args.temperature[0]}
+\DoxyCodeLine{1080     tt: Any = args.transitionTime[0]}
+\DoxyCodeLine{1081 }
+\DoxyCodeLine{1082     msg: TemperatureCommand = TemperatureCommand(}
+\DoxyCodeLine{1083         transition\_time=tt,}
+\DoxyCodeLine{1084         \_force=args.force,}
+\DoxyCodeLine{1085         temperature=\mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(temperature),}
+\DoxyCodeLine{1086     )}
+\DoxyCodeLine{1087 }
+\DoxyCodeLine{1088     msg\_queue.append(msg)}
+\DoxyCodeLine{1089 }
+\DoxyCodeLine{1090 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!commands\_select@{commands\_select}}
+\index{commands\_select@{commands\_select}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{commands\_select()}{commands\_select()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+commands\+\_\+select (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]}}]{args\+\_\+in,  }\item[{Callable}]{send\+\_\+to\+\_\+devices\+\_\+callable }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Interactive command select.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{869 ) -\/> bool:}
+\DoxyCodeLine{870     \textcolor{stringliteral}{"{}"{}"{}Interactive command select."{}"{}"{}}}
+\DoxyCodeLine{871     \textcolor{comment}{\# print("{}Commands (arguments):"{})}}
+\DoxyCodeLine{872     \textcolor{comment}{\# print(sep\_width * "{}-\/"{})}}
+\DoxyCodeLine{873 }
+\DoxyCodeLine{874     \textcolor{comment}{\# def get\_temp\_range(product\_id: str) -\/> bool | tuple[int,int]:}}
+\DoxyCodeLine{875     \textcolor{comment}{\#     temperature\_enum = []}}
+\DoxyCodeLine{876     \textcolor{comment}{\#     if not self.device\_config:}}
+\DoxyCodeLine{877     \textcolor{comment}{\#         return False}}
+\DoxyCodeLine{878     \textcolor{comment}{\#     try:}}
+\DoxyCodeLine{879     \textcolor{comment}{\#         temperature\_enum = [}}
+\DoxyCodeLine{880     \textcolor{comment}{\#             trait["{}value\_schema"{}]["{}properties"{}]["{}colorTemperature"{}]["{}enum"{}]}}
+\DoxyCodeLine{881     \textcolor{comment}{\#             if "{}properties"{} in trait["{}value\_schema"{}]}}
+\DoxyCodeLine{882     \textcolor{comment}{\#             else trait["{}value\_schema"{}]["{}enum"{}]}}
+\DoxyCodeLine{883     \textcolor{comment}{\#             for trait in self.device\_config["{}deviceTraits"{}]}}
+\DoxyCodeLine{884     \textcolor{comment}{\#             if trait["{}trait"{}] == "{}@core/traits/color-\/temperature"{}}}
+\DoxyCodeLine{885     \textcolor{comment}{\#         ]}}
+\DoxyCodeLine{886     \textcolor{comment}{\#         if len(temperature\_enum[0]) < 2:}}
+\DoxyCodeLine{887     \textcolor{comment}{\#             raise Exception()}}
+\DoxyCodeLine{888     \textcolor{comment}{\#     except:}}
+\DoxyCodeLine{889     \textcolor{comment}{\#         return False}}
+\DoxyCodeLine{890     \textcolor{comment}{\#     return temperature\_enum[0]}}
+\DoxyCodeLine{891 }
+\DoxyCodeLine{892     \textcolor{comment}{\# def get\_inner\_range(tup1: Any, tup2: Any) -\/> tuple[int, int]:}}
+\DoxyCodeLine{893     \textcolor{comment}{\#     return (}}
+\DoxyCodeLine{894     \textcolor{comment}{\#         tup1[0] if tup1[0] > tup2[0] else tup2[0],}}
+\DoxyCodeLine{895     \textcolor{comment}{\#         tup1[1] if tup1[1] < tup2[1] else tup2[1],}}
+\DoxyCodeLine{896     \textcolor{comment}{\#     )}}
+\DoxyCodeLine{897 }
+\DoxyCodeLine{898     \textcolor{comment}{\# temperature\_enum: tuple[int, int] = tuple()}}
+\DoxyCodeLine{899     \textcolor{comment}{\# color: list[int] = [0, 255]}}
+\DoxyCodeLine{900     \textcolor{comment}{\# brightness: tuple[int, int] = (0,100)}}
+\DoxyCodeLine{901     \textcolor{comment}{\# u\_id: str}}
+\DoxyCodeLine{902     \textcolor{comment}{\# for u\_id in args.device\_unitids[0].split("{},"{}):}}
+\DoxyCodeLine{903     \textcolor{comment}{\#     u\_id = format\_uid(u\_id)}}
+\DoxyCodeLine{904     \textcolor{comment}{\#     \# fix self devices}}
+\DoxyCodeLine{905     \textcolor{comment}{\#     if u\_id not in self.devices or not self.devices[u\_id].ident:}}
+\DoxyCodeLine{906 }
+\DoxyCodeLine{907     \textcolor{comment}{\#         async def send\_ping() -\/> bool:}}
+\DoxyCodeLine{908     \textcolor{comment}{\#             discover\_local\_args2: list[str] = [}}
+\DoxyCodeLine{909     \textcolor{comment}{\#                 "{}-\/-\/ping"{},}}
+\DoxyCodeLine{910     \textcolor{comment}{\#                 "{}-\/-\/device\_unitids"{},}}
+\DoxyCodeLine{911     \textcolor{comment}{\#                 u\_id,}}
+\DoxyCodeLine{912     \textcolor{comment}{\#             ]}}
+\DoxyCodeLine{913 }
+\DoxyCodeLine{914     \textcolor{comment}{\#             orginal\_args\_parser: argparse.ArgumentParser = (}}
+\DoxyCodeLine{915     \textcolor{comment}{\#                 get\_description\_parser()}}
+\DoxyCodeLine{916     \textcolor{comment}{\#             )}}
+\DoxyCodeLine{917     \textcolor{comment}{\#             discover\_local\_args\_parser2: argparse.ArgumentParser = (}}
+\DoxyCodeLine{918     \textcolor{comment}{\#                 get\_description\_parser()}}
+\DoxyCodeLine{919     \textcolor{comment}{\#             )}}
+\DoxyCodeLine{920 }
+\DoxyCodeLine{921     \textcolor{comment}{\#             add\_config\_args(parser=orginal\_args\_parser)}}
+\DoxyCodeLine{922     \textcolor{comment}{\#             add\_config\_args(parser=discover\_local\_args\_parser2)}}
+\DoxyCodeLine{923     \textcolor{comment}{\#             add\_command\_args\_bulb(parser=discover\_local\_args\_parser2)}}
+\DoxyCodeLine{924 }
+\DoxyCodeLine{925     \textcolor{comment}{\#             (}}
+\DoxyCodeLine{926     \textcolor{comment}{\#                 original\_config\_args\_parsed,}}
+\DoxyCodeLine{927     \textcolor{comment}{\#                 \_,}}
+\DoxyCodeLine{928     \textcolor{comment}{\#             ) = orginal\_args\_parser.parse\_known\_args(args=args\_in)}}
+\DoxyCodeLine{929 }
+\DoxyCodeLine{930     \textcolor{comment}{\#             discover\_local\_args\_parsed2 = (}}
+\DoxyCodeLine{931     \textcolor{comment}{\#                 discover\_local\_args\_parser2.parse\_args(}}
+\DoxyCodeLine{932     \textcolor{comment}{\#                     discover\_local\_args2,}}
+\DoxyCodeLine{933     \textcolor{comment}{\#                     namespace=original\_config\_args\_parsed,}}
+\DoxyCodeLine{934     \textcolor{comment}{\#                 )}}
+\DoxyCodeLine{935     \textcolor{comment}{\#             )}}
+\DoxyCodeLine{936 }
+\DoxyCodeLine{937     \textcolor{comment}{\#             ret = send\_to\_devices\_callable(discover\_local\_args\_parsed2)}}
+\DoxyCodeLine{938     \textcolor{comment}{\#             if isinstance(ret, bool) and ret:}}
+\DoxyCodeLine{939     \textcolor{comment}{\#                 return True}}
+\DoxyCodeLine{940     \textcolor{comment}{\#             else:}}
+\DoxyCodeLine{941     \textcolor{comment}{\#                 return False}}
+\DoxyCodeLine{942 }
+\DoxyCodeLine{943     \textcolor{comment}{\#         ret: bool = await send\_ping()}}
+\DoxyCodeLine{944     \textcolor{comment}{\#         if isinstance(ret, bool) and ret:}}
+\DoxyCodeLine{945     \textcolor{comment}{\#             product\_id: str = self.devices[u\_id].ident.product\_id}}
+\DoxyCodeLine{946     \textcolor{comment}{\#         else:}}
+\DoxyCodeLine{947     \textcolor{comment}{\#             LOGGER.error(f"{}Device \{u\_id\} not found."{})}}
+\DoxyCodeLine{948     \textcolor{comment}{\#             return False}}
+\DoxyCodeLine{949     \textcolor{comment}{\#     product\_id = self.devices[u\_id].ident.product\_id}}
+\DoxyCodeLine{950     \textcolor{comment}{\#     if not temperature\_enum:}}
+\DoxyCodeLine{951     \textcolor{comment}{\#         temperature\_enum = get\_temp\_range(product\_id)}}
+\DoxyCodeLine{952     \textcolor{comment}{\#     else:}}
+\DoxyCodeLine{953     \textcolor{comment}{\#         temperature\_enum = get\_inner\_range(}}
+\DoxyCodeLine{954     \textcolor{comment}{\#             temperature\_enum, get\_temp\_range(product\_id)}}
+\DoxyCodeLine{955     \textcolor{comment}{\#         )}}
+\DoxyCodeLine{956     \textcolor{comment}{\# arguments\_send\_to\_device = \{\}}}
+\DoxyCodeLine{957     \textcolor{comment}{\# if temperature\_enum:}}
+\DoxyCodeLine{958     \textcolor{comment}{\#     arguments\_send\_to\_device = \{}}
+\DoxyCodeLine{959     \textcolor{comment}{\#         "{}temperature"{}: "{} ["{}}}
+\DoxyCodeLine{960     \textcolor{comment}{\#         + str(temperature\_enum[0])}}
+\DoxyCodeLine{961     \textcolor{comment}{\#         + "{}-\/"{}}}
+\DoxyCodeLine{962     \textcolor{comment}{\#         + str(temperature\_enum[1])}}
+\DoxyCodeLine{963     \textcolor{comment}{\#         + "{}] (Kelvin, low: warm, high: cold)"{}}}
+\DoxyCodeLine{964     \textcolor{comment}{\#     \}}}
+\DoxyCodeLine{965 }
+\DoxyCodeLine{966     \textcolor{comment}{\# arguments\_send\_to\_device: dict[str, str] = \{}}
+\DoxyCodeLine{967     \textcolor{comment}{\#     **arguments\_send\_to\_device,}}
+\DoxyCodeLine{968     \textcolor{comment}{\#     **\{}}
+\DoxyCodeLine{969     \textcolor{comment}{\#         "{}color"{}: f"{} rgb [\{color[0]\}..\{color[1]\}] [\{color[0]\}..\{color[1]\}]}}
+\DoxyCodeLine{970     \textcolor{comment}{\# [\{color[0]\}..\{color[1]\}]"{},}}
+\DoxyCodeLine{971     \textcolor{comment}{\#         "{}brightness"{}: "{} ["{}}}
+\DoxyCodeLine{972     \textcolor{comment}{\#         + str(brightness[0])}}
+\DoxyCodeLine{973     \textcolor{comment}{\#         + "{}.."{}}}
+\DoxyCodeLine{974     \textcolor{comment}{\#         + str(brightness[1])}}
+\DoxyCodeLine{975     \textcolor{comment}{\#         + "{}]"{},}}
+\DoxyCodeLine{976     \textcolor{comment}{\#         "{}routine\_commands"{}: "{} [cmd]"{},}}
+\DoxyCodeLine{977     \textcolor{comment}{\#         "{}routine\_id"{}: "{} [int]"{},}}
+\DoxyCodeLine{978     \textcolor{comment}{\#         "{}power"{}: "{} [on/off]"{},}}
+\DoxyCodeLine{979     \textcolor{comment}{\#     \},}}
+\DoxyCodeLine{980     \textcolor{comment}{\# \}}}
+\DoxyCodeLine{981 }
+\DoxyCodeLine{982     \textcolor{comment}{\# count: int = 1}}
+\DoxyCodeLine{983     \textcolor{comment}{\# for c in commands\_send\_to\_bulb:}}
+\DoxyCodeLine{984     \textcolor{comment}{\#     args\_to\_b: str = (}}
+\DoxyCodeLine{985     \textcolor{comment}{\#         arguments\_send\_to\_device[c] if c in arguments\_send\_to\_device}}
+\DoxyCodeLine{986     \textcolor{comment}{\# else "{}"{}}}
+\DoxyCodeLine{987     \textcolor{comment}{\#     )}}
+\DoxyCodeLine{988     \textcolor{comment}{\#     LOGGER.info(str(count) + "{}) "{} + c + args\_to\_b)}}
+\DoxyCodeLine{989     \textcolor{comment}{\#     count = count + 1}}
+\DoxyCodeLine{990 }
+\DoxyCodeLine{991     \textcolor{comment}{\# cmd\_c\_id: int = int(input("{}Choose command number [1-\/9]*: "{}))}}
+\DoxyCodeLine{992     \textcolor{comment}{\# if cmd\_c\_id > 0 and cmd\_c\_id < count:}}
+\DoxyCodeLine{993     \textcolor{comment}{\#     args\_in.append("{}-\/-\/"{} + commands\_send\_to\_bulb[cmd\_c\_id -\/ 1])}}
+\DoxyCodeLine{994     \textcolor{comment}{\# else:}}
+\DoxyCodeLine{995     \textcolor{comment}{\#     LOGGER.error("{}No such command id "{} + str(cmd\_c\_id) + "{} available."{})}}
+\DoxyCodeLine{996     \textcolor{comment}{\#     sys.exit(1)}}
+\DoxyCodeLine{997 }
+\DoxyCodeLine{998     \textcolor{comment}{\# if commands\_send\_to\_bulb[cmd\_c\_id -\/ 1] in arguments\_send\_to\_device:}}
+\DoxyCodeLine{999     \textcolor{comment}{\#     args\_app: str = input(}}
+\DoxyCodeLine{1000     \textcolor{comment}{\#         "{}Set arguments (multiple arguments space separated) for command}}
+\DoxyCodeLine{1001     \textcolor{comment}{\# [Enter]: "{}}}
+\DoxyCodeLine{1002     \textcolor{comment}{\#     )}}
+\DoxyCodeLine{1003     \textcolor{comment}{\#     if args\_app:}}
+\DoxyCodeLine{1004     \textcolor{comment}{\#         args\_in.extend(args\_app.split("{} "{}))}}
+\DoxyCodeLine{1005 }
+\DoxyCodeLine{1006     \textcolor{comment}{\# parser: argparse.ArgumentParser = get\_description\_parser()}}
+\DoxyCodeLine{1007 }
+\DoxyCodeLine{1008     \textcolor{comment}{\# add\_config\_args(parser=parser)}}
+\DoxyCodeLine{1009     \textcolor{comment}{\# add\_command\_args\_bulb(parser=parser)}}
+\DoxyCodeLine{1010 }
+\DoxyCodeLine{1011     \textcolor{comment}{\# args = parser.parse\_args(args\_in, namespace=args)}}
+\DoxyCodeLine{1012     \textcolor{comment}{\# \# args.func(args)}}
+\DoxyCodeLine{1013     \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{1014 }
+\DoxyCodeLine{1015 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_af1bb9573cf151a581c7ee6e02612d7b8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!discover\_devices@{discover\_devices}}
+\index{discover\_devices@{discover\_devices}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{discover\_devices()}{discover\_devices()}}
+{\footnotesize\ttfamily  argparse.\+Namespace $\vert$ None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+discover\+\_\+devices (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}Any\mbox{]}}]{args\+\_\+in,  }\item[{Callable\mbox{[}\mbox{[}argparse.\+Namespace\mbox{]}, Any\mbox{]}}]{send\+\_\+to\+\_\+devices\+\_\+cb }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Send out klyqa broadcast to discover all devices. Tries to set
+device_unitids in args parse. The user can select them.
+
+Params:
+    args (Argsparse): Parsed args object
+    args_in (list): List of arguments parsed to the script call
+    timeout_ms (int, optional): Timeout to send. Defaults to 5000.
+
+Raises:
+    Exception: Network or file errors
+
+Returns:
+    bool: True if succeeded.
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{637 ) -\/> argparse.Namespace | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{638 }
+\DoxyCodeLine{639     \textcolor{stringliteral}{"{}"{}"{}Send out klyqa broadcast to discover all devices. Tries to set}}
+\DoxyCodeLine{640 \textcolor{stringliteral}{    device\_unitids in args parse. The user can select them.}}
+\DoxyCodeLine{641 \textcolor{stringliteral}{}}
+\DoxyCodeLine{642 \textcolor{stringliteral}{    Params:}}
+\DoxyCodeLine{643 \textcolor{stringliteral}{        args (Argsparse): Parsed args object}}
+\DoxyCodeLine{644 \textcolor{stringliteral}{        args\_in (list): List of arguments parsed to the script call}}
+\DoxyCodeLine{645 \textcolor{stringliteral}{        timeout\_ms (int, optional): Timeout to send. Defaults to 5000.}}
+\DoxyCodeLine{646 \textcolor{stringliteral}{}}
+\DoxyCodeLine{647 \textcolor{stringliteral}{    Raises:}}
+\DoxyCodeLine{648 \textcolor{stringliteral}{        Exception: Network or file errors}}
+\DoxyCodeLine{649 \textcolor{stringliteral}{}}
+\DoxyCodeLine{650 \textcolor{stringliteral}{    Returns:}}
+\DoxyCodeLine{651 \textcolor{stringliteral}{        bool: True if succeeded.}}
+\DoxyCodeLine{652 \textcolor{stringliteral}{    "{}"{}"{}}}
+\DoxyCodeLine{653 }
+\DoxyCodeLine{654     discover\_local\_args: list[str] = [}
+\DoxyCodeLine{655         DeviceType.LIGHTING.value,}
+\DoxyCodeLine{656         \textcolor{stringliteral}{"{}-\/-\/request"{}},}
+\DoxyCodeLine{657         \textcolor{stringliteral}{"{}-\/-\/allDevices"{}},}
+\DoxyCodeLine{658         \textcolor{stringliteral}{"{}-\/-\/selectDevice"{}},}
+\DoxyCodeLine{659         \textcolor{stringliteral}{"{}-\/-\/discover"{}},}
+\DoxyCodeLine{660     ]}
+\DoxyCodeLine{661 }
+\DoxyCodeLine{662     orginal\_args\_parser: argparse.ArgumentParser = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a38b90c6125a60eeabd89d4addab053b4}{get\_description\_parser}}()}
+\DoxyCodeLine{663     discover\_local\_args\_parser: argparse.ArgumentParser = (}
+\DoxyCodeLine{664         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a38b90c6125a60eeabd89d4addab053b4}{get\_description\_parser}}()}
+\DoxyCodeLine{665     )}
+\DoxyCodeLine{666 }
+\DoxyCodeLine{667     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a4d4508f84ab7a6044c74575f197f852b}{add\_config\_args}}(parser=orginal\_args\_parser)}
+\DoxyCodeLine{668     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a4d4508f84ab7a6044c74575f197f852b}{add\_config\_args}}(parser=discover\_local\_args\_parser)}
+\DoxyCodeLine{669     \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\_command\_args\_bulb}}(parser=discover\_local\_args\_parser)}
+\DoxyCodeLine{670 }
+\DoxyCodeLine{671     original\_config\_args\_parsed, \_ = orginal\_args\_parser.parse\_known\_args(}
+\DoxyCodeLine{672         args=args\_in}
+\DoxyCodeLine{673     )}
+\DoxyCodeLine{674 }
+\DoxyCodeLine{675     discover\_local\_args\_parsed = discover\_local\_args\_parser.parse\_args(}
+\DoxyCodeLine{676         discover\_local\_args, namespace=original\_config\_args\_parsed}
+\DoxyCodeLine{677     )}
+\DoxyCodeLine{678 }
+\DoxyCodeLine{679     uids: set | list | str = await send\_to\_devices\_cb(}
+\DoxyCodeLine{680         discover\_local\_args\_parsed}
+\DoxyCodeLine{681     )}
+\DoxyCodeLine{682     \textcolor{keywordflow}{if} isinstance(uids, set) \textcolor{keywordflow}{or} isinstance(uids, list):}
+\DoxyCodeLine{683         args\_in = [\textcolor{stringliteral}{"{}-\/-\/device\_unitids"{}}, \textcolor{stringliteral}{"{},"{}}.join(list(uids))] + args\_in}
+\DoxyCodeLine{684     \textcolor{keywordflow}{elif} isinstance(uids, str) \textcolor{keywordflow}{and} uids == \textcolor{stringliteral}{"{}no\_devices"{}}:}
+\DoxyCodeLine{685         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{686     \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{687         LOGGER.error(\textcolor{stringliteral}{"{}Error during local discovery of the devices."{}})}
+\DoxyCodeLine{688         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{689 }
+\DoxyCodeLine{690     \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\_command\_args\_bulb}}(parser=orginal\_args\_parser)}
+\DoxyCodeLine{691     args = orginal\_args\_parser.parse\_args(args=args\_in, namespace=args)}
+\DoxyCodeLine{692     \textcolor{keywordflow}{return} args}
+\DoxyCodeLine{693 }
+\DoxyCodeLine{694 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a09a73cff59e95502adefbee0333c3008_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a0040ed2bfdedb53610f55b08161f363e}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a0040ed2bfdedb53610f55b08161f363e}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!enable\_tb@{enable\_tb}}
+\index{enable\_tb@{enable\_tb}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{enable\_tb()}{enable\_tb()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+enable\+\_\+tb (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}\mbox{]}}]{msg\+\_\+queue }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Enable thingsboard to device.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1174 \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a0040ed2bfdedb53610f55b08161f363e}{enable\_tb}}(args: argparse.Namespace, msg\_queue: list[Command]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{1175     \textcolor{stringliteral}{"{}"{}"{}Enable thingsboard to device."{}"{}"{}}}
+\DoxyCodeLine{1176 }
+\DoxyCodeLine{1177     a: str = args.enable\_tb[0]}
+\DoxyCodeLine{1178     \textcolor{keywordflow}{if} a != \textcolor{stringliteral}{"{}yes"{}} \textcolor{keywordflow}{and} a != \textcolor{stringliteral}{"{}no"{}}:}
+\DoxyCodeLine{1179         print(\textcolor{stringliteral}{"{}ERROR -\/-\/enable\_tb needs to be yes or no"{}})}
+\DoxyCodeLine{1180         sys.exit(1)}
+\DoxyCodeLine{1181 }
+\DoxyCodeLine{1182     msg\_queue.append(Command(\{\textcolor{stringliteral}{"{}type"{}}: \textcolor{stringliteral}{"{}backend"{}}, \textcolor{stringliteral}{"{}link\_enabled"{}}: a\}))}
+\DoxyCodeLine{1183 }
+\DoxyCodeLine{1184 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a0040ed2bfdedb53610f55b08161f363e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_acee533c9ef67c4c4d41aa9c73e519276}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_acee533c9ef67c4c4d41aa9c73e519276}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!external\_source\_message@{external\_source\_message}}
+\index{external\_source\_message@{external\_source\_message}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{external\_source\_message()}{external\_source\_message()}}
+{\footnotesize\ttfamily  Type\+Json klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+external\+\_\+source\+\_\+message (\begin{DoxyParamCaption}\item[{int}]{protocol,  }\item[{int}]{port,  }\item[{int }]{channel }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create external source protocol message.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{444 ) -\/> TypeJson:}
+\DoxyCodeLine{445     \textcolor{stringliteral}{"{}"{}"{}Create external source protocol message."{}"{}"{}}}
+\DoxyCodeLine{446 }
+\DoxyCodeLine{447     protocol\_str: str}
+\DoxyCodeLine{448     \textcolor{keywordflow}{if} protocol == 0:}
+\DoxyCodeLine{449         protocol\_str = \textcolor{stringliteral}{"{}EXT\_OFF"{}}}
+\DoxyCodeLine{450     \textcolor{keywordflow}{elif} protocol == 1:}
+\DoxyCodeLine{451         protocol\_str = \textcolor{stringliteral}{"{}EXT\_UDP"{}}}
+\DoxyCodeLine{452     \textcolor{keywordflow}{elif} protocol == 2:}
+\DoxyCodeLine{453         protocol\_str = \textcolor{stringliteral}{"{}EXT\_E131"{}}}
+\DoxyCodeLine{454     \textcolor{keywordflow}{elif} protocol == 3:}
+\DoxyCodeLine{455         protocol\_str = \textcolor{stringliteral}{"{}EXT\_TPM2"{}}}
+\DoxyCodeLine{456     \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{457         protocol\_str = \textcolor{stringliteral}{"{}EXT\_OFF"{}}}
+\DoxyCodeLine{458     \textcolor{keywordflow}{return} \{}
+\DoxyCodeLine{459         \textcolor{stringliteral}{"{}type"{}}: \textcolor{stringliteral}{"{}request"{}},}
+\DoxyCodeLine{460         \textcolor{stringliteral}{"{}external"{}}: \{}
+\DoxyCodeLine{461             \textcolor{stringliteral}{"{}mode"{}}: protocol\_str,}
+\DoxyCodeLine{462             \textcolor{stringliteral}{"{}port"{}}: \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(port),}
+\DoxyCodeLine{463             \textcolor{stringliteral}{"{}channel"{}}: \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(channel),}
+\DoxyCodeLine{464         \},}
+\DoxyCodeLine{465     \}}
+\DoxyCodeLine{466 }
+\DoxyCodeLine{467 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!forced\_continue@{forced\_continue}}
+\index{forced\_continue@{forced\_continue}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{forced\_continue()}{forced\_continue()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+forced\+\_\+continue (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{reason }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Force argument.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1185 \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}{forced\_continue}}(force: bool, reason: str) -\/> bool:}
+\DoxyCodeLine{1186     \textcolor{stringliteral}{"{}"{}"{}Force argument."{}"{}"{}}}
+\DoxyCodeLine{1187 }
+\DoxyCodeLine{1188     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} force:}
+\DoxyCodeLine{1189         LOGGER.error(reason)}
+\DoxyCodeLine{1190         \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{1191     \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{1192         LOGGER.info(reason)}
+\DoxyCodeLine{1193         LOGGER.info(\textcolor{stringliteral}{"{}Enforced send"{}})}
+\DoxyCodeLine{1194         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{1195 }
+\DoxyCodeLine{1196 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!missing\_config@{missing\_config}}
+\index{missing\_config@{missing\_config}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{missing\_config()}{missing\_config()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+missing\+\_\+config (\begin{DoxyParamCaption}\item[{bool}]{force,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{product\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Missing device config.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1197 \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}{missing\_config}}(force: bool, product\_id: str) -\/> bool:}
+\DoxyCodeLine{1198     \textcolor{stringliteral}{"{}"{}"{}Missing device config."{}"{}"{}}}
+\DoxyCodeLine{1199 }
+\DoxyCodeLine{1200     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}{forced\_continue}}(}
+\DoxyCodeLine{1201         force,}
+\DoxyCodeLine{1202         \textcolor{stringliteral}{"{}Missing or faulty config values for device "{}}}
+\DoxyCodeLine{1203         + \textcolor{stringliteral}{"{} product\_id: "{}}}
+\DoxyCodeLine{1204         + product\_id,}
+\DoxyCodeLine{1205     ):}
+\DoxyCodeLine{1206         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{1207     \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a421107b65283514d7c08c8dc635a7793}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a421107b65283514d7c08c8dc635a7793}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!percent\_color\_message@{percent\_color\_message}}
+\index{percent\_color\_message@{percent\_color\_message}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{percent\_color\_message()}{percent\_color\_message()}}
+{\footnotesize\ttfamily  tuple\mbox{[}\mbox{\hyperlink{classstr}{str}}, int\mbox{]} klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+percent\+\_\+color\+\_\+message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classstr}{str}}}]{red,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{green,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{blue,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{warm,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{cold,  }\item[{int }]{transition\+\_\+time }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create message for color change in percent.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{420 ) -\/> tuple[str, int]:}
+\DoxyCodeLine{421     \textcolor{stringliteral}{"{}"{}"{}Create message for color change in percent."{}"{}"{}}}
+\DoxyCodeLine{422 }
+\DoxyCodeLine{423     \textcolor{keywordflow}{return} (}
+\DoxyCodeLine{424         json.dumps(}
+\DoxyCodeLine{425             \{}
+\DoxyCodeLine{426                 \textcolor{stringliteral}{"{}type"{}}: \textcolor{stringliteral}{"{}request"{}},}
+\DoxyCodeLine{427                 \textcolor{stringliteral}{"{}p\_color"{}}: \{}
+\DoxyCodeLine{428                     \textcolor{stringliteral}{"{}red"{}}: red,}
+\DoxyCodeLine{429                     \textcolor{stringliteral}{"{}green"{}}: green,}
+\DoxyCodeLine{430                     \textcolor{stringliteral}{"{}blue"{}}: blue,}
+\DoxyCodeLine{431                     \textcolor{stringliteral}{"{}warm"{}}: warm,}
+\DoxyCodeLine{432                     \textcolor{stringliteral}{"{}cold"{}}: cold,}
+\DoxyCodeLine{433                     \textcolor{comment}{\# "{}brightness"{} : brightness}}
+\DoxyCodeLine{434                 \},}
+\DoxyCodeLine{435                 \textcolor{stringliteral}{"{}transitionTime"{}}: transition\_time,}
+\DoxyCodeLine{436             \}}
+\DoxyCodeLine{437         ),}
+\DoxyCodeLine{438         transition\_time,}
+\DoxyCodeLine{439     )}
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}\label{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}} 
+\index{klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}!routine\_scene@{routine\_scene}}
+\index{routine\_scene@{routine\_scene}!klyqa\_ctl.devices.light.commands@{klyqa\_ctl.devices.light.commands}}
+\doxysubsubsection{\texorpdfstring{routine\_scene()}{routine\_scene()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+routine\+\_\+scene (\begin{DoxyParamCaption}\item[{argparse.\+Namespace}]{args,  }\item[{list\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]}}]{scene\+\_\+list }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Command for select scene.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1091 \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a}{routine\_scene}}(args: argparse.Namespace, scene\_list: list[str]) -\/> bool:}
+\DoxyCodeLine{1092     \textcolor{stringliteral}{"{}"{}"{}Command for select scene."{}"{}"{}}}
+\DoxyCodeLine{1093 }
+\DoxyCodeLine{1094     scene: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{1095     \textcolor{keywordflow}{if} args.WW:}
+\DoxyCodeLine{1096         scene = \textcolor{stringliteral}{"{}Warm White"{}}}
+\DoxyCodeLine{1097     \textcolor{keywordflow}{if} args.daylight:}
+\DoxyCodeLine{1098         scene = \textcolor{stringliteral}{"{}Daylight"{}}}
+\DoxyCodeLine{1099     \textcolor{keywordflow}{if} args.CW:}
+\DoxyCodeLine{1100         scene = \textcolor{stringliteral}{"{}Cold White"{}}}
+\DoxyCodeLine{1101     \textcolor{keywordflow}{if} args.nightlight:}
+\DoxyCodeLine{1102         scene = \textcolor{stringliteral}{"{}Night Light"{}}}
+\DoxyCodeLine{1103     \textcolor{keywordflow}{if} args.relax:}
+\DoxyCodeLine{1104         scene = \textcolor{stringliteral}{"{}Relax"{}}}
+\DoxyCodeLine{1105     \textcolor{keywordflow}{if} args.TVtime:}
+\DoxyCodeLine{1106         scene = \textcolor{stringliteral}{"{}TV time"{}}}
+\DoxyCodeLine{1107     \textcolor{keywordflow}{if} args.comfort:}
+\DoxyCodeLine{1108         scene = \textcolor{stringliteral}{"{}Comfort"{}}}
+\DoxyCodeLine{1109     \textcolor{keywordflow}{if} args.focused:}
+\DoxyCodeLine{1110         scene = \textcolor{stringliteral}{"{}Focused"{}}}
+\DoxyCodeLine{1111     \textcolor{keywordflow}{if} args.fireplace:}
+\DoxyCodeLine{1112         scene = \textcolor{stringliteral}{"{}Fireplace"{}}}
+\DoxyCodeLine{1113     \textcolor{keywordflow}{if} args.club:}
+\DoxyCodeLine{1114         scene = \textcolor{stringliteral}{"{}Jazz Club"{}}}
+\DoxyCodeLine{1115     \textcolor{keywordflow}{if} args.romantic:}
+\DoxyCodeLine{1116         scene = \textcolor{stringliteral}{"{}Romantic"{}}}
+\DoxyCodeLine{1117     \textcolor{keywordflow}{if} args.gentle:}
+\DoxyCodeLine{1118         scene = \textcolor{stringliteral}{"{}Gentle"{}}}
+\DoxyCodeLine{1119     \textcolor{keywordflow}{if} args.summer:}
+\DoxyCodeLine{1120         scene = \textcolor{stringliteral}{"{}Summer"{}}}
+\DoxyCodeLine{1121     \textcolor{keywordflow}{if} args.jungle:}
+\DoxyCodeLine{1122         scene = \textcolor{stringliteral}{"{}Jungle"{}}}
+\DoxyCodeLine{1123     \textcolor{keywordflow}{if} args.ocean:}
+\DoxyCodeLine{1124         scene = \textcolor{stringliteral}{"{}Ocean"{}}}
+\DoxyCodeLine{1125     \textcolor{keywordflow}{if} args.fall:  \textcolor{comment}{\# Autumn}}
+\DoxyCodeLine{1126         scene = \textcolor{stringliteral}{"{}Fall"{}}}
+\DoxyCodeLine{1127     \textcolor{keywordflow}{if} args.sunset:}
+\DoxyCodeLine{1128         scene = \textcolor{stringliteral}{"{}Sunset"{}}}
+\DoxyCodeLine{1129     \textcolor{keywordflow}{if} args.party:}
+\DoxyCodeLine{1130         scene = \textcolor{stringliteral}{"{}Party"{}}}
+\DoxyCodeLine{1131     \textcolor{keywordflow}{if} args.spring:}
+\DoxyCodeLine{1132         scene = \textcolor{stringliteral}{"{}Spring"{}}}
+\DoxyCodeLine{1133     \textcolor{keywordflow}{if} args.forest:}
+\DoxyCodeLine{1134         scene = \textcolor{stringliteral}{"{}Forest"{}}}
+\DoxyCodeLine{1135     \textcolor{keywordflow}{if} args.deep\_sea:}
+\DoxyCodeLine{1136         scene = \textcolor{stringliteral}{"{}Deep Sea"{}}}
+\DoxyCodeLine{1137     \textcolor{keywordflow}{if} args.tropical:}
+\DoxyCodeLine{1138         scene = \textcolor{stringliteral}{"{}Tropical"{}}}
+\DoxyCodeLine{1139     \textcolor{keywordflow}{if} args.magic:}
+\DoxyCodeLine{1140         scene = \textcolor{stringliteral}{"{}Magic Mood"{}}}
+\DoxyCodeLine{1141     \textcolor{keywordflow}{if} args.mystic:}
+\DoxyCodeLine{1142         scene = \textcolor{stringliteral}{"{}Mystic Mountain"{}}}
+\DoxyCodeLine{1143     \textcolor{keywordflow}{if} args.cotton:}
+\DoxyCodeLine{1144         scene = \textcolor{stringliteral}{"{}Cotton Candy"{}}}
+\DoxyCodeLine{1145     \textcolor{keywordflow}{if} args.ice:}
+\DoxyCodeLine{1146         scene = \textcolor{stringliteral}{"{}Ice Cream"{}}}
+\DoxyCodeLine{1147 }
+\DoxyCodeLine{1148     \textcolor{keywordflow}{if} scene:}
+\DoxyCodeLine{1149         scene\_result: list[dict[str, Any]] = [}
+\DoxyCodeLine{1150             x \textcolor{keywordflow}{for} x \textcolor{keywordflow}{in} SCENES \textcolor{keywordflow}{if} x[\textcolor{stringliteral}{"{}label"{}}] == scene}
+\DoxyCodeLine{1151         ]}
+\DoxyCodeLine{1152         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} len(scene\_result) \textcolor{keywordflow}{or} len(scene\_result) > 1:}
+\DoxyCodeLine{1153             LOGGER.error(}
+\DoxyCodeLine{1154                 \textcolor{stringliteral}{"{}Scene \%s not found or more than one scene with the name"{}}}
+\DoxyCodeLine{1155                 \textcolor{stringliteral}{"{} found."{}},}
+\DoxyCodeLine{1156                 scene,}
+\DoxyCodeLine{1157             )}
+\DoxyCodeLine{1158             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{1159         scene\_obj: dict[str, Any] = scene\_result[0]}
+\DoxyCodeLine{1160 }
+\DoxyCodeLine{1161         commands: str = scene\_obj[\textcolor{stringliteral}{"{}commands"{}}]}
+\DoxyCodeLine{1162         \textcolor{keywordflow}{if} len(commands.split(\textcolor{stringliteral}{"{};"{}})) > 2:}
+\DoxyCodeLine{1163             commands += \textcolor{stringliteral}{"{}l 0;"{}}}
+\DoxyCodeLine{1164         args.routine\_id = 0}
+\DoxyCodeLine{1165         args.routine\_put = \textcolor{keyword}{True}}
+\DoxyCodeLine{1166         args.routine\_commands = commands}
+\DoxyCodeLine{1167         args.routine\_scene = \mbox{\hyperlink{classstr}{str}}(scene\_obj[\textcolor{stringliteral}{"{}id"{}}])}
+\DoxyCodeLine{1168 }
+\DoxyCodeLine{1169         scene\_list.append(scene)}
+\DoxyCodeLine{1170 }
+\DoxyCodeLine{1171     \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{1172 }
+\DoxyCodeLine{1173 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_aedc0439a3e96ab685cdad76257a1d85a_icgraph}
+\end{center}
+\end{figure}

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1general" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::devices::vacuum::general</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus" prot="public">klyqa_ctl::devices::vacuum::general::VcWorkingStatus</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths" prot="public">klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode" prot="public">klyqa_ctl::devices::vacuum::general::VcWorkingMode</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="devices/vacuum/general.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

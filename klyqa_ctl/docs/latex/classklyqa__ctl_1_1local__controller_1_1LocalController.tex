@@ -1,0 +1,229 @@
+\hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController}{}\doxysection{klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller Class Reference}
+\label{classklyqa__ctl_1_1local__controller_1_1LocalController}\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{classklyqa__ctl_1_1local__controller_1_1LocalController__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController_ad820bb0d181aeb158a3177323ee35cdf}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} controller\+\_\+data)
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController_a28a9d1dad1c73734dbadc5f08279c169}{send\+\_\+to\+\_\+device}} (self, \mbox{\hyperlink{classstr}{str}} unit\+\_\+id, \mbox{\hyperlink{classstr}{str}} key, \mbox{\hyperlink{classstr}{str}} command)
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController_a5285a4922d736c63b83ae0626424d9aa}{send\+\_\+to\+\_\+device\+\_\+native}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId}{Unit\+Id}} unit\+\_\+id, \mbox{\hyperlink{classstr}{str}} key, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}} command)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController_aa10e92996b98046d4414be75d2b93305}{shutdown}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController}{Local\+Controller}} \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController_a0d521d323172bec4e120f6968cd92450}{create\+\_\+default}} (Any cls, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} controller\+\_\+data, \mbox{\hyperlink{classstr}{str}} server\+\_\+ip=\char`\"{}0.\+0.\+0.\+0\char`\"{}, \mbox{\hyperlink{classstr}{str}}$\vert$None network\+\_\+interface=None)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController}{Local\+Controller}} \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController_a109a225aaf7b2944bedd487a755ef4ab}{create\+\_\+standalone}} (Any cls, \mbox{\hyperlink{classstr}{str}} server\+\_\+ip=\char`\"{}0.\+0.\+0.\+0\char`\"{}, \mbox{\hyperlink{classstr}{str}}$\vert$None network\+\_\+interface=None, bool interactive\+\_\+prompts=False)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Controls local connections via tcp and udp for broadcasts and
+connections directly to devices.\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController_ad820bb0d181aeb158a3177323ee35cdf}\label{classklyqa__ctl_1_1local__controller_1_1LocalController_ad820bb0d181aeb158a3177323ee35cdf}} 
+\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initializes the local controller.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{26     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{27         \textcolor{stringliteral}{"{}"{}"{}Initializes the local controller."{}"{}"{}}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29         self.connection\_hdl: LocalConnectionHandler | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{30         self.controller\_data: ControllerData = controller\_data}
+\DoxyCodeLine{31 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1local__controller_1_1LocalController_ad820bb0d181aeb158a3177323ee35cdf_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController_a0d521d323172bec4e120f6968cd92450}\label{classklyqa__ctl_1_1local__controller_1_1LocalController_a0d521d323172bec4e120f6968cd92450}} 
+\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}!create\_default@{create\_default}}
+\index{create\_default@{create\_default}!klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+\doxysubsubsection{\texorpdfstring{create\_default()}{create\_default()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController}{Local\+Controller}} klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller.\+create\+\_\+default (\begin{DoxyParamCaption}\item[{Any}]{cls,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{server\+\_\+ip = {\ttfamily \char`\"{}0.0.0.0\char`\"{}},  }\item[{\mbox{\hyperlink{classstr}{str}} $\vert$ None }]{network\+\_\+interface = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Builds a default local controller.
+
+Params:
+    network_interface: leave it on None if you are unsure, else e. g.
+        eth0, wlan0, etc.
+    server_ip: The host IP to bind the server for incoming tcp
+        connections on port 3333.
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{87     ) -\/> LocalController:}
+\DoxyCodeLine{88         \textcolor{stringliteral}{"{}"{}"{}Builds a default local controller.}}
+\DoxyCodeLine{89 \textcolor{stringliteral}{}}
+\DoxyCodeLine{90 \textcolor{stringliteral}{        Params:}}
+\DoxyCodeLine{91 \textcolor{stringliteral}{            network\_interface: leave it on None if you are unsure, else e. g.}}
+\DoxyCodeLine{92 \textcolor{stringliteral}{                eth0, wlan0, etc.}}
+\DoxyCodeLine{93 \textcolor{stringliteral}{            server\_ip: The host IP to bind the server for incoming tcp}}
+\DoxyCodeLine{94 \textcolor{stringliteral}{                connections on port 3333.}}
+\DoxyCodeLine{95 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97         lc\_hdl: LocalConnectionHandler = LocalConnectionHandler.create\_default(}
+\DoxyCodeLine{98             controller\_data=controller\_data,}
+\DoxyCodeLine{99             server\_ip=server\_ip,}
+\DoxyCodeLine{100             network\_interface=network\_interface,}
+\DoxyCodeLine{101         )}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103         lc: LocalController = LocalController(controller\_data)}
+\DoxyCodeLine{104         lc.connection\_hdl = lc\_hdl}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106         \textcolor{keywordflow}{return} lc}
+\DoxyCodeLine{107 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController_a109a225aaf7b2944bedd487a755ef4ab}\label{classklyqa__ctl_1_1local__controller_1_1LocalController_a109a225aaf7b2944bedd487a755ef4ab}} 
+\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}!create\_standalone@{create\_standalone}}
+\index{create\_standalone@{create\_standalone}!klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+\doxysubsubsection{\texorpdfstring{create\_standalone()}{create\_standalone()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1local__controller_1_1LocalController}{Local\+Controller}} klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller.\+create\+\_\+standalone (\begin{DoxyParamCaption}\item[{Any}]{cls,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{server\+\_\+ip = {\ttfamily \char`\"{}0.0.0.0\char`\"{}},  }\item[{\mbox{\hyperlink{classstr}{str}} $\vert$ None }]{network\+\_\+interface = {\ttfamily None},  }\item[{bool }]{interactive\+\_\+prompts = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Factories a standalone local controller.
+
+Params:
+    network_interface: eth0, wlan0 or None (uses default interface)
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{114     ) -\/> LocalController:}
+\DoxyCodeLine{115         \textcolor{stringliteral}{"{}"{}"{}Factories a standalone local controller.}}
+\DoxyCodeLine{116 \textcolor{stringliteral}{}}
+\DoxyCodeLine{117 \textcolor{stringliteral}{        Params:}}
+\DoxyCodeLine{118 \textcolor{stringliteral}{            network\_interface: eth0, wlan0 or None (uses default interface)}}
+\DoxyCodeLine{119 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{120         controller\_data: ControllerData = await ControllerData.create\_default(}
+\DoxyCodeLine{121             interactive\_prompts=interactive\_prompts, offline=\textcolor{keyword}{True}}
+\DoxyCodeLine{122         )}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124         lc: LocalController = LocalController.create\_default(}
+\DoxyCodeLine{125             controller\_data, server\_ip, network\_interface}
+\DoxyCodeLine{126         )}
+\DoxyCodeLine{127         \textcolor{keywordflow}{return} lc}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController_a28a9d1dad1c73734dbadc5f08279c169}\label{classklyqa__ctl_1_1local__controller_1_1LocalController_a28a9d1dad1c73734dbadc5f08279c169}} 
+\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}!send\_to\_device@{send\_to\_device}}
+\index{send\_to\_device@{send\_to\_device}!klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+\doxysubsubsection{\texorpdfstring{send\_to\_device()}{send\_to\_device()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller.\+send\+\_\+to\+\_\+device (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{unit\+\_\+id,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{key,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{command }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sends command string to device with unit id and aes key.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{32     \textcolor{keyword}{def }send\_to\_device(self, unit\_id: str, key: str, command: str) -\/> str:}
+\DoxyCodeLine{33         \textcolor{stringliteral}{"{}"{}"{}Sends command string to device with unit id and aes key."{}"{}"{}}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.connection\_hdl:}
+\DoxyCodeLine{36             \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38         loop: asyncio.AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40         result: str = loop.run\_until\_complete(}
+\DoxyCodeLine{41             self.send\_to\_device\_native(}
+\DoxyCodeLine{42                 UnitId(unit\_id), key, Command(\_json=json.loads(command))}
+\DoxyCodeLine{43             )}
+\DoxyCodeLine{44         )}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46         \textcolor{keywordflow}{return} result}
+\DoxyCodeLine{47 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1local__controller_1_1LocalController_a28a9d1dad1c73734dbadc5f08279c169_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController_a5285a4922d736c63b83ae0626424d9aa}\label{classklyqa__ctl_1_1local__controller_1_1LocalController_a5285a4922d736c63b83ae0626424d9aa}} 
+\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}!send\_to\_device\_native@{send\_to\_device\_native}}
+\index{send\_to\_device\_native@{send\_to\_device\_native}!klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+\doxysubsubsection{\texorpdfstring{send\_to\_device\_native()}{send\_to\_device\_native()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller.\+send\+\_\+to\+\_\+device\+\_\+native (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId}{Unit\+Id}}}]{unit\+\_\+id,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{key,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}     }]{command }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sends json message from command object to device with unit id and
+aes key.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{50     ) -\/> str:}
+\DoxyCodeLine{51         \textcolor{stringliteral}{"{}"{}"{}Sends json message from command object to device with unit id and}}
+\DoxyCodeLine{52 \textcolor{stringliteral}{        aes key."{}"{}"{}}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.connection\_hdl:}
+\DoxyCodeLine{55             \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57         self.connection\_hdl.controller\_data.aes\_keys[}
+\DoxyCodeLine{58             \mbox{\hyperlink{classstr}{str}}(unit\_id)}
+\DoxyCodeLine{59         ] = bytes.fromhex(key)}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61         msg\_answer: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63         msg: Message | \textcolor{keywordtype}{None} = await self.connection\_hdl.send\_message(}
+\DoxyCodeLine{64             send\_msgs=[command],}
+\DoxyCodeLine{65             target\_device\_uid=unit\_id,}
+\DoxyCodeLine{66             time\_to\_live\_secs=11111,}
+\DoxyCodeLine{67         )}
+\DoxyCodeLine{68         \textcolor{keywordflow}{if} msg:}
+\DoxyCodeLine{69             \textcolor{keywordflow}{if} msg.exception:}
+\DoxyCodeLine{70                 \textcolor{keywordflow}{raise} msg.exception}
+\DoxyCodeLine{71             msg\_answer = msg.answer\_utf8}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73         \textcolor{keywordflow}{return} msg\_answer}
+\DoxyCodeLine{74 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1local__controller_1_1LocalController_a5285a4922d736c63b83ae0626424d9aa_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1local__controller_1_1LocalController_aa10e92996b98046d4414be75d2b93305}\label{classklyqa__ctl_1_1local__controller_1_1LocalController_aa10e92996b98046d4414be75d2b93305}} 
+\index{klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!klyqa\_ctl.local\_controller.LocalController@{klyqa\_ctl.local\_controller.LocalController}}
+\doxysubsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+local\+\_\+controller.\+Local\+Controller.\+shutdown (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Shuts down the local controller.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{75     async \textcolor{keyword}{def }shutdown(self) -\/> None:}
+\DoxyCodeLine{76         \textcolor{stringliteral}{"{}"{}"{}Shuts down the local controller."{}"{}"{}}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78         \textcolor{keywordflow}{if} self.connection\_hdl:}
+\DoxyCodeLine{79             await self.connection\_hdl.shutdown()}
+\DoxyCodeLine{80 }
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{local__controller_8py}{local\+\_\+controller.\+py}}\end{DoxyCompactItemize}

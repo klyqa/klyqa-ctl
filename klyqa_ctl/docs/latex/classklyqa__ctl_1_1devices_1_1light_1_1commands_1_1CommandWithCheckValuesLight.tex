@@ -1,0 +1,88 @@
+\hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight}{}\doxysection{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light Class Reference}
+\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight}\index{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}}
+
+
+Inheritance diagram for klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_a1ec9d149deafea09d8681f2b45f5b656}{bool}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_ac8eea472765742d8c9bbfaada1f7f40c}{check\+\_\+values}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}} device)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_add33b25987f5672d71c9672626dd6bc6}{None}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_a44c064638b5ab33bc6515688644d2d12}{\+\_\+light}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Check command values range limits.\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_ac8eea472765742d8c9bbfaada1f7f40c}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_ac8eea472765742d8c9bbfaada1f7f40c}} 
+\index{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}!check\_values@{check\_values}}
+\index{check\_values@{check\_values}!klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}}
+\doxysubsubsection{\texorpdfstring{check\_values()}{check\_values()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_a1ec9d149deafea09d8681f2b45f5b656}{bool}} klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light.\+check\+\_\+values (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}}}]{device }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_adff1dec3cc2f6b12e158de8b61cfd5a5}{klyqa\+\_\+ctl.\+devices.\+device.\+Command\+With\+Check\+Values}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_a3e37b57fa082d61d47bb370f39217874}{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Routine\+Put\+Command}}, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_ab63f32fce3e15998369f6b058810906b}{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Brightness\+Command}}, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_a34847a5ef38a13569bc640791d11508b}{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Temperature\+Command}}, and \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a398df61cf2d815c4d338ef0131482c6d}{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{123     \textcolor{keyword}{def }check\_values(self, device: Device) -\/> bool:}
+\DoxyCodeLine{124         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} isinstance(device, Light):}
+\DoxyCodeLine{125             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{126         self.\_light = device}
+\DoxyCodeLine{127         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{preprocessor}{@dataclass}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_a44c064638b5ab33bc6515688644d2d12}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_a44c064638b5ab33bc6515688644d2d12}} 
+\index{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}!\_light@{\_light}}
+\index{\_light@{\_light}!klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}}
+\doxysubsubsection{\texorpdfstring{\_light}{\_light}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light.\+\_\+light\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_add33b25987f5672d71c9672626dd6bc6}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_add33b25987f5672d71c9672626dd6bc6}} 
+\index{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}!None@{None}}
+\index{None@{None}!klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight@{klyqa\_ctl.devices.light.commands.CommandWithCheckValuesLight}}
+\doxysubsubsection{\texorpdfstring{None}{None}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light.\+None\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+devices/light/\mbox{\hyperlink{light_2commands_8py}{commands.\+py}}\end{DoxyCompactItemize}

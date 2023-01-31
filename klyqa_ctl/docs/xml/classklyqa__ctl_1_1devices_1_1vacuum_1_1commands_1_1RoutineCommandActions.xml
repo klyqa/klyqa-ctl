@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</compoundname>
+    <basecompoundref refid="classstr" prot="public" virt="non-virtual">str</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1a590bf15fd1d52f76e98b9cc74f860bac" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.vacuum.commands.RoutineCommandActions::ACTION</definition>
+        <argsstring></argsstring>
+        <name>ACTION</name>
+        <initializer>=  &quot;action&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="56" column="1" bodyfile="devices/vacuum/commands.py" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1aed87c5a66ec505211622f887c1544318" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.vacuum.commands.RoutineCommandActions::COUNT</definition>
+        <argsstring></argsstring>
+        <name>COUNT</name>
+        <initializer>=  &quot;count&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="57" column="1" bodyfile="devices/vacuum/commands.py" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1aaa2a3a7b6635a392fa0c960d3d7fd9ef" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.vacuum.commands.RoutineCommandActions::LIST</definition>
+        <argsstring></argsstring>
+        <name>LIST</name>
+        <initializer>=  &quot;list&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="58" column="1" bodyfile="devices/vacuum/commands.py" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1ac8bf5f59f0ae64e255266018a01a2503" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.vacuum.commands.RoutineCommandActions::DELETE</definition>
+        <argsstring></argsstring>
+        <name>DELETE</name>
+        <initializer>=  &quot;delete&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="59" column="1" bodyfile="devices/vacuum/commands.py" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1ac0d6862d337ffb85dba195c8bfeefd9a" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.vacuum.commands.RoutineCommandActions::START</definition>
+        <argsstring></argsstring>
+        <name>START</name>
+        <initializer>=  &quot;start&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="60" column="1" bodyfile="devices/vacuum/commands.py" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1a79f37631b744720f8409ee5482e34893" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.vacuum.commands.RoutineCommandActions::PUT</definition>
+        <argsstring></argsstring>
+        <name>PUT</name>
+        <initializer>=  &quot;put&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="61" column="1" bodyfile="devices/vacuum/commands.py" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.commands.RoutineCommandActions</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.commands.RoutineCommandActions</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+ACTION</edgelabel>
+          <edgelabel>+COUNT</edgelabel>
+          <edgelabel>+DELETE</edgelabel>
+          <edgelabel>+LIST</edgelabel>
+          <edgelabel>+PUT</edgelabel>
+          <edgelabel>+START</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="devices/vacuum/commands.py" line="55" column="1" bodyfile="devices/vacuum/commands.py" bodystart="55" bodyend="65"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1a590bf15fd1d52f76e98b9cc74f860bac" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</scope><name>ACTION</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1aed87c5a66ec505211622f887c1544318" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</scope><name>COUNT</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1ac8bf5f59f0ae64e255266018a01a2503" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</scope><name>DELETE</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1aaa2a3a7b6635a392fa0c960d3d7fd9ef" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</scope><name>LIST</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1a79f37631b744720f8409ee5482e34893" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</scope><name>PUT</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1ac0d6862d337ffb85dba195c8bfeefd9a" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</scope><name>START</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

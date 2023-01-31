@@ -1,0 +1,9 @@
+<map id="klyqa_ctl.devices.light.commands.RoutineCommand" name="klyqa_ctl.devices.light.commands.RoutineCommand">
+<area shape="rect" id="node1" title=" " alt="" coords="413,344,661,480"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand.html" title=" " alt="" coords="5,543,253,664"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand.html" title=" " alt="" coords="277,550,525,657"/>
+<area shape="rect" id="node6" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand.html" title=" " alt="" coords="549,528,797,679"/>
+<area shape="rect" id="node7" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand.html" title=" " alt="" coords="821,543,1069,664"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1general_1_1general_1_1CommandTyped.html" title=" " alt="" coords="442,204,633,296"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1general_1_1general_1_1Command.html" title=" " alt="" coords="442,5,633,156"/>
+</map>

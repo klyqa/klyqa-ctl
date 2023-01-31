@@ -72,14 +72,6 @@ class DataPackage:
         return pkg
 
     @property
-    def raw_data(self) -> bytes:
-        return self._attr_raw_data
-
-    @raw_data.setter
-    def raw_data(self, raw_data: bytes) -> None:
-        self._attr_raw_data = raw_data
-
-    @property
     def data(self) -> bytes:
         return self._attr_data
 

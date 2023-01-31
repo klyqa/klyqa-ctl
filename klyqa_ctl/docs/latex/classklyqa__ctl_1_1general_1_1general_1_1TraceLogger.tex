@@ -1,0 +1,123 @@
+\hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger}{}\doxysection{klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger Class Reference}
+\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger}\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+
+
+Inheritance diagram for klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_afd4808aebb942b6bb8ffe86c6fe74cbe}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classstr}{str}} name, \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ac1d7946ecd2135959d9dc1c950d3e99b}{int}} \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a41b3ec9032d59ed2bf752625aadc0b7a}{level}}=logging.\+NOTSET)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a05fff44f4a29a2d5a1e4314724c03d34}{trace}} (self, \mbox{\hyperlink{classstr}{str}} msg, $\ast$Any args, $\ast$$\ast$Any kwargs)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_ae409e7f9a9a4ff48d2bda382907e3c1e}{stream}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a41b3ec9032d59ed2bf752625aadc0b7a}{level}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_adb48b0cbb81fe74961c27974281f692d}{fmt}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a4d8533550d78b9002a8ba212fa538be8}{Trace\+Logger}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_aaf33bc550b4624e4596da444baba45ec}{Formatter}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_afd4808aebb942b6bb8ffe86c6fe74cbe}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_afd4808aebb942b6bb8ffe86c6fe74cbe}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{name,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ac1d7946ecd2135959d9dc1c950d3e99b}{int}} }]{level = {\ttfamily logging.NOTSET} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{491     \textcolor{keyword}{def }\_\_init\_\_(self, name: str, level: int = logging.NOTSET) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{492         super().\_\_init\_\_(name, level)}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{494         logging.addLevelName(TRACE, \textcolor{stringliteral}{"{}TRACE"{}})}
+\DoxyCodeLine{495 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a05fff44f4a29a2d5a1e4314724c03d34}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a05fff44f4a29a2d5a1e4314724c03d34}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!trace@{trace}}
+\index{trace@{trace}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{trace()}{trace()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+trace (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{msg,  }\item[{$\ast$Any}]{args,  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{496     \textcolor{keyword}{def }trace(self, msg: str, *args: Any, **kwargs: Any) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{497         \textcolor{keywordflow}{if} self.isEnabledFor(TRACE):}
+\DoxyCodeLine{498             self.\_log(TRACE, msg, args, **kwargs)}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501 logging.setLoggerClass(TraceLogger)}
+\DoxyCodeLine{502 }
+\DoxyCodeLine{503 LOGGER: logging.Logger = logging.getLogger(\_\_package\_\_)}
+\DoxyCodeLine{504 }
+\DoxyCodeLine{505 LOGGER.setLevel(level=logging.INFO)}
+\DoxyCodeLine{506 }
+\DoxyCodeLine{507 info\_formatter: logging.Formatter = logging.Formatter(\textcolor{stringliteral}{"{}\%(message)s"{}})}
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509 logging\_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_adb48b0cbb81fe74961c27974281f692d}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_adb48b0cbb81fe74961c27974281f692d}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!fmt@{fmt}}
+\index{fmt@{fmt}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{fmt}{fmt}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+fmt\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_aaf33bc550b4624e4596da444baba45ec}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_aaf33bc550b4624e4596da444baba45ec}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!Formatter@{Formatter}}
+\index{Formatter@{Formatter}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{Formatter}{Formatter}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+Formatter\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a41b3ec9032d59ed2bf752625aadc0b7a}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a41b3ec9032d59ed2bf752625aadc0b7a}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!level@{level}}
+\index{level@{level}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{level}{level}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+level\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_ae409e7f9a9a4ff48d2bda382907e3c1e}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_ae409e7f9a9a4ff48d2bda382907e3c1e}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!stream@{stream}}
+\index{stream@{stream}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{stream}{stream}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+stream\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a4d8533550d78b9002a8ba212fa538be8}\label{classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_a4d8533550d78b9002a8ba212fa538be8}} 
+\index{klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}!TraceLogger@{TraceLogger}}
+\index{TraceLogger@{TraceLogger}!klyqa\_ctl.general.general.TraceLogger@{klyqa\_ctl.general.general.TraceLogger}}
+\doxysubsubsection{\texorpdfstring{TraceLogger}{TraceLogger}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Trace\+Logger.\+Trace\+Logger\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+general/\mbox{\hyperlink{general_2general_8py}{general.\+py}}\end{DoxyCompactItemize}

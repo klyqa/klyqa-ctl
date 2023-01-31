@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::cloud_state::DeviceCloudState</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.cloud_state.DeviceCloudState::_attr_connected</definition>
+        <argsstring></argsstring>
+        <name>_attr_connected</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="15" column="1" bodyfile="devices/cloud_state.py" bodystart="15" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" compoundref="cloud__state_8py" startline="27" endline="29">klyqa_ctl.devices.cloud_state.DeviceCloudState.connected</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.cloud_state.DeviceCloudState::_attr_received_packages</definition>
+        <argsstring></argsstring>
+        <name>_attr_received_packages</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="16" column="1" bodyfile="devices/cloud_state.py" bodystart="16" bodyend="-1"/>
+        <referencedby refid="classlocal_1_1connection_1_1TcpConnection_1aae3f96e7c55fc45f5aa0c837c51a0069" compoundref="connection_8py" startline="61" endline="74">local.connection.TcpConnection.__init__</referencedby>
+        <referencedby refid="classlocal_1_1connection_1_1TcpConnection_1aff47b879423ffb2355ab33e3dee97128" compoundref="connection_8py" startline="132" endline="134">local.connection.TcpConnection.received_packages</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" compoundref="cloud__state_8py" startline="19" endline="21">klyqa_ctl.devices.cloud_state.DeviceCloudState.received_packages</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a5fd2af2fec06299e31b68e0f26ba32e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.cloud_state.DeviceCloudState.__init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="14" column="1" bodyfile="devices/cloud_state.py" bodystart="14" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>list[Any]</type>
+        <definition> list[Any] klyqa_ctl.devices.cloud_state.DeviceCloudState.received_packages</definition>
+        <argsstring>(self)</argsstring>
+        <name>received_packages</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="19" column="1" bodyfile="devices/cloud_state.py" bodystart="19" bodyend="21"/>
+        <references refid="classlocal_1_1connection_1_1TcpConnection_1aecef655d2a229eeb9bb89c07c60e3fbb" compoundref="connection_8py" startline="137">local.connection.TcpConnection._attr_received_packages</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" compoundref="cloud__state_8py" startline="16">klyqa_ctl.devices.cloud_state.DeviceCloudState._attr_received_packages</references>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ae9b9cae827663d1b1f4e6b525006ce67" compoundref="cloud__state_8py" startline="23" endline="25">klyqa_ctl.devices.cloud_state.DeviceCloudState.received_packages</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ae9b9cae827663d1b1f4e6b525006ce67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.cloud_state.DeviceCloudState.received_packages</definition>
+        <argsstring>(self, list[Any] received_packages)</argsstring>
+        <name>received_packages</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>received_packages</declname>
+          <array>[Any]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="23" column="1" bodyfile="devices/cloud_state.py" bodystart="23" bodyend="25"/>
+        <references refid="classlocal_1_1connection_1_1TcpConnection_1aecef655d2a229eeb9bb89c07c60e3fbb" compoundref="connection_8py" startline="137">local.connection.TcpConnection._attr_received_packages</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" compoundref="cloud__state_8py" startline="16">klyqa_ctl.devices.cloud_state.DeviceCloudState._attr_received_packages</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" compoundref="cloud__state_8py" startline="19" endline="21">klyqa_ctl.devices.cloud_state.DeviceCloudState.received_packages</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.devices.cloud_state.DeviceCloudState.connected</definition>
+        <argsstring>(self)</argsstring>
+        <name>connected</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="27" column="1" bodyfile="devices/cloud_state.py" bodystart="27" bodyend="29"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" compoundref="cloud__state_8py" startline="15">klyqa_ctl.devices.cloud_state.DeviceCloudState._attr_connected</references>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" compoundref="vacuum_2response__status_8py" startline="25" endline="65">klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1abb28bd22c9e7885d2ad5057ec29fbc3b" compoundref="cloud__state_8py" startline="31" endline="33">klyqa_ctl.devices.cloud_state.DeviceCloudState.connected</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1abb28bd22c9e7885d2ad5057ec29fbc3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.cloud_state.DeviceCloudState.connected</definition>
+        <argsstring>(self, bool connected)</argsstring>
+        <name>connected</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>connected</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/cloud_state.py" line="31" column="1" bodyfile="devices/cloud_state.py" bodystart="31" bodyend="33"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" compoundref="cloud__state_8py" startline="15">klyqa_ctl.devices.cloud_state.DeviceCloudState._attr_connected</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" compoundref="cloud__state_8py" startline="27" endline="29">klyqa_ctl.devices.cloud_state.DeviceCloudState.connected</references>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" compoundref="vacuum_2response__status_8py" startline="25" endline="65">klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__init__</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Device cloud connection state</verbatim> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.cloud_state.DeviceCloudState</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState"/>
+      </node>
+    </collaborationgraph>
+    <location file="devices/cloud_state.py" line="8" column="1" bodyfile="devices/cloud_state.py" bodystart="8" bodyend="33"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a5fd2af2fec06299e31b68e0f26ba32e9" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>_attr_connected</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>_attr_received_packages</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>connected</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1abb28bd22c9e7885d2ad5057ec29fbc3b" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>connected</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>received_packages</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ae9b9cae827663d1b1f4e6b525006ce67" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::cloud_state::DeviceCloudState</scope><name>received_packages</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

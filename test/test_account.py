@@ -42,7 +42,7 @@ async def main() -> None:
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
 
-    controller_data: ControllerData = await ControllerData.create_default(
+    client: Client = await Client.create(
         interactive_prompts=True,
         # user_account=account,
         offline=False,
@@ -50,23 +50,11 @@ async def main() -> None:
 
     print_onboarded_devices: bool = True
 
-    cloud_backend: CloudBackend | None = None
-
-    host: str = PROD_HOST
-
-    cloud_backend = CloudBackend.create_default(controller_data, host)
-
-    account: Account | None = None
-    accounts: dict[str, Account] = dict()
-
-    account = await Account.create_default(
-        controller_data,
-        cloud=cloud_backend,
+    account: Account = await client.add_account(
         username=username,
         # password=password,
         print_onboarded_devices=print_onboarded_devices,
     )
-    accounts[account.username] = account
 
     exit_ret = 0
 
@@ -78,12 +66,6 @@ async def main() -> None:
     #     controller_data, server_ip, network_interface=intf
     # )
 
-    client: Client = Client(
-        ctl_data=controller_data,
-        local=None,
-        cloud=cloud_backend,
-        accounts=accounts,
-    )
     # unit_id: str = "00ac629de9ad2f4409dc"
     unit_id: str = "04256291add6f1b414d1"
     unit_id_real: str = "286dcd5c6bda"
@@ -125,14 +107,15 @@ async def main() -> None:
 
     await add_device_command_to_queue(args_parsed, args_in, cal, msg_queue, [])
     s: set[str] = set([unit_id])
-    ret = await cloud_backend.cloud_send(
-        args_parsed,
-        s,
-        s,
-        300000,
-        msg_queue,
-        [],
-    )
+    if client.cloud:
+        ret = await client.cloud.send(
+            args_parsed,
+            s,
+            s,
+            300000,
+            msg_queue,
+            [],
+        )
 
     # args: argparse.Namespace,
     # target_device_uids: set[str],

@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::response_message::ResponseMessage</compoundname>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus" prot="public" virt="non-virtual">klyqa_ctl.devices.light.response_status.ResponseStatus</derivedcompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage" prot="public" virt="non-virtual">klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage</derivedcompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus" prot="public" virt="non-virtual">klyqa_ctl.devices.vacuum.response_status.ResponseStatus</derivedcompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.response_message.ResponseMessage::ts</definition>
+        <argsstring></argsstring>
+        <name>ts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="18" column="1" bodyfile="devices/response_message.py" bodystart="18" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" compoundref="vacuum_2response__status_8py" startline="25" endline="65">klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a0e2b3fdd97c8100a743928f07345a4c2" compoundref="response__message_8py" startline="35" endline="37">klyqa_ctl.devices.response_message.ResponseMessage.ts</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a090131fa93e7d78d4abd712c86bf5ecd" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.response_message.ResponseMessage::_attr_type</definition>
+        <argsstring></argsstring>
+        <name>_attr_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="32" column="1" bodyfile="devices/response_message.py" bodystart="32" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" compoundref="response__message_8py" startline="11" endline="16">klyqa_ctl.devices.response_message.ResponseMessage.__init__</referencedby>
+        <referencedby refid="classlocal_1_1data__package_1_1DataPackage_1a64a5c374b8a7ee4f4d65503363f831a4" compoundref="data__package_8py" startline="91" endline="93">local.data_package.DataPackage.ptype</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a076bcd25b3f41acdc763569b279c4545" compoundref="response__message_8py" startline="27" endline="29">klyqa_ctl.devices.response_message.ResponseMessage.type</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a202c631bf73321c4edf738314e6cf911" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.response_message.ResponseMessage::_attr_ts</definition>
+        <argsstring></argsstring>
+        <name>_attr_ts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="40" column="1" bodyfile="devices/response_message.py" bodystart="40" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" compoundref="response__message_8py" startline="11" endline="16">klyqa_ctl.devices.response_message.ResponseMessage.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a0e2b3fdd97c8100a743928f07345a4c2" compoundref="response__message_8py" startline="35" endline="37">klyqa_ctl.devices.response_message.ResponseMessage.ts</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.response_message.ResponseMessage.__init__</definition>
+        <argsstring>(self, **Any kwargs)</argsstring>
+        <name>__init__</name>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a6cb94cfa25c59eef5f89a89d9a849089">__init__</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a6379999ea8e8998c5d23a92ff97f9e42">__init__</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df">__init__</reimplementedby>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>__init__</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="11" column="1" bodyfile="devices/response_message.py" bodystart="11" bodyend="16"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a202c631bf73321c4edf738314e6cf911" compoundref="response__message_8py" startline="40">klyqa_ctl.devices.response_message.ResponseMessage._attr_ts</references>
+        <references refid="classlocal_1_1data__package_1_1DataPackage_1a80aee91fcbae4a39efe73c153cdffb5c" compoundref="data__package_8py" startline="96">local.data_package.DataPackage._attr_type</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a090131fa93e7d78d4abd712c86bf5ecd" compoundref="response__message_8py" startline="32">klyqa_ctl.devices.response_message.ResponseMessage._attr_type</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1abcd79774326dd47c4a0805509c09cadc" compoundref="response__identity__message_8py" startline="25" endline="27">klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage.update</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a2fe3b132a135335df05ea8492e22e73c" compoundref="response__message_8py" startline="17" endline="25">klyqa_ctl.devices.response_message.ResponseMessage.update</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae7f14f70e2121e36310fabed37003e1f" compoundref="vacuum_2response__status_8py" startline="66" endline="68">klyqa_ctl.devices.vacuum.response_status.ResponseStatus.update</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a2fe3b132a135335df05ea8492e22e73c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.response_message.ResponseMessage.update</definition>
+        <argsstring>(self, **Any kwargs)</argsstring>
+        <name>update</name>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1abcd79774326dd47c4a0805509c09cadc">update</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae7f14f70e2121e36310fabed37003e1f">update</reimplementedby>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="17" column="1" bodyfile="devices/response_message.py" bodystart="17" bodyend="25"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" compoundref="response__message_8py" startline="11" endline="16">klyqa_ctl.devices.response_message.ResponseMessage.__init__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a076bcd25b3f41acdc763569b279c4545" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.devices.response_message.ResponseMessage.type</definition>
+        <argsstring>(self)</argsstring>
+        <name>type</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="27" column="1" bodyfile="devices/response_message.py" bodystart="27" bodyend="29"/>
+        <references refid="classlocal_1_1data__package_1_1DataPackage_1a80aee91fcbae4a39efe73c153cdffb5c" compoundref="data__package_8py" startline="96">local.data_package.DataPackage._attr_type</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a090131fa93e7d78d4abd712c86bf5ecd" compoundref="response__message_8py" startline="32">klyqa_ctl.devices.response_message.ResponseMessage._attr_type</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" compoundref="general_2general_8py" startline="135" endline="146">klyqa_ctl.general.general.CommandTyped.json</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a01d835dff2ff7cffe4ad62fd827e543b" compoundref="response__message_8py" startline="31" endline="33">klyqa_ctl.devices.response_message.ResponseMessage.type</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a01d835dff2ff7cffe4ad62fd827e543b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.response_message.ResponseMessage.type</definition>
+        <argsstring>(self, str type)</argsstring>
+        <name>type</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="31" column="1" bodyfile="devices/response_message.py" bodystart="31" bodyend="33"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a076bcd25b3f41acdc763569b279c4545" compoundref="response__message_8py" startline="27" endline="29">klyqa_ctl.devices.response_message.ResponseMessage.type</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" compoundref="general_2general_8py" startline="135" endline="146">klyqa_ctl.general.general.CommandTyped.json</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a0e2b3fdd97c8100a743928f07345a4c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>datetime.datetime|None</type>
+        <definition> datetime.datetime | None klyqa_ctl.devices.response_message.ResponseMessage.ts</definition>
+        <argsstring>(self)</argsstring>
+        <name>ts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="35" column="1" bodyfile="devices/response_message.py" bodystart="35" bodyend="37"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a202c631bf73321c4edf738314e6cf911" compoundref="response__message_8py" startline="40">klyqa_ctl.devices.response_message.ResponseMessage._attr_ts</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" compoundref="response__message_8py" startline="18">klyqa_ctl.devices.response_message.ResponseMessage.ts</references>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" compoundref="vacuum_2response__status_8py" startline="25" endline="65">klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__init__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1af8ee7a788eb2ed7499da50696555407a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.response_message.ResponseMessage.ts</definition>
+        <argsstring>(self, datetime.datetime|None ts)</argsstring>
+        <name>ts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>datetime.datetime|None</type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/response_message.py" line="39" column="1" bodyfile="devices/response_message.py" bodystart="39" bodyend="41"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" compoundref="response__message_8py" startline="18">klyqa_ctl.devices.response_message.ResponseMessage.ts</references>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" compoundref="vacuum_2response__status_8py" startline="25" endline="65">klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__init__</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Response message</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>klyqa_ctl.devices.light.response_status.ResponseStatus</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>klyqa_ctl.devices.vacuum.response_status.ResponseStatus</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.response_message.ResponseMessage</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.response_message.ResponseMessage</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage"/>
+      </node>
+    </collaborationgraph>
+    <location file="devices/response_message.py" line="8" column="1" bodyfile="devices/response_message.py" bodystart="8" bodyend="41"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a202c631bf73321c4edf738314e6cf911" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>_attr_ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a090131fa93e7d78d4abd712c86bf5ecd" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>_attr_type</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a0e2b3fdd97c8100a743928f07345a4c2" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1af8ee7a788eb2ed7499da50696555407a" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a076bcd25b3f41acdc763569b279c4545" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>type</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a01d835dff2ff7cffe4ad62fd827e543b" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>type</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a2fe3b132a135335df05ea8492e22e73c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::response_message::ResponseMessage</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

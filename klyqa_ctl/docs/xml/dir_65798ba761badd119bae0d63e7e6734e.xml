@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_65798ba761badd119bae0d63e7e6734e" kind="dir">
+    <compoundname>communication/local</compoundname>
+    <innerfile refid="communication_2local_2____init_____8py">__init__.py</innerfile>
+    <innerfile refid="connection_8py">connection.py</innerfile>
+    <innerfile refid="local_2connection__handler_8py">connection_handler.py</innerfile>
+    <innerfile refid="data__package_8py">data_package.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="communication/local/"/>
+  </compounddef>
+</doxygen>

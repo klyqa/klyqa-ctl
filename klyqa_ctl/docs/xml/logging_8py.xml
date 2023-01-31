@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="logging_8py" kind="file" language="Python">
+    <compoundname>logging.py</compoundname>
+    <innernamespace refid="namespaceklyqa__ctl_1_1general_1_1logging">klyqa_ctl::general::logging</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespaceklyqa__ctl_1_1general_1_1logging" refkind="compound"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="general/logging.py"/>
+  </compounddef>
+</doxygen>

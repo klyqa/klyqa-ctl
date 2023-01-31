@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_07b86ffc266b39efa5bbdc0e9fdb330a" kind="dir">
+    <compoundname>devices</compoundname>
+    <innerdir refid="dir_63376717a84869da36e2012421304149">devices/light</innerdir>
+    <innerdir refid="dir_4fd64f67770002913f6d54e3631c23bd">devices/vacuum</innerdir>
+    <innerfile refid="devices_2____init_____8py">__init__.py</innerfile>
+    <innerfile refid="cloud__state_8py">cloud_state.py</innerfile>
+    <innerfile refid="device_8py">device.py</innerfile>
+    <innerfile refid="onboard_8py">onboard.py</innerfile>
+    <innerfile refid="response__identity__message_8py">response_identity_message.py</innerfile>
+    <innerfile refid="response__message_8py">response_message.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="devices/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1klyqa__ctl" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::klyqa_ctl</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client" prot="public">klyqa_ctl::klyqa_ctl::Client</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1klyqa__ctl_1ab6c1a4b950d3c6e69d273cbb9a602266" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl::klyqa_ctl.AbstractEventLoop</definition>
+        <argsstring></argsstring>
+        <name>AbstractEventLoop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="819" column="1" bodyfile="klyqa_ctl.py" bodystart="819" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1klyqa__ctl_1afe1b8490f9810b885e4048d7bef472a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.main</definition>
+        <argsstring>()</argsstring>
+        <name>main</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Main function.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="700" column="1" bodyfile="klyqa_ctl.py" bodystart="700" bodyend="816"/>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a9a2f224816a4dab65a2d877cd38b657b" compoundref="light_2commands_8py" startline="468" endline="632">klyqa_ctl.devices.light.commands.add_command_args_bulb</references>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1ad486c28adf7b9c4ed9672fc04dfde7ef" compoundref="vacuum_2commands_8py" startline="263" endline="519">klyqa_ctl.devices.vacuum.commands.add_command_args_cleaner</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1parameters_1a4d4508f84ab7a6044c74575f197f852b" compoundref="parameters_8py" startline="29" endline="208">klyqa_ctl.general.parameters.add_config_args</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1parameters_1a38b90c6125a60eeabd89d4addab053b4" compoundref="parameters_8py" startline="10" endline="28">klyqa_ctl.general.parameters.get_description_parser</references>
+        <references refid="namespacecloud_1a8ff77cd5353527f3ef3c4e2216d86949" compoundref="cloud_8py" startline="31">cloud.int</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a6e74b8cc4bae98fa55902e4b875af67e" compoundref="general_2general_8py" startline="527" endline="537">klyqa_ctl.general.general.set_debug_logger</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Klyqa control client.
+
+Interactive Klyqa Control commandline client
+
+Company: QConnex GmbH / Klyqa
+Author: Frederick Stallmeyer
+
+E-Mail: frederick.stallmeyer@gmx.de
+
+Information:
+The network_interface parameter for local connection handling (in
+LocalConnectionHandler) will ONLY work on LINUX systems, as it uses the linux
+specific socket option SO_BINDTODEVICE for communication.
+
+Nice to haves/missing:
+  -   list cloud connected devices in discovery.
+  -   offer for selected devices possible commands and arguments in
+      interactive mode based on their device profile
+  -   Implementation for the different device config profile versions and
+      check on send.
+  -   start scene support in cloud mode
+
+Current bugs:
+ - vc1 interactive command selection support.
+ - interactive light selection, command not applied</verbatim> </para>
+    </detaileddescription>
+    <location file="klyqa_ctl.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

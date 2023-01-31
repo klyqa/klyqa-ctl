@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::light::commands::FactoryResetCommand</compoundname>
+    <basecompoundref refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped" prot="public" virt="non-virtual">klyqa_ctl.general.general.CommandTyped</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand_1adc64c80a9f21c8825c36b3d2e7f5ce91" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.light.commands.FactoryResetCommand::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="310" column="1" bodyfile="devices/light/commands.py" bodystart="310" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" compoundref="general_2general_8py" startline="135" endline="146">klyqa_ctl.general.general.CommandTyped.json</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand_1a5ea5a7c1fa0321518837143dcf8d5e6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.light.commands.FactoryResetCommand.__post_init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__post_init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="309" column="1" bodyfile="devices/light/commands.py" bodystart="309" bodyend="313"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Factory reset command.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.FactoryResetCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.FactoryResetCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="devices/light/commands.py" line="306" column="1" bodyfile="devices/light/commands.py" bodystart="306" bodyend="314"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand_1a5ea5a7c1fa0321518837143dcf8d5e6c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>__post_init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>json</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>msg_str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1ae7b76f7b278feff1e6a6973f1eb1687e" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>str</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand_1adc64c80a9f21c8825c36b3d2e7f5ce91" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>type</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::FactoryResetCommand</scope><name>TypeJson</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

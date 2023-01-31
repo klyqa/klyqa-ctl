@@ -1,0 +1,1554 @@
+\hypertarget{classklyqa__ctl_1_1account_1_1Account}{}\doxysection{klyqa\+\_\+ctl.\+account.\+Account Class Reference}
+\label{classklyqa__ctl_1_1account_1_1Account}\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+account.\+Account\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classklyqa__ctl_1_1account_1_1Account__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a127e9f0cf7373339272f06e8db6f276c}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a7bcb9ac9804621630ea08a688abecd18}{controller\+\_\+data}}, Cloud\+Backend$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aeb463ade6756bf093a809634f64c6ef6}{cloud}})
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a4d8817b0900560f1034addf01e65037b}{username}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a8b8e31d138df3ad2107f790d57d6d6ce}{username}} (self, \mbox{\hyperlink{classstr}{str}} username)
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ab7c2e00758ea609ca93c2829ff12e3f3}{password}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a64e4bc7603ec8085564bb001c01aabdb}{password}} (self, \mbox{\hyperlink{classstr}{str}} password)
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aadca9a95f1b2985123f4a644058a7e24}{access\+\_\+token}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ab6cb34881f5441c412446fdbf79e72c2}{access\+\_\+token}} (self, \mbox{\hyperlink{classstr}{str}} access\+\_\+token)
+\item 
+dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}\mbox{]} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a2265c38daf6829c96c852ad4a288b42d}{devices}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aaa16efea1dd2cf549168e5d8702fc670}{devices}} (self, dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}\mbox{]} devices)
+\item 
+Type\+Json$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a3d4ca77937552eadd9f6a1d906eaf565}{settings}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a5579a3240709174c5dc7c501e3c5cd2f}{settings}} (self, Type\+Json$\vert$None settings)
+\item 
+asyncio.\+Lock$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ad770c5568b6816f1c1aaaf2830a511ef}{settings\+\_\+lock}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a7bcb9ac9804621630ea08a688abecd18}{controller\+\_\+data}} (self)
+\item 
+Cloud\+Backend$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aeb463ade6756bf093a809634f64c6ef6}{cloud}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aca64ae054b0be49da2e7733012961429}{cloud}} (self, Cloud\+Backend$\vert$None cloud)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a19bd2d6d0ae6a4e738c4d40453557606}{backend\+\_\+connected}} (self)
+\item 
+Type\+Json$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a73506bd234f8e819e138c2bd663179b8}{request\+\_\+beared}} (self, Request\+Method method, \mbox{\hyperlink{classstr}{str}} url, $\ast$$\ast$Any kwargs)
+\item 
+Type\+Json \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ad608e3ee0ba1199f509e644a11081724}{get\+\_\+beared\+\_\+request\+\_\+header}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af0e05ae15ad46c4b1b3bbb69b6bb7151}{shutdown}} (self)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a5ab3a2f4382c4437255871d4296cee9a}{run\+\_\+password\+\_\+prompt}} (self)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_acbc09f2b1b4cb6b7ed771b96ea79613b}{perform\+\_\+login}} (self)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_acba85b49678b6d37567985738f7becf3}{read\+\_\+username\+\_\+cache}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a6f7d45c2ee71e0c761145bea5084dda6}{request\+\_\+device\+\_\+configs\+\_\+from\+\_\+acc\+\_\+sets}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_adad4d644a9bbb3633405dac89e86edd3}{get\+\_\+or\+\_\+create\+\_\+device}} (self, \mbox{\hyperlink{classstr}{str}} unit\+\_\+id, \mbox{\hyperlink{classstr}{str}} product\+\_\+id=\char`\"{}\char`\"{}, Type\+Json$\vert$None device\+\_\+sets=None)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a769e052989dfe17d0420b0a73128f309}{set\+\_\+settings}} (self, Type\+Json \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a3d4ca77937552eadd9f6a1d906eaf565}{settings}})
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a8e93f6fe918bf32c172447d4ef439d2d}{sync\+\_\+acc\+\_\+settings\+\_\+to\+\_\+controller}} (self)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af365113f9fdd0cf5e66f6e9ab427df78}{read\+\_\+acc\+\_\+settings\+\_\+cache}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a89f11e1fb836b679181b21b9c9f92472}{update\+\_\+devices}} (self)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a492d7cd1aff0fe4d6017d9f9da91082b}{read\+\_\+cache}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ac0ecb3d158306aa17e4b8101425a7302}{init}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885}{device\+\_\+request\+\_\+and\+\_\+print}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}} dev, bool print\+\_\+onboarded\+\_\+devices=False, int req\+\_\+timeout=30)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a0b171a600e4342d035ad26c39b384b38}{login}} (self, bool print\+\_\+onboarded\+\_\+devices=False)
+\item 
+Type\+Json$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a1450d1baa029967965be433e4efb5a6d}{request\+\_\+cloud\+\_\+device\+\_\+state}} (self, \mbox{\hyperlink{classstr}{str}} device\+\_\+id, int timeout=30, $\ast$$\ast$Any kwargs)
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aeca1011f6c6e2f6bcdb2136ef48bc7fd}{request\+\_\+account\+\_\+settings\+\_\+eco}} (self, int scan\+\_\+interval=60)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af101070a97d556e95978748475933f72}{update\+\_\+account\+\_\+settings}} (self, Type\+Json add\+\_\+to\+\_\+cache=\{\})
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a4fb47c923d3a579054e8cc72480906fb}{update\+\_\+device\+\_\+configs}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a748c13aed7b2a5c9c605c81234633cb8}{cloud\+\_\+post\+\_\+to\+\_\+device}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}} acc\+\_\+dev, Type\+Json json\+\_\+message, \mbox{\hyperlink{classstr}{str}} target, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a372d813db2141719743dfe088dbe9552}{cloud\+\_\+post\+\_\+command\+\_\+to\+\_\+dev}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}} device, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}} command, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS}{CLOUD\+\_\+\+DEVICE\+\_\+\+TARGETS}}$\vert$None target=None, $\ast$$\ast$Any kwargs)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account}{Account}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ab0537986f3010cd63886b8e48a64c379}{create\+\_\+default}} (Any cls, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a7bcb9ac9804621630ea08a688abecd18}{controller\+\_\+data}}, Cloud\+Backend$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_aeb463ade6756bf093a809634f64c6ef6}{cloud}}, \mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a088eb203a8882492412861b2bf1503e3}{username}}=\char`\"{}\char`\"{}, \mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ac296a0b895a02f3706118b30afb9d875}{password}}=\char`\"{}\char`\"{}, bool print\+\_\+onboarded\+\_\+devices=False)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ac296a0b895a02f3706118b30afb9d875}{password}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_acfbc70677260b7607512953ade51a257}{access\+\_\+token}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a088eb203a8882492412861b2bf1503e3}{username}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+datetime.\+datetime$\vert$None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a422b216be3c73d99668bc6d2501e17a0}{\+\_\+settings\+\_\+loaded\+\_\+ts}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a26661f4a893b0c53}{\+\_\+settings\+\_\+loaded\+\_\+ts}} (self, datetime.\+datetime \+\_\+settings\+\_\+loaded\+\_\+ts)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a28518af1ac4261cd9cb4b2b52dd0db23}{\+\_\+attr\+\_\+username}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a9e836c37e871fde4bfa876715e5d98ba}{\+\_\+attr\+\_\+password}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a0909afdb890efc18d77f8bdc13d10dc8}{\+\_\+attr\+\_\+access\+\_\+token}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a049f353b4bb0028e655ba38c7de0bc7e}{\+\_\+attr\+\_\+devices}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_ae0fff3653f1c52e727716b44deb88f4f}{\+\_\+attr\+\_\+cloud}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_a0b4a40c1a870fe2fd52a538f278708f0}{\+\_\+attr\+\_\+\+\_\+settings\+\_\+loaded\+\_\+ts}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af76aa7d7f0154a9c4cb5da8f07514e9a}{\+\_\+attr\+\_\+settings}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Account\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a127e9f0cf7373339272f06e8db6f276c}\label{classklyqa__ctl_1_1account_1_1Account_a127e9f0cf7373339272f06e8db6f276c}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data,  }\item[{Cloud\+Backend $\vert$ None     }]{cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialize the account.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{57     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{58         \textcolor{stringliteral}{"{}"{}"{}Initialize the account."{}"{}"{}}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60         self.\_attr\_username: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{61         self.\_attr\_password: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{62         self.\_attr\_access\_token: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{63         self.\_attr\_settings: TypeJson | \textcolor{keywordtype}{None} = \{\}}
+\DoxyCodeLine{64         self.\_attr\_settings\_lock: asyncio.Lock | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{65         self.\_attr\_devices: dict[str, AccountDevice] = \{\}}
+\DoxyCodeLine{66         self.\_attr\_controller\_data: ControllerData = controller\_data}
+\DoxyCodeLine{67         self.\_attr\_cloud: CloudBackend | \textcolor{keywordtype}{None} = cloud}
+\DoxyCodeLine{68         self.print\_onboarded\_devices: bool = \textcolor{keyword}{False}  \textcolor{comment}{\# for login print}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70         self.\_attr\_\_settings\_loaded\_ts: datetime.datetime | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{71 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a422b216be3c73d99668bc6d2501e17a0}\label{classklyqa__ctl_1_1account_1_1Account_a422b216be3c73d99668bc6d2501e17a0}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_settings\_loaded\_ts@{\_settings\_loaded\_ts}}
+\index{\_settings\_loaded\_ts@{\_settings\_loaded\_ts}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_settings\_loaded\_ts()}{\_settings\_loaded\_ts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  datetime.\+datetime $\vert$ None klyqa\+\_\+ctl.\+account.\+Account.\+\_\+settings\+\_\+loaded\+\_\+ts (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{130     \textcolor{keyword}{def }\_settings\_loaded\_ts(self) -\/> datetime.datetime | None:}
+\DoxyCodeLine{131         \textcolor{keywordflow}{return} self.\_attr\_\_settings\_loaded\_ts}
+\DoxyCodeLine{132 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a422b216be3c73d99668bc6d2501e17a0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a26661f4a893b0c53}\label{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a26661f4a893b0c53}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_settings\_loaded\_ts@{\_settings\_loaded\_ts}}
+\index{\_settings\_loaded\_ts@{\_settings\_loaded\_ts}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_settings\_loaded\_ts()}{\_settings\_loaded\_ts()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+\_\+settings\+\_\+loaded\+\_\+ts (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{datetime.\+datetime     }]{\+\_\+settings\+\_\+loaded\+\_\+ts }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{136     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{137         self.\_attr\_\_settings\_loaded\_ts = \_settings\_loaded\_ts}
+\DoxyCodeLine{138 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a26661f4a893b0c53_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a26661f4a893b0c53_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aadca9a95f1b2985123f4a644058a7e24}\label{classklyqa__ctl_1_1account_1_1Account_aadca9a95f1b2985123f4a644058a7e24}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!access\_token@{access\_token}}
+\index{access\_token@{access\_token}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{access\_token()}{access\_token()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} klyqa\+\_\+ctl.\+account.\+Account.\+access\+\_\+token (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{89     \textcolor{keyword}{def }access\_token(self) -\/> str:}
+\DoxyCodeLine{90         \textcolor{keywordflow}{return} self.\_attr\_access\_token}
+\DoxyCodeLine{91 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aadca9a95f1b2985123f4a644058a7e24_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ab6cb34881f5441c412446fdbf79e72c2}\label{classklyqa__ctl_1_1account_1_1Account_ab6cb34881f5441c412446fdbf79e72c2}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!access\_token@{access\_token}}
+\index{access\_token@{access\_token}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{access\_token()}{access\_token()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+access\+\_\+token (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{access\+\_\+token }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{93     \textcolor{keyword}{def }access\_token(self, access\_token: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{94         self.\_attr\_access\_token = access\_token}
+\DoxyCodeLine{95 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_ab6cb34881f5441c412446fdbf79e72c2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a19bd2d6d0ae6a4e738c4d40453557606}\label{classklyqa__ctl_1_1account_1_1Account_a19bd2d6d0ae6a4e738c4d40453557606}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!backend\_connected@{backend\_connected}}
+\index{backend\_connected@{backend\_connected}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{backend\_connected()}{backend\_connected()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+backend\+\_\+connected (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}General cloud intended to be there check.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{139     \textcolor{keyword}{def }backend\_connected(self) -\/> bool:}
+\DoxyCodeLine{140         \textcolor{stringliteral}{"{}"{}"{}General cloud intended to be there check."{}"{}"{}}}
+\DoxyCodeLine{141         \textcolor{keywordflow}{return} (}
+\DoxyCodeLine{142             self.access\_token != \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{143             \textcolor{keywordflow}{and} self.cloud \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{144             \textcolor{keywordflow}{and} self.cloud.backend\_connected()}
+\DoxyCodeLine{145         )}
+\DoxyCodeLine{146 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a19bd2d6d0ae6a4e738c4d40453557606_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a19bd2d6d0ae6a4e738c4d40453557606_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aeb463ade6756bf093a809634f64c6ef6}\label{classklyqa__ctl_1_1account_1_1Account_aeb463ade6756bf093a809634f64c6ef6}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!cloud@{cloud}}
+\index{cloud@{cloud}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{cloud()}{cloud()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  Cloud\+Backend $\vert$ None klyqa\+\_\+ctl.\+account.\+Account.\+cloud (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{122     \textcolor{keyword}{def }\mbox{\hyperlink{namespacecloud}{cloud}}(self) -\/> CloudBackend | None:}
+\DoxyCodeLine{123         \textcolor{keywordflow}{return} self.\_attr\_cloud}
+\DoxyCodeLine{124 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aeb463ade6756bf093a809634f64c6ef6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aca64ae054b0be49da2e7733012961429}\label{classklyqa__ctl_1_1account_1_1Account_aca64ae054b0be49da2e7733012961429}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!cloud@{cloud}}
+\index{cloud@{cloud}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{cloud()}{cloud()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+cloud (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Cloud\+Backend $\vert$ None}]{cloud }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{126     \textcolor{keyword}{def }\mbox{\hyperlink{namespacecloud}{cloud}}(self, cloud: CloudBackend | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{127         self.\_attr\_cloud = cloud}
+\DoxyCodeLine{128 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aca64ae054b0be49da2e7733012961429_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aca64ae054b0be49da2e7733012961429_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a372d813db2141719743dfe088dbe9552}\label{classklyqa__ctl_1_1account_1_1Account_a372d813db2141719743dfe088dbe9552}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!cloud\_post\_command\_to\_dev@{cloud\_post\_command\_to\_dev}}
+\index{cloud\_post\_command\_to\_dev@{cloud\_post\_command\_to\_dev}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{cloud\_post\_command\_to\_dev()}{cloud\_post\_command\_to\_dev()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+cloud\+\_\+post\+\_\+command\+\_\+to\+\_\+dev (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}}]{device,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command}{Command}}}]{command,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS}{CLOUD\+\_\+\+DEVICE\+\_\+\+TARGETS}} $\vert$ None }]{target = {\ttfamily None},  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Post command to account device via cloud.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{596     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{597         \textcolor{stringliteral}{"{}"{}"{}Post command to account device via cloud."{}"{}"{}}}
+\DoxyCodeLine{598 }
+\DoxyCodeLine{599         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} target:}
+\DoxyCodeLine{600             target = CLOUD\_DEVICE\_TARGETS.command}
+\DoxyCodeLine{601             \textcolor{keywordflow}{if} isinstance(command, CloudStateCommand):}
+\DoxyCodeLine{602                 target = CLOUD\_DEVICE\_TARGETS.state}
+\DoxyCodeLine{603 }
+\DoxyCodeLine{604         \textcolor{keywordflow}{if} target:}
+\DoxyCodeLine{605             \textcolor{keywordflow}{if} isinstance(command, CommandWithCheckValues):}
+\DoxyCodeLine{606                 c: CommandWithCheckValues = command}
+\DoxyCodeLine{607                 \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} c.check\_values(device.device):}
+\DoxyCodeLine{608                     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Command values to send out of range!"{}})}
+\DoxyCodeLine{609                     \textcolor{keywordflow}{return}}
+\DoxyCodeLine{610 }
+\DoxyCodeLine{611             await self.cloud\_post\_to\_device(}
+\DoxyCodeLine{612                 device, command.cloud(), target.value, **kwargs}
+\DoxyCodeLine{613             )}
+\DoxyCodeLine{614 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a372d813db2141719743dfe088dbe9552_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a748c13aed7b2a5c9c605c81234633cb8}\label{classklyqa__ctl_1_1account_1_1Account_a748c13aed7b2a5c9c605c81234633cb8}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!cloud\_post\_to\_device@{cloud\_post\_to\_device}}
+\index{cloud\_post\_to\_device@{cloud\_post\_to\_device}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{cloud\_post\_to\_device()}{cloud\_post\_to\_device()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+cloud\+\_\+post\+\_\+to\+\_\+device (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}}]{acc\+\_\+dev,  }\item[{Type\+Json}]{json\+\_\+message,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{target,  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Post json message to account device via cloud.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{561     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{562         \textcolor{stringliteral}{"{}"{}"{}Post json message to account device via cloud."{}"{}"{}}}
+\DoxyCodeLine{563 }
+\DoxyCodeLine{564         cloud\_device\_id: str = acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}cloudDeviceId"{}}]}
+\DoxyCodeLine{565         unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{566         LOGGER.info(}
+\DoxyCodeLine{567             f\textcolor{stringliteral}{"{}Post \{target\} to the device '\{cloud\_device\_id\}' (unit\_id:"{}}}
+\DoxyCodeLine{568             f\textcolor{stringliteral}{"{} \{unit\_id\}) over the cloud. Command: \{json\_message\}"{}}}
+\DoxyCodeLine{569         )}
+\DoxyCodeLine{570         response: TypeJson = \{}
+\DoxyCodeLine{571             cloud\_device\_id: await self.request\_beared(}
+\DoxyCodeLine{572                 RequestMethod.POST,}
+\DoxyCodeLine{573                 url=f\textcolor{stringliteral}{"{}device/\{cloud\_device\_id\}/\{target\}"{}},}
+\DoxyCodeLine{574                 json=json\_message,}
+\DoxyCodeLine{575                 **kwargs,}
+\DoxyCodeLine{576             )}
+\DoxyCodeLine{577         \}}
+\DoxyCodeLine{578 }
+\DoxyCodeLine{579         resp\_print: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{580         name: str = acc\_dev.device.u\_id}
+\DoxyCodeLine{581 }
+\DoxyCodeLine{582         \textcolor{keywordflow}{if} acc\_dev.acc\_settings \textcolor{keywordflow}{and} \textcolor{stringliteral}{"{}name"{}} \textcolor{keywordflow}{in} acc\_dev.acc\_settings:}
+\DoxyCodeLine{583             name = acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}name"{}}]}
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585         resp\_print = f\textcolor{stringliteral}{'Device "{}\{name\}"{} cloud response:'}}
+\DoxyCodeLine{586         resp\_print = json.dumps(response, sort\_keys=\textcolor{keyword}{True}, indent=4)}
+\DoxyCodeLine{587         acc\_dev.device.cloud.received\_packages.append(response)}
+\DoxyCodeLine{588         print(resp\_print)}
+\DoxyCodeLine{589 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a748c13aed7b2a5c9c605c81234633cb8_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a748c13aed7b2a5c9c605c81234633cb8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a7bcb9ac9804621630ea08a688abecd18}\label{classklyqa__ctl_1_1account_1_1Account_a7bcb9ac9804621630ea08a688abecd18}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!controller\_data@{controller\_data}}
+\index{controller\_data@{controller\_data}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{controller\_data()}{controller\_data()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} klyqa\+\_\+ctl.\+account.\+Account.\+controller\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the controller data object.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{117     \textcolor{keyword}{def }controller\_data(self) -\/> ControllerData:}
+\DoxyCodeLine{118         \textcolor{stringliteral}{"{}"{}"{}Return or set the controller data object."{}"{}"{}}}
+\DoxyCodeLine{119         \textcolor{keywordflow}{return} self.\_attr\_controller\_data}
+\DoxyCodeLine{120 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a7bcb9ac9804621630ea08a688abecd18_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ab0537986f3010cd63886b8e48a64c379}\label{classklyqa__ctl_1_1account_1_1Account_ab0537986f3010cd63886b8e48a64c379}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!create\_default@{create\_default}}
+\index{create\_default@{create\_default}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{create\_default()}{create\_default()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account}{Account}} klyqa\+\_\+ctl.\+account.\+Account.\+create\+\_\+default (\begin{DoxyParamCaption}\item[{Any}]{cls,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data,  }\item[{Cloud\+Backend $\vert$ None}]{cloud,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{username = {\ttfamily \char`\"{}\char`\"{}},  }\item[{\mbox{\hyperlink{classstr}{str}} }]{password = {\ttfamily \char`\"{}\char`\"{}},  }\item[{bool }]{print\+\_\+onboarded\+\_\+devices = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Create and initialize an account. Send login for access token.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{629     ) -\/> Account:}
+\DoxyCodeLine{630         \textcolor{stringliteral}{"{}"{}"{}Create and initialize an account. Send login for access token."{}"{}"{}}}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{632         acc: Account = Account(controller\_data, cloud)}
+\DoxyCodeLine{633         acc.username = username}
+\DoxyCodeLine{634         acc.password = password}
+\DoxyCodeLine{635         acc.print\_onboarded\_devices = print\_onboarded\_devices}
+\DoxyCodeLine{636 }
+\DoxyCodeLine{637         acc.\_attr\_settings\_lock = asyncio.Lock()}
+\DoxyCodeLine{638         await acc.init()}
+\DoxyCodeLine{639         \textcolor{keywordflow}{if} cloud:}
+\DoxyCodeLine{640             await acc.login(acc.print\_onboarded\_devices)}
+\DoxyCodeLine{641         \textcolor{keywordflow}{return} acc}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885}\label{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!device\_request\_and\_print@{device\_request\_and\_print}}
+\index{device\_request\_and\_print@{device\_request\_and\_print}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{device\_request\_and\_print()}{device\_request\_and\_print()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+device\+\_\+request\+\_\+and\+\_\+print (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}}]{dev,  }\item[{bool }]{print\+\_\+onboarded\+\_\+devices = {\ttfamily False},  }\item[{int }]{req\+\_\+timeout = {\ttfamily 30} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request account device's states and print them.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{389     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{390         \textcolor{stringliteral}{"{}"{}"{}Request account device's states and print them."{}"{}"{}}}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392         cloud\_state: TypeJson | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{393         state\_str: str}
+\DoxyCodeLine{394         device: Device}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.backend\_connected() \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{397             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399         state\_str = (}
+\DoxyCodeLine{400             f\textcolor{stringliteral}{'Name: "{}\{dev.acc\_settings["{}name"{}]\}"{}'}}
+\DoxyCodeLine{401             + f\textcolor{stringliteral}{'\(\backslash\)tAES-\/KEY: \{dev.acc\_settings["{}aesKey"{}]\}'}}
+\DoxyCodeLine{402             + f\textcolor{stringliteral}{'\(\backslash\)tUnit-\/ID: \{dev.acc\_settings["{}localDeviceId"{}]\}'}}
+\DoxyCodeLine{403             + f\textcolor{stringliteral}{'\(\backslash\)tCloud-\/ID: \{dev.acc\_settings["{}cloudDeviceId"{}]\}'}}
+\DoxyCodeLine{404             + f\textcolor{stringliteral}{'\(\backslash\)tType: \{dev.acc\_settings["{}productId"{}]\}'}}
+\DoxyCodeLine{405         )}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407         device = dev.device}
+\DoxyCodeLine{408         cloud\_state = await self.request\_cloud\_device\_state(}
+\DoxyCodeLine{409             dev.acc\_settings[\textcolor{stringliteral}{"{}cloudDeviceId"{}}], timeout=req\_timeout}
+\DoxyCodeLine{410         )}
+\DoxyCodeLine{411         \textcolor{keywordflow}{if} cloud\_state:}
+\DoxyCodeLine{412             \textcolor{keywordflow}{if} \textcolor{stringliteral}{"{}connected"{}} \textcolor{keywordflow}{in} cloud\_state:}
+\DoxyCodeLine{413                 state\_str = (}
+\DoxyCodeLine{414                     state\_str}
+\DoxyCodeLine{415                     + f\textcolor{stringliteral}{'\(\backslash\)tCloud-\/Connected: \{cloud\_state["{}connected"{}]\}'}}
+\DoxyCodeLine{416                 )}
+\DoxyCodeLine{417             device.cloud.connected = cloud\_state[\textcolor{stringliteral}{"{}connected"{}}]}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{419             device.save\_device\_message(cloud\_state | \{\textcolor{stringliteral}{"{}type"{}}: \textcolor{stringliteral}{"{}status"{}}\})}
+\DoxyCodeLine{420         \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{421             LOGGER.info(}
+\DoxyCodeLine{422                 \textcolor{stringliteral}{"{}No answer for cloud device state request"{}}}
+\DoxyCodeLine{423                 f\textcolor{stringliteral}{' \{dev.acc\_settings["{}localDeviceId"{}]\}'}}
+\DoxyCodeLine{424             )}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426         \textcolor{keywordflow}{if} print\_onboarded\_devices:}
+\DoxyCodeLine{427             print(state\_str)}
+\DoxyCodeLine{428 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a2265c38daf6829c96c852ad4a288b42d}\label{classklyqa__ctl_1_1account_1_1Account_a2265c38daf6829c96c852ad4a288b42d}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!devices@{devices}}
+\index{devices@{devices}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{devices()}{devices()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}\mbox{]} klyqa\+\_\+ctl.\+account.\+Account.\+devices (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{97     \textcolor{keyword}{def }devices(self) -\/> dict[str, AccountDevice]:}
+\DoxyCodeLine{98         \textcolor{keywordflow}{return} self.\_attr\_devices}
+\DoxyCodeLine{99 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a2265c38daf6829c96c852ad4a288b42d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aaa16efea1dd2cf549168e5d8702fc670}\label{classklyqa__ctl_1_1account_1_1Account_aaa16efea1dd2cf549168e5d8702fc670}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!devices@{devices}}
+\index{devices@{devices}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{devices()}{devices()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+devices (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}}\mbox{]}}]{devices }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{101     \textcolor{keyword}{def }devices(self, devices: dict[str, AccountDevice]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{102         self.\_attr\_devices = devices}
+\DoxyCodeLine{103 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aaa16efea1dd2cf549168e5d8702fc670_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aaa16efea1dd2cf549168e5d8702fc670_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ad608e3ee0ba1199f509e644a11081724}\label{classklyqa__ctl_1_1account_1_1Account_ad608e3ee0ba1199f509e644a11081724}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!get\_beared\_request\_header@{get\_beared\_request\_header}}
+\index{get\_beared\_request\_header@{get\_beared\_request\_header}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{get\_beared\_request\_header()}{get\_beared\_request\_header()}}
+{\footnotesize\ttfamily  Type\+Json klyqa\+\_\+ctl.\+account.\+Account.\+get\+\_\+beared\+\_\+request\+\_\+header (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Set default request header with cloud access token.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{168     \textcolor{keyword}{def }get\_beared\_request\_header(self) -\/> TypeJson:}
+\DoxyCodeLine{169         \textcolor{stringliteral}{"{}"{}"{}Set default request header with cloud access token."{}"{}"{}}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{172             \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}()}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174         \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}(}
+\DoxyCodeLine{175             self.cloud.get\_header\_default()}
+\DoxyCodeLine{176             | \{\textcolor{stringliteral}{"{}Authorization"{}}: \textcolor{stringliteral}{"{}Bearer "{}} + self.access\_token\}}
+\DoxyCodeLine{177         )}
+\DoxyCodeLine{178 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_ad608e3ee0ba1199f509e644a11081724_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_ad608e3ee0ba1199f509e644a11081724_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_adad4d644a9bbb3633405dac89e86edd3}\label{classklyqa__ctl_1_1account_1_1Account_adad4d644a9bbb3633405dac89e86edd3}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!get\_or\_create\_device@{get\_or\_create\_device}}
+\index{get\_or\_create\_device@{get\_or\_create\_device}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{get\_or\_create\_device()}{get\_or\_create\_device()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1AccountDevice}{Account\+Device}} klyqa\+\_\+ctl.\+account.\+Account.\+get\+\_\+or\+\_\+create\+\_\+device (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{unit\+\_\+id,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{product\+\_\+id = {\ttfamily \char`\"{}\char`\"{}},  }\item[{Type\+Json $\vert$ None }]{device\+\_\+sets = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Look for account device or create it. Create connected controller
+device as well.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{301     ) -\/> AccountDevice:}
+\DoxyCodeLine{302         \textcolor{stringliteral}{"{}"{}"{}Look for account device or create it. Create connected controller}}
+\DoxyCodeLine{303 \textcolor{stringliteral}{        device as well."{}"{}"{}}}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305         \textcolor{keywordflow}{if} device\_sets \textcolor{keywordflow}{is} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{306             device\_sets = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}()}
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308         dev: AccountDevice}
+\DoxyCodeLine{309         \textcolor{keywordflow}{if} unit\_id \textcolor{keywordflow}{in} self.devices:}
+\DoxyCodeLine{310             dev = self.devices[unit\_id]}
+\DoxyCodeLine{311         \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{312             device: Device = await self.controller\_data.get\_or\_create\_device(}
+\DoxyCodeLine{313                 unit\_id, product\_id}
+\DoxyCodeLine{314             )}
+\DoxyCodeLine{315             dev = AccountDevice(device\_sets, device)}
+\DoxyCodeLine{316             self.devices[unit\_id] = dev}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318         \textcolor{keywordflow}{return} dev}
+\DoxyCodeLine{319 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_adad4d644a9bbb3633405dac89e86edd3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_adad4d644a9bbb3633405dac89e86edd3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ac0ecb3d158306aa17e4b8101425a7302}\label{classklyqa__ctl_1_1account_1_1Account_ac0ecb3d158306aa17e4b8101425a7302}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!init@{init}}
+\index{init@{init}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+init (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialize account.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{379     async \textcolor{keyword}{def }init(self) -\/> None:}
+\DoxyCodeLine{380         \textcolor{stringliteral}{"{}"{}"{}Initialize account."{}"{}"{}}}
+\DoxyCodeLine{381 }
+\DoxyCodeLine{382         await self.read\_cache()}
+\DoxyCodeLine{383 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_ac0ecb3d158306aa17e4b8101425a7302_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a0b171a600e4342d035ad26c39b384b38}\label{classklyqa__ctl_1_1account_1_1Account_a0b171a600e4342d035ad26c39b384b38}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!login@{login}}
+\index{login@{login}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{login()}{login()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+login (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{bool }]{print\+\_\+onboarded\+\_\+devices = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Login on klyqa account, get account settings, get onboarded
+device profiles, print all devices if parameter set.
+
+Params:
+    print_onboarded_devices:   print onboarded devices from the
+        klyqa account to the stdout
+
+Returns:
+    true:  on success of the login
+    false: on error
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{429     async \textcolor{keyword}{def }login(self, print\_onboarded\_devices: bool = \textcolor{keyword}{False}) -\/> bool:}
+\DoxyCodeLine{430         \textcolor{stringliteral}{"{}"{}"{}Login on klyqa account, get account settings, get onboarded}}
+\DoxyCodeLine{431 \textcolor{stringliteral}{        device profiles, print all devices if parameter set.}}
+\DoxyCodeLine{432 \textcolor{stringliteral}{}}
+\DoxyCodeLine{433 \textcolor{stringliteral}{        Params:}}
+\DoxyCodeLine{434 \textcolor{stringliteral}{            print\_onboarded\_devices:   print onboarded devices from the}}
+\DoxyCodeLine{435 \textcolor{stringliteral}{                klyqa account to the stdout}}
+\DoxyCodeLine{436 \textcolor{stringliteral}{}}
+\DoxyCodeLine{437 \textcolor{stringliteral}{        Returns:}}
+\DoxyCodeLine{438 \textcolor{stringliteral}{            true:  on success of the login}}
+\DoxyCodeLine{439 \textcolor{stringliteral}{            false: on error}}
+\DoxyCodeLine{440 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{443             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_cache():}
+\DoxyCodeLine{446             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{448         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.perform\_login():}
+\DoxyCodeLine{449             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{451         await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{452             \{\textcolor{stringliteral}{"{}username"{}}: self.username\}, \textcolor{stringliteral}{"{}last\_username.json"{}}}
+\DoxyCodeLine{453         )}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455         loop: asyncio.AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{456 }
+\DoxyCodeLine{457         devices\_tasks: list[asyncio.Task[Any]] = [}
+\DoxyCodeLine{458             loop.create\_task(}
+\DoxyCodeLine{459                 self.device\_request\_and\_print(}
+\DoxyCodeLine{460                     acc\_dev, print\_onboarded\_devices, req\_timeout=30}
+\DoxyCodeLine{461                 )}
+\DoxyCodeLine{462             )}
+\DoxyCodeLine{463             \textcolor{keywordflow}{for} \_, acc\_dev \textcolor{keywordflow}{in} self.devices.items()}
+\DoxyCodeLine{464         ]}
+\DoxyCodeLine{465         await asyncio.wait(devices\_tasks)}
+\DoxyCodeLine{466 }
+\DoxyCodeLine{467         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{468 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a0b171a600e4342d035ad26c39b384b38_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ab7c2e00758ea609ca93c2829ff12e3f3}\label{classklyqa__ctl_1_1account_1_1Account_ab7c2e00758ea609ca93c2829ff12e3f3}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!password@{password}}
+\index{password@{password}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{password()}{password()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} klyqa\+\_\+ctl.\+account.\+Account.\+password (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{81     \textcolor{keyword}{def }password(self) -\/> str:}
+\DoxyCodeLine{82         \textcolor{keywordflow}{return} self.\_attr\_password}
+\DoxyCodeLine{83 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_ab7c2e00758ea609ca93c2829ff12e3f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a64e4bc7603ec8085564bb001c01aabdb}\label{classklyqa__ctl_1_1account_1_1Account_a64e4bc7603ec8085564bb001c01aabdb}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!password@{password}}
+\index{password@{password}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{password()}{password()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+password (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{password }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{85     \textcolor{keyword}{def }password(self, password: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{86         self.\_attr\_password = password}
+\DoxyCodeLine{87 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a64e4bc7603ec8085564bb001c01aabdb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_acbc09f2b1b4cb6b7ed771b96ea79613b}\label{classklyqa__ctl_1_1account_1_1Account_acbc09f2b1b4cb6b7ed771b96ea79613b}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!perform\_login@{perform\_login}}
+\index{perform\_login@{perform\_login}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{perform\_login()}{perform\_login()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+perform\+\_\+login (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Perform login in cloud backend and request account settings.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{205     async \textcolor{keyword}{def }perform\_login(self) -\/> bool:}
+\DoxyCodeLine{206         \textcolor{stringliteral}{"{}"{}"{}Perform login in cloud backend and request account settings."{}"{}"{}}}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud \textcolor{keywordflow}{or} self.cloud.offline:}
+\DoxyCodeLine{209             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211         self.run\_password\_prompt()}
+\DoxyCodeLine{212         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.password:}
+\DoxyCodeLine{213             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215         \textcolor{keywordflow}{if} self.username \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None} \textcolor{keywordflow}{and} self.password \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{216             login\_response: httpx.Response | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{217             login\_data: TypeJson = \{}
+\DoxyCodeLine{218                 \textcolor{stringliteral}{"{}email"{}}: self.username,}
+\DoxyCodeLine{219                 \textcolor{stringliteral}{"{}password"{}}: self.password,}
+\DoxyCodeLine{220             \}}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222             login\_response = await self.cloud.request(}
+\DoxyCodeLine{223                 RequestMethod.POST,}
+\DoxyCodeLine{224                 \textcolor{stringliteral}{"{}auth/login"{}},}
+\DoxyCodeLine{225                 json=login\_data,}
+\DoxyCodeLine{226                 timeout=10,}
+\DoxyCodeLine{227             )}
+\DoxyCodeLine{228             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} login\_response:}
+\DoxyCodeLine{229                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231             login\_json: TypeJson | \textcolor{keywordtype}{None} = await self.cloud.load\_http\_response(}
+\DoxyCodeLine{232                 login\_response}
+\DoxyCodeLine{233             )}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235             \textcolor{keywordflow}{if} login\_json:}
+\DoxyCodeLine{236                 self.access\_token = \mbox{\hyperlink{classstr}{str}}(login\_json.get(\textcolor{stringliteral}{"{}accessToken"{}}))}
+\DoxyCodeLine{237                 await self.update\_account\_settings(}
+\DoxyCodeLine{238                     \{}
+\DoxyCodeLine{239                         \textcolor{stringliteral}{"{}time\_cached"{}}: datetime.datetime.now(),}
+\DoxyCodeLine{240                         \textcolor{stringliteral}{"{}password"{}}: self.password,}
+\DoxyCodeLine{241                     \}}
+\DoxyCodeLine{242                 )}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings:}
+\DoxyCodeLine{245                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{248 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_acbc09f2b1b4cb6b7ed771b96ea79613b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_acbc09f2b1b4cb6b7ed771b96ea79613b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_af365113f9fdd0cf5e66f6e9ab427df78}\label{classklyqa__ctl_1_1account_1_1Account_af365113f9fdd0cf5e66f6e9ab427df78}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!read\_acc\_settings\_cache@{read\_acc\_settings\_cache}}
+\index{read\_acc\_settings\_cache@{read\_acc\_settings\_cache}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{read\_acc\_settings\_cache()}{read\_acc\_settings\_cache()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+read\+\_\+acc\+\_\+settings\+\_\+cache (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Read user account settings cache.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{350     ) -\/> bool:}
+\DoxyCodeLine{351         \textcolor{stringliteral}{"{}"{}"{}Read user account settings cache."{}"{}"{}}}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{353         acc\_settings: TypeJson | \textcolor{keywordtype}{None}}
+\DoxyCodeLine{354         cached: bool}
+\DoxyCodeLine{355         acc\_settings, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{356             \textcolor{keywordtype}{None}, f\textcolor{stringliteral}{"{}\{self.username\}.acc\_settings.cache.json"{}}}
+\DoxyCodeLine{357         )}
+\DoxyCodeLine{358         \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} acc\_settings:}
+\DoxyCodeLine{359             await self.set\_settings(acc\_settings)}
+\DoxyCodeLine{360             \textcolor{keywordflow}{if} self.settings \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} self.password:}
+\DoxyCodeLine{361                 self.password = self.settings[\textcolor{stringliteral}{"{}password"{}}]}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{364 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_af365113f9fdd0cf5e66f6e9ab427df78_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a492d7cd1aff0fe4d6017d9f9da91082b}\label{classklyqa__ctl_1_1account_1_1Account_a492d7cd1aff0fe4d6017d9f9da91082b}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!read\_cache@{read\_cache}}
+\index{read\_cache@{read\_cache}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{read\_cache()}{read\_cache()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+read\+\_\+cache (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get cached account data for login and check existing username and
+password.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{370     async \textcolor{keyword}{def }read\_cache(self) -\/> bool:}
+\DoxyCodeLine{371         \textcolor{stringliteral}{"{}"{}"{}Get cached account data for login and check existing username and}}
+\DoxyCodeLine{372 \textcolor{stringliteral}{        password."{}"{}"{}}}
+\DoxyCodeLine{373         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_username\_cache():}
+\DoxyCodeLine{374             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{375         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_acc\_settings\_cache():}
+\DoxyCodeLine{376             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{377         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{378 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a492d7cd1aff0fe4d6017d9f9da91082b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_acba85b49678b6d37567985738f7becf3}\label{classklyqa__ctl_1_1account_1_1Account_acba85b49678b6d37567985738f7becf3}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!read\_username\_cache@{read\_username\_cache}}
+\index{read\_username\_cache@{read\_username\_cache}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{read\_username\_cache()}{read\_username\_cache()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+read\+\_\+username\+\_\+cache (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Read username from cache.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{249     async \textcolor{keyword}{def }read\_username\_cache(self) -\/> bool:}
+\DoxyCodeLine{250         \textcolor{stringliteral}{"{}"{}"{}Read username from cache."{}"{}"{}}}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252         cached: bool}
+\DoxyCodeLine{253         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.username:}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255             user\_name\_cache: dict | \textcolor{keywordtype}{None}}
+\DoxyCodeLine{256             user\_name\_cache, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{257                 \textcolor{keywordtype}{None}, \textcolor{stringliteral}{"{}last\_username.json"{}}}
+\DoxyCodeLine{258             )}
+\DoxyCodeLine{259             \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} user\_name\_cache:}
+\DoxyCodeLine{260                 self.username = user\_name\_cache[\textcolor{stringliteral}{"{}username"{}}]}
+\DoxyCodeLine{261                 LOGGER.info(\textcolor{stringliteral}{"{}Using Klyqa account \%s."{}}, self.username)}
+\DoxyCodeLine{262             \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{263                 LOGGER.error(\textcolor{stringliteral}{"{}Username missing, username cache empty."{}})}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265                 \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{266                     self.controller\_data}
+\DoxyCodeLine{267                     \textcolor{keywordflow}{and} self.controller\_data.interactive\_prompts}
+\DoxyCodeLine{268                 ):}
+\DoxyCodeLine{269                     self.username = input(}
+\DoxyCodeLine{270                         \textcolor{stringliteral}{"{} Please enter your Klyqa Account username (will"{}}}
+\DoxyCodeLine{271                         \textcolor{stringliteral}{"{} be cached for the script invoke): "{}}}
+\DoxyCodeLine{272                     )}
+\DoxyCodeLine{273                 \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{274                     LOGGER.info(\textcolor{stringliteral}{"{}Missing Klyqa account username. No login."{}})}
+\DoxyCodeLine{275                     \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277         \textcolor{keywordflow}{return} self.username != \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{278 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_acba85b49678b6d37567985738f7becf3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aeca1011f6c6e2f6bcdb2136ef48bc7fd}\label{classklyqa__ctl_1_1account_1_1Account_aeca1011f6c6e2f6bcdb2136ef48bc7fd}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!request\_account\_settings\_eco@{request\_account\_settings\_eco}}
+\index{request\_account\_settings\_eco@{request\_account\_settings\_eco}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{request\_account\_settings\_eco()}{request\_account\_settings\_eco()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+request\+\_\+account\+\_\+settings\+\_\+eco (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{int }]{scan\+\_\+interval = {\ttfamily 60} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Only send a new account settings http request when the last update
+was after the scan interval.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{484     ) -\/> bool:}
+\DoxyCodeLine{485         \textcolor{stringliteral}{"{}"{}"{}Only send a new account settings http request when the last update}}
+\DoxyCodeLine{486 \textcolor{stringliteral}{        was after the scan interval."{}"{}"{}}}
+\DoxyCodeLine{487 }
+\DoxyCodeLine{488         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{489             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491         \textcolor{keywordflow}{if} self.settings\_lock:}
+\DoxyCodeLine{492             await self.settings\_lock.acquire()}
+\DoxyCodeLine{493         ret: bool = \textcolor{keyword}{True}}
+\DoxyCodeLine{494         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{495             now: datetime.datetime = datetime.datetime.now()}
+\DoxyCodeLine{496             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.\_settings\_loaded\_ts \textcolor{keywordflow}{or} (}
+\DoxyCodeLine{497                 now -\/ self.\_settings\_loaded\_ts}
+\DoxyCodeLine{498                 >= datetime.timedelta(seconds=scan\_interval)}
+\DoxyCodeLine{499             ):}
+\DoxyCodeLine{500                 \textcolor{stringliteral}{"{}"{}"{}look that the settings are loaded only once in the scan}}
+\DoxyCodeLine{501 \textcolor{stringliteral}{                interval"{}"{}"{}}}
+\DoxyCodeLine{502                 await self.update\_account\_settings()}
+\DoxyCodeLine{503         \textcolor{keywordflow}{finally}:}
+\DoxyCodeLine{504             \textcolor{keywordflow}{if} self.settings\_lock:}
+\DoxyCodeLine{505                 self.settings\_lock.\mbox{\hyperlink{namespaceklyqa__ctl_1_1conf_aa5e016064b19c99705cafd006ae25857}{release}}()}
+\DoxyCodeLine{506         \textcolor{keywordflow}{return} ret}
+\DoxyCodeLine{507 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aeca1011f6c6e2f6bcdb2136ef48bc7fd_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a73506bd234f8e819e138c2bd663179b8}\label{classklyqa__ctl_1_1account_1_1Account_a73506bd234f8e819e138c2bd663179b8}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!request\_beared@{request\_beared}}
+\index{request\_beared@{request\_beared}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{request\_beared()}{request\_beared()}}
+{\footnotesize\ttfamily  Type\+Json $\vert$ None klyqa\+\_\+ctl.\+account.\+Account.\+request\+\_\+beared (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Request\+Method}]{method,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{url,  }\item[{$\ast$$\ast$Any     }]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}When the user logged in and an access token exists, use it for http
+requests.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{149     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{150         \textcolor{stringliteral}{"{}"{}"{}When the user logged in and an access token exists, use it for http}}
+\DoxyCodeLine{151 \textcolor{stringliteral}{        requests."{}"{}"{}}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{154             \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{155         resp: httpx.Response | \textcolor{keywordtype}{None} = await self.cloud.request(}
+\DoxyCodeLine{156             method,}
+\DoxyCodeLine{157             url,}
+\DoxyCodeLine{158             self.get\_beared\_request\_header()}
+\DoxyCodeLine{159             \textcolor{keywordflow}{if} self.access\_token}
+\DoxyCodeLine{160             \textcolor{keywordflow}{else} self.cloud.get\_header\_default(),}
+\DoxyCodeLine{161             **kwargs,}
+\DoxyCodeLine{162         )}
+\DoxyCodeLine{163         \textcolor{keywordflow}{if} resp:}
+\DoxyCodeLine{164             answer: TypeJson | \textcolor{keywordtype}{None} = await self.cloud.load\_http\_response(resp)}
+\DoxyCodeLine{165             \textcolor{keywordflow}{return} answer}
+\DoxyCodeLine{166         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{167 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a73506bd234f8e819e138c2bd663179b8_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a73506bd234f8e819e138c2bd663179b8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a1450d1baa029967965be433e4efb5a6d}\label{classklyqa__ctl_1_1account_1_1Account_a1450d1baa029967965be433e4efb5a6d}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!request\_cloud\_device\_state@{request\_cloud\_device\_state}}
+\index{request\_cloud\_device\_state@{request\_cloud\_device\_state}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{request\_cloud\_device\_state()}{request\_cloud\_device\_state()}}
+{\footnotesize\ttfamily  Type\+Json $\vert$ None klyqa\+\_\+ctl.\+account.\+Account.\+request\+\_\+cloud\+\_\+device\+\_\+state (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{device\+\_\+id,  }\item[{int }]{timeout = {\ttfamily 30},  }\item[{$\ast$$\ast$Any     }]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request device state from the cloud.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{471     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{472         \textcolor{stringliteral}{"{}"{}"{}Request device state from the cloud."{}"{}"{}}}
+\DoxyCodeLine{473 }
+\DoxyCodeLine{474         response: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
+\DoxyCodeLine{475             RequestMethod.GET,}
+\DoxyCodeLine{476             f\textcolor{stringliteral}{"{}device/\{device\_id\}/"{}} + CLOUD\_DEVICE\_TARGETS.state.value,}
+\DoxyCodeLine{477             timeout=timeout,}
+\DoxyCodeLine{478             **kwargs,}
+\DoxyCodeLine{479         )}
+\DoxyCodeLine{480         \textcolor{keywordflow}{return} response}
+\DoxyCodeLine{481 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a1450d1baa029967965be433e4efb5a6d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a1450d1baa029967965be433e4efb5a6d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a6f7d45c2ee71e0c761145bea5084dda6}\label{classklyqa__ctl_1_1account_1_1Account_a6f7d45c2ee71e0c761145bea5084dda6}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!request\_device\_configs\_from\_acc\_sets@{request\_device\_configs\_from\_acc\_sets}}
+\index{request\_device\_configs\_from\_acc\_sets@{request\_device\_configs\_from\_acc\_sets}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{request\_device\_configs\_from\_acc\_sets()}{request\_device\_configs\_from\_acc\_sets()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+request\+\_\+device\+\_\+configs\+\_\+from\+\_\+acc\+\_\+sets (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request the device config from the product ids in the
+account setting's devices.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{279     async \textcolor{keyword}{def }request\_device\_configs\_from\_acc\_sets(self) -\/> None:}
+\DoxyCodeLine{280         \textcolor{stringliteral}{"{}"{}"{}Request the device config from the product ids in the}}
+\DoxyCodeLine{281 \textcolor{stringliteral}{        account setting's devices."{}"{}"{}}}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{284             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286         await self.cloud.get\_device\_configs(}
+\DoxyCodeLine{287             set(}
+\DoxyCodeLine{288                 [}
+\DoxyCodeLine{289                     device\_sets[\textcolor{stringliteral}{"{}productId"{}}]}
+\DoxyCodeLine{290                     \textcolor{keywordflow}{for} device\_sets \textcolor{keywordflow}{in} (self.settings[\textcolor{stringliteral}{"{}devices"{}}])}
+\DoxyCodeLine{291                     \textcolor{keywordflow}{if} \textcolor{stringliteral}{"{}productId"{}} \textcolor{keywordflow}{in} device\_sets \textcolor{keywordflow}{and} device\_sets[\textcolor{stringliteral}{"{}productId"{}}]}
+\DoxyCodeLine{292                 ]}
+\DoxyCodeLine{293             )}
+\DoxyCodeLine{294         )}
+\DoxyCodeLine{295 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a6f7d45c2ee71e0c761145bea5084dda6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a6f7d45c2ee71e0c761145bea5084dda6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a5ab3a2f4382c4437255871d4296cee9a}\label{classklyqa__ctl_1_1account_1_1Account_a5ab3a2f4382c4437255871d4296cee9a}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!run\_password\_prompt@{run\_password\_prompt}}
+\index{run\_password\_prompt@{run\_password\_prompt}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{run\_password\_prompt()}{run\_password\_prompt()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+run\+\_\+password\+\_\+prompt (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check if password is giving or prompt for it.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{185     \textcolor{keyword}{def }run\_password\_prompt(self) -\/> bool:}
+\DoxyCodeLine{186         \textcolor{stringliteral}{"{}"{}"{}Check if password is giving or prompt for it."{}"{}"{}}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.password:}
+\DoxyCodeLine{189             \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{190                 self.controller\_data}
+\DoxyCodeLine{191                 \textcolor{keywordflow}{and} self.controller\_data.interactive\_prompts}
+\DoxyCodeLine{192             ):}
+\DoxyCodeLine{193                 self.password = getpass.getpass(}
+\DoxyCodeLine{194                     prompt=(}
+\DoxyCodeLine{195                         \textcolor{stringliteral}{"{} Please enter your Klyqa Account password (will be"{}}}
+\DoxyCodeLine{196                         \textcolor{stringliteral}{"{} saved): "{}}}
+\DoxyCodeLine{197                     ),}
+\DoxyCodeLine{198                     stream=\textcolor{keywordtype}{None},}
+\DoxyCodeLine{199                 )}
+\DoxyCodeLine{200             \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{201                 LOGGER.error(\textcolor{stringliteral}{"{}Missing Klyqa account password. Login failed."{}})}
+\DoxyCodeLine{202                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{203         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{204 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a5ab3a2f4382c4437255871d4296cee9a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a5ab3a2f4382c4437255871d4296cee9a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a769e052989dfe17d0420b0a73128f309}\label{classklyqa__ctl_1_1account_1_1Account_a769e052989dfe17d0420b0a73128f309}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!set\_settings@{set\_settings}}
+\index{set\_settings@{set\_settings}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{set\_settings()}{set\_settings()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+set\+\_\+settings (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Type\+Json}]{settings }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Async setter for account settings.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{320     async \textcolor{keyword}{def }set\_settings(self, settings: TypeJson) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{321         \textcolor{stringliteral}{"{}"{}"{}Async setter for account settings."{}"{}"{}}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323         self.\_attr\_settings = settings}
+\DoxyCodeLine{324         await self.sync\_acc\_settings\_to\_controller()}
+\DoxyCodeLine{325 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a769e052989dfe17d0420b0a73128f309_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a3d4ca77937552eadd9f6a1d906eaf565}\label{classklyqa__ctl_1_1account_1_1Account_a3d4ca77937552eadd9f6a1d906eaf565}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!settings@{settings}}
+\index{settings@{settings}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{settings()}{settings()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  Type\+Json $\vert$ None klyqa\+\_\+ctl.\+account.\+Account.\+settings (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{105     \textcolor{keyword}{def }settings(self) -\/> TypeJson | None:}
+\DoxyCodeLine{106         \textcolor{keywordflow}{return} self.\_attr\_settings}
+\DoxyCodeLine{107 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a3d4ca77937552eadd9f6a1d906eaf565_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a5579a3240709174c5dc7c501e3c5cd2f}\label{classklyqa__ctl_1_1account_1_1Account_a5579a3240709174c5dc7c501e3c5cd2f}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!settings@{settings}}
+\index{settings@{settings}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{settings()}{settings()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+settings (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Type\+Json $\vert$ None}]{settings }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{109     \textcolor{keyword}{def }settings(self, settings: TypeJson | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{110         \textcolor{keywordflow}{raise} NotImplementedError(\textcolor{stringliteral}{"{}Use set\_settings()!"{}})}
+\DoxyCodeLine{111 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a5579a3240709174c5dc7c501e3c5cd2f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a5579a3240709174c5dc7c501e3c5cd2f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ad770c5568b6816f1c1aaaf2830a511ef}\label{classklyqa__ctl_1_1account_1_1Account_ad770c5568b6816f1c1aaaf2830a511ef}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!settings\_lock@{settings\_lock}}
+\index{settings\_lock@{settings\_lock}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{settings\_lock()}{settings\_lock()}}
+{\footnotesize\ttfamily  asyncio.\+Lock $\vert$ None klyqa\+\_\+ctl.\+account.\+Account.\+settings\+\_\+lock (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{113     \textcolor{keyword}{def }settings\_lock(self) -\/> asyncio.Lock | None:}
+\DoxyCodeLine{114         \textcolor{keywordflow}{return} self.\_attr\_settings\_lock}
+\DoxyCodeLine{115 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_ad770c5568b6816f1c1aaaf2830a511ef_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_af0e05ae15ad46c4b1b3bbb69b6bb7151}\label{classklyqa__ctl_1_1account_1_1Account_af0e05ae15ad46c4b1b3bbb69b6bb7151}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+shutdown (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Logout again from klyqa account.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{179     async \textcolor{keyword}{def }shutdown(self) -\/> None:}
+\DoxyCodeLine{180         \textcolor{stringliteral}{"{}"{}"{}Logout again from klyqa account."{}"{}"{}}}
+\DoxyCodeLine{181         \textcolor{keywordflow}{if} self.access\_token \textcolor{keywordflow}{and} self.cloud:}
+\DoxyCodeLine{182             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Logout user from cloud backend."{}})}
+\DoxyCodeLine{183             await self.cloud.request(RequestMethod.POST, \textcolor{stringliteral}{"{}/auth/logout"{}})}
+\DoxyCodeLine{184 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_af0e05ae15ad46c4b1b3bbb69b6bb7151_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a8e93f6fe918bf32c172447d4ef439d2d}\label{classklyqa__ctl_1_1account_1_1Account_a8e93f6fe918bf32c172447d4ef439d2d}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!sync\_acc\_settings\_to\_controller@{sync\_acc\_settings\_to\_controller}}
+\index{sync\_acc\_settings\_to\_controller@{sync\_acc\_settings\_to\_controller}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{sync\_acc\_settings\_to\_controller()}{sync\_acc\_settings\_to\_controller()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+account.\+Account.\+sync\+\_\+acc\+\_\+settings\+\_\+to\+\_\+controller (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Apply the account settings to the controller.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{326     async \textcolor{keyword}{def }sync\_acc\_settings\_to\_controller(self) -\/> bool:}
+\DoxyCodeLine{327         \textcolor{stringliteral}{"{}"{}"{}Apply the account settings to the controller."{}"{}"{}}}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings:}
+\DoxyCodeLine{330             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332         await self.request\_device\_configs\_from\_acc\_sets()}
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334         \textcolor{keywordflow}{for} device\_sets \textcolor{keywordflow}{in} self.settings[\textcolor{stringliteral}{"{}devices"{}}]:}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336             self.controller\_data.aes\_keys[}
+\DoxyCodeLine{337                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{338             ] = bytes.fromhex(device\_sets[\textcolor{stringliteral}{"{}aesKey"{}}])}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340             unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342             await self.get\_or\_create\_device(}
+\DoxyCodeLine{343                 unit\_id, device\_sets[\textcolor{stringliteral}{"{}productId"{}}], device\_sets}
+\DoxyCodeLine{344             )}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{347 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a8e93f6fe918bf32c172447d4ef439d2d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_af101070a97d556e95978748475933f72}\label{classklyqa__ctl_1_1account_1_1Account_af101070a97d556e95978748475933f72}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!update\_account\_settings@{update\_account\_settings}}
+\index{update\_account\_settings@{update\_account\_settings}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{update\_account\_settings()}{update\_account\_settings()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+update\+\_\+account\+\_\+settings (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Type\+Json }]{add\+\_\+to\+\_\+cache = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request the account settings from cloud and apply it.
+Get device configs from the product ids as well.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{510     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{511         \textcolor{stringliteral}{"{}"{}"{}Request the account settings from cloud and apply it.}}
+\DoxyCodeLine{512 \textcolor{stringliteral}{        Get device configs from the product ids as well."{}"{}"{}}}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{515             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{516 }
+\DoxyCodeLine{517         acc\_settings: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
+\DoxyCodeLine{518             RequestMethod.GET, \textcolor{stringliteral}{"{}settings"{}}}
+\DoxyCodeLine{519         )}
+\DoxyCodeLine{520         \textcolor{keywordflow}{if} acc\_settings:}
+\DoxyCodeLine{521             await self.set\_settings(acc\_settings)}
+\DoxyCodeLine{522             \textcolor{comment}{\# save user account settings in cache}}
+\DoxyCodeLine{523             \textcolor{keywordflow}{if} self.settings:}
+\DoxyCodeLine{524                 await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{525                     self.settings | add\_to\_cache,}
+\DoxyCodeLine{526                     f\textcolor{stringliteral}{"{}\{self.username\}.acc\_settings.cache.json"{}},}
+\DoxyCodeLine{527                 )}
+\DoxyCodeLine{528 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_af101070a97d556e95978748475933f72_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_af101070a97d556e95978748475933f72_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a4fb47c923d3a579054e8cc72480906fb}\label{classklyqa__ctl_1_1account_1_1Account_a4fb47c923d3a579054e8cc72480906fb}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!update\_device\_configs@{update\_device\_configs}}
+\index{update\_device\_configs@{update\_device\_configs}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{update\_device\_configs()}{update\_device\_configs()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+update\+\_\+device\+\_\+configs (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request the account settings from the cloud.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{529     async \textcolor{keyword}{def }update\_device\_configs(self) -\/> None:}
+\DoxyCodeLine{530         \textcolor{stringliteral}{"{}"{}"{}Request the account settings from the cloud."{}"{}"{}}}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{532         product\_ids: set[str] = \{}
+\DoxyCodeLine{533             acc\_device.device.ident.product\_id}
+\DoxyCodeLine{534             \textcolor{keywordflow}{for} uid, acc\_device \textcolor{keywordflow}{in} self.devices.items()}
+\DoxyCodeLine{535             \textcolor{keywordflow}{if} acc\_device.device.ident \textcolor{keywordflow}{and} acc\_device.device.ident.product\_id}
+\DoxyCodeLine{536         \}}
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538         \textcolor{keywordflow}{for} product\_id \textcolor{keywordflow}{in} list(product\_ids):}
+\DoxyCodeLine{539             \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{540                 self.controller\_data.device\_configs}
+\DoxyCodeLine{541                 \textcolor{keywordflow}{and} product\_id \textcolor{keywordflow}{in} self.controller\_data.device\_configs}
+\DoxyCodeLine{542             ):}
+\DoxyCodeLine{543                 \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{544             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Try to request device config from server."{}})}
+\DoxyCodeLine{545 }
+\DoxyCodeLine{546             config: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
+\DoxyCodeLine{547                 RequestMethod.GET,}
+\DoxyCodeLine{548                 \textcolor{stringliteral}{"{}config/product/"{}} + product\_id,}
+\DoxyCodeLine{549                 timeout=30,}
+\DoxyCodeLine{550             )}
+\DoxyCodeLine{551             device\_config: Device\_config | \textcolor{keywordtype}{None} = config}
+\DoxyCodeLine{552             \textcolor{keywordflow}{if} device\_config:}
+\DoxyCodeLine{553                 self.controller\_data.device\_configs[product\_id] = device\_config}
+\DoxyCodeLine{554 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a4fb47c923d3a579054e8cc72480906fb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a89f11e1fb836b679181b21b9c9f92472}\label{classklyqa__ctl_1_1account_1_1Account_a89f11e1fb836b679181b21b9c9f92472}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!update\_devices@{update\_devices}}
+\index{update\_devices@{update\_devices}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{update\_devices()}{update\_devices()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+update\+\_\+devices (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Stub for later.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{365     async \textcolor{keyword}{def }update\_devices(self) -\/> None:}
+\DoxyCodeLine{366         \textcolor{stringliteral}{"{}"{}"{}Stub for later."{}"{}"{}}}
+\DoxyCodeLine{367         \textcolor{comment}{\# for}}
+\DoxyCodeLine{368         \textcolor{comment}{\# self.devices[uid].acc\_sets}}
+\DoxyCodeLine{369 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a4d8817b0900560f1034addf01e65037b}\label{classklyqa__ctl_1_1account_1_1Account_a4d8817b0900560f1034addf01e65037b}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!username@{username}}
+\index{username@{username}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{username()}{username()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} klyqa\+\_\+ctl.\+account.\+Account.\+username (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{73     \textcolor{keyword}{def }username(self) -\/> str:}
+\DoxyCodeLine{74         \textcolor{keywordflow}{return} self.\_attr\_username}
+\DoxyCodeLine{75 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a4d8817b0900560f1034addf01e65037b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a8b8e31d138df3ad2107f790d57d6d6ce}\label{classklyqa__ctl_1_1account_1_1Account_a8b8e31d138df3ad2107f790d57d6d6ce}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!username@{username}}
+\index{username@{username}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{username()}{username()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+account.\+Account.\+username (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{username }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{77     \textcolor{keyword}{def }username(self, username: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{78         self.\_attr\_username = username}
+\DoxyCodeLine{79 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_a8b8e31d138df3ad2107f790d57d6d6ce_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a0b4a40c1a870fe2fd52a538f278708f0}\label{classklyqa__ctl_1_1account_1_1Account_a0b4a40c1a870fe2fd52a538f278708f0}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_\_settings\_loaded\_ts@{\_attr\_\_settings\_loaded\_ts}}
+\index{\_attr\_\_settings\_loaded\_ts@{\_attr\_\_settings\_loaded\_ts}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_\_settings\_loaded\_ts}{\_attr\_\_settings\_loaded\_ts}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+\+\_\+settings\+\_\+loaded\+\_\+ts\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a0909afdb890efc18d77f8bdc13d10dc8}\label{classklyqa__ctl_1_1account_1_1Account_a0909afdb890efc18d77f8bdc13d10dc8}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_access\_token@{\_attr\_access\_token}}
+\index{\_attr\_access\_token@{\_attr\_access\_token}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_access\_token}{\_attr\_access\_token}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+access\+\_\+token\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ae0fff3653f1c52e727716b44deb88f4f}\label{classklyqa__ctl_1_1account_1_1Account_ae0fff3653f1c52e727716b44deb88f4f}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_cloud@{\_attr\_cloud}}
+\index{\_attr\_cloud@{\_attr\_cloud}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_cloud}{\_attr\_cloud}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+cloud\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a049f353b4bb0028e655ba38c7de0bc7e}\label{classklyqa__ctl_1_1account_1_1Account_a049f353b4bb0028e655ba38c7de0bc7e}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_devices@{\_attr\_devices}}
+\index{\_attr\_devices@{\_attr\_devices}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_devices}{\_attr\_devices}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+devices\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a9e836c37e871fde4bfa876715e5d98ba}\label{classklyqa__ctl_1_1account_1_1Account_a9e836c37e871fde4bfa876715e5d98ba}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_password@{\_attr\_password}}
+\index{\_attr\_password@{\_attr\_password}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_password}{\_attr\_password}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+password\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_af76aa7d7f0154a9c4cb5da8f07514e9a}\label{classklyqa__ctl_1_1account_1_1Account_af76aa7d7f0154a9c4cb5da8f07514e9a}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_settings@{\_attr\_settings}}
+\index{\_attr\_settings@{\_attr\_settings}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_settings}{\_attr\_settings}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+settings\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a28518af1ac4261cd9cb4b2b52dd0db23}\label{classklyqa__ctl_1_1account_1_1Account_a28518af1ac4261cd9cb4b2b52dd0db23}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!\_attr\_username@{\_attr\_username}}
+\index{\_attr\_username@{\_attr\_username}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{\_attr\_username}{\_attr\_username}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+\_\+attr\+\_\+username\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_acfbc70677260b7607512953ade51a257}\label{classklyqa__ctl_1_1account_1_1Account_acfbc70677260b7607512953ade51a257}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!access\_token@{access\_token}}
+\index{access\_token@{access\_token}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{access\_token}{access\_token}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+access\+\_\+token}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_ac296a0b895a02f3706118b30afb9d875}\label{classklyqa__ctl_1_1account_1_1Account_ac296a0b895a02f3706118b30afb9d875}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!password@{password}}
+\index{password@{password}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{password}{password}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+password}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a088eb203a8882492412861b2bf1503e3}\label{classklyqa__ctl_1_1account_1_1Account_a088eb203a8882492412861b2bf1503e3}} 
+\index{klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}!username@{username}}
+\index{username@{username}!klyqa\_ctl.account.Account@{klyqa\_ctl.account.Account}}
+\doxysubsubsection{\texorpdfstring{username}{username}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+account.\+Account.\+username}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{account_8py}{account.\+py}}\end{DoxyCompactItemize}

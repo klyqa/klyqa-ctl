@@ -27,6 +27,8 @@ from klyqa_ctl.general.general import (
 
 
 class CLOUD_DEVICE_TARGETS(str, Enum):
+    """Rest calls, cloud device targets."""
+
     command = "command"
     state = "state"
 
@@ -177,7 +179,7 @@ class Account:
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
         if self.access_token and self.cloud:
-            task_log_debug"Logout user from cloud backend.")
+            task_log_debug("Logout user from cloud backend.")
             await self.cloud.request(RequestMethod.POST, "/auth/logout")
 
     def run_password_prompt(self) -> bool:
@@ -625,7 +627,7 @@ class Account:
         password: str = "",
         print_onboarded_devices: bool = False,
     ) -> Account:
-        """Factory for an account."""
+        """Create and initialize an account. Send login for access token."""
 
         acc: Account = Account(controller_data, cloud)
         acc.username = username

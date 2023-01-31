@@ -1,0 +1,1039 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.1" xml:lang="en-US">
+  <compound refid="classklyqa__ctl_1_1account_1_1Account" kind="class"><name>klyqa_ctl::account::Account</name>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a28518af1ac4261cd9cb4b2b52dd0db23" kind="variable"><name>_attr_username</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a9e836c37e871fde4bfa876715e5d98ba" kind="variable"><name>_attr_password</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a0909afdb890efc18d77f8bdc13d10dc8" kind="variable"><name>_attr_access_token</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a049f353b4bb0028e655ba38c7de0bc7e" kind="variable"><name>_attr_devices</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" kind="variable"><name>_attr_cloud</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a0b4a40c1a870fe2fd52a538f278708f0" kind="variable"><name>_attr__settings_loaded_ts</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1af76aa7d7f0154a9c4cb5da8f07514e9a" kind="variable"><name>_attr_settings</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" kind="variable"><name>password</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" kind="variable"><name>access_token</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" kind="variable"><name>username</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a4d8817b0900560f1034addf01e65037b" kind="function"><name>username</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a8b8e31d138df3ad2107f790d57d6d6ce" kind="function"><name>username</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ab7c2e00758ea609ca93c2829ff12e3f3" kind="function"><name>password</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a64e4bc7603ec8085564bb001c01aabdb" kind="function"><name>password</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1aadca9a95f1b2985123f4a644058a7e24" kind="function"><name>access_token</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ab6cb34881f5441c412446fdbf79e72c2" kind="function"><name>access_token</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" kind="function"><name>devices</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1aaa16efea1dd2cf549168e5d8702fc670" kind="function"><name>devices</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" kind="function"><name>settings</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a5579a3240709174c5dc7c501e3c5cd2f" kind="function"><name>settings</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ad770c5568b6816f1c1aaaf2830a511ef" kind="function"><name>settings_lock</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" kind="function"><name>controller_data</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1aca64ae054b0be49da2e7733012961429" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" kind="function"><name>backend_connected</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" kind="function"><name>request_beared</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" kind="function"><name>get_beared_request_header</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" kind="function"><name>shutdown</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" kind="function"><name>run_password_prompt</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" kind="function"><name>perform_login</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1acba85b49678b6d37567985738f7becf3" kind="function"><name>read_username_cache</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" kind="function"><name>request_device_configs_from_acc_sets</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" kind="function"><name>get_or_create_device</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a769e052989dfe17d0420b0a73128f309" kind="function"><name>set_settings</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" kind="function"><name>sync_acc_settings_to_controller</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" kind="function"><name>read_acc_settings_cache</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a89f11e1fb836b679181b21b9c9f92472" kind="function"><name>update_devices</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a492d7cd1aff0fe4d6017d9f9da91082b" kind="function"><name>read_cache</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ac0ecb3d158306aa17e4b8101425a7302" kind="function"><name>init</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" kind="function"><name>device_request_and_print</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" kind="function"><name>login</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a1450d1baa029967965be433e4efb5a6d" kind="function"><name>request_cloud_device_state</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" kind="function"><name>request_account_settings_eco</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" kind="function"><name>update_account_settings</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" kind="function"><name>update_device_configs</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a748c13aed7b2a5c9c605c81234633cb8" kind="function"><name>cloud_post_to_device</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a372d813db2141719743dfe088dbe9552" kind="function"><name>cloud_post_command_to_dev</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1ab0537986f3010cd63886b8e48a64c379" kind="function"><name>create_default</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1a422b216be3c73d99668bc6d2501e17a0" kind="function"><name>_settings_loaded_ts</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1Account_1af0575ef9bdf5304a26661f4a893b0c53" kind="function"><name>_settings_loaded_ts</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1account__control_1_1AccountControl" kind="class"><name>klyqa_ctl::account_control::AccountControl</name>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a08b89c3d1c25eb8e2e4a58151703d26e" kind="variable"><name>acc_settings</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a5b4b4e18362cea70b456d2ffc78467a3" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a2d4985456f595ebe24598fd360d19bae" kind="function"><name>request_account_settings_eco</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1ab038bdf3bd58106dd61718ed6bb2625c" kind="function"><name>request_account_settings</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1abec04a28ae718f252e846b0c05645e65" kind="function"><name>login_cache</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a8938cb44ea82c6687990f061dd99828e" kind="function"><name>backend_connected</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a46d51f33622ad0e952a66d0d1b91eb12" kind="function"><name>update_device_configs</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1afa68c76beee57c491239d9184cd32167" kind="function"><name>load_username_cache</name></member>
+    <member refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a6f7cdf57ee8b48970fe2554d7c1b9694" kind="function"><name>shutdown</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1account_1_1AccountDevice" kind="class"><name>klyqa_ctl::account::AccountDevice</name>
+  </compound>
+  <compound refid="classlocal_1_1connection_1_1AesConnectionState" kind="class"><name>local::connection::AesConnectionState</name>
+    <member refid="classlocal_1_1connection_1_1AesConnectionState_1a3c62cbad8d666329210c08da2c1868e3" kind="variable"><name>WAIT_IV</name></member>
+    <member refid="classlocal_1_1connection_1_1AesConnectionState_1a773065e00e66d88cfceb4e019c43d4cd" kind="variable"><name>CONNECTED</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey" kind="class"><name>klyqa_ctl::general::aes_key::AesKey</name>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a8869062df2d14c8b590f3316501e607d" kind="variable"><name>bytes</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" kind="variable"><name>aes_key</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" kind="variable"><name>_attr_aes_key</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1af02def269ba02833f11b2876a818172d" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" kind="function"><name>aes_key</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a9e79b38e6e36e73aae9465cdc33adab6" kind="function"><name>aes_key</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1ae7c1b2b8199a5dff047cf345e2c77b88" kind="function"><name>from_string</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock" kind="class"><name>klyqa_ctl::general::general::AsyncIoLock</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a84c7d1709eaea2a0100b9a8340e05e1c" kind="variable"><name>locked_in_task</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a03d06fdae864c5afc92586db49485430" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a871a28c7421aecc1cd55f0dc9c6fa166" kind="function"><name>acquire_within_task</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a25fbc33880c976000ef3b6e70c7691c9" kind="function"><name>release_within_task</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand" kind="class"><name>klyqa_ctl::devices::light::commands::BrightnessCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1a4c6229c7ee43b33a502ba80d1a005cc0" kind="variable"><name>int</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1aba34fce7f4d8d6aae6bcbaaa61c21a8c" kind="function"><name>brightness_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1a946e7180dd8f3bd4621c23b24e63469a" kind="function"><name>json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1ab63f32fce3e15998369f6b058810906b" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1message_1_1BroadCastMessage" kind="class"><name>klyqa_ctl::general::message::BroadCastMessage</name>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1BroadCastMessage_1ae2a7da9150f99422c973faad20823743" kind="variable"><name>default_factory</name></member>
+  </compound>
+  <compound refid="classbytes" kind="class"><name>bytes</name>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client" kind="class"><name>klyqa_ctl::klyqa_ctl::Client</name>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a287a2a6993c136f4612d37c1c61f4c3f" kind="variable"><name>_attr_local</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a8a4103a5925e93ce5c70c841248cf98c" kind="variable"><name>_attr_accounts</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" kind="variable"><name>_attr_cloud</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" kind="function"><name>local</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a3cdabc8aa3a95c4adda1df1949cda05d" kind="function"><name>local</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" kind="function"><name>accounts</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1af3198f7c13e93b4da93d04fbb2c46532" kind="function"><name>accounts</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a74e8c8e307949b86d7d49356ec8cd9b8" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" kind="function"><name>add_account</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" kind="function"><name>shutdown</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1aca681010a08f941d9f65888e99cd6374" kind="function"><name>discover_devices</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a40aba5774804e631745f63c3c91ec049" kind="function"><name>select_device</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" kind="function"><name>send_to_devices</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" kind="function"><name>send_to_devices_wrapped</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7ca48cb5c46c0fe0dbf5c469fe515ea6" kind="function"><name>create</name></member>
+    <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a4c89a534b94647d2ab500dc1a876686e" kind="function"><name>create_worker</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS" kind="class"><name>klyqa_ctl::account::CLOUD_DEVICE_TARGETS</name>
+    <member refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS_1a673616cc91b780afd37e68600d38d12a" kind="variable"><name>command</name></member>
+    <member refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS_1af023b0fcc7ea214ab758eeeee24de7bd" kind="variable"><name>state</name></member>
+  </compound>
+  <compound refid="classcloud_1_1CloudBackend" kind="class"><name>cloud::CloudBackend</name>
+    <member refid="classcloud_1_1CloudBackend_1a73a0fffa7df86b858325c41d919428b9" kind="variable"><name>_attr_host</name></member>
+    <member refid="classcloud_1_1CloudBackend_1ac0d15541a884bfef94e99527d3c171ee" kind="function"><name>__init__</name></member>
+    <member refid="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" kind="function"><name>host</name></member>
+    <member refid="classcloud_1_1CloudBackend_1abe810e894a06b18f0e875603f2d8b4e1" kind="function"><name>host</name></member>
+    <member refid="classcloud_1_1CloudBackend_1adf95478dcc03f91d222b6cc3c5317175" kind="function"><name>offline</name></member>
+    <member refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" kind="function"><name>controller_data</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" kind="function"><name>backend_connected</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a58e4bd598358583c0eb7c50fdf0c6bc1" kind="function"><name>get_device_config</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a566850b368080b6ff85ee2675aa9b3e2" kind="function"><name>get_device_configs</name></member>
+    <member refid="classcloud_1_1CloudBackend_1af39d1bfe4ff58db5af7f373b7ca965a0" kind="function"><name>get_header_default</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" kind="function"><name>request</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a85f7e46764602842576d0a96ca804ea4" kind="function"><name>load_http_response</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a8db40a99748dc3cc160e5093da0f84e8" kind="function"><name>send</name></member>
+    <member refid="classcloud_1_1CloudBackend_1a549f101de99a135607eace6d67482c1f" kind="function"><name>create_default</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand" kind="class"><name>klyqa_ctl::general::general::CloudStateCommand</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" kind="function"><name>cloud</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand" kind="class"><name>klyqa_ctl::devices::light::commands::ColorCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1a8538745ea4d8a9eb740869a280232f52" kind="variable"><name>RgbColor</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1a6ce99d7f4f232fb2f11e6efb7e85e778" kind="function"><name>color_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1afa8f262e4047666707237c4dfe8615c3" kind="function"><name>json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1a398df61cf2d815c4d338ef0131482c6d" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1Command" kind="class"><name>klyqa_ctl::general::general::Command</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" kind="variable"><name>TypeJson</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" kind="variable"><name>default_factory</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a8c8ad93fedd0da0e0021f58714ec7fb5" kind="function"><name>json</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" kind="function"><name>msg_str</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1CommandType" kind="class"><name>klyqa_ctl::devices::vacuum::commands::CommandType</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1CommandType_1a9084d03071a9a4c6f330a9f3a6e1358d" kind="variable"><name>GET</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1CommandType_1ae171f5fa7ce2ccb74e66a77a78fcd683" kind="variable"><name>SET</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1CommandType_1aa572dae5608a66eacd2255691d253fae" kind="variable"><name>RESET</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType" kind="class"><name>klyqa_ctl::general::general::CommandType</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType_1a80b8ed962f44f0e7e78023b2a31ded5d" kind="variable"><name>PING</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType_1a03525986f9612659997dbacdb281e3d6" kind="variable"><name>REQUEST</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType_1a4b2512c973a075a1cffcb953ab43fa37" kind="variable"><name>FACTORY_RESET</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType_1a0d4614512081c4272bae60b5249edc6c" kind="variable"><name>ROUTINE</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType_1a3952c457240493a30c5b44d5eb24f8af" kind="variable"><name>REBOOT</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandType_1afb4d73d9bd8c0a54d814b8b1da108b82" kind="variable"><name>FW_UPDATE</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped" kind="class"><name>klyqa_ctl::general::general::CommandTyped</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1ae7b76f7b278feff1e6a6973f1eb1687e" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues" kind="class"><name>klyqa_ctl::devices::device::CommandWithCheckValues</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1a1ec9d149deafea09d8681f2b45f5b656" kind="variable"><name>bool</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1adff1dec3cc2f6b12e158de8b61cfd5a5" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight" kind="class"><name>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1add33b25987f5672d71c9672626dd6bc6" kind="variable"><name>None</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1a44c064638b5ab33bc6515688644d2d12" kind="variable"><name>_light</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1ac8eea472765742d8c9bbfaada1f7f40c" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classconnection__handler_1_1ConnectionHandler" kind="class"><name>connection_handler::ConnectionHandler</name>
+    <member refid="classconnection__handler_1_1ConnectionHandler_1aace4dd2e9f17d3fbb198e81fbf2019dd" kind="function"><name>handle_connection</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kind="class"><name>klyqa_ctl::controller_data::ControllerData</name>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a7db51113dc4af4a42345ff692e6042dc" kind="variable"><name>_attr_add_devices_lock</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a3e5aa804cb661ce596f80a2392a57843" kind="variable"><name>_attr_device_configs</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1afef80a3e39b53403c944dc0ebb67c213" kind="variable"><name>add_devices_lock</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a16260461217319bd84447f01c1880e91" kind="variable"><name>device_configs</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a45b182549e7e44dc4cffbdd2ec67c99d" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a2cf991ff700440430504ca3b8dfdafcb" kind="function"><name>aes_keys</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a4db20468ab1574d0198a02bf2e05b1ec" kind="function"><name>interactive_prompts</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1acb31c4dc35406e234e75902d1972ae7a" kind="function"><name>offline</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1acf121380378cde9a2041430bac89ac97" kind="function"><name>add_devices_lock</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adfe1a88ba5aeb04f1519e1f2119ba043" kind="function"><name>add_devices_lock</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a1c459533253695a0de7b56b239fbd91f" kind="function"><name>device_configs</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1aeaa7bc2b369b598494fba26dd06e1b48" kind="function"><name>device_configs</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" kind="function"><name>devices</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1ac09ff4824e78b0347afa7af30a825e68" kind="function"><name>init</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1afe5d9ecd2aec0bad65f3be2ed0ff4ce1" kind="function"><name>create_device</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a006615491c01ae305bbf34eb2fc47e09" kind="function"><name>get_or_create_device</name></member>
+    <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1ad6b22ed1dd9a52c2cd40ecd60e58729f" kind="function"><name>create_default</name></member>
+  </compound>
+  <compound refid="classlocal_1_1data__package_1_1DataPackage" kind="class"><name>local::data_package::DataPackage</name>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a284d0c7b186c5adbbcd08b5cd8f06e01" kind="variable"><name>bytes</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a1e877bac1e5d8d2c72a38eba331ff53b" kind="variable"><name>int</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1aedecf21180550c17824d01cb051e06e1" kind="variable"><name>PackageType</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a3ea216c7593e7be88f4a3bc074a470d3" kind="variable"><name>ptype</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a79889650681d695892a48d27fe15d3c4" kind="variable"><name>_attr_data</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1aa74cdb6aff87f0fc16a827c27e2847f7" kind="variable"><name>_attr_length</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a80aee91fcbae4a39efe73c153cdffb5c" kind="variable"><name>_attr_type</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1ac478113a6fa61199e9957442c1fb2c85" kind="function"><name>serialize</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a0aa60df5ab8d3bb180f8697de7995656" kind="function"><name>create</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a007ac689daf6b3001df5f09662046096" kind="function"><name>deserialize</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a5fbd3faa301f854e288dfdc808d9537c" kind="function"><name>data</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1aedf33a5b967c8d177c5c7122c3dc7eaf" kind="function"><name>data</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a656e7f5a53c830819a94c3765dccbcbc" kind="function"><name>length</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1ae3a94e8af03468f692b133fa143cefda" kind="function"><name>length</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1a64a5c374b8a7ee4f4d65503363f831a4" kind="function"><name>ptype</name></member>
+    <member refid="classlocal_1_1data__package_1_1DataPackage_1aaa954cb101d9006356e5390e4fb0530f" kind="function"><name>ptype</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1device_1_1Device" kind="class"><name>klyqa_ctl::devices::device::Device</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a4b88920dd097d307cb32c68712954c8c" kind="variable"><name>_attr_local_addr</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad117521203c694ca946b96598bd7aa11" kind="variable"><name>_attr_cloud</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a388d144625384f5487efe856d178d76e" kind="variable"><name>_attr_ident</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a18002d257f13b699ddd6e03bf0b20bd8" kind="variable"><name>_attr_u_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a710f4812c6eb9f32bc612f4a28085b35" kind="variable"><name>_attr_acc_sets</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ab170bbcda2f489d6a938918d9ee7197b" kind="variable"><name>_attr__use_lock</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a8db52a2b8f73be2c28fb18df0a45deb9" kind="variable"><name>_attr__use_thread</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a6dfc8051faa5cac3a60a1bcb97acbe4e" kind="variable"><name>_attr_status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aeaf9be33c3fa66a3993912c5fa2401b4" kind="variable"><name>_attr_response_classes</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa9521437d7f21dcbbcf6632926326c0d" kind="variable"><name>_attr_device_config</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa531348d0d30f6735af7296e6a1e58a7" kind="variable"><name>_attr_product_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a9bd7e5475e03628af50b2ddaf1068ac4" kind="variable"><name>_use_lock</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a72eb3cd6ad4f562480bad4ddbe6851c4" kind="variable"><name>status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a5fb36462556dcd5980ff198bed7dd9e2" kind="variable"><name>device_config</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a6f404a962e6b23554e59afc65a6b8d22" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad36a9e20a1af6d562671110c85edf319" kind="function"><name>send_msg</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ae1cc52edd0ae4a6c870314953abde498" kind="function"><name>send_msg_local</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa720423431e3ca027da9e15091b77c7a" kind="function"><name>local_addr</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aeeb33fb9c418502d712816d7beb1935c" kind="function"><name>local_addr</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a620bcc2824886b4d9063e3bfe39ab27b" kind="function"><name>cloud</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a70445a28c25aad39023b0b7304a5c732" kind="function"><name>ident</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a146ecdc1f4fbd22e822c36bc6647209b" kind="function"><name>ident</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a1a22488877c0690074c8d353a37806b9" kind="function"><name>u_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a285db910c65644677d9e67687b687386" kind="function"><name>u_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a34d9874a0a55b47729c2e1bce6623479" kind="function"><name>acc_sets</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1abff106c1db035023ad9e80b3456bd439" kind="function"><name>acc_sets</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aeed20c5782407a76a85a32f54a8fd8ab" kind="function"><name>status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a14d1f6a85748e2b9dcc5c77a34bd8a40" kind="function"><name>status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad6bc32c73114ceef2ec28b880095bbf3" kind="function"><name>response_classes</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a9d41ed646f02bd9a096dc1df524a4387" kind="function"><name>response_classes</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a601de1bee20207d0d12411dc1409a3e0" kind="function"><name>device_config</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a25430b3dd4a2177531799fce68152e6a" kind="function"><name>device_config</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a8d0ca351008a2098f40c402c998d6dff" kind="function"><name>product_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1afda41e95ea17474950b1a0d677a57ef3" kind="function"><name>product_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a7230c178c35cdd93a7242b150008b822" kind="function"><name>get_name</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a94f0b671e20f3bbbc8b1e2c289f6b62d" kind="function"><name>use_lock</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa764f31ef3b8ed27e404ea780ce7e778" kind="function"><name>use_unlock</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa24f94bc4cb0e5b9fee79360aca8819e" kind="function"><name>save_device_message</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad6d431984375e5db88772bc82f28d709" kind="function"><name>read_device_config</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a496610ad8a73f5e4c1e7961ce2985ecb" kind="function"><name>_use_lock</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa86f84ebf8923ae2b0eb49ae89ee7e5a" kind="function"><name>_use_lock</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a305e71b052ac32a061f15ca2a82fb0c9" kind="function"><name>_use_thread</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ac814173abac55b80de30f5a09a52897f" kind="function"><name>_use_thread</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState" kind="class"><name>klyqa_ctl::devices::cloud_state::DeviceCloudState</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" kind="variable"><name>_attr_connected</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" kind="variable"><name>_attr_received_packages</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a5fd2af2fec06299e31b68e0f26ba32e9" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" kind="function"><name>received_packages</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ae9b9cae827663d1b1f4e6b525006ce67" kind="function"><name>received_packages</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" kind="function"><name>connected</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1abb28bd22c9e7885d2ad5057ec29fbc3b" kind="function"><name>connected</name></member>
+  </compound>
+  <compound refid="classdevice__connection__handler_1_1DeviceConnectionHandler" kind="class"><name>device_connection_handler::DeviceConnectionHandler</name>
+    <member refid="classdevice__connection__handler_1_1DeviceConnectionHandler_1a81415e07fb4cf5ea625a8c7d21e834b1" kind="function"><name>send_message</name></member>
+  </compound>
+  <compound refid="classlocal_1_1connection_1_1DeviceTcpReturn" kind="class"><name>local::connection::DeviceTcpReturn</name>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a575e64d84cf1dc3b3e7f380678d02857" kind="variable"><name>NO_ERROR</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a96068ad3cec63424f52ac09807a6e792" kind="variable"><name>SENT</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a49c99cd610f60aa53cf5a447a7411743" kind="variable"><name>ANSWERED</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1aa46179a3e84509cc6d0f2a3472a035c6" kind="variable"><name>WRONG_UNIT_ID</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a08e01c94ec2718b3b4d339b530d41c88" kind="variable"><name>NO_UNIT_ID</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a26a728a36cff51e549829cbb29fc26f0" kind="variable"><name>WRONG_AES</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a584a7d1ae43553afe3ac729efc038ea9" kind="variable"><name>TCP_ERROR</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a63f99836d9003f350a43870e215f3d6c" kind="variable"><name>TCP_SOCKET_CLOSED_UNEXPECTEDLY</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a219cbb351173c4ea383f5988f4979497" kind="variable"><name>UNKNOWN_ERROR</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a7f2ffb1f23039fa5f14c721124ab5cd0" kind="variable"><name>SOCKET_TIMEOUT</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a39abd2a11674c3143d2a48663678c68a" kind="variable"><name>NOTHING_DONE</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1aaef53e0a08ac5001147b428bf42da239" kind="variable"><name>SENT_ERROR</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a24defce5bc78800909c822c42e384172" kind="variable"><name>NO_MESSAGE_TO_SEND</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a1e0dbac25701e5ae4ae6a06c99d9f83b" kind="variable"><name>DEVICE_LOCK_TIMEOUT</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a04cc50a64ee6d83dfda0dbb580308681" kind="variable"><name>ERROR_LOCAL_IV</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a994a552f1eddb872bca4deb6531829f2" kind="variable"><name>MISSING_AES_KEY</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a026072daea96ad996761bb59d288cf01" kind="variable"><name>RESPONSE_ERROR</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1ae4e6366139ede15a76f35cd331af1b9b" kind="variable"><name>SEND_ERROR</name></member>
+    <member refid="classlocal_1_1connection_1_1DeviceTcpReturn_1a6bf2e0fd3c017452190e81f7644ab4c4" kind="variable"><name>SOCKET_ERROR</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType" kind="class"><name>klyqa_ctl::general::general::DeviceType</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1aaf48075a9f9e176115fb1924ba0737ff" kind="variable"><name>CLEANER</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1ac708df94dd921fb5fd723c92b42e8b1c" kind="variable"><name>LIGHTING</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1ae57f581a2aa358b27b2f577b6ae9274e" kind="variable"><name>bytes</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter" kind="class"><name>klyqa_ctl::general::general::EventQueuePrinter</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1ab5bcf6378aca4cc260c351532560edf8" kind="variable"><name>Event</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a07e19f74365bf159fb8541d69f55b30f" kind="variable"><name>bool</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" kind="variable"><name>None</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a40ded802a519667c32233d1413461f76" kind="variable"><name>printer_t</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a3159af5a0a8d5d87868330f2cc4cae91" kind="variable"><name>not_finished</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1adb373a47b99730f41dead6fa05704afc" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a41f1bacb0712b588612356205ec1baef" kind="function"><name>stop</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1aef746875ceea7d2514677d0850172d99" kind="function"><name>coroutine</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a9cb7d11758b93fa02911321f66044d7c" kind="function"><name>print</name></member>
+  </compound>
+  <compound refid="classException" kind="class"><name>Exception</name>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand" kind="class"><name>klyqa_ctl::devices::light::commands::ExternalSourceCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1ac5ebf6710187f0c17283f752f44755e0" kind="variable"><name>ExternalSourceProtocol</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1a2923f70e5082a7bd5ffb50475b62b33a" kind="variable"><name>int</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1a393710b54f709b852bfd0f3769c39ce6" kind="function"><name>json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand_1a4823410385a90b9baf037cc3045967a1" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol" kind="class"><name>klyqa_ctl::devices::light::commands::ExternalSourceProtocol</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a32eb0a5df0f4d901da768abeab02babf" kind="variable"><name>EXT_OFF</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1ad6a89e97323bf86a287798b0baab1e85" kind="variable"><name>EXT_UDP</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a3d19b8108b088879e600c0b841c1d7f2" kind="variable"><name>EXT_E131</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a352dfaaa40b99b4159bb6008ef893870" kind="variable"><name>EXT_TPM2</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand" kind="class"><name>klyqa_ctl::devices::light::commands::FactoryResetCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand_1adc64c80a9f21c8825c36b3d2e7f5ce91" kind="variable"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FactoryResetCommand_1a5ea5a7c1fa0321518837143dcf8d5e6c" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FadeCommand" kind="class"><name>klyqa_ctl::devices::light::commands::FadeCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FadeCommand_1aef3c7eec33f75003a0c6f5918500c0cc" kind="variable"><name>int</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand" kind="class"><name>klyqa_ctl::devices::light::commands::FwUpdateCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1aad27181b9fdf04d68a397864b710614a" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1a4e46508cc819319e1b3a59a7fd141ef1" kind="variable"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1aad4e58c25a42f43a4258290f373825fb" kind="function"><name>__post_init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1a7dc482a4e9a65d49ce0a61671ed6868e" kind="function"><name>url_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand_1a9de3441c7fbba5f5a19ea914970a3db7" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light" kind="class"><name>klyqa_ctl::devices::light::light::Light</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1abc99fd81a30d47e1c585789d0093d55b" kind="variable"><name>_attr_brightness_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1adc53575e9ae92aba41242eeb8e842764" kind="variable"><name>_attr_temperature_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a51e111d283f2d0963092ddf84eff7a75" kind="variable"><name>_attr_color_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1aa97084850c23c58cb68309f4bc6421ab" kind="variable"><name>brightness_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1aabbd769adfb3d10994a67c5873c20044" kind="variable"><name>temperature_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a99dd0943b750d9a522fad9d2d0f4417e" kind="variable"><name>color_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1ac51199422c5adf0d77d34b9a2842ba8f" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a58a991c4faffb64e1c87421fc6491814" kind="function"><name>brightness_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a00a502a8fbe8469476b2e01dc8c3f6eb" kind="function"><name>brightness_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1ab58d08f9ca1c6805c0fa186853aa3d9e" kind="function"><name>temperature_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1aa7adb89ccd77d74c7d15c88778380cf6" kind="function"><name>temperature_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1afdaa673bd02c5f2ba3de6095b84f5405" kind="function"><name>color_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1ac0285bf6433bba2d50b8becf9b5fedab" kind="function"><name>color_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1af5692a637886edee63bb5b382b083f07" kind="function"><name>set_brightness_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a678cb5983ecfac6f4a45a6a7eedc05ee" kind="function"><name>set_temperature_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a787bc2e5bed296bfff6ecd838bd42909" kind="function"><name>set_color_range</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1ae6c452a2f72194841574cdf7c52bd384" kind="function"><name>read_device_config</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1light_1_1Light_1a1eee2c62b0293eab05cf6eeaff3a4278" kind="function"><name>set_temperature</name></member>
+  </compound>
+  <compound refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler" kind="class"><name>local::connection_handler::LocalConnectionHandler</name>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a87b7dc39e44da267c0eefd59d2b2672e" kind="variable"><name>_attr_current_addr_connections</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1af3e5bcdcf6810250f40c567df909e41f" kind="variable"><name>_attr_network_interface</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ae4afde55789d67ca141f32cd0f2c2493" kind="variable"><name>_attr_controller_data</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a6493a246d69932bec84ca4e7b6b388fe" kind="variable"><name>_attr_devices</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8a5ac8d6f4dea27c50196afd9652a346" kind="variable"><name>_attr_tcp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ad5c7aa585d0caeb47f8faa346190a3a7" kind="variable"><name>_attr_udp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aecb45be484a4b7c1ae8c1e9bca8c3ee7" kind="variable"><name>_attr_server_ip</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a9743831efb2f611d2348a5602e7ef302" kind="variable"><name>_attr_message_queue</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a3f66f22f149d55906c40fff1df106447" kind="variable"><name>__attr_send_loop_sleep</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a98999cb56a4b93a97541deaf9cb3cb35" kind="variable"><name>__attr_tasks_done</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a129a15e834ca7f110952eb7e58ac0013" kind="variable"><name>__attr_tasks_undone</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a34d28f73c88f0446897aa36b5c7b10ac" kind="variable"><name>_attr_handlec_connections_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1afab4cc85b5f9fa33a1e32e71433c3c2b" kind="variable"><name>_attr_handle_connections_task_end_now</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a1feda3b6377035d969d4e21b4540ef14" kind="variable"><name>__attr_read_tcp_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a2b51fa92e94e68a7ce1cfa9476beee3b" kind="variable"><name>__send_loop_sleep</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aad755d50b86f166cc07d60a73be07d27" kind="variable"><name>__tasks_undone</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ab01f2e382ae425e5bc2818772d059a56" kind="variable"><name>__read_tcp_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a06a29b1bf1327ddeb687e4062ee1110d" kind="variable"><name>tcp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8707b5729524d2c0a4e5e1b2116d22c2" kind="variable"><name>udp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aa8d21a3d613da986068dc05e8ea8c4a7" kind="variable"><name>message_queue</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a828ca7aef56188a7dd4bd1b18b7cea85" kind="variable"><name>handle_connections_task_end_now</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ac3bb2f33c3dd9a46ba505569ec001ab3" kind="variable"><name>msg_ttl_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a1f5deccf8a67169afa7e67c53cd569e5" kind="variable"><name>handle_connections_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a0c713697632158651e042a125d3a5dc6" kind="function"><name>__init__</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a159e60e3f78301ef89df33d9adaebbde" kind="function"><name>network_interface</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a6ef3ac8849218db44b014909d1f8146a" kind="function"><name>network_interface</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" kind="function"><name>controller_data</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ac7312a0c1fbe8ad9bcbd585e66e9e74c" kind="function"><name>controller_data</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4d307f6bd0b66f3cb9fac3057fc87972" kind="function"><name>devices</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8d7418a9f89b4622dd814bd1c9ea4028" kind="function"><name>devices</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a00d69811c9433020eb1ec3b24383008e" kind="function"><name>tcp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a0f8caa333a22c79922997c34d9d7b868" kind="function"><name>tcp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a9ff5b865c574faa82b43f8578b0bd564" kind="function"><name>udp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a577fb1c5fd541b50f25314acf0f9ee84" kind="function"><name>udp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ab8a8460610614f6230bbf346fc532269" kind="function"><name>server_ip</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aebdf9201096932f18c4f28e1e084d267" kind="function"><name>server_ip</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a2c8ccb41ccfd636bd8a02042034375e8" kind="function"><name>message_queue</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a1fc09795d2fca9fcaf4ef67f48810ce2" kind="function"><name>message_queue</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a7e62dc20801dc3d832dbd1dd0373ba17" kind="function"><name>handle_connections_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a44ce408a0cb35854a4ac1dfe541090b4" kind="function"><name>handle_connections_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1acf31322d19d937f12f736c7f4c3d9f22" kind="function"><name>handle_connections_task_end_now</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ac2ea1078fc435b2f80b549c4d17ab6d4" kind="function"><name>handle_connections_task_end_now</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a7e5e94d8da70d86c87eba78bcde9ff42" kind="function"><name>current_addr_connections</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a5c2443c4a93b9bfedd207119b0dbb9bc" kind="function"><name>current_addr_connections</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a3510d32dbcb1a08fcd7796e2d8d2bdd6" kind="function"><name>shutdown</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a28f05e11005dfc83e537f9e2e85f54d5" kind="function"><name>bind_ports</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4ce11db96280d000941a91cb37df2842" kind="function"><name>process_device_identity_package</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ad1b4bfaedd513acfccbf1b12e36d5469" kind="function"><name>process_aes_initial_vector_package</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a46f68728bc59f0e5991bc390f67f2685" kind="function"><name>process_message_answer_package</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a34b95b45332382bb830a3f1277878268" kind="function"><name>remove_msg_from_queue</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a900e05554022ee9ecb3ba5621369016d" kind="function"><name>handle_connection</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aaa28266e241c2e30e8acd468fab06fde" kind="function"><name>process_tcp_package</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a0b582d0bf1523d1d0404867ab921539f" kind="function"><name>device_handle_local_tcp</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a69a2aabf1a7bc94f925f914df5ceae10" kind="function"><name>send_udp_broadcast</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aed3640a60ff23b9532ca91ebd2a9d01a" kind="function"><name>standby</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aa6b6ea4bb56f4c18b6906bab38c971a7" kind="function"><name>read_incoming_tcp_con_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8b85c27ecdc845a205a4f36c38554ec8" kind="function"><name>check_messages_time_to_live</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aefd29b1e670e7076b749f7f21b0dc290" kind="function"><name>connection_tasks_time_to_live</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a5e9277acd0b7bfa5a1e74417e0e10d86" kind="function"><name>handle_incoming_tcp_connection</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aa5d34422c7cb1784e408fef186a0b585" kind="function"><name>handle_connections</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aa780e39d1ce443d422a41064cc382d1f" kind="function"><name>handle_connections_task_stop</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ae9be93d47c973e3c8afeed1b27fc7a4d" kind="function"><name>search_and_send_loop_task_alive</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aae9d106df606f3c68a146e0af7f60bba" kind="function"><name>send_message</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1af714f4a1c0791c62d2d3990990a42cf4" kind="function"><name>discover_devices</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ad2b49f5fff5ca621ba06840d5f550666" kind="function"><name>create_default</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a68a3816075b8ed0c70771734a769c637" kind="function"><name>__send_loop_sleep</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1aaf4e9059c5e6eb4c022552d5e2b61393" kind="function"><name>__send_loop_sleep</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ada6417ada8d133670d693cfc41524ace" kind="function"><name>__tasks_done</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ac9063fb97f6994d217bbf2de54e52284" kind="function"><name>__tasks_done</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a317b8c3b4d3ebaa16eeaed026c561426" kind="function"><name>__tasks_undone</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ac233ab5749ff539db60868d759194458" kind="function"><name>__tasks_undone</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a348da0cbea474b77e02a7960340aed36" kind="function"><name>__read_tcp_task</name></member>
+    <member refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ab55d546556c0b8e39bd0f147765e233f" kind="function"><name>__read_tcp_task</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1local__controller_1_1LocalController" kind="class"><name>klyqa_ctl::local_controller::LocalController</name>
+    <member refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1ad820bb0d181aeb158a3177323ee35cdf" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1a28a9d1dad1c73734dbadc5f08279c169" kind="function"><name>send_to_device</name></member>
+    <member refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1a5285a4922d736c63b83ae0626424d9aa" kind="function"><name>send_to_device_native</name></member>
+    <member refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1aa10e92996b98046d4414be75d2b93305" kind="function"><name>shutdown</name></member>
+    <member refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1a0d521d323172bec4e120f6968cd92450" kind="function"><name>create_default</name></member>
+    <member refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1a109a225aaf7b2944bedd487a755ef4ab" kind="function"><name>create_standalone</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1message_1_1Message" kind="class"><name>klyqa_ctl::general::message::Message</name>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a49e0162cb75f631b2b280331a7fc91ff" kind="variable"><name>default_factory</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a1b970f42ae928bab59f97914466f2dc5" kind="variable"><name>MessageState</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a8b56c60989ac55954e8cffba18694ef7" kind="variable"><name>None</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aa5729ded77d4239d0a5d63f077d0bf38" kind="variable"><name>bytes</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae36d2058696d8c6196b4bfcb79fa5b45" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a1871df3836bb09d3cb3ec280c8479d19" kind="variable"><name>TypeJson</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aec4ef7225c8fb24d53778413bf640127" kind="variable"><name>bool</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a5deb75569877b0203b6ae428f74d2d0f" kind="variable"><name>float</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a94dfea71bd34c25da7b11dad0c8fe6b5" kind="variable"><name>int</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a02028ebe4d01a0470b9ff85e8ecc2b4c" kind="variable"><name>msg_counter</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a4d77dd41efbcfc76e46ed99c62c52205" kind="variable"><name>cb_called</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae51660f54fe0ec8bf19dda70fa9b34c2" kind="variable"><name>_attr_target_uid</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ab749e70b0610fa91461927f23b46b51d" kind="function"><name>__post_init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" kind="function"><name>call_cb</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a670561cf07691d77ef03db5705ddea75" kind="function"><name>check_msg_ttl</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aac78e76d46b64b9bf9cb1d9737544585" kind="function"><name>target_uid</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a7ce6ef4fadad18a090eb588d6c586413" kind="function"><name>target_uid</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState" kind="class"><name>klyqa_ctl::general::message::MessageState</name>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1a4230c2021b94ce9c06b637dbb5c734fe" kind="variable"><name>SENT</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1a776cb01e32e13ee78251896329497630" kind="variable"><name>ANSWERED</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1aa77c739f74932bb76326565d887eb794" kind="variable"><name>UNSENT</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard" kind="class"><name>klyqa_ctl::devices::onboard::Onboard</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_1a41bcc5977f41608b6eb4350eaa845e68" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_1ad104380a7e47e96fe9af37ea7120166b" kind="function"><name>build_tcp_socket_connection</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_1af28b551caec339826e2b209a20b88207" kind="function"><name>Onboard_receive</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_1a04ff72b185dd79eb70ded5f29d7cc61c" kind="function"><name>onboarding_device</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_1ab324155b854711966deaa05c26eea973" kind="function"><name>Lamp_typ</name></member>
+  </compound>
+  <compound refid="classlocal_1_1data__package_1_1PackageException" kind="class"><name>local::data_package::PackageException</name>
+  </compound>
+  <compound refid="classlocal_1_1data__package_1_1PackageType" kind="class"><name>local::data_package::PackageType</name>
+    <member refid="classlocal_1_1data__package_1_1PackageType_1a619c82402adb58b2d1c47b936ee022c0" kind="variable"><name>PLAIN</name></member>
+    <member refid="classlocal_1_1data__package_1_1PackageType_1a341f299c2a47ddf534138dd7d4d48a31" kind="variable"><name>IV</name></member>
+    <member refid="classlocal_1_1data__package_1_1PackageType_1a53ee9940e0762dbd8d36a7367c5a655d" kind="variable"><name>ENC</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand" kind="class"><name>klyqa_ctl::devices::light::commands::PingCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand_1a4a16b95c9ac5b33d5dd3cd9a0cd18a6f" kind="variable"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PingCommand_1a6f2991c87adeb84eee6522274e83d4f0" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand" kind="class"><name>klyqa_ctl::devices::light::commands::PowerCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand_1a0f513230cad130e89d9af85998d887f1" kind="variable"><name>str</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand" kind="class"><name>klyqa_ctl::devices::vacuum::commands::ProductinfoCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand_1a1950a810783ab6312c31fa43dd06182c" kind="function"><name>productinfo_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand_1a23d375f048835d4b0f12602764d2a6c1" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1Range" kind="class"><name>klyqa_ctl::general::general::Range</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1aa85755bb9f1ee92e22fad26b280e7f3f" kind="variable"><name>min</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1a67ad2996d8c8e0a1367fe831cbc52144" kind="variable"><name>max</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1abc0e4582243fb7886e59fd2185695dd5" kind="variable"><name>_attr_min</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1afabc30bebffbf813a6c05c6713124f27" kind="variable"><name>_attr_max</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1ac116ab494ea6393c5630cfc7f26be291" kind="function"><name>__post_init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1a3b4058bd64f0603fe0652b98118d5d16" kind="function"><name>min</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1ab21d3339ce8152f01dc52f03b5720c78" kind="function"><name>min</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1a24fdd23434a0253ce7b2ad3f58fd2339" kind="function"><name>max</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1Range_1ace7d142166d8b7825084bcd91a6ea2bf" kind="function"><name>max</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RebootCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RebootCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RebootCommand_1afc4795d23e77c489a1f82fe10af7f027" kind="variable"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RebootCommand_1aadc903579d034531b03bd1524fcfbd0f" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1ReferencePass" kind="class"><name>klyqa_ctl::general::general::ReferencePass</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1ReferencePass_1ab0ba34ab2cf709cc69a72a8e08c85bc0" kind="variable"><name>Any</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1ReferencePass_1afcb46ad316dc2330d3f1712376d86caf" kind="variable"><name>_attr_ref</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1ReferencePass_1a3854f10ff2b404b9a001ff0849c896b5" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1ReferencePass_1a3ba19cd66b46048617a166fac8ea6146" kind="function"><name>ref</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1ReferencePass_1aa508e8b5bb49594483669db946e1038d" kind="function"><name>ref</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RequestCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand_1a7833b3cf41d6fea6d3f0065fa6f2f1eb" kind="variable"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand_1a7aa6b48097028a096d8bcbaa8ad9d671" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand" kind="class"><name>klyqa_ctl::devices::vacuum::commands::RequestGetCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand_1a71be3cb060fa2c05f2762d13267c6144" kind="function"><name>get_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand_1a216966811184b718a4659bf081113f38" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classcloud_1_1RequestMethod" kind="class"><name>cloud::RequestMethod</name>
+    <member refid="classcloud_1_1RequestMethod_1a49b40daf10c7f7fbecb39bfb2fb247e0" kind="variable"><name>POST</name></member>
+    <member refid="classcloud_1_1RequestMethod_1ab7190b45d4f9c8f18fe504f6712bfa0b" kind="variable"><name>GET</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand" kind="class"><name>klyqa_ctl::devices::vacuum::commands::RequestResetCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_1a53de7ccfeb12e1b8f4c0ea8a82410d4e" kind="function"><name>reset_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_1a1ac56b80427d60d9f55079ae846ae25e" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand" kind="class"><name>klyqa_ctl::devices::vacuum::commands::RequestSetCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand_1ac327b3b919e0d1a45ebe754e546f94f8" kind="function"><name>set_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand_1a354b74be46f4b7d8a56811eaab910959" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage" kind="class"><name>klyqa_ctl::devices::response_identity_message::ResponseIdentityMessage</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a117fe0dfcee57568c9ce80941701370e" kind="variable"><name>_attr_unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1aa347b18203d11feb3f6fb1b1b6068fc9" kind="variable"><name>_attr_fw_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a1a4b0f5678ac9efb16e0b9c147439a6a" kind="variable"><name>_attr_fw_build</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1aba5d7b8a748069a192d7b409e6ace2d6" kind="variable"><name>_attr_hw_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a7c64599e1dfcb40e6ac6e6073c18f88f" kind="variable"><name>_attr_manufacturer_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1ac5d8296e6622205efc9b2bb7e58ae914" kind="variable"><name>_attr_product_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a0054b502a56d01fe8f99d711cbf1f5ba" kind="variable"><name>_attr_sdk_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a6379999ea8e8998c5d23a92ff97f9e42" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1abcd79774326dd47c4a0805509c09cadc" kind="function"><name>update</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a24a6479aa43d7b9267810cdbc30b4640" kind="function"><name>unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1ab8f621ee59d0b61044fae3e48d1740d0" kind="function"><name>unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a36121140ea3d06258414df7f3420c6e6" kind="function"><name>fw_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a334cbf1e3f71c76567b9225ccc48bbe5" kind="function"><name>fw_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1abb799a5c96a79790ed6efee3a2c4da73" kind="function"><name>fw_build</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1aa0fb4cb1fec0ad24b5a899abd87f49e5" kind="function"><name>fw_build</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a83459d704a610fd87cbec336ef5aa019" kind="function"><name>hw_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a0da74a6cb116e663b7074389915b995a" kind="function"><name>hw_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1ab1218ef41adddd44e3731d9224859b21" kind="function"><name>manufacturer_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a271192fc8b903d4924a437351e134cec" kind="function"><name>manufacturer_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a208249a95f1dc799b026d9030ad7998a" kind="function"><name>product_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1aabf4cefe8d339792a905731655fce4ba" kind="function"><name>product_id</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a9718c8536941e62923a9d43372c848eb" kind="function"><name>sdk_version</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a2cf2ad27ff80d7273f7c0de41828ad70" kind="function"><name>sdk_version</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage" kind="class"><name>klyqa_ctl::devices::response_message::ResponseMessage</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" kind="variable"><name>ts</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a090131fa93e7d78d4abd712c86bf5ecd" kind="variable"><name>_attr_type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a202c631bf73321c4edf738314e6cf911" kind="variable"><name>_attr_ts</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a2fe3b132a135335df05ea8492e22e73c" kind="function"><name>update</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a076bcd25b3f41acdc763569b279c4545" kind="function"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a01d835dff2ff7cffe4ad62fd827e543b" kind="function"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a0e2b3fdd97c8100a743928f07345a4c2" kind="function"><name>ts</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1af8ee7a788eb2ed7499da50696555407a" kind="function"><name>ts</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus" kind="class"><name>klyqa_ctl::devices::light::response_status::ResponseStatus</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a5fd6d4da8ea2c21cd4cec1a46f8c4aa1" kind="variable"><name>None</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2748bc6ffb8c8eab61ba17dbfdfd32ff" kind="variable"><name>bool</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a6570eed0c472276f6ec72c379462fe4c" kind="variable"><name>_attr_active_command</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1abb8caa665f10c6764a7c62536bcb434e" kind="variable"><name>_attr_active_scene</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a1f5c25daa767e65e7aeb39f30d294f43" kind="variable"><name>_attr_fwversion</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a3307a4fa7153ac13102b5bd5c7d1a40e" kind="variable"><name>_attr_mode</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a828bc3b34e205f9ce2b202d91471977f" kind="variable"><name>_attr_open_slots</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2db3b21da8b87a7c1373f547f2aa46d3" kind="variable"><name>_attr_sdkversion</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a0e9f2e5d2a357d48b5f0e08b90a56b81" kind="variable"><name>_attr_status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1ab348d8ca7eb2570ac275b73a4a7d88d4" kind="variable"><name>_attr_temperature</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a5c799d310ae2cb7dbeafb1a08df2c408" kind="variable"><name>_attr_color</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1aa4d96cceac1e5f35de742c3656323411" kind="variable"><name>_attr_brightness</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a6a0514d93c06be2198153da647cc04ac" kind="function"><name>__str__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a6cb94cfa25c59eef5f89a89d9a849089" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1af0410c578e6eb27005a875aa4c1e7fc2" kind="function"><name>active_command</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a42ac42fed01c4bbb025087cbc1801f83" kind="function"><name>active_command</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a218592a8eba676eb57164398bff9e363" kind="function"><name>active_scene</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2b0292953db14afa8971a82b088ae15b" kind="function"><name>active_scene</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a7c23e8a4c3aaefbb9ff18ae264fb8d11" kind="function"><name>fwversion</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1aff64406e70e04ce5301c7668c36861b0" kind="function"><name>fwversion</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a549b951a2f632a0dbc5b1082f5d810f6" kind="function"><name>mode</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1ae04a37be5b5854d78126d2ce5f093e66" kind="function"><name>mode</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a0f7c1e9b25603ecb2eac7d27b08e1d65" kind="function"><name>open_slots</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1ab2af57236320d801002e6392f3e508da" kind="function"><name>open_slots</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2648e065b6f0d5007028da1b9070a444" kind="function"><name>sdkversion</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a8dc1603f80a4c97f0df41bda10aa9b76" kind="function"><name>sdkversion</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1ab4d647813db11363f0624feeff0ec1cc" kind="function"><name>status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1ae5a2cf533509a99bd54e5f0494bd26d7" kind="function"><name>status</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2e732c44c35f39dc3d8fe269c24aef8a" kind="function"><name>temperature</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2ec27a5f72af17529646197c67789946" kind="function"><name>temperature</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a762787729b726f6ad8bd5a9a3ae40a67" kind="function"><name>brightness</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a73eb01a63de2a54cf94fe18f458010c5" kind="function"><name>brightness</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a327c18fd6f8a38e75e1bbc2f895df592" kind="function"><name>color</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1af9c211f584d4733eb09a43ab8aa0fe19" kind="function"><name>color</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus" kind="class"><name>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1a75a56e16c9405a8f1473a162620f9d91" kind="function"><name>__str__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae7f14f70e2121e36310fabed37003e1f" kind="function"><name>update</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor" kind="class"><name>klyqa_ctl::general::general::RgbColor</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a67fdfed044371248a782c2a24dbc52c4" kind="variable"><name>_attr_r</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1afc4b66791d4319fd6e2c5970c5a31d1e" kind="variable"><name>_attr_g</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1abb4f70a9b85f0796d8cd3f1577c307d7" kind="variable"><name>_attr_b</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" kind="function"><name>__str__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ac22ace363ebacaf7dc5d7f6d29168ee8" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae48a2be31c240c3f44eef952d2b1315d" kind="function"><name>r</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a2b5b82000ecf5a8dd35ac04a9059f253" kind="function"><name>r</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a20790d4cce637e2ef9b3d8498d52ea0b" kind="function"><name>g</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1aae3c91dacabd2e47d22e5f53699035f7" kind="function"><name>g</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae7f8987c23f5a9e354475951261074c8" kind="function"><name>b</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a3d4e95d3c7aad662f8c7bf465845d023" kind="function"><name>b</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineAction" kind="class"><name>klyqa_ctl::devices::light::commands::RoutineAction</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineAction_1abd8822992b2afcf27f5afbae6d499510" kind="variable"><name>LIST</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineAction_1aed8a33f7310fe631abfcb225467ee936" kind="variable"><name>PUT</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineAction_1a24a3e7178c4367b257e00981a9ed1b3c" kind="variable"><name>START</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineAction_1a2799c6aba1dd96f024c50446eabd7929" kind="variable"><name>DELETE</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RoutineCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1a3c82426fa99acc44ac4b19665a637b18" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1ad9e0b70bedbbc4da175a0d294e1273cd" kind="variable"><name>type</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1af45edfb00343f0eb0023c517930b0d6c" kind="function"><name>__post_init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand_1af3395a663a3dbdff8117ee708f80adec" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand" kind="class"><name>klyqa_ctl::devices::vacuum::commands::RoutineCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1a0f62f6e6fccdcfe296e942157ccf08a7" kind="variable"><name>MessageCommandType</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1ac8d077a02e0d86907d6b31ca55f23bfc" kind="variable"><name>RoutineCommandActions</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1a5d51af097766011ca7c2d24b93901547" kind="variable"><name>None</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1acaf3db880f88d37bb1cf8218a309e52c" kind="function"><name>routine_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand_1a926a94c8cc5104275078e438fb301028" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions" kind="class"><name>klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1a590bf15fd1d52f76e98b9cc74f860bac" kind="variable"><name>ACTION</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1aed87c5a66ec505211622f887c1544318" kind="variable"><name>COUNT</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1aaa2a3a7b6635a392fa0c960d3d7fd9ef" kind="variable"><name>LIST</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1ac8bf5f59f0ae64e255266018a01a2503" kind="variable"><name>DELETE</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1ac0d6862d337ffb85dba195c8bfeefd9a" kind="variable"><name>START</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions_1a79f37631b744720f8409ee5482e34893" kind="variable"><name>PUT</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RoutineDeleteCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand_1ab209411a8b5c78cc223023b5a88aed53" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand_1a22e9da0d150753c50a518e76166bac4a" kind="variable"><name>action</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand_1afccf69c64dd23d26e9b8c1b9ef9751c7" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RoutineListCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand_1a3d60c1e2327544471ed443a19c072d5b" kind="variable"><name>action</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand_1abc7ffc57750e02f5eafce12791fa04df" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RoutinePutCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_1a067f011f54f75703b0f37b8c1626edc9" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_1a17ca552890113ac8743f84346e7fc6a2" kind="variable"><name>action</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_1a2ac69f10435946d1d702f9fdba739e8e" kind="function"><name>__post_init__</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_1a3e37b57fa082d61d47bb370f39217874" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand" kind="class"><name>klyqa_ctl::devices::light::commands::RoutineStartCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand_1a2d4d2a1144160f86adc315dfb8528567" kind="variable"><name>str</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand_1a4dc4343d554b4587860e18cd03311393" kind="variable"><name>action</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand_1abd15e3ddbdf8ab2652e54965ca0f142d" kind="function"><name>__post_init__</name></member>
+  </compound>
+  <compound refid="classstr" kind="class"><name>str</name>
+  </compound>
+  <compound refid="classlocal_1_1connection_1_1TcpConnection" kind="class"><name>local::connection::TcpConnection</name>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1ad5ab95bf09b02f50760f9a5ef5ed2742" kind="variable"><name>_attr_state</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a4df7e4486d250e634f1624c79f4557f5" kind="variable"><name>_attr_remote_iv</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a61a5cdca3383b786f2dfacdc9fab545d" kind="variable"><name>_attr_local_iv</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a013dafc1a2cb20ec4b01e8e9c946ca07" kind="variable"><name>_attr_sending_aes</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1abed797cb2fbba7f05663f50fd3588274" kind="variable"><name>_attr_receiving_aes</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a5f5e5b7c21e5d541773870a7c874c31d" kind="variable"><name>_attr_address</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1af475e2179e2c7eb74760af9de18658d3" kind="variable"><name>_attr_socket</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aecef655d2a229eeb9bb89c07c60e3fbb" kind="variable"><name>_attr_received_packages</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1ac9a08b297581f72eb90a021ef3514b6d" kind="variable"><name>_attr_sent_msg_answer</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aa8798c049ca270a895c4e2b577a12ee3" kind="variable"><name>_attr_aes_key_confirmed</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a067873c0c97388f30c26eb172dc1c2c3" kind="variable"><name>_attr_aes_key</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a1efc8a42a9b00f35df0fdce03f3b415d" kind="variable"><name>_attr_started</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aae3f96e7c55fc45f5aa0c837c51a0069" kind="function"><name>__init__</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aa95e22fd936309fb5e27c1cf2f8d264c" kind="function"><name>state</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a19f316b71fea5b145f251820f7796242" kind="function"><name>state</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1ae8ee1c2b1b2568367c3a9cf16c1c976c" kind="function"><name>remote_iv</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a610ebced44ea240a18fcc38962d97e44" kind="function"><name>remote_iv</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aaa2925f711f018a95339c1457e9c7c0a" kind="function"><name>local_iv</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a34fd7c856221dc4f4f5e666877eef26c" kind="function"><name>local_iv</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a4f160b2ac07e3eb3d4ed420723d272ed" kind="function"><name>sending_aes</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1ad3cd8182c4e0eb009a296d47a2ae969e" kind="function"><name>sending_aes</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a8155e332b2255c6b7a0719f0a14ba835" kind="function"><name>receiving_aes</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1ae4cf20c59d31c28554d82af9e1c0ccb6" kind="function"><name>receiving_aes</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aaf41f85908a1e964676863fe1005b650" kind="function"><name>address</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a8bdd6f3e1c30a2e6671f52b76282fb27" kind="function"><name>address</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1abbbb7415b2c8a01af2e84d618895f855" kind="function"><name>socket</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a4611e0483aef05cdd079a70651fa6aef" kind="function"><name>socket</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aff47b879423ffb2355ab33e3dee97128" kind="function"><name>received_packages</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a4a1b304e58855e9092b938eb27db0a37" kind="function"><name>received_packages</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1aba6ac9e7294c88d32d28ede280c46d02" kind="function"><name>sent_msg_answer</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a42c436ed6a7982b846d1f55d6033a2da" kind="function"><name>sent_msg_answer</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a352102b28c6aa3f1833cd0aaf0ea842a" kind="function"><name>aes_key_confirmed</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a050e0d8bf82d293467b238174abbe722" kind="function"><name>aes_key_confirmed</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a1996ebbb501299a829bb433cebc0d303" kind="function"><name>aes_key</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1abe7332fbdf0675a52b2c9f546c84fd44" kind="function"><name>aes_key</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a47f1fe8d61f1bb165008723a321e376b" kind="function"><name>started</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a2c76c5da17903abd1dac9e28906e42f9" kind="function"><name>started</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a65ab7164f0d09f1380e3837905a602b7" kind="function"><name>read_local_tcp_socket</name></member>
+    <member refid="classlocal_1_1connection_1_1TcpConnection_1a305b3adb5bd8041bbaa53f47d1c23e81" kind="function"><name>encrypt_and_send_msg</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand" kind="class"><name>klyqa_ctl::devices::light::commands::TemperatureCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a8e45d4ab592de0046308d2e7ac78fdbd" kind="variable"><name>int</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a0b45255dc9218a36450152f1118a8280" kind="function"><name>temperature_json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0" kind="function"><name>json</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a34847a5ef38a13569bc640791d11508b" kind="function"><name>check_values</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger" kind="class"><name>klyqa_ctl::general::general::TraceLogger</name>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1ae409e7f9a9a4ff48d2bda382907e3c1e" kind="variable"><name>stream</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a41b3ec9032d59ed2bf752625aadc0b7a" kind="variable"><name>level</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1adb48b0cbb81fe74961c27974281f692d" kind="variable"><name>fmt</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a4d8533550d78b9002a8ba212fa538be8" kind="variable"><name>TraceLogger</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1aaf33bc550b4624e4596da444baba45ec" kind="variable"><name>Formatter</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1afd4808aebb942b6bb8ffe86c6fe74cbe" kind="function"><name>__init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a05fff44f4a29a2d5a1e4314724c03d34" kind="function"><name>trace</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand" kind="class"><name>klyqa_ctl::devices::light::commands::TransitionCommand</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_1a4a7ae25bcc01a6c6535a44452add30e3" kind="variable"><name>int</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_1aaf9d8431e346c86b9959102c2d7f3316" kind="function"><name>json</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId" kind="class"><name>klyqa_ctl::general::unit_id::UnitId</name>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" kind="variable"><name>None</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a7ab123ab827c045d92a7daf5427a2a33" kind="variable"><name>unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ae8aff3e6f9d9ad47235d125cc277ad29" kind="variable"><name>_attr_unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a9ccc6a6b46b6982dea6416bd6be3d4de" kind="function"><name>__post_init__</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a5a85d7aa8a100a91752f3f222581e867" kind="function"><name>unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ab207f25d3e8cbd769bc6a820e17bcb35" kind="function"><name>unit_id</name></member>
+    <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a333fecd43aa5e812a0d1e0f8721ed27d" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner" kind="class"><name>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner_1a61d6b100df4a5302d5934ed21bbe05bb" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths" kind="class"><name>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1ad55870311cf2165217748b53e1b4e3e0" kind="variable"><name>NULL</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a69b72e4f403a98903d73ccf148b1570d" kind="variable"><name>STRONG</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a2bdfd6483ab3284e95c26920fe6f8616" kind="variable"><name>SMALL</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1ac73efca1d6ee0bb135136f6bdba89c79" kind="variable"><name>NORMAL</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a5480f73bff090cbba259c384e787f3d9" kind="variable"><name>MAX</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode" kind="class"><name>klyqa_ctl::devices::vacuum::general::VcWorkingMode</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1a1950a55c53b8cd8ad290ad260de16db1" kind="variable"><name>STANDBY</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1aa74d77d9551498bfbfce12abf364101b" kind="variable"><name>RANDOM</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1aca0ab1e4081e1cc74b546356ce70201d" kind="variable"><name>SMART</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1a81b56a1be2f26ddddf3b0042c4d22159" kind="variable"><name>WALL_FOLLOW</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1a23470573c8b2d659b7557498e7078ce3" kind="variable"><name>MOP</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1ac08b8ecf7cf6fdf2ee8a84fc6b2320a9" kind="variable"><name>SPIRAL</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1a3103a46b0f14e49bd9c9245e4423d96e" kind="variable"><name>PARTIAL_BOW</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1a4b8dc6d63151e0a3f4f899f535bdd9a9" kind="variable"><name>SROOM</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode_1a5e058b3bf21c72fc161137fd8c956f95" kind="variable"><name>CHARGE_GO</name></member>
+  </compound>
+  <compound refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus" kind="class"><name>klyqa_ctl::devices::vacuum::general::VcWorkingStatus</name>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1a1e6bd880de26db00a02112506836aa14" kind="variable"><name>SLEEP</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1ab99598e7934616ba38df16604bf61c80" kind="variable"><name>STANDBY</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1adcca81431d044135acf8dd33065a2001" kind="variable"><name>CLEANING</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1afcc383dab3650d3f261d16fb05729439" kind="variable"><name>CLEANING_AUTO</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1aacc131d60627cde3be24caa63b8053b2" kind="variable"><name>CLEANING_RANDOM</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1a4978b6ad6cf95e7fc8a2213cc0250835" kind="variable"><name>CLEANING_SROOM</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1a189eb4f92fe5348588f449499b85d212" kind="variable"><name>CLEANING_EDGE</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1a391c531fee5a590ebc84ca621726d0a1" kind="variable"><name>CLEANING_SPOT</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1acb8eda4ed4e4aaf3576ae0c170362e84" kind="variable"><name>CLEANING_COMP</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1a4f308962b169c2a21f5c9e3b4a0971e4" kind="variable"><name>DOCKING</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1ac4326d06eb0f84c26f07c40268cf5cf3" kind="variable"><name>CHARGING</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1ac628e493e142c19f6a496c816117ab25" kind="variable"><name>CHARGING_DC</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1ae94f7b86c6d7fa3311449c8c90ed1468" kind="variable"><name>CHARGING_COMP</name></member>
+    <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingStatus_1adb27339a85ea634bafe1efadb9d7f232" kind="variable"><name>ERROR</name></member>
+  </compound>
+  <compound refid="namespaceasyncio" kind="namespace"><name>asyncio</name>
+  </compound>
+  <compound refid="namespacecloud" kind="namespace"><name>cloud</name>
+    <member refid="namespacecloud_1a8ff77cd5353527f3ef3c4e2216d86949" kind="variable"><name>int</name></member>
+  </compound>
+  <compound refid="namespaceconf" kind="namespace"><name>conf</name>
+    <member refid="namespaceconf_1aa2c6aefbed1597a70cfb45a760e5977c" kind="variable"><name>project</name></member>
+    <member refid="namespaceconf_1ac8ccf456b321bc9052c0691a173b6925" kind="variable"><name>copyright</name></member>
+    <member refid="namespaceconf_1a6d7145a280c30059b454017b266c11c0" kind="variable"><name>author</name></member>
+    <member refid="namespaceconf_1a540efa67c53e84c1c353c1df2e37e39c" kind="variable"><name>extensions</name></member>
+    <member refid="namespaceconf_1a5df737fadb133e190919888ea6e7a5cb" kind="variable"><name>graphviz_output_format</name></member>
+    <member refid="namespaceconf_1af50129dcc1f90655539f025595a3093b" kind="variable"><name>templates_path</name></member>
+    <member refid="namespaceconf_1aa01918cfe75aed3ae059dd96c71c8f08" kind="variable"><name>exclude_patterns</name></member>
+    <member refid="namespaceconf_1a7ec0c29724e7f712889e2fe9d2c36ca1" kind="variable"><name>language</name></member>
+    <member refid="namespaceconf_1a7f1b143ff25817758abd21a7db110510" kind="variable"><name>html_theme</name></member>
+    <member refid="namespaceconf_1acb91fefcfd3aa6f3529fa682ab834832" kind="variable"><name>html_static_path</name></member>
+    <member refid="namespaceconf_1a9c4d0250afe7e547830927b55eadeec5" kind="variable"><name>todo_include_todos</name></member>
+  </compound>
+  <compound refid="namespaceconnection__handler" kind="namespace"><name>connection_handler</name>
+  </compound>
+  <compound refid="namespacedevice__connection__handler" kind="namespace"><name>device_connection_handler</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl" kind="namespace"><name>klyqa_ctl</name>
+    <member refid="namespaceklyqa__ctl_1ac1f9191d30b35ab942096351e56b3c07" kind="variable"><name>str</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1____main____" kind="namespace"><name>klyqa_ctl::__main__</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1account" kind="namespace"><name>klyqa_ctl::account</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1account__control" kind="namespace"><name>klyqa_ctl::account_control</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1conf" kind="namespace"><name>klyqa_ctl::conf</name>
+    <member refid="namespaceklyqa__ctl_1_1conf_1a0bfb33b0209bbc8965fbfff3e1ff0953" kind="variable"><name>project</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1a1e338009bb348907573e37c862d79a5e" kind="variable"><name>copyright</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1a262bbe5251bdf6224f933f72ca6a8561" kind="variable"><name>author</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1aa5e016064b19c99705cafd006ae25857" kind="variable"><name>release</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1a50d1b5d9c7459ec71ad5e8540396d06c" kind="variable"><name>extensions</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1aac69889832006976cebbbe8ddb435ca5" kind="variable"><name>templates_path</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1adf8c065a2212a90cb3d23b4bf23f8d80" kind="variable"><name>exclude_patterns</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1ac689ffe9a4bca13bf135d6d9a1ab96ec" kind="variable"><name>html_theme</name></member>
+    <member refid="namespaceklyqa__ctl_1_1conf_1ac0a1f55839f664f08a5c033da4a7a030" kind="variable"><name>html_static_path</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1controller__data" kind="namespace"><name>klyqa_ctl::controller_data</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices" kind="namespace"><name>klyqa_ctl::devices</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1cloud__state" kind="namespace"><name>klyqa_ctl::devices::cloud_state</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1device" kind="namespace"><name>klyqa_ctl::devices::device</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1light" kind="namespace"><name>klyqa_ctl::devices::light</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands" kind="namespace"><name>klyqa_ctl::devices::light::commands</name>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a421107b65283514d7c08c8dc635a7793" kind="function"><name>percent_color_message</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1acee533c9ef67c4c4d41aa9c73e519276" kind="function"><name>external_source_message</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a9a2f224816a4dab65a2d877cd38b657b" kind="function"><name>add_command_args_bulb</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a09a73cff59e95502adefbee0333c3008" kind="function"><name>discover_devices</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1aff98bf7ababf8435cade44d35a76b211" kind="function"><name>add_device_command_to_queue</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1af1bb9573cf151a581c7ee6e02612d7b8" kind="function"><name>commands_select</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1aad49b95001375441b25d985c2b0f076b" kind="function"><name>command_color</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a277af033cb7643026a8d6c40c31dadc7" kind="function"><name>command_brightness</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a78c65871bbbacf71dd826f6b4929e34f" kind="function"><name>command_temperature</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1aedc0439a3e96ab685cdad76257a1d85a" kind="function"><name>routine_scene</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a0040ed2bfdedb53610f55b08161f363e" kind="function"><name>enable_tb</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1abb5f7e9390b622da97654771e70c196d" kind="function"><name>forced_continue</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1ae8e079eb20d1dc31176135131c4161f5" kind="function"><name>missing_config</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1light" kind="namespace"><name>klyqa_ctl::devices::light::light</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1response__status" kind="namespace"><name>klyqa_ctl::devices::light::response_status</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1scenes" kind="namespace"><name>klyqa_ctl::devices::light::scenes</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1onboard" kind="namespace"><name>klyqa_ctl::devices::onboard</name>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1onboard_1a9a08fdcf65db848da6d9e4bec9ed2cc0" kind="function"><name>build_configuration_and_backend_url</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1response__identity__message" kind="namespace"><name>klyqa_ctl::devices::response_identity_message</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1response__message" kind="namespace"><name>klyqa_ctl::devices::response_message</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1vacuum" kind="namespace"><name>klyqa_ctl::devices::vacuum</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands" kind="namespace"><name>klyqa_ctl::devices::vacuum::commands</name>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a952002c9e90e07b593af730a4a952f47" kind="function"><name>create_device_message</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a99f69e0d3e804e35aad5bd4ca32d6dbc" kind="function"><name>get_command</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a74272728025b52147d143a61b2fcc7dc" kind="function"><name>reset_command</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a2a270417950dd1a725bfbdf08c8815d6" kind="function"><name>set_command</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a1f05c06ff82538b4c287966541aa8cbc" kind="function"><name>routine</name></member>
+    <member refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1ad486c28adf7b9c4ed9672fc04dfde7ef" kind="function"><name>add_command_args_cleaner</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1general" kind="namespace"><name>klyqa_ctl::devices::vacuum::general</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1response__status" kind="namespace"><name>klyqa_ctl::devices::vacuum::response_status</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum" kind="namespace"><name>klyqa_ctl::devices::vacuum::vacuum</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general" kind="namespace"><name>klyqa_ctl::general</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general_1_1aes__key" kind="namespace"><name>klyqa_ctl::general::aes_key</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general_1_1general" kind="namespace"><name>klyqa_ctl::general::general</name>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1aecc98cca1d71db805652dfed7731f41c" kind="variable"><name>TRACE</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kind="variable"><name>int</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1aad61dc89317a902a169bf4346944f1bd" kind="variable"><name>TypeJson</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a1f24788927fc8dbdae8e5aec7b9ae255" kind="variable"><name>str</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1acc51622ce1f8c7a6b4f56f70f907ae40" kind="variable"><name>float</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a199d42aeb5404a13cfee81a040deaa2b" kind="variable"><name>Device_config</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a6d6ceaf75e590bd9a01c91853b60d8ab" kind="variable"><name>ReturnTuple</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1aea905150cafee39fa2ca211f1e60f012" kind="function"><name>task_name</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1aa34dc716ff5492dc4f325a2ae1a73a4f" kind="function"><name>async_json_cache</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a59231019cd9e7c0089ff0471363c039a" kind="function"><name>get_fields</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a478a761c65763ffa478642d11af1eade" kind="function"><name>get_obj_attrs_as_string</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a1760fa3fc6c355d2f804d6feb8f9b23c" kind="function"><name>get_obj_attr_values_as_string</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a2c729589c8f5ab77e718bb060d26425d" kind="function"><name>format_uid</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a6e74b8cc4bae98fa55902e4b875af67e" kind="function"><name>set_debug_logger</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a9df3b50dfc0fcc7c8ec991bb9be9c5ba" kind="function"><name>task_log</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" kind="function"><name>task_log_debug</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1ab2f9a22e98cd16d0d284d22382cfcb02" kind="function"><name>task_log_trace</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1abab49b300927a080244615ee3ab494e3" kind="function"><name>task_log_error</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1general_1ad6b753e482e539892c57f8144cf213cb" kind="function"><name>task_log_trace_ex</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general_1_1logging" kind="namespace"><name>klyqa_ctl::general::logging</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general_1_1message" kind="namespace"><name>klyqa_ctl::general::message</name>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1message_1aa048248573f144c416d6eb4b58d3519f" kind="variable"><name>MSG_COUNTER</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general_1_1parameters" kind="namespace"><name>klyqa_ctl::general::parameters</name>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1parameters_1a38b90c6125a60eeabd89d4addab053b4" kind="function"><name>get_description_parser</name></member>
+    <member refid="namespaceklyqa__ctl_1_1general_1_1parameters_1a4d4508f84ab7a6044c74575f197f852b" kind="function"><name>add_config_args</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1general_1_1unit__id" kind="namespace"><name>klyqa_ctl::general::unit_id</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1klyqa__ctl" kind="namespace"><name>klyqa_ctl::klyqa_ctl</name>
+    <member refid="namespaceklyqa__ctl_1_1klyqa__ctl_1ab6c1a4b950d3c6e69d273cbb9a602266" kind="variable"><name>AbstractEventLoop</name></member>
+    <member refid="namespaceklyqa__ctl_1_1klyqa__ctl_1afe1b8490f9810b885e4048d7bef472a7" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1local__controller" kind="namespace"><name>klyqa_ctl::local_controller</name>
+  </compound>
+  <compound refid="namespaceklyqa__ctl_1_1test__bind__socket" kind="namespace"><name>klyqa_ctl::test_bind_socket</name>
+    <member refid="namespaceklyqa__ctl_1_1test__bind__socket_1a90de9b52de5b15b4cd86378028abccd6" kind="variable"><name>tcp</name></member>
+    <member refid="namespaceklyqa__ctl_1_1test__bind__socket_1a166df9af2c037ff4a0ac3fceccbef0e3" kind="variable"><name>server_address</name></member>
+  </compound>
+  <compound refid="namespacelocal" kind="namespace"><name>local</name>
+  </compound>
+  <compound refid="namespacelocal_1_1connection" kind="namespace"><name>local::connection</name>
+  </compound>
+  <compound refid="namespacelocal_1_1connection__handler" kind="namespace"><name>local::connection_handler</name>
+    <member refid="namespacelocal_1_1connection__handler_1a41af5c536a6af4617df5c96742204c77" kind="variable"><name>int</name></member>
+  </compound>
+  <compound refid="namespacelocal_1_1data__package" kind="namespace"><name>local::data_package</name>
+  </compound>
+  <compound refid="namespacelogging" kind="namespace"><name>logging</name>
+  </compound>
+  <compound refid="____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="communication_2local_2____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="devices_2____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="devices_2light_2____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="devices_2vacuum_2____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="general_2____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="____main_____8py" kind="file"><name>__main__.py</name>
+  </compound>
+  <compound refid="account_8py" kind="file"><name>account.py</name>
+  </compound>
+  <compound refid="account__control_8py" kind="file"><name>account_control.py</name>
+  </compound>
+  <compound refid="apidoc_2conf_8py" kind="file"><name>conf.py</name>
+  </compound>
+  <compound refid="apidoc2_2conf_8py" kind="file"><name>conf.py</name>
+  </compound>
+  <compound refid="conf_8py" kind="file"><name>conf.py</name>
+  </compound>
+  <compound refid="cloud_8py" kind="file"><name>cloud.py</name>
+  </compound>
+  <compound refid="connection__handler_8py" kind="file"><name>connection_handler.py</name>
+  </compound>
+  <compound refid="local_2connection__handler_8py" kind="file"><name>connection_handler.py</name>
+  </compound>
+  <compound refid="device__connection__handler_8py" kind="file"><name>device_connection_handler.py</name>
+  </compound>
+  <compound refid="connection_8py" kind="file"><name>connection.py</name>
+  </compound>
+  <compound refid="data__package_8py" kind="file"><name>data_package.py</name>
+  </compound>
+  <compound refid="controller__data_8py" kind="file"><name>controller_data.py</name>
+  </compound>
+  <compound refid="cloud__state_8py" kind="file"><name>cloud_state.py</name>
+  </compound>
+  <compound refid="device_8py" kind="file"><name>device.py</name>
+  </compound>
+  <compound refid="light_2commands_8py" kind="file"><name>commands.py</name>
+  </compound>
+  <compound refid="vacuum_2commands_8py" kind="file"><name>commands.py</name>
+  </compound>
+  <compound refid="light_8py" kind="file"><name>light.py</name>
+  </compound>
+  <compound refid="light_2response__status_8py" kind="file"><name>response_status.py</name>
+  </compound>
+  <compound refid="vacuum_2response__status_8py" kind="file"><name>response_status.py</name>
+  </compound>
+  <compound refid="scenes_8py" kind="file"><name>scenes.py</name>
+  </compound>
+  <compound refid="onboard_8py" kind="file"><name>onboard.py</name>
+  </compound>
+  <compound refid="response__identity__message_8py" kind="file"><name>response_identity_message.py</name>
+  </compound>
+  <compound refid="response__message_8py" kind="file"><name>response_message.py</name>
+  </compound>
+  <compound refid="devices_2vacuum_2general_8py" kind="file"><name>general.py</name>
+  </compound>
+  <compound refid="general_2general_8py" kind="file"><name>general.py</name>
+  </compound>
+  <compound refid="vacuum_8py" kind="file"><name>vacuum.py</name>
+  </compound>
+  <compound refid="aes__key_8py" kind="file"><name>aes_key.py</name>
+  </compound>
+  <compound refid="logging_8py" kind="file"><name>logging.py</name>
+  </compound>
+  <compound refid="message_8py" kind="file"><name>message.py</name>
+  </compound>
+  <compound refid="parameters_8py" kind="file"><name>parameters.py</name>
+  </compound>
+  <compound refid="unit__id_8py" kind="file"><name>unit_id.py</name>
+  </compound>
+  <compound refid="klyqa__ctl_8py" kind="file"><name>klyqa_ctl.py</name>
+  </compound>
+  <compound refid="local__controller_8py" kind="file"><name>local_controller.py</name>
+  </compound>
+  <compound refid="README_8md" kind="file"><name>README.md</name>
+  </compound>
+  <compound refid="test__bind__socket_8py" kind="file"><name>test_bind_socket.py</name>
+  </compound>
+  <compound refid="md_README" kind="page"><name>md_README</name>
+  </compound>
+  <compound refid="dir_efa5ca19748ed19d47faf3b1f902d465" kind="dir"><name>apidoc</name>
+  </compound>
+  <compound refid="dir_fc9c5915e50e2176ee50e61241fbf58f" kind="dir"><name>apidoc2</name>
+  </compound>
+  <compound refid="dir_0fce3bb71f682baa9ce105f2e17e6ee3" kind="dir"><name>communication</name>
+  </compound>
+  <compound refid="dir_07b86ffc266b39efa5bbdc0e9fdb330a" kind="dir"><name>devices</name>
+  </compound>
+  <compound refid="dir_bba024cd03edd7f9d6096b84e1006209" kind="dir"><name>general</name>
+  </compound>
+  <compound refid="dir_63376717a84869da36e2012421304149" kind="dir"><name>devices/light</name>
+  </compound>
+  <compound refid="dir_65798ba761badd119bae0d63e7e6734e" kind="dir"><name>communication/local</name>
+  </compound>
+  <compound refid="dir_4fd64f67770002913f6d54e3631c23bd" kind="dir"><name>devices/vacuum</name>
+  </compound>
+</doxygenindex>

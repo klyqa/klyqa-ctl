@@ -1,3 +1,6 @@
+"""Local connection controller. Should be merged with local
+in connection controller, they are basically the same."""
+
 from __future__ import annotations
 
 import asyncio
@@ -14,19 +17,20 @@ from klyqa_ctl.general.unit_id import UnitId
 
 
 class LocalController:
-    """Local controller."""
+    """Controls local connections via tcp and udp for broadcasts and
+    connections directly to devices."""
 
     def __init__(
         self,
         controller_data: ControllerData,
     ) -> None:
-        """Initialize local controller."""
+        """Initializes the local controller."""
 
         self.connection_hdl: LocalConnectionHandler | None = None
         self.controller_data: ControllerData = controller_data
 
     def send_to_device(self, unit_id: str, key: str, command: str) -> str:
-        """Send command string to device with unit id and aes key."""
+        """Sends command string to device with unit id and aes key."""
 
         if not self.connection_hdl:
             return ""
@@ -44,7 +48,7 @@ class LocalController:
     async def send_to_device_native(
         self, unit_id: UnitId, key: str, command: Command
     ) -> str:
-        """Send json message from command object to device with unit id and
+        """Sends json message from command object to device with unit id and
         aes key."""
 
         if not self.connection_hdl:
@@ -69,7 +73,7 @@ class LocalController:
         return msg_answer
 
     async def shutdown(self) -> None:
-        """Shut down local controller."""
+        """Shuts down the local controller."""
 
         if self.connection_hdl:
             await self.connection_hdl.shutdown()
@@ -81,7 +85,7 @@ class LocalController:
         server_ip: str = "0.0.0.0",
         network_interface: str | None = None,
     ) -> LocalController:
-        """Factory for local only controller.
+        """Builds a default local controller.
 
         Params:
             network_interface: leave it on None if you are unsure, else e. g.
@@ -108,11 +112,10 @@ class LocalController:
         network_interface: str | None = None,
         interactive_prompts: bool = False,
     ) -> LocalController:
-        """Factory for local only controller.
+        """Factories a standalone local controller.
 
-        param:
-            network_interface: leave it on None if you are unsure, else e. g.
-                eth0, wlan0, etc.
+        Params:
+            network_interface: eth0, wlan0 or None (uses default interface)
         """
         controller_data: ControllerData = await ControllerData.create_default(
             interactive_prompts=interactive_prompts, offline=True

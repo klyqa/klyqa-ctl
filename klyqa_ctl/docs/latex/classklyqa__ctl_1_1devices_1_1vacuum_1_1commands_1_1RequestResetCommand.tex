@@ -1,0 +1,91 @@
+\hypertarget{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand}{}\doxysection{klyqa\+\_\+ctl.\+devices.\+vacuum.\+commands.\+Request\+Reset\+Command Class Reference}
+\label{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand}\index{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand@{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand}}
+
+
+Inheritance diagram for klyqa\+\_\+ctl.\+devices.\+vacuum.\+commands.\+Request\+Reset\+Command\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+devices.\+vacuum.\+commands.\+Request\+Reset\+Command\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a53de7ccfeb12e1b8f4c0ea8a82410d4e}{reset\+\_\+json}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a1ac56b80427d60d9f55079ae846ae25e}{json}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a1ac56b80427d60d9f55079ae846ae25e}\label{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a1ac56b80427d60d9f55079ae846ae25e}} 
+\index{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand@{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand}!json@{json}}
+\index{json@{json}!klyqa\_ctl.devices.vacuum.commands.RequestResetCommand@{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand}}
+\doxysubsubsection{\texorpdfstring{json()}{json()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} klyqa\+\_\+ctl.\+devices.\+vacuum.\+commands.\+Request\+Reset\+Command.\+json (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return json command.\end{DoxyVerb}
+ 
+
+Reimplemented from \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_a96dfd43912c4640f381424bdd44eebca}{klyqa\+\_\+ctl.\+general.\+general.\+Command\+Typed}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keyword}{def }json(self) -\/> TypeJson:}
+\DoxyCodeLine{44         \textcolor{keywordflow}{return} super().json() | self.reset\_json()}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a1ac56b80427d60d9f55079ae846ae25e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a1ac56b80427d60d9f55079ae846ae25e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a53de7ccfeb12e1b8f4c0ea8a82410d4e}\label{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a53de7ccfeb12e1b8f4c0ea8a82410d4e}} 
+\index{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand@{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand}!reset\_json@{reset\_json}}
+\index{reset\_json@{reset\_json}!klyqa\_ctl.devices.vacuum.commands.RequestResetCommand@{klyqa\_ctl.devices.vacuum.commands.RequestResetCommand}}
+\doxysubsubsection{\texorpdfstring{reset\_json()}{reset\_json()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} klyqa\+\_\+ctl.\+devices.\+vacuum.\+commands.\+Request\+Reset\+Command.\+reset\+\_\+json (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{40     \textcolor{keyword}{def }reset\_json(self) -\/> TypeJson:}
+\DoxyCodeLine{41         \textcolor{keywordflow}{return} \{\textcolor{stringliteral}{"{}action"{}}: \textcolor{stringliteral}{"{}reset"{}}\}}
+\DoxyCodeLine{42 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand_a53de7ccfeb12e1b8f4c0ea8a82410d4e_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+devices/vacuum/\mbox{\hyperlink{vacuum_2commands_8py}{commands.\+py}}\end{DoxyCompactItemize}

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1general_1_1message" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::general::message</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState" prot="public">klyqa_ctl::general::message::MessageState</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1general_1_1message_1_1Message" prot="public">klyqa_ctl::general::message::Message</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1general_1_1message_1_1BroadCastMessage" prot="public">klyqa_ctl::general::message::BroadCastMessage</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1general_1_1message_1aa048248573f144c416d6eb4b58d3519f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl::general::message.MSG_COUNTER</definition>
+        <argsstring></argsstring>
+        <name>MSG_COUNTER</name>
+        <initializer>=  0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="26" column="1" bodyfile="general/message.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Message class</verbatim> </para>
+    </detaileddescription>
+    <location file="general/message.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

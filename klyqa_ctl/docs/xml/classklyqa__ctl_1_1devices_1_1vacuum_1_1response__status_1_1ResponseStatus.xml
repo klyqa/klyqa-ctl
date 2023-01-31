@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</compoundname>
+    <basecompoundref refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage" prot="public" virt="non-virtual">klyqa_ctl.devices.response_message.ResponseMessage</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1a75a56e16c9405a8f1473a162620f9d91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>__str__</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/response_status.py" line="18" column="1" bodyfile="devices/vacuum/response_status.py" bodystart="18" bodyend="21"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1760fa3fc6c355d2f804d6feb8f9b23c" compoundref="general_2general_8py" startline="471" endline="485">klyqa_ctl.general.general.get_obj_attr_values_as_string</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.response_status.ResponseStatus.__init__</definition>
+        <argsstring>(self, **Any kwargs)</argsstring>
+        <name>__init__</name>
+        <reimplements refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c">__init__</reimplements>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>__init__</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/response_status.py" line="22" column="1" bodyfile="devices/vacuum/response_status.py" bodystart="25" bodyend="65"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineListCommand_1a3d60c1e2327544471ed443a19c072d5b" compoundref="light_2commands_8py" startline="355">klyqa_ctl.devices.light.commands.RoutineListCommand.action</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineStartCommand_1a4dc4343d554b4587860e18cd03311393" compoundref="light_2commands_8py" startline="366">klyqa_ctl.devices.light.commands.RoutineStartCommand.action</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineDeleteCommand_1a22e9da0d150753c50a518e76166bac4a" compoundref="light_2commands_8py" startline="377">klyqa_ctl.devices.light.commands.RoutineDeleteCommand.action</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_1a17ca552890113ac8743f84346e7fc6a2" compoundref="light_2commands_8py" startline="392">klyqa_ctl.devices.light.commands.RoutinePutCommand.action</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1af0410c578e6eb27005a875aa4c1e7fc2" compoundref="light_2response__status_8py" startline="50" endline="52">klyqa_ctl.devices.light.response_status.ResponseStatus.active_command</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" compoundref="cloud__state_8py" startline="27" endline="29">klyqa_ctl.devices.cloud_state.DeviceCloudState.connected</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a7c23e8a4c3aaefbb9ff18ae264fb8d11" compoundref="light_2response__status_8py" startline="66" endline="68">klyqa_ctl.devices.light.response_status.ResponseStatus.fwversion</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a0f7c1e9b25603ecb2eac7d27b08e1d65" compoundref="light_2response__status_8py" startline="82" endline="84">klyqa_ctl.devices.light.response_status.ResponseStatus.open_slots</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2648e065b6f0d5007028da1b9070a444" compoundref="light_2response__status_8py" startline="90" endline="92">klyqa_ctl.devices.light.response_status.ResponseStatus.sdkversion</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" compoundref="response__message_8py" startline="18">klyqa_ctl.devices.response_message.ResponseMessage.ts</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae7f14f70e2121e36310fabed37003e1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.response_status.ResponseStatus.update</definition>
+        <argsstring>(self, **Any kwargs)</argsstring>
+        <name>update</name>
+        <reimplements refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a2fe3b132a135335df05ea8492e22e73c">update</reimplements>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/response_status.py" line="66" column="1" bodyfile="devices/vacuum/response_status.py" bodystart="66" bodyend="68"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a282328402cc180e492dc153b2ac67a0c" compoundref="response__message_8py" startline="11" endline="16">klyqa_ctl.devices.response_message.ResponseMessage.__init__</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Vacuum cleaner Response Status</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.response_status.ResponseStatus</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.response_message.ResponseMessage</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.response_status.ResponseStatus</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.response_message.ResponseMessage</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage"/>
+      </node>
+    </collaborationgraph>
+    <location file="devices/vacuum/response_status.py" line="15" column="1" bodyfile="devices/vacuum/response_status.py" bodystart="15" bodyend="68"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae51c559746d7c53de2920374a1d8e7df" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1a75a56e16c9405a8f1473a162620f9d91" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a202c631bf73321c4edf738314e6cf911" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>_attr_ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a090131fa93e7d78d4abd712c86bf5ecd" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>_attr_type</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a33bd4483d8b4e5895c31f602df4f3886" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a0e2b3fdd97c8100a743928f07345a4c2" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1af8ee7a788eb2ed7499da50696555407a" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>ts</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a076bcd25b3f41acdc763569b279c4545" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>type</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage_1a01d835dff2ff7cffe4ad62fd827e543b" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>type</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1response__status_1_1ResponseStatus_1ae7f14f70e2121e36310fabed37003e1f" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::response_status::ResponseStatus</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::devices::vacuum::commands</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1CommandType" prot="public">klyqa_ctl::devices::vacuum::commands::CommandType</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand" prot="public">klyqa_ctl::devices::vacuum::commands::ProductinfoCommand</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand" prot="public">klyqa_ctl::devices::vacuum::commands::RequestGetCommand</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand" prot="public">klyqa_ctl::devices::vacuum::commands::RequestResetCommand</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand" prot="public">klyqa_ctl::devices::vacuum::commands::RequestSetCommand</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommandActions" prot="public">klyqa_ctl::devices::vacuum::commands::RoutineCommandActions</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand" prot="public">klyqa_ctl::devices::vacuum::commands::RoutineCommand</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a952002c9e90e07b593af730a4a952f47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.commands.create_device_message</definition>
+        <argsstring>(argparse.Namespace args, list[Any] args_in, Callable[[argparse.Namespace], Any] send_to_devices_callable, list[Any] message_queue_tx_local, list[Any] message_queue_tx_command_cloud, list[Any] message_queue_tx_state_cloud)</argsstring>
+        <name>create_device_message</name>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>args_in</declname>
+          <array>[Any]</array>
+        </param>
+        <param>
+          <type>Callable</type>
+          <defname>send_to_devices_callable</defname>
+          <array>[[argparse.Namespace]</array>
+        </param>
+        <param>
+          <type>Any]</type>
+          <declname>send_to_devices_callable</declname>
+          <defname>message_queue_tx_local</defname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>message_queue_tx_local</declname>
+          <defname>message_queue_tx_command_cloud</defname>
+          <array>[Any]</array>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>message_queue_tx_command_cloud</declname>
+          <defname>message_queue_tx_state_cloud</defname>
+          <array>[Any]</array>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>message_queue_tx_state_cloud</declname>
+          <array>[Any]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>process_args_to_msg_cleaner</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="87" column="1" bodyfile="devices/vacuum/commands.py" bodystart="94" bodyend="118"/>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a99f69e0d3e804e35aad5bd4ca32d6dbc" compoundref="vacuum_2commands_8py" startline="121" endline="171">klyqa_ctl.devices.vacuum.commands.get_command</references>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a74272728025b52147d143a61b2fcc7dc" compoundref="vacuum_2commands_8py" startline="174" endline="187">klyqa_ctl.devices.vacuum.commands.reset_command</references>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a1f05c06ff82538b4c287966541aa8cbc" compoundref="vacuum_2commands_8py" startline="220" endline="262">klyqa_ctl.devices.vacuum.commands.routine</references>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a2a270417950dd1a725bfbdf08c8815d6" compoundref="vacuum_2commands_8py" startline="190" endline="219">klyqa_ctl.devices.vacuum.commands.set_command</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a99f69e0d3e804e35aad5bd4ca32d6dbc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.commands.get_command</definition>
+        <argsstring>(argparse.Namespace args, Callable local_and_cloud_command_msg)</argsstring>
+        <name>get_command</name>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>Callable</type>
+          <declname>local_and_cloud_command_msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get command.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="119" column="1" bodyfile="devices/vacuum/commands.py" bodystart="121" bodyend="171"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a952002c9e90e07b593af730a4a952f47" compoundref="vacuum_2commands_8py" startline="94" endline="118">klyqa_ctl.devices.vacuum.commands.create_device_message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a74272728025b52147d143a61b2fcc7dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.commands.reset_command</definition>
+        <argsstring>(argparse.Namespace args, Callable local_and_cloud_command_msg)</argsstring>
+        <name>reset_command</name>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>Callable</type>
+          <declname>local_and_cloud_command_msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Reset command.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="172" column="1" bodyfile="devices/vacuum/commands.py" bodystart="174" bodyend="187"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a952002c9e90e07b593af730a4a952f47" compoundref="vacuum_2commands_8py" startline="94" endline="118">klyqa_ctl.devices.vacuum.commands.create_device_message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a2a270417950dd1a725bfbdf08c8815d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.commands.set_command</definition>
+        <argsstring>(argparse.Namespace args, Callable local_and_cloud_command_msg)</argsstring>
+        <name>set_command</name>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>Callable</type>
+          <declname>local_and_cloud_command_msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Set command.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="188" column="1" bodyfile="devices/vacuum/commands.py" bodystart="190" bodyend="219"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a952002c9e90e07b593af730a4a952f47" compoundref="vacuum_2commands_8py" startline="94" endline="118">klyqa_ctl.devices.vacuum.commands.create_device_message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a1f05c06ff82538b4c287966541aa8cbc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.commands.routine</definition>
+        <argsstring>(argparse.Namespace args)</argsstring>
+        <name>routine</name>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Set routine.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="220" column="1" bodyfile="devices/vacuum/commands.py" bodystart="220" bodyend="262"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1a952002c9e90e07b593af730a4a952f47" compoundref="vacuum_2commands_8py" startline="94" endline="118">klyqa_ctl.devices.vacuum.commands.create_device_message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1ad486c28adf7b9c4ed9672fc04dfde7ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.commands.add_command_args_cleaner</definition>
+        <argsstring>(argparse.ArgumentParser parser)</argsstring>
+        <name>add_command_args_cleaner</name>
+        <param>
+          <type>argparse.ArgumentParser</type>
+          <declname>parser</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Add command parse arguments.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/commands.py" line="263" column="1" bodyfile="devices/vacuum/commands.py" bodystart="263" bodyend="519"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1klyqa__ctl_1afe1b8490f9810b885e4048d7bef472a7" compoundref="klyqa__ctl_8py" startline="700" endline="816">klyqa_ctl.klyqa_ctl.main</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Vacuum cleaner commands</verbatim> </para>
+    </detaileddescription>
+    <location file="devices/vacuum/commands.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

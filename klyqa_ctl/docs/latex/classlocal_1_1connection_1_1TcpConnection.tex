@@ -1,0 +1,792 @@
+\hypertarget{classlocal_1_1connection_1_1TcpConnection}{}\doxysection{local.\+connection.\+Tcp\+Connection Class Reference}
+\label{classlocal_1_1connection_1_1TcpConnection}\index{local.connection.TcpConnection@{local.connection.TcpConnection}}
+
+
+Collaboration diagram for local.\+connection.\+Tcp\+Connection\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classlocal_1_1connection_1_1TcpConnection__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aae3f96e7c55fc45f5aa0c837c51a0069}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aa95e22fd936309fb5e27c1cf2f8d264c}{state}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a19f316b71fea5b145f251820f7796242}{state}} (self, \mbox{\hyperlink{classstr}{str}} state)
+\item 
+\mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_ae8ee1c2b1b2568367c3a9cf16c1c976c}{remote\+\_\+iv}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a610ebced44ea240a18fcc38962d97e44}{remote\+\_\+iv}} (self, \mbox{\hyperlink{classbytes}{bytes}} remote\+\_\+iv)
+\item 
+\mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aaa2925f711f018a95339c1457e9c7c0a}{local\+\_\+iv}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a34fd7c856221dc4f4f5e666877eef26c}{local\+\_\+iv}} (self, \mbox{\hyperlink{classbytes}{bytes}} local\+\_\+iv)
+\item 
+Any \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a4f160b2ac07e3eb3d4ed420723d272ed}{sending\+\_\+aes}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_ad3cd8182c4e0eb009a296d47a2ae969e}{sending\+\_\+aes}} (self, Any sending\+\_\+aes)
+\item 
+Any \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a8155e332b2255c6b7a0719f0a14ba835}{receiving\+\_\+aes}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_ae4cf20c59d31c28554d82af9e1c0ccb6}{receiving\+\_\+aes}} (self, Any receiving\+\_\+aes)
+\item 
+dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classstr}{str}}$\vert$int\mbox{]} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aaf41f85908a1e964676863fe1005b650}{address}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a8bdd6f3e1c30a2e6671f52b76282fb27}{address}} (self, dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classstr}{str}}$\vert$int\mbox{]} address)
+\item 
+socket.\+socket$\vert$None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_abbbb7415b2c8a01af2e84d618895f855}{socket}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a4611e0483aef05cdd079a70651fa6aef}{socket}} (self, socket.\+socket$\vert$None socket)
+\item 
+list\mbox{[}Any\mbox{]} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aff47b879423ffb2355ab33e3dee97128}{received\+\_\+packages}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a4a1b304e58855e9092b938eb27db0a37}{received\+\_\+packages}} (self, list\mbox{[}Any\mbox{]} received\+\_\+packages)
+\item 
+dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, Any\mbox{]} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aba6ac9e7294c88d32d28ede280c46d02}{sent\+\_\+msg\+\_\+answer}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a42c436ed6a7982b846d1f55d6033a2da}{sent\+\_\+msg\+\_\+answer}} (self, dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, Any\mbox{]} sent\+\_\+msg\+\_\+answer)
+\item 
+bool \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a352102b28c6aa3f1833cd0aaf0ea842a}{aes\+\_\+key\+\_\+confirmed}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a050e0d8bf82d293467b238174abbe722}{aes\+\_\+key\+\_\+confirmed}} (self, bool aes\+\_\+key\+\_\+confirmed)
+\item 
+\mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a1996ebbb501299a829bb433cebc0d303}{aes\+\_\+key}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_abe7332fbdf0675a52b2c9f546c84fd44}{aes\+\_\+key}} (self, \mbox{\hyperlink{classbytes}{bytes}} aes\+\_\+key)
+\item 
+datetime \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a47f1fe8d61f1bb165008723a321e376b}{started}} (self)
+\item 
+None \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a2c76c5da17903abd1dac9e28906e42f9}{started}} (self, datetime started)
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1DeviceTcpReturn}{Device\+Tcp\+Return}} \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a65ab7164f0d09f1380e3837905a602b7}{read\+\_\+local\+\_\+tcp\+\_\+socket}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1ReferencePass}{Reference\+Pass}} data\+\_\+ref)
+\item 
+bool \mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a305b3adb5bd8041bbaa53f47d1c23e81}{encrypt\+\_\+and\+\_\+send\+\_\+msg}} (self, \mbox{\hyperlink{classstr}{str}} msg, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}} device)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_ad5ab95bf09b02f50760f9a5ef5ed2742}{\+\_\+attr\+\_\+state}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a4df7e4486d250e634f1624c79f4557f5}{\+\_\+attr\+\_\+remote\+\_\+iv}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a61a5cdca3383b786f2dfacdc9fab545d}{\+\_\+attr\+\_\+local\+\_\+iv}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a013dafc1a2cb20ec4b01e8e9c946ca07}{\+\_\+attr\+\_\+sending\+\_\+aes}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_abed797cb2fbba7f05663f50fd3588274}{\+\_\+attr\+\_\+receiving\+\_\+aes}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a5f5e5b7c21e5d541773870a7c874c31d}{\+\_\+attr\+\_\+address}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_af475e2179e2c7eb74760af9de18658d3}{\+\_\+attr\+\_\+socket}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aecef655d2a229eeb9bb89c07c60e3fbb}{\+\_\+attr\+\_\+received\+\_\+packages}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_ac9a08b297581f72eb90a021ef3514b6d}{\+\_\+attr\+\_\+sent\+\_\+msg\+\_\+answer}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_aa8798c049ca270a895c4e2b577a12ee3}{\+\_\+attr\+\_\+aes\+\_\+key\+\_\+confirmed}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a067873c0c97388f30c26eb172dc1c2c3}{\+\_\+attr\+\_\+aes\+\_\+key}}
+\item 
+\mbox{\hyperlink{classlocal_1_1connection_1_1TcpConnection_a1efc8a42a9b00f35df0fdce03f3b415d}{\+\_\+attr\+\_\+started}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Local connection class.\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aae3f96e7c55fc45f5aa0c837c51a0069}\label{classlocal_1_1connection_1_1TcpConnection_aae3f96e7c55fc45f5aa0c837c51a0069}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{61     \textcolor{keyword}{def }\_\_init\_\_(self) -\/> None:}
+\DoxyCodeLine{62         self.\_attr\_state: str = AesConnectionState.WAIT\_IV}
+\DoxyCodeLine{63         self.\_attr\_local\_iv: bytes = get\_random\_bytes(8)}
+\DoxyCodeLine{64         self.\_attr\_remote\_iv: bytes = b\textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{65         self.\_attr\_sending\_aes: Any = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{66         self.\_attr\_receiving\_aes: Any = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{67         self.\_attr\_address: dict[str, str | int] = \{\textcolor{stringliteral}{"{}ip"{}}: \textcolor{stringliteral}{"{}"{}}, \textcolor{stringliteral}{"{}port"{}}: -\/1\}}
+\DoxyCodeLine{68         self.\_attr\_socket: socket.socket | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{69         self.\_attr\_received\_packages: list[Any] = []}
+\DoxyCodeLine{70         self.\_attr\_sent\_msg\_answer: dict[str, Any] = \{\}}
+\DoxyCodeLine{71         self.\_attr\_aes\_key\_confirmed: bool = \textcolor{keyword}{False}}
+\DoxyCodeLine{72         self.\_attr\_aes\_key: bytes = b\textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{73         self.\_attr\_started: datetime = datetime.now()}
+\DoxyCodeLine{74 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aaf41f85908a1e964676863fe1005b650}\label{classlocal_1_1connection_1_1TcpConnection_aaf41f85908a1e964676863fe1005b650}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!address@{address}}
+\index{address@{address}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{address()}{address()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classstr}{str}} $\vert$ int\mbox{]} local.\+connection.\+Tcp\+Connection.\+address (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{116     \textcolor{keyword}{def }address(self) -\/> dict[str, str | int]:}
+\DoxyCodeLine{117         \textcolor{keywordflow}{return} self.\_attr\_address}
+\DoxyCodeLine{118 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_aaf41f85908a1e964676863fe1005b650_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a8bdd6f3e1c30a2e6671f52b76282fb27}\label{classlocal_1_1connection_1_1TcpConnection_a8bdd6f3e1c30a2e6671f52b76282fb27}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!address@{address}}
+\index{address@{address}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{address()}{address()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+address (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, \mbox{\hyperlink{classstr}{str}} $\vert$ int\mbox{]}}]{address }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{120     \textcolor{keyword}{def }address(self, address: dict[str, str | int]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{121         self.\_attr\_address = address}
+\DoxyCodeLine{122 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a8bdd6f3e1c30a2e6671f52b76282fb27_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a1996ebbb501299a829bb433cebc0d303}\label{classlocal_1_1connection_1_1TcpConnection_a1996ebbb501299a829bb433cebc0d303}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!aes\_key@{aes\_key}}
+\index{aes\_key@{aes\_key}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{aes\_key()}{aes\_key()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classbytes}{bytes}} local.\+connection.\+Tcp\+Connection.\+aes\+\_\+key (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{156     \textcolor{keyword}{def }aes\_key(self) -\/> bytes:}
+\DoxyCodeLine{157         \textcolor{keywordflow}{return} self.\_attr\_aes\_key}
+\DoxyCodeLine{158 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a1996ebbb501299a829bb433cebc0d303_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_abe7332fbdf0675a52b2c9f546c84fd44}\label{classlocal_1_1connection_1_1TcpConnection_abe7332fbdf0675a52b2c9f546c84fd44}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!aes\_key@{aes\_key}}
+\index{aes\_key@{aes\_key}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{aes\_key()}{aes\_key()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+aes\+\_\+key (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbytes}{bytes}}}]{aes\+\_\+key }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{160     \textcolor{keyword}{def }aes\_key(self, aes\_key: bytes) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{161         self.\_attr\_aes\_key = aes\_key}
+\DoxyCodeLine{162 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_abe7332fbdf0675a52b2c9f546c84fd44_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a352102b28c6aa3f1833cd0aaf0ea842a}\label{classlocal_1_1connection_1_1TcpConnection_a352102b28c6aa3f1833cd0aaf0ea842a}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!aes\_key\_confirmed@{aes\_key\_confirmed}}
+\index{aes\_key\_confirmed@{aes\_key\_confirmed}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{aes\_key\_confirmed()}{aes\_key\_confirmed()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  bool local.\+connection.\+Tcp\+Connection.\+aes\+\_\+key\+\_\+confirmed (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{148     \textcolor{keyword}{def }aes\_key\_confirmed(self) -\/> bool:}
+\DoxyCodeLine{149         \textcolor{keywordflow}{return} self.\_attr\_aes\_key\_confirmed}
+\DoxyCodeLine{150 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a352102b28c6aa3f1833cd0aaf0ea842a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a050e0d8bf82d293467b238174abbe722}\label{classlocal_1_1connection_1_1TcpConnection_a050e0d8bf82d293467b238174abbe722}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!aes\_key\_confirmed@{aes\_key\_confirmed}}
+\index{aes\_key\_confirmed@{aes\_key\_confirmed}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{aes\_key\_confirmed()}{aes\_key\_confirmed()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+aes\+\_\+key\+\_\+confirmed (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{bool}]{aes\+\_\+key\+\_\+confirmed }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{152     \textcolor{keyword}{def }aes\_key\_confirmed(self, aes\_key\_confirmed: bool) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{153         self.\_attr\_aes\_key\_confirmed = aes\_key\_confirmed}
+\DoxyCodeLine{154 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a050e0d8bf82d293467b238174abbe722_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a305b3adb5bd8041bbaa53f47d1c23e81}\label{classlocal_1_1connection_1_1TcpConnection_a305b3adb5bd8041bbaa53f47d1c23e81}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!encrypt\_and\_send\_msg@{encrypt\_and\_send\_msg}}
+\index{encrypt\_and\_send\_msg@{encrypt\_and\_send\_msg}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{encrypt\_and\_send\_msg()}{encrypt\_and\_send\_msg()}}
+{\footnotesize\ttfamily  bool local.\+connection.\+Tcp\+Connection.\+encrypt\+\_\+and\+\_\+send\+\_\+msg (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{msg,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}}}]{device }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Encrypt the msg with aes and send it over the socket.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{192     async \textcolor{keyword}{def }encrypt\_and\_send\_msg(self, msg: str, device: Device) -\/> bool:}
+\DoxyCodeLine{193         \textcolor{stringliteral}{"{}"{}"{}Encrypt the msg with aes and send it over the socket."{}"{}"{}}}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195         loop: asyncio.AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{196         info\_str: str = (}
+\DoxyCodeLine{197             (f\textcolor{stringliteral}{"{}\{task\_name()\} -\/ "{}} \textcolor{keywordflow}{if} LOGGER.level == logging.DEBUG \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{198             + \textcolor{stringliteral}{'Sending in local network to "{}'}}
+\DoxyCodeLine{199             + device.get\_name()}
+\DoxyCodeLine{200             + \textcolor{stringliteral}{'"{}: '}}
+\DoxyCodeLine{201             + json.dumps(json.loads(msg), sort\_keys=\textcolor{keyword}{True}, indent=4)}
+\DoxyCodeLine{202         )}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204         LOGGER.info(info\_str)}
+\DoxyCodeLine{205         plain: bytes = msg.encode(\textcolor{stringliteral}{"{}utf-\/8"{}})}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207         package: bytes = DataPackage.create(plain, PackageType.ENC).serialize(}
+\DoxyCodeLine{208             self.sending\_aes}
+\DoxyCodeLine{209         )}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211         \textcolor{keywordflow}{while} self.socket:}
+\DoxyCodeLine{212             \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{213                 await loop.sock\_sendall(self.socket, package)}
+\DoxyCodeLine{214                 \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{215             \textcolor{keywordflow}{except} socket.timeout:}
+\DoxyCodeLine{216                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Send timed out, retrying..."{}})}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218         \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a305b3adb5bd8041bbaa53f47d1c23e81_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aaa2925f711f018a95339c1457e9c7c0a}\label{classlocal_1_1connection_1_1TcpConnection_aaa2925f711f018a95339c1457e9c7c0a}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!local\_iv@{local\_iv}}
+\index{local\_iv@{local\_iv}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{local\_iv()}{local\_iv()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classbytes}{bytes}} local.\+connection.\+Tcp\+Connection.\+local\+\_\+iv (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{92     \textcolor{keyword}{def }local\_iv(self) -\/> bytes:}
+\DoxyCodeLine{93         \textcolor{keywordflow}{return} self.\_attr\_local\_iv}
+\DoxyCodeLine{94 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_aaa2925f711f018a95339c1457e9c7c0a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a34fd7c856221dc4f4f5e666877eef26c}\label{classlocal_1_1connection_1_1TcpConnection_a34fd7c856221dc4f4f5e666877eef26c}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!local\_iv@{local\_iv}}
+\index{local\_iv@{local\_iv}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{local\_iv()}{local\_iv()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+local\+\_\+iv (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbytes}{bytes}}}]{local\+\_\+iv }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{96     \textcolor{keyword}{def }local\_iv(self, local\_iv: bytes) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{97         self.\_attr\_local\_iv = local\_iv}
+\DoxyCodeLine{98 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a34fd7c856221dc4f4f5e666877eef26c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a65ab7164f0d09f1380e3837905a602b7}\label{classlocal_1_1connection_1_1TcpConnection_a65ab7164f0d09f1380e3837905a602b7}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!read\_local\_tcp\_socket@{read\_local\_tcp\_socket}}
+\index{read\_local\_tcp\_socket@{read\_local\_tcp\_socket}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{read\_local\_tcp\_socket()}{read\_local\_tcp\_socket()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classlocal_1_1connection_1_1DeviceTcpReturn}{Device\+Tcp\+Return}} local.\+connection.\+Tcp\+Connection.\+read\+\_\+local\+\_\+tcp\+\_\+socket (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1ReferencePass}{Reference\+Pass}}     }]{data\+\_\+ref }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Read from tcp socket and handle some exceptions.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{173     ) -\/> DeviceTcpReturn:}
+\DoxyCodeLine{174         \textcolor{stringliteral}{"{}"{}"{}Read from tcp socket and handle some exceptions."{}"{}"{}}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176         loop: asyncio.AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{177         \textcolor{keywordflow}{if} self.socket \textcolor{keywordflow}{is} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{178             \textcolor{keywordflow}{return} DeviceTcpReturn.SOCKET\_ERROR}
+\DoxyCodeLine{179         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{180             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Read tcp socket to device."{}})}
+\DoxyCodeLine{181             data\_ref.ref = await loop.sock\_recv(self.socket, 4096)}
+\DoxyCodeLine{182             \textcolor{keywordflow}{if} len(data\_ref.ref) == 0:}
+\DoxyCodeLine{183                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}{task\_log}}(\textcolor{stringliteral}{"{}TCP connection ended unexpectedly!"{}}, LOGGER.error)}
+\DoxyCodeLine{184                 \textcolor{keywordflow}{return} DeviceTcpReturn.TCP\_SOCKET\_CLOSED\_UNEXPECTEDLY}
+\DoxyCodeLine{185         \textcolor{keywordflow}{except} socket.timeout:}
+\DoxyCodeLine{186             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}{task\_log}}(\textcolor{stringliteral}{"{}socket.timeout."{}})}
+\DoxyCodeLine{187         \textcolor{keywordflow}{except} socket.error:}
+\DoxyCodeLine{188             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\_log\_trace\_ex}}()}
+\DoxyCodeLine{189             \textcolor{keywordflow}{return} DeviceTcpReturn.SOCKET\_ERROR}
+\DoxyCodeLine{190         \textcolor{keywordflow}{return} DeviceTcpReturn.NO\_ERROR}
+\DoxyCodeLine{191 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a65ab7164f0d09f1380e3837905a602b7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aff47b879423ffb2355ab33e3dee97128}\label{classlocal_1_1connection_1_1TcpConnection_aff47b879423ffb2355ab33e3dee97128}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!received\_packages@{received\_packages}}
+\index{received\_packages@{received\_packages}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{received\_packages()}{received\_packages()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  list\mbox{[}Any\mbox{]} local.\+connection.\+Tcp\+Connection.\+received\+\_\+packages (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{132     \textcolor{keyword}{def }received\_packages(self) -\/> list[Any]:}
+\DoxyCodeLine{133         \textcolor{keywordflow}{return} self.\_attr\_received\_packages}
+\DoxyCodeLine{134 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_aff47b879423ffb2355ab33e3dee97128_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a4a1b304e58855e9092b938eb27db0a37}\label{classlocal_1_1connection_1_1TcpConnection_a4a1b304e58855e9092b938eb27db0a37}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!received\_packages@{received\_packages}}
+\index{received\_packages@{received\_packages}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{received\_packages()}{received\_packages()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+received\+\_\+packages (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{list\mbox{[}Any\mbox{]}}]{received\+\_\+packages }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{136     \textcolor{keyword}{def }received\_packages(self, received\_packages: list[Any]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{137         self.\_attr\_received\_packages = received\_packages}
+\DoxyCodeLine{138 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a4a1b304e58855e9092b938eb27db0a37_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a8155e332b2255c6b7a0719f0a14ba835}\label{classlocal_1_1connection_1_1TcpConnection_a8155e332b2255c6b7a0719f0a14ba835}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!receiving\_aes@{receiving\_aes}}
+\index{receiving\_aes@{receiving\_aes}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{receiving\_aes()}{receiving\_aes()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  Any local.\+connection.\+Tcp\+Connection.\+receiving\+\_\+aes (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{108     \textcolor{keyword}{def }receiving\_aes(self) -\/> Any:}
+\DoxyCodeLine{109         \textcolor{keywordflow}{return} self.\_attr\_receiving\_aes}
+\DoxyCodeLine{110 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a8155e332b2255c6b7a0719f0a14ba835_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_ae4cf20c59d31c28554d82af9e1c0ccb6}\label{classlocal_1_1connection_1_1TcpConnection_ae4cf20c59d31c28554d82af9e1c0ccb6}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!receiving\_aes@{receiving\_aes}}
+\index{receiving\_aes@{receiving\_aes}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{receiving\_aes()}{receiving\_aes()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+receiving\+\_\+aes (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Any}]{receiving\+\_\+aes }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{112     \textcolor{keyword}{def }receiving\_aes(self, receiving\_aes: Any) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{113         self.\_attr\_receiving\_aes = receiving\_aes}
+\DoxyCodeLine{114 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_ae4cf20c59d31c28554d82af9e1c0ccb6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_ae8ee1c2b1b2568367c3a9cf16c1c976c}\label{classlocal_1_1connection_1_1TcpConnection_ae8ee1c2b1b2568367c3a9cf16c1c976c}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!remote\_iv@{remote\_iv}}
+\index{remote\_iv@{remote\_iv}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{remote\_iv()}{remote\_iv()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classbytes}{bytes}} local.\+connection.\+Tcp\+Connection.\+remote\+\_\+iv (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{84     \textcolor{keyword}{def }remote\_iv(self) -\/> bytes:}
+\DoxyCodeLine{85         \textcolor{keywordflow}{return} self.\_attr\_remote\_iv}
+\DoxyCodeLine{86 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_ae8ee1c2b1b2568367c3a9cf16c1c976c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a610ebced44ea240a18fcc38962d97e44}\label{classlocal_1_1connection_1_1TcpConnection_a610ebced44ea240a18fcc38962d97e44}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!remote\_iv@{remote\_iv}}
+\index{remote\_iv@{remote\_iv}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{remote\_iv()}{remote\_iv()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+remote\+\_\+iv (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbytes}{bytes}}}]{remote\+\_\+iv }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{88     \textcolor{keyword}{def }remote\_iv(self, remote\_iv: bytes) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{89         self.\_attr\_remote\_iv = remote\_iv}
+\DoxyCodeLine{90 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a610ebced44ea240a18fcc38962d97e44_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a4f160b2ac07e3eb3d4ed420723d272ed}\label{classlocal_1_1connection_1_1TcpConnection_a4f160b2ac07e3eb3d4ed420723d272ed}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!sending\_aes@{sending\_aes}}
+\index{sending\_aes@{sending\_aes}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{sending\_aes()}{sending\_aes()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  Any local.\+connection.\+Tcp\+Connection.\+sending\+\_\+aes (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{100     \textcolor{keyword}{def }sending\_aes(self) -\/> Any:}
+\DoxyCodeLine{101         \textcolor{keywordflow}{return} self.\_attr\_sending\_aes}
+\DoxyCodeLine{102 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a4f160b2ac07e3eb3d4ed420723d272ed_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_ad3cd8182c4e0eb009a296d47a2ae969e}\label{classlocal_1_1connection_1_1TcpConnection_ad3cd8182c4e0eb009a296d47a2ae969e}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!sending\_aes@{sending\_aes}}
+\index{sending\_aes@{sending\_aes}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{sending\_aes()}{sending\_aes()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+sending\+\_\+aes (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{Any}]{sending\+\_\+aes }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{104     \textcolor{keyword}{def }sending\_aes(self, sending\_aes: Any) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{105         self.\_attr\_sending\_aes = sending\_aes}
+\DoxyCodeLine{106 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_ad3cd8182c4e0eb009a296d47a2ae969e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_ad3cd8182c4e0eb009a296d47a2ae969e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aba6ac9e7294c88d32d28ede280c46d02}\label{classlocal_1_1connection_1_1TcpConnection_aba6ac9e7294c88d32d28ede280c46d02}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!sent\_msg\_answer@{sent\_msg\_answer}}
+\index{sent\_msg\_answer@{sent\_msg\_answer}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{sent\_msg\_answer()}{sent\_msg\_answer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, Any\mbox{]} local.\+connection.\+Tcp\+Connection.\+sent\+\_\+msg\+\_\+answer (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{140     \textcolor{keyword}{def }sent\_msg\_answer(self) -\/> dict[str, Any]:}
+\DoxyCodeLine{141         \textcolor{keywordflow}{return} self.\_attr\_sent\_msg\_answer}
+\DoxyCodeLine{142 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_aba6ac9e7294c88d32d28ede280c46d02_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a42c436ed6a7982b846d1f55d6033a2da}\label{classlocal_1_1connection_1_1TcpConnection_a42c436ed6a7982b846d1f55d6033a2da}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!sent\_msg\_answer@{sent\_msg\_answer}}
+\index{sent\_msg\_answer@{sent\_msg\_answer}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{sent\_msg\_answer()}{sent\_msg\_answer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+sent\+\_\+msg\+\_\+answer (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{dict\mbox{[}\mbox{\hyperlink{classstr}{str}}, Any\mbox{]}}]{sent\+\_\+msg\+\_\+answer }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{144     \textcolor{keyword}{def }sent\_msg\_answer(self, sent\_msg\_answer: dict[str, Any]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{145         self.\_attr\_sent\_msg\_answer = sent\_msg\_answer}
+\DoxyCodeLine{146 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a42c436ed6a7982b846d1f55d6033a2da_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_abbbb7415b2c8a01af2e84d618895f855}\label{classlocal_1_1connection_1_1TcpConnection_abbbb7415b2c8a01af2e84d618895f855}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!socket@{socket}}
+\index{socket@{socket}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{socket()}{socket()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  socket.\+socket $\vert$ None local.\+connection.\+Tcp\+Connection.\+socket (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{124     \textcolor{keyword}{def }socket(self) -\/> socket.socket | None:}
+\DoxyCodeLine{125         \textcolor{keywordflow}{return} self.\_attr\_socket}
+\DoxyCodeLine{126 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_abbbb7415b2c8a01af2e84d618895f855_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a4611e0483aef05cdd079a70651fa6aef}\label{classlocal_1_1connection_1_1TcpConnection_a4611e0483aef05cdd079a70651fa6aef}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!socket@{socket}}
+\index{socket@{socket}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{socket()}{socket()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+socket (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{socket.\+socket $\vert$ None}]{socket }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{128     \textcolor{keyword}{def }socket(self, socket: socket.socket | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{129         self.\_attr\_socket = socket}
+\DoxyCodeLine{130 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a4611e0483aef05cdd079a70651fa6aef_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a4611e0483aef05cdd079a70651fa6aef_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a47f1fe8d61f1bb165008723a321e376b}\label{classlocal_1_1connection_1_1TcpConnection_a47f1fe8d61f1bb165008723a321e376b}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!started@{started}}
+\index{started@{started}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{started()}{started()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  datetime local.\+connection.\+Tcp\+Connection.\+started (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{164     \textcolor{keyword}{def }started(self) -\/> datetime:}
+\DoxyCodeLine{165         \textcolor{keywordflow}{return} self.\_attr\_started}
+\DoxyCodeLine{166 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a47f1fe8d61f1bb165008723a321e376b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a2c76c5da17903abd1dac9e28906e42f9}\label{classlocal_1_1connection_1_1TcpConnection_a2c76c5da17903abd1dac9e28906e42f9}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!started@{started}}
+\index{started@{started}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{started()}{started()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+started (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{datetime}]{started }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{168     \textcolor{keyword}{def }started(self, started: datetime) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{169         self.\_attr\_started = started}
+\DoxyCodeLine{170 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a2c76c5da17903abd1dac9e28906e42f9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a2c76c5da17903abd1dac9e28906e42f9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aa95e22fd936309fb5e27c1cf2f8d264c}\label{classlocal_1_1connection_1_1TcpConnection_aa95e22fd936309fb5e27c1cf2f8d264c}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!state@{state}}
+\index{state@{state}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{state()}{state()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} local.\+connection.\+Tcp\+Connection.\+state (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{76     \textcolor{keyword}{def }state(self) -\/> str:}
+\DoxyCodeLine{77         \textcolor{keywordflow}{return} self.\_attr\_state}
+\DoxyCodeLine{78 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_aa95e22fd936309fb5e27c1cf2f8d264c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a19f316b71fea5b145f251820f7796242}\label{classlocal_1_1connection_1_1TcpConnection_a19f316b71fea5b145f251820f7796242}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!state@{state}}
+\index{state@{state}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{state()}{state()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None local.\+connection.\+Tcp\+Connection.\+state (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{80     \textcolor{keyword}{def }state(self, state: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{81         self.\_attr\_state = state}
+\DoxyCodeLine{82 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlocal_1_1connection_1_1TcpConnection_a19f316b71fea5b145f251820f7796242_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a5f5e5b7c21e5d541773870a7c874c31d}\label{classlocal_1_1connection_1_1TcpConnection_a5f5e5b7c21e5d541773870a7c874c31d}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_address@{\_attr\_address}}
+\index{\_attr\_address@{\_attr\_address}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_address}{\_attr\_address}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+address\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a067873c0c97388f30c26eb172dc1c2c3}\label{classlocal_1_1connection_1_1TcpConnection_a067873c0c97388f30c26eb172dc1c2c3}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_aes\_key@{\_attr\_aes\_key}}
+\index{\_attr\_aes\_key@{\_attr\_aes\_key}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_aes\_key}{\_attr\_aes\_key}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+aes\+\_\+key\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aa8798c049ca270a895c4e2b577a12ee3}\label{classlocal_1_1connection_1_1TcpConnection_aa8798c049ca270a895c4e2b577a12ee3}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_aes\_key\_confirmed@{\_attr\_aes\_key\_confirmed}}
+\index{\_attr\_aes\_key\_confirmed@{\_attr\_aes\_key\_confirmed}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_aes\_key\_confirmed}{\_attr\_aes\_key\_confirmed}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+aes\+\_\+key\+\_\+confirmed\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a61a5cdca3383b786f2dfacdc9fab545d}\label{classlocal_1_1connection_1_1TcpConnection_a61a5cdca3383b786f2dfacdc9fab545d}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_local\_iv@{\_attr\_local\_iv}}
+\index{\_attr\_local\_iv@{\_attr\_local\_iv}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_local\_iv}{\_attr\_local\_iv}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+local\+\_\+iv\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_aecef655d2a229eeb9bb89c07c60e3fbb}\label{classlocal_1_1connection_1_1TcpConnection_aecef655d2a229eeb9bb89c07c60e3fbb}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_received\_packages@{\_attr\_received\_packages}}
+\index{\_attr\_received\_packages@{\_attr\_received\_packages}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_received\_packages}{\_attr\_received\_packages}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+received\+\_\+packages\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_abed797cb2fbba7f05663f50fd3588274}\label{classlocal_1_1connection_1_1TcpConnection_abed797cb2fbba7f05663f50fd3588274}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_receiving\_aes@{\_attr\_receiving\_aes}}
+\index{\_attr\_receiving\_aes@{\_attr\_receiving\_aes}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_receiving\_aes}{\_attr\_receiving\_aes}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+receiving\+\_\+aes\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a4df7e4486d250e634f1624c79f4557f5}\label{classlocal_1_1connection_1_1TcpConnection_a4df7e4486d250e634f1624c79f4557f5}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_remote\_iv@{\_attr\_remote\_iv}}
+\index{\_attr\_remote\_iv@{\_attr\_remote\_iv}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_remote\_iv}{\_attr\_remote\_iv}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+remote\+\_\+iv\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a013dafc1a2cb20ec4b01e8e9c946ca07}\label{classlocal_1_1connection_1_1TcpConnection_a013dafc1a2cb20ec4b01e8e9c946ca07}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_sending\_aes@{\_attr\_sending\_aes}}
+\index{\_attr\_sending\_aes@{\_attr\_sending\_aes}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_sending\_aes}{\_attr\_sending\_aes}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+sending\+\_\+aes\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_ac9a08b297581f72eb90a021ef3514b6d}\label{classlocal_1_1connection_1_1TcpConnection_ac9a08b297581f72eb90a021ef3514b6d}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_sent\_msg\_answer@{\_attr\_sent\_msg\_answer}}
+\index{\_attr\_sent\_msg\_answer@{\_attr\_sent\_msg\_answer}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_sent\_msg\_answer}{\_attr\_sent\_msg\_answer}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+sent\+\_\+msg\+\_\+answer\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_af475e2179e2c7eb74760af9de18658d3}\label{classlocal_1_1connection_1_1TcpConnection_af475e2179e2c7eb74760af9de18658d3}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_socket@{\_attr\_socket}}
+\index{\_attr\_socket@{\_attr\_socket}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_socket}{\_attr\_socket}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+socket\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_a1efc8a42a9b00f35df0fdce03f3b415d}\label{classlocal_1_1connection_1_1TcpConnection_a1efc8a42a9b00f35df0fdce03f3b415d}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_started@{\_attr\_started}}
+\index{\_attr\_started@{\_attr\_started}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_started}{\_attr\_started}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+started\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlocal_1_1connection_1_1TcpConnection_ad5ab95bf09b02f50760f9a5ef5ed2742}\label{classlocal_1_1connection_1_1TcpConnection_ad5ab95bf09b02f50760f9a5ef5ed2742}} 
+\index{local.connection.TcpConnection@{local.connection.TcpConnection}!\_attr\_state@{\_attr\_state}}
+\index{\_attr\_state@{\_attr\_state}!local.connection.TcpConnection@{local.connection.TcpConnection}}
+\doxysubsubsection{\texorpdfstring{\_attr\_state}{\_attr\_state}}
+{\footnotesize\ttfamily local.\+connection.\+Tcp\+Connection.\+\_\+attr\+\_\+state\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+communication/local/\mbox{\hyperlink{connection_8py}{connection.\+py}}\end{DoxyCompactItemize}

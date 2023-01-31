@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::general::AsyncIoLock</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">asyncio.Lock</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a84c7d1709eaea2a0100b9a8340e05e1c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.AsyncIoLock::locked_in_task</definition>
+        <argsstring></argsstring>
+        <name>locked_in_task</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="265" column="1" bodyfile="general/general.py" bodystart="265" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a03d06fdae864c5afc92586db49485430" compoundref="general_2general_8py" startline="250" endline="254">klyqa_ctl.general.general.AsyncIoLock.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a25fbc33880c976000ef3b6e70c7691c9" compoundref="general_2general_8py" startline="279" endline="293">klyqa_ctl.general.general.AsyncIoLock.release_within_task</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a03d06fdae864c5afc92586db49485430" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.AsyncIoLock.__init__</definition>
+        <argsstring>(self, str name=&quot;&quot;)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="250" column="1" bodyfile="general/general.py" bodystart="250" bodyend="254"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a84c7d1709eaea2a0100b9a8340e05e1c" compoundref="general_2general_8py" startline="265">klyqa_ctl.general.general.AsyncIoLock.locked_in_task</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a871a28c7421aecc1cd55f0dc9c6fa166" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.general.general.AsyncIoLock.acquire_within_task</definition>
+        <argsstring>(self, int timeout=30, **Any kwargs)</argsstring>
+        <name>acquire_within_task</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>timeout</declname>
+          <defval>30</defval>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get asyncio lock.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="255" column="1" bodyfile="general/general.py" bodystart="257" bodyend="278"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a25fbc33880c976000ef3b6e70c7691c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.AsyncIoLock.release_within_task</definition>
+        <argsstring>(self)</argsstring>
+        <name>release_within_task</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="279" column="1" bodyfile="general/general.py" bodystart="279" bodyend="293"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a84c7d1709eaea2a0100b9a8340e05e1c" compoundref="general_2general_8py" startline="265">klyqa_ctl.general.general.AsyncIoLock.locked_in_task</references>
+        <references refid="namespaceklyqa__ctl_1_1conf_1aa5e016064b19c99705cafd006ae25857" compoundref="conf_8py" startline="12">klyqa_ctl.conf.release</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1abab49b300927a080244615ee3ab494e3" compoundref="general_2general_8py" startline="560" endline="564">klyqa_ctl.general.general.task_log_error</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1ad6b753e482e539892c57f8144cf213cb" compoundref="general_2general_8py" startline="565" endline="568">klyqa_ctl.general.general.task_log_trace_ex</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.AsyncIoLock</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>asyncio::Lock</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.AsyncIoLock</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>asyncio::Lock</label>
+      </node>
+    </collaborationgraph>
+    <location file="general/general.py" line="249" column="1" bodyfile="general/general.py" bodystart="249" bodyend="294"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a03d06fdae864c5afc92586db49485430" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::AsyncIoLock</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a871a28c7421aecc1cd55f0dc9c6fa166" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::AsyncIoLock</scope><name>acquire_within_task</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a84c7d1709eaea2a0100b9a8340e05e1c" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::AsyncIoLock</scope><name>locked_in_task</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a25fbc33880c976000ef3b6e70c7691c9" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::AsyncIoLock</scope><name>release_within_task</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

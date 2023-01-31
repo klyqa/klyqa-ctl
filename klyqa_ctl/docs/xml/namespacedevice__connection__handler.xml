@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacedevice__connection__handler" kind="namespace" language="Python">
+    <compoundname>device_connection_handler</compoundname>
+    <innerclass refid="classdevice__connection__handler_1_1DeviceConnectionHandler" prot="public">device_connection_handler::DeviceConnectionHandler</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Connection handler for device.</verbatim> </para>
+    </detaileddescription>
+    <location file="communication/device_connection_handler.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

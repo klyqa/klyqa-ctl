@@ -1,0 +1,628 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1klyqa__ctl_1_1Client" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::klyqa_ctl::Client</compoundname>
+    <basecompoundref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" prot="public" virt="non-virtual">klyqa_ctl.controller_data.ControllerData</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a287a2a6993c136f4612d37c1c61f4c3f" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.klyqa_ctl.Client::_attr_local</definition>
+        <argsstring></argsstring>
+        <name>_attr_local</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="103" column="1" bodyfile="klyqa_ctl.py" bodystart="103" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" compoundref="klyqa__ctl_8py" startline="87" endline="96">klyqa_ctl.klyqa_ctl.Client.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" compoundref="klyqa__ctl_8py" startline="98" endline="100">klyqa_ctl.klyqa_ctl.Client.local</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a8a4103a5925e93ce5c70c841248cf98c" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.klyqa_ctl.Client::_attr_accounts</definition>
+        <argsstring></argsstring>
+        <name>_attr_accounts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="111" column="1" bodyfile="klyqa_ctl.py" bodystart="111" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" compoundref="klyqa__ctl_8py" startline="87" endline="96">klyqa_ctl.klyqa_ctl.Client.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" compoundref="klyqa__ctl_8py" startline="106" endline="108">klyqa_ctl.klyqa_ctl.Client.accounts</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.klyqa_ctl.Client::_attr_cloud</definition>
+        <argsstring></argsstring>
+        <name>_attr_cloud</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="119" column="1" bodyfile="klyqa_ctl.py" bodystart="119" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a6f404a962e6b23554e59afc65a6b8d22" compoundref="device_8py" startline="44" endline="64">klyqa_ctl.devices.device.Device.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" compoundref="klyqa__ctl_8py" startline="87" endline="96">klyqa_ctl.klyqa_ctl.Client.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.Client.__init__</definition>
+        <argsstring>(self, dict[str, Account]|None accounts=None)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>dict|None</type>
+          <declname>accounts</declname>
+          <array>[str, Account]</array>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Initialize the client.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="84" column="1" bodyfile="klyqa_ctl.py" bodystart="87" bodyend="96"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a8a4103a5925e93ce5c70c841248cf98c" compoundref="klyqa__ctl_8py" startline="111">klyqa_ctl.klyqa_ctl.Client._attr_accounts</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" compoundref="account_8py" startline="127">klyqa_ctl.account.Account._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad117521203c694ca946b96598bd7aa11" compoundref="device_8py" startline="103">klyqa_ctl.devices.device.Device._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" compoundref="klyqa__ctl_8py" startline="119">klyqa_ctl.klyqa_ctl.Client._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a287a2a6993c136f4612d37c1c61f4c3f" compoundref="klyqa__ctl_8py" startline="103">klyqa_ctl.klyqa_ctl.Client._attr_local</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>LocalConnectionHandler|None</type>
+        <definition> LocalConnectionHandler | None klyqa_ctl.klyqa_ctl.Client.local</definition>
+        <argsstring>(self)</argsstring>
+        <name>local</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="98" column="1" bodyfile="klyqa_ctl.py" bodystart="98" bodyend="100"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a287a2a6993c136f4612d37c1c61f4c3f" compoundref="klyqa__ctl_8py" startline="103">klyqa_ctl.klyqa_ctl.Client._attr_local</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1aca681010a08f941d9f65888e99cd6374" compoundref="klyqa__ctl_8py" startline="158" endline="184">klyqa_ctl.klyqa_ctl.Client.discover_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a3cdabc8aa3a95c4adda1df1949cda05d" compoundref="klyqa__ctl_8py" startline="102" endline="104">klyqa_ctl.klyqa_ctl.Client.local</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" compoundref="klyqa__ctl_8py" startline="600" endline="657">klyqa_ctl.klyqa_ctl.Client.send_to_devices_wrapped</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" compoundref="klyqa__ctl_8py" startline="145" endline="152">klyqa_ctl.klyqa_ctl.Client.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a3cdabc8aa3a95c4adda1df1949cda05d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.Client.local</definition>
+        <argsstring>(self, LocalConnectionHandler|None local)</argsstring>
+        <name>local</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>LocalConnectionHandler|None</type>
+          <declname>local</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="102" column="1" bodyfile="klyqa_ctl.py" bodystart="102" bodyend="104"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" compoundref="klyqa__ctl_8py" startline="98" endline="100">klyqa_ctl.klyqa_ctl.Client.local</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1aca681010a08f941d9f65888e99cd6374" compoundref="klyqa__ctl_8py" startline="158" endline="184">klyqa_ctl.klyqa_ctl.Client.discover_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" compoundref="klyqa__ctl_8py" startline="600" endline="657">klyqa_ctl.klyqa_ctl.Client.send_to_devices_wrapped</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" compoundref="klyqa__ctl_8py" startline="145" endline="152">klyqa_ctl.klyqa_ctl.Client.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>dict[<ref refid="classstr" kindref="compound">str</ref>, <ref refid="classklyqa__ctl_1_1account_1_1Account" kindref="compound">Account</ref>]</type>
+        <definition> dict[str, Account] klyqa_ctl.klyqa_ctl.Client.accounts</definition>
+        <argsstring>(self)</argsstring>
+        <name>accounts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="106" column="1" bodyfile="klyqa_ctl.py" bodystart="106" bodyend="108"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a8a4103a5925e93ce5c70c841248cf98c" compoundref="klyqa__ctl_8py" startline="111">klyqa_ctl.klyqa_ctl.Client._attr_accounts</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1af3198f7c13e93b4da93d04fbb2c46532" compoundref="klyqa__ctl_8py" startline="110" endline="112">klyqa_ctl.klyqa_ctl.Client.accounts</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" compoundref="klyqa__ctl_8py" startline="145" endline="152">klyqa_ctl.klyqa_ctl.Client.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1af3198f7c13e93b4da93d04fbb2c46532" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.Client.accounts</definition>
+        <argsstring>(self, dict[str, Account] accounts)</argsstring>
+        <name>accounts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>dict</type>
+          <declname>accounts</declname>
+          <array>[str, Account]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="110" column="1" bodyfile="klyqa_ctl.py" bodystart="110" bodyend="112"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" compoundref="klyqa__ctl_8py" startline="106" endline="108">klyqa_ctl.klyqa_ctl.Client.accounts</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" compoundref="klyqa__ctl_8py" startline="145" endline="152">klyqa_ctl.klyqa_ctl.Client.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CloudBackend|None</type>
+        <definition> CloudBackend | None klyqa_ctl.klyqa_ctl.Client.cloud</definition>
+        <argsstring>(self)</argsstring>
+        <name>cloud</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="114" column="1" bodyfile="klyqa_ctl.py" bodystart="114" bodyend="116"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" compoundref="account_8py" startline="127">klyqa_ctl.account.Account._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad117521203c694ca946b96598bd7aa11" compoundref="device_8py" startline="103">klyqa_ctl.devices.device.Device._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" compoundref="klyqa__ctl_8py" startline="119">klyqa_ctl.klyqa_ctl.Client._attr_cloud</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a74e8c8e307949b86d7d49356ec8cd9b8" compoundref="klyqa__ctl_8py" startline="118" endline="120">klyqa_ctl.klyqa_ctl.Client.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a74e8c8e307949b86d7d49356ec8cd9b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.Client.cloud</definition>
+        <argsstring>(self, CloudBackend cloud)</argsstring>
+        <name>cloud</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>CloudBackend</type>
+          <declname>cloud</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="118" column="1" bodyfile="klyqa_ctl.py" bodystart="118" bodyend="120"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1account_1_1Account" kindref="compound">Account</ref></type>
+        <definition> Account klyqa_ctl.klyqa_ctl.Client.add_account</definition>
+        <argsstring>(self, str username, str password=&quot;&quot;, bool print_onboarded_devices=False)</argsstring>
+        <name>add_account</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>username</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>password</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>print_onboarded_devices</declname>
+          <defval>False</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Add user account to client.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="126" column="1" bodyfile="klyqa_ctl.py" bodystart="131" bodyend="144"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" compoundref="klyqa__ctl_8py" startline="106" endline="108">klyqa_ctl.klyqa_ctl.Client.accounts</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.Client.shutdown</definition>
+        <argsstring>(self)</argsstring>
+        <name>shutdown</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Logout again from klyqa account.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="145" column="1" bodyfile="klyqa_ctl.py" bodystart="145" bodyend="152"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" compoundref="klyqa__ctl_8py" startline="106" endline="108">klyqa_ctl.klyqa_ctl.Client.accounts</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" compoundref="klyqa__ctl_8py" startline="98" endline="100">klyqa_ctl.klyqa_ctl.Client.local</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" compoundref="klyqa__ctl_8py" startline="600" endline="657">klyqa_ctl.klyqa_ctl.Client.send_to_devices_wrapped</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1aca681010a08f941d9f65888e99cd6374" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.klyqa_ctl.Client.discover_devices</definition>
+        <argsstring>(self, argparse.Namespace args, list[Any] message_queue_tx_local, set[Any] target_device_uids)</argsstring>
+        <name>discover_devices</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>message_queue_tx_local</declname>
+          <array>[Any]</array>
+        </param>
+        <param>
+          <type>set</type>
+          <declname>target_device_uids</declname>
+          <array>[Any]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Discover devices.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="153" column="1" bodyfile="klyqa_ctl.py" bodystart="158" bodyend="184"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" compoundref="klyqa__ctl_8py" startline="98" endline="100">klyqa_ctl.klyqa_ctl.Client.local</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a40aba5774804e631745f63c3c91ec049" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref>|set[<ref refid="classstr" kindref="compound">str</ref>]</type>
+        <definition> str | set[str] klyqa_ctl.klyqa_ctl.Client.select_device</definition>
+        <argsstring>(self, argparse.Namespace args, datetime.datetime send_started_local)</argsstring>
+        <name>select_device</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>datetime.datetime</type>
+          <declname>send_started_local</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Interactive select device.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="213" column="1" bodyfile="klyqa_ctl.py" bodystart="215" bodyend="311"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" compoundref="account_8py" startline="97" endline="99">klyqa_ctl.account.Account.devices</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4d307f6bd0b66f3cb9fac3057fc87972" compoundref="local_2connection__handler_8py" startline="114" endline="116">local.connection_handler.LocalConnectionHandler.devices</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" compoundref="controller__data_8py" startline="64" endline="67">klyqa_ctl.controller_data.ControllerData.devices</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a478a761c65763ffa478642d11af1eade" compoundref="general_2general_8py" startline="460" endline="470">klyqa_ctl.general.general.get_obj_attrs_as_string</references>
+        <references refid="namespacecloud_1a8ff77cd5353527f3ef3c4e2216d86949" compoundref="cloud_8py" startline="31">cloud.int</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref>|bool|int|set</type>
+        <definition> str | bool | int | set klyqa_ctl.klyqa_ctl.Client.send_to_devices</definition>
+        <argsstring>(self, argparse.Namespace args, list[Any] args_in, int timeout_ms=5000, Callable[[Message, str], Any]|None async_answer_callback=None)</argsstring>
+        <name>send_to_devices</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>args_in</declname>
+          <array>[Any]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>timeout_ms</declname>
+          <defval>5000</defval>
+        </param>
+        <param>
+          <type>Callable</type>
+          <defname>async_answer_callback</defname>
+          <array>[[Message, str]</array>
+        </param>
+        <param>
+          <type>Any]|None</type>
+          <declname>async_answer_callback</declname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Collect the messages for the devices to send to
+
+Args:
+    args (Argsparse): Parsed args object
+    args_in (list): List of arguments parsed to the script call
+    timeout_ms (int, optional): Timeout to send. Defaults to 5000.
+
+Raises:
+    Exception: Network or file errors
+
+Returns:
+    bool: True if succeeded.
+</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="312" column="1" bodyfile="klyqa_ctl.py" bodystart="318" bodyend="594"/>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" compoundref="klyqa__ctl_8py" startline="106" endline="108">klyqa_ctl.klyqa_ctl.Client.accounts</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1parameters_1a4d4508f84ab7a6044c74575f197f852b" compoundref="parameters_8py" startline="29" endline="208">klyqa_ctl.general.parameters.add_config_args</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a2cf991ff700440430504ca3b8dfdafcb" compoundref="controller__data_8py" startline="36" endline="38">klyqa_ctl.controller_data.ControllerData.aes_keys</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1aca681010a08f941d9f65888e99cd6374" compoundref="klyqa__ctl_8py" startline="158" endline="184">klyqa_ctl.klyqa_ctl.Client.discover_devices</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1parameters_1a38b90c6125a60eeabd89d4addab053b4" compoundref="parameters_8py" startline="10" endline="28">klyqa_ctl.general.parameters.get_description_parser</references>
+        <references refid="namespacecloud_1a8ff77cd5353527f3ef3c4e2216d86949" compoundref="cloud_8py" startline="31">cloud.int</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" compoundref="klyqa__ctl_8py" startline="98" endline="100">klyqa_ctl.klyqa_ctl.Client.local</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a40aba5774804e631745f63c3c91ec049" compoundref="klyqa__ctl_8py" startline="215" endline="311">klyqa_ctl.klyqa_ctl.Client.select_device</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a6e74b8cc4bae98fa55902e4b875af67e" compoundref="general_2general_8py" startline="527" endline="537">klyqa_ctl.general.general.set_debug_logger</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1ad6b753e482e539892c57f8144cf213cb" compoundref="general_2general_8py" startline="565" endline="568">klyqa_ctl.general.general.task_log_trace_ex</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" compoundref="klyqa__ctl_8py" startline="600" endline="657">klyqa_ctl.klyqa_ctl.Client.send_to_devices_wrapped</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition> int klyqa_ctl.klyqa_ctl.Client.send_to_devices_wrapped</definition>
+        <argsstring>(self, argparse.Namespace args_parsed, list[Any] args_in, int timeout_ms=5000)</argsstring>
+        <name>send_to_devices_wrapped</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args_parsed</declname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>args_in</declname>
+          <array>[Any]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>timeout_ms</declname>
+          <defval>5000</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Set up broadcast port and tcp reply connection port.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="595" column="1" bodyfile="klyqa_ctl.py" bodystart="600" bodyend="657"/>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a2cf991ff700440430504ca3b8dfdafcb" compoundref="controller__data_8py" startline="36" endline="38">klyqa_ctl.controller_data.ControllerData.aes_keys</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" compoundref="klyqa__ctl_8py" startline="98" endline="100">klyqa_ctl.klyqa_ctl.Client.local</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" compoundref="klyqa__ctl_8py" startline="145" endline="152">klyqa_ctl.klyqa_ctl.Client.shutdown</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1ad6b753e482e539892c57f8144cf213cb" compoundref="general_2general_8py" startline="565" endline="568">klyqa_ctl.general.general.task_log_trace_ex</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7ca48cb5c46c0fe0dbf5c469fe515ea6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client" kindref="compound">Client</ref></type>
+        <definition> Client klyqa_ctl.klyqa_ctl.Client.create</definition>
+        <argsstring>(Any cls, bool interactive_prompts=False, bool offline=False, str server_ip=&quot;0.0.0.0&quot;, str|None network_interface=None)</argsstring>
+        <name>create</name>
+        <param>
+          <type>Any</type>
+          <declname>cls</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>interactive_prompts</declname>
+          <defval>False</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>offline</declname>
+          <defval>False</defval>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>server_ip</declname>
+          <defval>&quot;0.0.0.0&quot;</defval>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref>|None</type>
+          <declname>network_interface</declname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Client factory.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="659" column="1" bodyfile="klyqa_ctl.py" bodystart="665" bodyend="682"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a4c89a534b94647d2ab500dc1a876686e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client" kindref="compound">Client</ref></type>
+        <definition> Client klyqa_ctl.klyqa_ctl.Client.create_worker</definition>
+        <argsstring>(Any cls, bool offline=False, str server_ip=&quot;0.0.0.0&quot;, str|None network_interface=None)</argsstring>
+        <name>create_worker</name>
+        <param>
+          <type>Any</type>
+          <declname>cls</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>offline</declname>
+          <defval>False</defval>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>server_ip</declname>
+          <defval>&quot;0.0.0.0&quot;</defval>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref>|None</type>
+          <declname>network_interface</declname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Factory client used as a non-interactive library.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="klyqa_ctl.py" line="684" column="1" bodyfile="klyqa_ctl.py" bodystart="689" bodyend="699"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Major klyqa-ctl client class.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.klyqa_ctl.Client</label>
+        <link refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.controller_data.ControllerData</label>
+        <link refid="classklyqa__ctl_1_1controller__data_1_1ControllerData"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.klyqa_ctl.Client</label>
+        <link refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.controller_data.ControllerData</label>
+        <link refid="classklyqa__ctl_1_1controller__data_1_1ControllerData"/>
+      </node>
+    </collaborationgraph>
+    <location file="klyqa_ctl.py" line="81" column="1" bodyfile="klyqa_ctl.py" bodystart="81" bodyend="700"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a45b182549e7e44dc4cffbdd2ec67c99d" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::controller_data::ControllerData."><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a8a4103a5925e93ce5c70c841248cf98c" prot="private" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>_attr_accounts</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a7db51113dc4af4a42345ff692e6042dc" prot="private" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>_attr_add_devices_lock</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" prot="private" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>_attr_cloud</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a3e5aa804cb661ce596f80a2392a57843" prot="private" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>_attr_device_configs</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a287a2a6993c136f4612d37c1c61f4c3f" prot="private" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>_attr_local</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a61a7eb1acfc9b763efe83dcda25ba552" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>accounts</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1af3198f7c13e93b4da93d04fbb2c46532" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>accounts</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>add_account</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1afef80a3e39b53403c944dc0ebb67c213" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>add_devices_lock</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1acf121380378cde9a2041430bac89ac97" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>add_devices_lock</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adfe1a88ba5aeb04f1519e1f2119ba043" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>add_devices_lock</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a2cf991ff700440430504ca3b8dfdafcb" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>aes_keys</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a74e8c8e307949b86d7d49356ec8cd9b8" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7ca48cb5c46c0fe0dbf5c469fe515ea6" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>create</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1ad6b22ed1dd9a52c2cd40ecd60e58729f" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>create_default</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1afe5d9ecd2aec0bad65f3be2ed0ff4ce1" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>create_device</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a4c89a534b94647d2ab500dc1a876686e" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>create_worker</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a16260461217319bd84447f01c1880e91" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>device_configs</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a1c459533253695a0de7b56b239fbd91f" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>device_configs</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1aeaa7bc2b369b598494fba26dd06e1b48" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>device_configs</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>devices</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1aca681010a08f941d9f65888e99cd6374" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>discover_devices</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a006615491c01ae305bbf34eb2fc47e09" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>get_or_create_device</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1ac09ff4824e78b0347afa7af30a825e68" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>init</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a4db20468ab1574d0198a02bf2e05b1ec" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>interactive_prompts</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab04dda2165aadfb9688ff83d3e5a3bc9" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>local</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a3cdabc8aa3a95c4adda1df1949cda05d" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>local</name></member>
+      <member refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1acb31c4dc35406e234e75902d1972ae7a" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>offline</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a40aba5774804e631745f63c3c91ec049" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>select_device</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>send_to_devices</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7a93bda9f242d678a4208d0962837f11" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>send_to_devices_wrapped</name></member>
+      <member refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ac54c4bdc0dfa3897a09efe3655741bd0" prot="public" virt="non-virtual"><scope>klyqa_ctl::klyqa_ctl::Client</scope><name>shutdown</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

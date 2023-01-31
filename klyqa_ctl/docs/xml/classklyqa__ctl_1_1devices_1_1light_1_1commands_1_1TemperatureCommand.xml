@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::light::commands::TemperatureCommand</compoundname>
+    <basecompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight" prot="public" virt="non-virtual">klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight</basecompoundref>
+    <basecompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand" prot="public" virt="non-virtual">klyqa_ctl.devices.light.commands.TransitionCommand</basecompoundref>
+    <basecompoundref refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand" prot="public" virt="non-virtual">klyqa_ctl.general.general.CloudStateCommand</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a8e45d4ab592de0046308d2e7ac78fdbd" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.light.commands.TemperatureCommand::int</definition>
+        <argsstring></argsstring>
+        <name>int</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="181" column="1" bodyfile="devices/light/commands.py" bodystart="181" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a34847a5ef38a13569bc640791d11508b" compoundref="light_2commands_8py" startline="189" endline="214">klyqa_ctl.devices.light.commands.TemperatureCommand.check_values</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a0b45255dc9218a36450152f1118a8280" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" kindref="member">TypeJson</ref></type>
+        <definition> TypeJson klyqa_ctl.devices.light.commands.TemperatureCommand.temperature_json</definition>
+        <argsstring>(self)</argsstring>
+        <name>temperature_json</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="183" column="1" bodyfile="devices/light/commands.py" bodystart="183" bodyend="185"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2e732c44c35f39dc3d8fe269c24aef8a" compoundref="light_2response__status_8py" startline="106" endline="108">klyqa_ctl.devices.light.response_status.ResponseStatus.temperature</references>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0" compoundref="light_2commands_8py" startline="186" endline="188">klyqa_ctl.devices.light.commands.TemperatureCommand.json</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" kindref="member">TypeJson</ref></type>
+        <definition> TypeJson klyqa_ctl.devices.light.commands.TemperatureCommand.json</definition>
+        <argsstring>(self)</argsstring>
+        <name>json</name>
+        <reimplements refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_1aaf9d8431e346c86b9959102c2d7f3316">json</reimplements>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return json command.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="186" column="1" bodyfile="devices/light/commands.py" bodystart="186" bodyend="188"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a0b45255dc9218a36450152f1118a8280" compoundref="light_2commands_8py" startline="183" endline="185">klyqa_ctl.devices.light.commands.TemperatureCommand.temperature_json</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" compoundref="general_2general_8py" startline="114" endline="117">klyqa_ctl.general.general.Command.msg_str</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a34847a5ef38a13569bc640791d11508b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1a1ec9d149deafea09d8681f2b45f5b656" kindref="member">bool</ref></type>
+        <definition> bool klyqa_ctl.devices.light.commands.TemperatureCommand.check_values</definition>
+        <argsstring>(self, Device device)</argsstring>
+        <name>check_values</name>
+        <reimplements refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1ac8eea472765742d8c9bbfaada1f7f40c">check_values</reimplements>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1devices_1_1device_1_1Device" kindref="compound">Device</ref></type>
+          <declname>device</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Check device temperature range.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="189" column="1" bodyfile="devices/light/commands.py" bodystart="189" bodyend="214"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1a44c064638b5ab33bc6515688644d2d12" compoundref="light_2commands_8py" startline="126">klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight._light</references>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1abb5f7e9390b622da97654771e70c196d" compoundref="light_2commands_8py" startline="1185" endline="1196">klyqa_ctl.devices.light.commands.forced_continue</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a8e45d4ab592de0046308d2e7ac78fdbd" compoundref="light_2commands_8py" startline="181">klyqa_ctl.devices.light.commands.TemperatureCommand.int</references>
+        <references refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1ae8e079eb20d1dc31176135131c4161f5" compoundref="light_2commands_8py" startline="1197" endline="1208">klyqa_ctl.devices.light.commands.missing_config</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus_1a2e732c44c35f39dc3d8fe269c24aef8a" compoundref="light_2response__status_8py" startline="106" endline="108">klyqa_ctl.devices.light.response_status.ResponseStatus.temperature</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Temperature command.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="7">
+        <label>klyqa_ctl.devices.light.commands.RequestCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>klyqa_ctl.general.general.CloudStateCommand</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>klyqa_ctl.devices.light.commands.TransitionCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.TemperatureCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>klyqa_ctl.devices.device.CommandWithCheckValues</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="7">
+        <label>klyqa_ctl.devices.light.commands.RequestCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>klyqa_ctl.general.general.CloudStateCommand</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>klyqa_ctl.devices.light.commands.TransitionCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.TemperatureCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>klyqa_ctl.devices.device.CommandWithCheckValues</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="devices/light/commands.py" line="176" column="1" bodyfile="devices/light/commands.py" bodystart="178" bodyend="215"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand_1a7aa6b48097028a096d8bcbaa8ad9d671" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>__post_init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::TransitionCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::general::general::CloudStateCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1a44c064638b5ab33bc6515688644d2d12" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>_light</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1a1ec9d149deafea09d8681f2b45f5b656" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>bool</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a34847a5ef38a13569bc640791d11508b" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>check_values</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::TransitionCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::general::general::CloudStateCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::TransitionCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::general::general::CloudStateCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a8e45d4ab592de0046308d2e7ac78fdbd" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>int</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1aaa297cd598227ab2f33a6d111532e5e0" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>json</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>msg_str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::TransitionCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>msg_str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::general::general::CloudStateCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>msg_str</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1add33b25987f5672d71c9672626dd6bc6" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>None</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1ae7b76f7b278feff1e6a6973f1eb1687e" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1ae7b76f7b278feff1e6a6973f1eb1687e" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::TransitionCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>str</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a0b45255dc9218a36450152f1118a8280" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>temperature_json</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RequestCommand_1a7833b3cf41d6fea6d3f0065fa6f2f1eb" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>type</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>TypeJson</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::devices::light::commands::TransitionCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>TypeJson</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" virt="non-virtual" ambiguityscope="klyqa_ctl::general::general::CloudStateCommand."><scope>klyqa_ctl::devices::light::commands::TemperatureCommand</scope><name>TypeJson</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

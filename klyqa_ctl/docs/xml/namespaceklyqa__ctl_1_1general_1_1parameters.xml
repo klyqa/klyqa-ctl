@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1general_1_1parameters" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::general::parameters</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1general_1_1parameters_1a38b90c6125a60eeabd89d4addab053b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>argparse.ArgumentParser</type>
+        <definition> argparse.ArgumentParser klyqa_ctl.general.parameters.get_description_parser</definition>
+        <argsstring>()</argsstring>
+        <name>get_description_parser</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Make an argument parse object.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/parameters.py" line="10" column="1" bodyfile="general/parameters.py" bodystart="10" bodyend="28"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a09a73cff59e95502adefbee0333c3008" compoundref="light_2commands_8py" startline="637" endline="694">klyqa_ctl.devices.light.commands.discover_devices</referencedby>
+        <referencedby refid="namespaceklyqa__ctl_1_1klyqa__ctl_1afe1b8490f9810b885e4048d7bef472a7" compoundref="klyqa__ctl_8py" startline="700" endline="816">klyqa_ctl.klyqa_ctl.main</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceklyqa__ctl_1_1general_1_1parameters_1a4d4508f84ab7a6044c74575f197f852b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.parameters.add_config_args</definition>
+        <argsstring>(argparse.ArgumentParser parser)</argsstring>
+        <name>add_config_args</name>
+        <param>
+          <type>argparse.ArgumentParser</type>
+          <declname>parser</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Add arguments to the argument parser object.
+
+Args:
+    parser: Parser object
+</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/parameters.py" line="29" column="1" bodyfile="general/parameters.py" bodystart="29" bodyend="208"/>
+        <referencedby refid="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_1a09a73cff59e95502adefbee0333c3008" compoundref="light_2commands_8py" startline="637" endline="694">klyqa_ctl.devices.light.commands.discover_devices</referencedby>
+        <referencedby refid="namespaceklyqa__ctl_1_1klyqa__ctl_1afe1b8490f9810b885e4048d7bef472a7" compoundref="klyqa__ctl_8py" startline="700" endline="816">klyqa_ctl.klyqa_ctl.main</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>General parameters</verbatim> </para>
+    </detaileddescription>
+    <location file="general/parameters.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

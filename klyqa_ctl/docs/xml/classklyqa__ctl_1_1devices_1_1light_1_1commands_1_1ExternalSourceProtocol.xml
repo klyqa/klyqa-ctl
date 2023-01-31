@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::light::commands::ExternalSourceProtocol</compoundname>
+    <basecompoundref refid="classstr" prot="public" virt="non-virtual">str</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a32eb0a5df0f4d901da768abeab02babf" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.light.commands.ExternalSourceProtocol::EXT_OFF</definition>
+        <argsstring></argsstring>
+        <name>EXT_OFF</name>
+        <initializer>=  &quot;EXT_OFF&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="259" column="1" bodyfile="devices/light/commands.py" bodystart="259" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1ad6a89e97323bf86a287798b0baab1e85" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.light.commands.ExternalSourceProtocol::EXT_UDP</definition>
+        <argsstring></argsstring>
+        <name>EXT_UDP</name>
+        <initializer>=  &quot;EXT_UDP&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="260" column="1" bodyfile="devices/light/commands.py" bodystart="260" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a3d19b8108b088879e600c0b841c1d7f2" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.light.commands.ExternalSourceProtocol::EXT_E131</definition>
+        <argsstring></argsstring>
+        <name>EXT_E131</name>
+        <initializer>=  &quot;EXT_E131&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="261" column="1" bodyfile="devices/light/commands.py" bodystart="261" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a352dfaaa40b99b4159bb6008ef893870" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.devices.light.commands.ExternalSourceProtocol::EXT_TPM2</definition>
+        <argsstring></argsstring>
+        <name>EXT_TPM2</name>
+        <initializer>=  &quot;EXT_TPM2&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="262" column="1" bodyfile="devices/light/commands.py" bodystart="262" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>External source protocol.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.ExternalSourceProtocol</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.ExternalSourceProtocol</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+EXT_E131</edgelabel>
+          <edgelabel>+EXT_OFF</edgelabel>
+          <edgelabel>+EXT_TPM2</edgelabel>
+          <edgelabel>+EXT_UDP</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="devices/light/commands.py" line="256" column="1" bodyfile="devices/light/commands.py" bodystart="256" bodyend="266"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a3d19b8108b088879e600c0b841c1d7f2" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::ExternalSourceProtocol</scope><name>EXT_E131</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a32eb0a5df0f4d901da768abeab02babf" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::ExternalSourceProtocol</scope><name>EXT_OFF</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1a352dfaaa40b99b4159bb6008ef893870" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::ExternalSourceProtocol</scope><name>EXT_TPM2</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceProtocol_1ad6a89e97323bf86a287798b0baab1e85" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::ExternalSourceProtocol</scope><name>EXT_UDP</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
