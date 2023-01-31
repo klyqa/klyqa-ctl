@@ -17,14 +17,14 @@ import httpx
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
-    get_asyncio_loop,
     LOGGER,
     PROD_HOST,
-    Device_config,
+    DeviceConfig,
     EventQueuePrinter,
     TypeJson,
     async_json_cache,
     format_uid,
+    get_asyncio_loop,
     task_log_debug,
     task_log_trace_ex,
 )
@@ -33,6 +33,8 @@ DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
 
 class RequestMethod(str, Enum):
+    """HTTP request methods."""
+
     POST = "POST"
     GET = "GET"
 
@@ -88,7 +90,7 @@ class CloudBackend:
             LOGGER.error("Timed out get device config http request!")
             return None
         if config:
-            device_configs[product_id] = Device_config(config)
+            device_configs[product_id] = DeviceConfig(config)
         return None
 
     async def get_device_configs(self, device_product_ids: set[str]) -> None:
@@ -306,19 +308,19 @@ class CloudBackend:
 
             count: int = 0
             timeout: float = timeout_ms / 1000
-            for t, device in threads:
+            for worker, device in threads:
                 count = count + 1
                 # wait at most timeout_ms wanted minus seconds elapsed since
                 # sending
                 try:
                     await asyncio.wait_for(
-                        t,
+                        worker,
                         timeout=timeout
                         - (datetime.datetime.now() - started).seconds,
                     )
                 except asyncio.TimeoutError:
                     LOGGER.error(f'Timeout for "{device.get_name()}"!')
-                    t.cancel()
+                    worker.cancel()
                 except Exception:
                     task_log_trace_ex()
 
@@ -330,7 +332,7 @@ class CloudBackend:
 
         queue_printer.stop()
 
-        if len(response_queue):
+        if response_queue:
             success = True
         return success
 
@@ -339,6 +341,6 @@ class CloudBackend:
         cls: Any, controller_data: ControllerData, host: str = PROD_HOST
     ) -> CloudBackend:
         """Factory for cloud backend."""
-        cb: CloudBackend = CloudBackend(controller_data=controller_data)
-        cb.host = host
-        return cb
+        cloud: CloudBackend = CloudBackend(controller_data=controller_data)
+        cloud.host = host
+        return cloud
