@@ -71,7 +71,7 @@ class Device:
         """Send message to device via desired connection set in
         connection handler (param: con)."""
 
-        return await con.send_message(  # type: ignore[no-any-return]
+        return await con.send_command_to_device(  # type: ignore[no-any-return]
             commands, UnitId(self.u_id), time_to_live_secs
         )
 
