@@ -26,6 +26,8 @@ from klyqa_ctl.devices.light.commands import (
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import (  # AES_KEY_DEV,
+    AES_KEY_DEV,
+    AES_KEY_DEV_BYTES,
     LOGGER,
     TRACE,
     RgbColor,
@@ -55,6 +57,9 @@ def main() -> None:
     """Main."""
 
     set_debug_logger(TRACE)
+
+    print(AES_KEY_DEV_BYTES.hex())
+    print(AES_KEY_DEV)
 
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
