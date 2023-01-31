@@ -106,7 +106,7 @@ class LocalController:
         return lc
 
     @classmethod
-    async def create_standalone(
+    async def async_create_standalone(
         cls: Any,
         server_ip: str = "0.0.0.0",
         network_interface: str | None = None,
@@ -125,3 +125,26 @@ class LocalController:
             controller_data, server_ip, network_interface
         )
         return lc
+
+    @classmethod
+    def create_standalone(
+        cls: Any,
+        server_ip: str = "0.0.0.0",
+        network_interface: str | None = None,
+        interactive_prompts: bool = False,
+    ) -> LocalController:
+        """Factories a standalone local controller.
+
+        Params:
+            network_interface: eth0, wlan0 or None (uses default interface)
+        """
+
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
+
+        return loop.run_until_complete(
+            LocalController.async_create_standalone(
+                server_ip,
+                network_interface,
+                interactive_prompts=interactive_prompts,
+            )
+        )

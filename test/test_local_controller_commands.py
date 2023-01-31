@@ -63,11 +63,10 @@ def main() -> None:
 
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
-    lc: LocalController = loop.run_until_complete(
-        LocalController.create_standalone(
-            network_interface="eth0", interactive_prompts=False
-        )
+    lc: LocalController = LocalController.create_standalone(
+        network_interface="eth0", interactive_prompts=False
     )
+
     if lc.connection_hdl:
         loop.run_until_complete(lc.connection_hdl.discover_devices(0.3))
 
@@ -131,7 +130,7 @@ async def async_main() -> None:
 
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
-    lc: LocalController = await LocalController.create_standalone(
+    lc: LocalController = LocalController.create_standalone(
         network_interface="eth0", interactive_prompts=False
     )
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
