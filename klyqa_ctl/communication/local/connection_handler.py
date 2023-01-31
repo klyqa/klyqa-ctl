@@ -40,7 +40,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
     task_name,
 )
-from klyqa_ctl.general.message import BroadCastMessage, Message, MessageState
+from klyqa_ctl.general.message import Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
 try:
@@ -516,6 +516,73 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         ):
             del self.message_queue[device.u_id]
 
+    async def _send_msg(
+        self,
+        connection: TcpConnection,
+        device: Device,
+        msg_to_sent_r: ReferencePass,
+    ) -> DeviceTcpReturn:
+        """Select message to send and check the values range limits."""
+
+        msg: Message | None = None
+        return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+
+        if (
+            not msg
+            and device.u_id in self.message_queue
+            and len(self.message_queue[device.u_id]) > 0
+        ):
+            msg = self.message_queue[device.u_id][0]
+
+        if msg:
+            task_log(
+                f"Process msg to send '{msg.msg_queue}' to device"
+                f" '{device.u_id}'."
+            )
+            j: int = 0
+
+            if msg.state == MessageState.UNSENT:
+
+                msg_to_sent_r.ref = msg
+
+                command: Command = msg.msg_queue[j]
+                text: str = command.msg_str()
+                if isinstance(command, CommandWithCheckValues):
+                    cwcv: CommandWithCheckValues = command
+                    if (
+                        not cwcv._force  # pylint: disable=protected-access
+                        and not cwcv.check_values(device=device)
+                    ):
+                        msg.state == MessageState.VALUE_RANGE_LIMITS
+                        self.remove_msg_from_queue(msg, device)
+                        return DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
+
+                try:
+                    if await connection.encrypt_and_send_msg(text, device):
+
+                        return_val = DeviceTcpReturn.NO_ERROR
+                        # if isinstance(msg, BroadCastMessage):
+                        #     bcm: BroadCastMessage = msg
+                        #     bcm.sent_to_uids.add(device.u_id)
+                        j = j + 1
+                        msg.msg_queue_sent.append(text)
+
+                        msg.state = MessageState.SENT
+                        self.remove_msg_from_queue(msg, device)
+                    else:
+                        LOGGER.error("Could not send message!")
+                        return DeviceTcpReturn.SEND_ERROR
+
+                except socket.error:
+                    LOGGER.error("Socket error while trying to send message!")
+                    task_log_trace_ex()
+                    return DeviceTcpReturn.SEND_ERROR
+
+            else:
+                self.remove_msg_from_queue(msg, device)
+
+        return return_val
+
     async def handle_connection(
         self,
         device_ref: ReferencePass,
@@ -542,97 +609,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             return DeviceTcpReturn.UNKNOWN_ERROR
 
         data: bytes = b""
-        last_send: datetime.datetime = datetime.datetime.now()
-        pause: datetime.timedelta = datetime.timedelta(milliseconds=0)
-        elapsed: datetime.timedelta = datetime.datetime.now() - last_send
-
         return_val: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
-
         communication_finished: bool = False
-
-        async def __send_next_msg() -> None:
-            nonlocal last_send, pause, return_val, device, msg_sent_r
-
-            send_next: bool = elapsed >= pause
-            sleep: float = (pause - elapsed).total_seconds()
-
-            if sleep > 0:
-                await asyncio.sleep(sleep)
-
-            if send_next and device:
-                msg: Message | None = None
-                if (
-                    not msg
-                    and device.u_id in self.message_queue
-                    and len(self.message_queue[device.u_id]) > 0
-                ):
-                    msg = self.message_queue[device.u_id][0]
-
-                if msg:
-                    task_log(
-                        f"Process msg to send '{msg.msg_queue}' to device"
-                        f" '{device.u_id}'."
-                    )
-                    j: int = 0
-
-                    if msg.state == MessageState.UNSENT:
-
-                        while j < len(msg.msg_queue):
-
-                            command: Command = msg.msg_queue[j]
-                            text: str = command.msg_str()
-                            if isinstance(command, CommandWithCheckValues):
-                                cwcv: CommandWithCheckValues = command
-                                if (
-                                    not cwcv._force  # pylint: disable=protected-access
-                                    and not cwcv.check_values(device=device)
-                                ):
-                                    self.remove_msg_from_queue(msg, device)
-                                    break
-
-                            if isinstance(command, TransitionCommand):
-                                tc: TransitionCommand = command
-                                pause = datetime.timedelta(
-                                    milliseconds=float(tc.transition_time)
-                                )
-
-                            try:
-                                if await connection.encrypt_and_send_msg(
-                                    text, device
-                                ):
-
-                                    return_val = DeviceTcpReturn.SENT
-                                    if isinstance(msg, BroadCastMessage):
-                                        bcm: BroadCastMessage = msg
-                                        bcm.sent_to_uids.add(device.u_id)
-                                    msg_sent_r.ref = msg
-                                    last_send = datetime.datetime.now()
-                                    j = j + 1
-                                    msg.msg_queue_sent.append(text)
-                                    # don't process the next message, but if
-                                    # still elements in the msg_queue send
-                                    # them as well
-                                    send_next = False
-                                    # break
-                                else:
-                                    LOGGER.error("Could not send message!")
-                                    return_val = DeviceTcpReturn.SEND_ERROR
-                                    break
-                            except socket.error:
-                                LOGGER.error(
-                                    "Socket error while trying to send"
-                                    " message!"
-                                )
-                                task_log_trace_ex()
-                                return_val = DeviceTcpReturn.SEND_ERROR
-                                break
-
-                        if len(msg.msg_queue) == len(msg.msg_queue_sent):
-                            msg.state = MessageState.SENT
-                            # all messages , break now for reading response
-                            self.remove_msg_from_queue(msg, device)
-                    else:
-                        self.remove_msg_from_queue(msg, device)
 
         if msg_sent_r.ref and msg_sent_r.ref.state == MessageState.ANSWERED:
             msg_sent_r.ref = None
@@ -654,8 +632,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 connection.state == AesConnectionState.CONNECTED
                 and msg_sent_r.ref is None
             ):
-                await __send_next_msg()
-                if return_val == DeviceTcpReturn.SEND_ERROR:
+                return_val = await self._send_msg(
+                    connection, device_ref.ref, msg_sent_r
+                )
+                if return_val != DeviceTcpReturn.NO_ERROR:
                     return return_val
 
             data_ref: ReferencePass = ReferencePass(data)
@@ -665,8 +645,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             if read_data_ret != DeviceTcpReturn.NO_ERROR:
                 return read_data_ret
             data = data_ref.ref
-
-            elapsed = datetime.datetime.now() - last_send
 
             while not communication_finished and (len(data)):
                 task_log(
@@ -745,82 +723,72 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
+        r_device: ReferencePass = ReferencePass(device)
+        msg_to_sent_ref: ReferencePass = ReferencePass(None)
+
+        task_log_debug(f"New tcp connection to device at {connection.address}")
         try:
-            r_device: ReferencePass = ReferencePass(device)
-            msg_sent_ref: ReferencePass = ReferencePass(None)
-
-            task_log_debug(
-                f"New tcp connection to device at {connection.address}"
+            return_state = await self.handle_connection(
+                r_device, connection=connection, msg_sent_r=msg_to_sent_ref
             )
-            try:
-                return_state = await self.handle_connection(
-                    r_device, connection=connection, msg_sent_r=msg_sent_ref
-                )
-            except CancelledError:
-                LOGGER.error(
-                    f"Cancelled local send to {connection.address['ip']}!"
-                )
-            except Exception as exception:
-                task_log_trace_ex()
-                task_log_error(
-                    "Unhandled exception during local communication! "
-                    + str(type(exception))
-                )
-                msg_sent_ref.ref.exception = exception
-            finally:
-                device = r_device.ref
-                if connection.socket is not None:
-                    try:
-                        connection.socket.shutdown(socket.SHUT_RDWR)
-                        connection.socket.close()
-                    finally:
-                        connection.socket = None
-                self.current_addr_connections.remove(
-                    str(connection.address["ip"])
-                )
+        except CancelledError:
+            LOGGER.error(
+                f"Cancelled local send to {connection.address['ip']}!"
+            )
+        except Exception as exception:
+            task_log_trace_ex()
+            task_log_error(
+                "Unhandled exception during local communication! "
+                + str(type(exception))
+            )
+            msg_to_sent_ref.ref.exception = exception
+        finally:
 
-                unit_id: str = (
-                    f" Unit-ID: {device.u_id}" if device.u_id else ""
-                )
+            msg_to_sent: Message | None = msg_to_sent_ref.ref
 
-                # if return_state not in [
-                #     DeviceTcpReturn.SENT,
-                #     DeviceTcpReturn.ANSWERED,
-                # ]:
+            if msg_to_sent:
+                # release message wait for callback
+                await msg_to_sent.call_cb()
+
                 if return_state in [
                     DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
                 ]:
                     # Something bad could have happened with the device.
                     # Remove the message precautiously from the
                     # message queue.
-                    msg_sent: Message = msg_sent_ref.ref
-                    if msg_sent:
-                        await msg_sent.call_cb()
-                        self.remove_msg_from_queue(msg_sent, device)
+                    if msg_to_sent:
+                        self.remove_msg_from_queue(msg_to_sent, device)
 
-                if str(device.u_id) in self.devices:
-                    device_b: Device = self.devices[device.u_id]
-                    device_b.use_unlock()
+            device = r_device.ref
+            if connection.socket is not None:
+                try:
+                    connection.socket.shutdown(socket.SHUT_RDWR)
+                    connection.socket.close()
+                finally:
+                    connection.socket = None
+            self.current_addr_connections.remove(str(connection.address["ip"]))
 
-                elif return_state == DeviceTcpReturn.UNKNOWN_ERROR:
-                    LOGGER.error(
-                        "Unknown error during send (and handshake) with device"
-                        f" {unit_id}."
-                    )
+            unit_id: str = f" Unit-ID: {device.u_id}" if device.u_id else ""
 
-                task_log(
-                    "Finished tcp connection to device"
-                    f" {connection.address['ip']} with return state:"
-                    f" {return_state}"
+            if str(device.u_id) in self.devices:
+                device_b: Device = self.devices[device.u_id]
+                device_b.use_unlock()
+
+            elif return_state == DeviceTcpReturn.UNKNOWN_ERROR:
+                LOGGER.error(
+                    "Unknown error during send (and handshake) with device"
+                    f" {unit_id}."
                 )
 
-        except CancelledError:
-            task_log_error("Device tcp task cancelled.")
-        except Exception:
-            task_log_trace_ex()
+            task_log(
+                "Finished tcp connection to device"
+                f" {connection.address['ip']} with return state:"
+                f" {return_state}"
+            )
+
         return return_state
 
-    async def send_udp_broadcast(self) -> bool:
+    async def send_udp_broadcast_task(self) -> bool:
         """Send qcx-syn broadcast on udp socket."""
 
         loop: AbstractEventLoop = asyncio.get_event_loop()
@@ -828,7 +796,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         try:
             task_log_debug("Broadcasting QCX-SYN Burst")
             if self.udp:
-                # loop.sock_sendto python3.11+
                 await loop.run_in_executor(
                     None,
                     self.udp.sendto,
@@ -845,6 +812,41 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 LOGGER.error("Error binding ports udp 2222 and tcp 3333.")
                 return False
         return True
+
+    async def send_udp_broadcast_task_loop(self) -> None:
+
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+        self.send_udp_broadcast_task_loop_set: asyncio.Event = asyncio.Event()
+        while True:
+            await self.send_udp_broadcast_task()
+            self.send_udp_broadcast_task_loop_set.clear()
+            try:
+                await asyncio.wait_for(
+                    self.send_udp_broadcast_task_loop_set.wait(), timeout=0.3
+                )
+            except asyncio.TimeoutError:
+                pass
+
+    async def send_udp_broadcast(self) -> None:
+
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+        self.udp_broadcast_task: asyncio.Task
+
+        if self.udp_broadcast_task is None or self.udp_broadcast_task.done():
+            self.udp_broadcast_task = loop.create_task(
+                self.send_udp_broadcast_task_loop()
+            )
+        else:
+            self.send_udp_broadcast_task_loop_set.set()
+
+    async def read_incoming_tcp_con_task(self) -> None:
+
+        loop: AbstractEventLoop = asyncio.get_event_loop()
+        try:
+            print("Read incoming connections\n")
+            con, address = await loop.sock_accept(tcp)
+        except asyncio.exceptions.CancelledError:
+            pass
 
     async def standby(self) -> None:
         """Standby search devices and create incoming connection tasks."""
@@ -1010,7 +1012,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if self.message_queue:
 
                     read_broadcast_response: bool = True
-                    if not await self.send_udp_broadcast():
+                    if not await self.send_udp_broadcast_task():
                         read_broadcast_response = False
                         continue
 
@@ -1182,7 +1184,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         self.message_queue.setdefault(str(target_device_uid), []).append(msg)
 
-        await self.send_udp_broadcast()
+        await self.send_udp_broadcast_task()
         self.search_and_send_loop_task_alive()
 
         await response_event.wait()
