@@ -519,7 +519,7 @@ def set_debug_logger(level: int = logging.DEBUG) -> None:
 
 
 def task_log(
-    msg: str, output_func: Callable = LOGGER.info, **kwargs: Any
+    msg: str, output_func: Callable = LOGGER.info, *args: Any, **kwargs: Any
 ) -> None:
     """Output task name and logging string."""
 
@@ -530,6 +530,7 @@ def task_log(
     )
     output_func(
         f"{task_name_str} - {msg}" if task_name_str else f"{msg}",
+        *args,
         **kwargs,
     )
 
