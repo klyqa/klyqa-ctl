@@ -37,7 +37,7 @@ class RequestMethod(str, Enum):
 
 
 class CloudBackend:
-    """Cloud backend"""
+    """Cloud backend control."""
 
     def __init__(self, controller_data: ControllerData) -> None:
         self._attr_controller_data: ControllerData = controller_data
@@ -159,6 +159,7 @@ class CloudBackend:
     async def load_http_response(
         self, response: httpx.Response
     ) -> TypeJson | None:
+        """Load http response into json object."""
         answer: TypeJson | None = None
         if not response:
             LOGGER.error("No response from cloud request.")
@@ -198,6 +199,7 @@ class CloudBackend:
         message_queue_tx_command_cloud: list,
     ) -> bool:
         """Cloud message processing."""
+
         queue_printer: EventQueuePrinter = EventQueuePrinter()
         response_queue: list[Any] = []
 

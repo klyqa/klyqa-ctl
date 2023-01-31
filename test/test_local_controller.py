@@ -74,20 +74,30 @@ def main() -> None:
     req_color: ColorCommand = ColorCommand(
         color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
     )  # , force=True)json
+
     reply: str = lc.send_to_device(
         str(unit_id), aes_key, json.dumps(req_color.json())
     )
+
     if dev:
         light: Light = dev
 
         light.local_con = lc.connection_hdl
         if light.local_con:
+
             ret: Message | None = loop.run_until_complete(
                 light.send_msg_local([PingCommand()], 3333)
             )
             if ret:
                 reply = ret.answer_utf8
-    print(reply)
+            print(reply)
+
+            ret = loop.run_until_complete(
+                light.send_msg_local([req_color], 3333)
+            )
+            if ret:
+                reply = ret.answer_utf8
+            print(reply)
 
 
 async def async_main() -> None:

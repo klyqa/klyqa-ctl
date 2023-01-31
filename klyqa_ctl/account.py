@@ -20,6 +20,7 @@ from klyqa_ctl.general.general import (
     Command,
     Device_config,
     TypeJson,
+    aes_key_to_bytes,
     async_json_cache,
     format_uid,
     task_log_debug,
@@ -335,7 +336,7 @@ class Account:
 
             self.controller_data.aes_keys[
                 format_uid(device_sets["localDeviceId"])
-            ] = bytes.fromhex(device_sets["aesKey"])
+            ] = aes_key_to_bytes(device_sets["aesKey"])
 
             unit_id: str = format_uid(device_sets["localDeviceId"])
 

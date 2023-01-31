@@ -21,6 +21,7 @@ class MessageState(Enum):
     SENT = 0
     ANSWERED = 1
     UNSENT = 2
+    VALUE_RANGE_LIMITS = 3
 
 
 MSG_COUNTER = 0
@@ -82,9 +83,9 @@ class Message:
         self._attr_target_uid = format_uid(target_uid)
 
 
-@dataclass
-class BroadCastMessage(Message):
-    sent_to_uids: set[str] = field(default_factory=lambda: set())
+# @dataclass
+# class BroadCastMessage(Message):
+#     sent_to_uids: set[str] = field(default_factory=lambda: set())
 
 
 # @dataclass
