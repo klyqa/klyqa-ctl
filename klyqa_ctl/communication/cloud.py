@@ -179,7 +179,7 @@ class CloudBackend:
         try:
             answer = json.loads(response.text)
         except json.JSONDecodeError as err:
-            LOGGER.error(f"{err.msg}")
+            LOGGER.error(err.msg)
             task_log_debug(f"{traceback.format_exc()} {err.msg}")
             answer = None
         return answer
@@ -216,8 +216,10 @@ class CloudBackend:
             cloud_device_id: str = device.acc_sets["cloudDeviceId"]
             unit_id: str = format_uid(device.acc_sets["localDeviceId"])
             LOGGER.info(
-                f"Post {target} to the device '{cloud_device_id}' (unit_id:"
-                f" {unit_id}) over the cloud."
+                "Post {target} to the device '%s' (unit_id:"
+                " %s) over the cloud.",
+                cloud_device_id,
+                unit_id,
             )
             response: TypeJson = {
                 cloud_device_id: await self.request(
@@ -241,16 +243,15 @@ class CloudBackend:
         ) -> int:
             if not await device.use_lock():
                 LOGGER.error(
-                    f"Couldn't get use lock for device {device.get_name()})"
+                    "Couldn't get use lock for device %s)", device.get_name()
                 )
                 return 1
             try:
                 await _cloud_post(device, json_message, target)
             except CancelledError:
                 LOGGER.error(
-                    "Cancelled cloud send "
-                    + (device.u_id if device.u_id else "")
-                    + "."
+                    "Cancelled cloud send %s.",
+                    device.u_id if device.u_id else "",
                 )
             finally:
                 device.use_unlock()
@@ -319,7 +320,7 @@ class CloudBackend:
                         - (datetime.datetime.now() - started).seconds,
                     )
                 except asyncio.TimeoutError:
-                    LOGGER.error(f'Timeout for "{device.get_name()}"!')
+                    LOGGER.error('Timeout for "%s""!', device.get_name())
                     worker.cancel()
                 except Exception:
                     task_log_trace_ex()

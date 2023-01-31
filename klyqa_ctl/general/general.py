@@ -12,7 +12,7 @@ from pathlib import Path
 import sys
 from threading import Event, Thread
 import traceback
-from typing import Any, Callable, TextIO, Type, TypeVar
+from typing import Any, Awaitable, Callable, TextIO, Type, TypeVar
 
 import aiofiles
 import slugify
@@ -574,3 +574,16 @@ def get_asyncio_loop() -> asyncio.AbstractEventLoop:
         loop = asyncio.get_event_loop()
 
     return loop
+
+
+class ShutDownHandler:
+    """Shut down handler."""
+
+    def __init__(self) -> None:
+        self._shutdown_handler: list[Callable[[], Awaitable[None]]] = []
+
+    async def shutdown(self) -> None:
+        """Call all shuts down handler."""
+
+        for awaitable in self._shutdown_handler:
+            await awaitable()

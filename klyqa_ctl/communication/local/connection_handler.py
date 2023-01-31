@@ -1155,17 +1155,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         except Exception:
             task_log_trace_ex()
 
-    async def send_message(
+    async def send_command_to_device(
         self,
         send_msgs: list[Command],
         target_device_uid: UnitId,
-        time_to_live_secs: float = -1.0,
+        time_to_live_secs: float = 30.0,
         **kwargs: Any,
     ) -> Message | None:
         """Add message to message's queue."""
         if not send_msgs:
             LOGGER.error(
-                f"No message queue to send in message to {target_device_uid}!"
+                "No message queue to send in message to %s!", target_device_uid
             )
             return None
 
@@ -1201,6 +1201,32 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         await response_event.wait()
         return msg
 
+    async def send_to_device(
+        self,
+        unit_id: str,
+        key: str,
+        command: str,
+        time_to_live_secs: float = 30.0,
+    ) -> str:
+        """Sends command string to device with unit id and aes key."""
+
+        self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
+
+        msg_answer: str = ""
+        command_obj: Command = Command(_json=json.loads(command))
+
+        msg: Message | None = await self.send_command_to_device(
+            send_msgs=[command_obj],
+            target_device_uid=UnitId(unit_id),
+            time_to_live_secs=time_to_live_secs,
+        )
+        if msg:
+            if msg.exception:
+                raise msg.exception
+            msg_answer = msg.answer_utf8
+
+        return msg_answer
+
     async def discover_devices(
         self,
         timeout_secs: float = 2.5,
@@ -1216,7 +1242,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.send_message(
+        await self.send_command_to_device(
             [PingCommand()],
             UnitId("all"),
             timeout_secs,
