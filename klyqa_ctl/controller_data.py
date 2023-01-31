@@ -15,7 +15,7 @@ from klyqa_ctl.general.general import (
 
 
 class ControllerData:
-    """Controller data."""
+    """Controller data holds the basis klyqa ctl data."""
 
     def __init__(
         self,
@@ -67,6 +67,8 @@ class ControllerData:
 
     async def init(self) -> None:
         """Initialize."""
+
+        self.add_devices_lock = AsyncIoLock("add_devices_lock")
 
         device_configs_cache: dict | None = None
         cached: bool = False
@@ -126,9 +128,7 @@ class ControllerData:
     ) -> ControllerData:
         """Factory for local only controller."""
         controller_data: ControllerData = ControllerData(
-            interactive_prompts=interactive_prompts,
-            offline=offline,
-            add_devices_lock=AsyncIoLock("add_devices_lock"),
+            interactive_prompts=interactive_prompts, offline=offline
         )
         await controller_data.init()
         return controller_data

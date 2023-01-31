@@ -38,6 +38,9 @@ class CommandWithCheckValues(CommandTyped):
 class Device:
     """Device"""
 
+    # pylint: disable=too-many-instance-attributes
+    # Amount of attributes as needed in this case.
+
     def __init__(self) -> None:
         self._attr_local_addr: dict[str, Any] = {"ip": "", "port": -1}
         # device specific cloud connection results
@@ -65,6 +68,8 @@ class Device:
         time_to_live_secs: int,
         con: DeviceConnectionHandler,
     ) -> Message | None:
+        """Send message to device via desired connection set in
+        connection handler (param: con)."""
 
         return await con.send_message(  # type: ignore[no-any-return]
             commands, UnitId(self.u_id), time_to_live_secs
@@ -75,6 +80,8 @@ class Device:
         commands: list[Command],
         time_to_live_secs: int,
     ) -> Message | None:
+        """Send message to device via local connection."""
+
         if not self.local_con:
             return None
         return await self.send_msg(commands, time_to_live_secs, self.local_con)

@@ -186,7 +186,7 @@ class CloudBackend:
 
     #     )
 
-    async def cloud_send(
+    async def send(
         self,
         args: argparse.Namespace,
         target_device_uids: set[str],
