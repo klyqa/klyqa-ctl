@@ -45,7 +45,9 @@ from klyqa_ctl import controller_data
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
+from klyqa_ctl.communication.local.connection_handler import (
+    LocalConnectionHandler,
+)
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
@@ -67,6 +69,7 @@ from klyqa_ctl.general.general import (
     SEPARATION_WIDTH,
     TRACE,
     DeviceType,
+    aes_key_to_bytes,
     get_obj_attrs_as_string,
     logging_hdl,
     set_debug_logger,
@@ -74,7 +77,10 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message, MessageState
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
+from klyqa_ctl.general.parameters import (
+    add_config_args,
+    get_description_parser,
+)
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -357,7 +363,7 @@ class Client(ControllerData):
                 args.tryLocalThanCloud = False
 
             if args.aes is not None:
-                self.aes_keys["all"] = bytes.fromhex(args.aes[0])
+                self.aes_keys["all"] = aes_key_to_bytes(args.aes[0])
 
             target_device_uids: set[str] = set()
 

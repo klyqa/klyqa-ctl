@@ -487,6 +487,11 @@ def format_uid(text: str, **kwargs: Any) -> Any:
     return slugify.slugify(text)
 
 
+def aes_key_to_bytes(key: str) -> bytes:
+    """Translate hexadecimal AES key into bytes array."""
+    return bytes.fromhex(key)
+
+
 class TraceLogger(logging.Logger):
     def __init__(self, name: str, level: int = logging.NOTSET) -> None:
         super().__init__(name, level)

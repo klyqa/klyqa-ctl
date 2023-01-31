@@ -35,7 +35,7 @@ class AesConnectionState(str, Enum):
 
 class DeviceTcpReturn(Enum):
     NO_ERROR = auto()
-    SENT = auto()
+    # SENT = auto()
     ANSWERED = auto()
     WRONG_UNIT_ID = auto()
     NO_UNIT_ID = auto()
@@ -53,6 +53,7 @@ class DeviceTcpReturn(Enum):
     RESPONSE_ERROR = auto()
     SEND_ERROR = auto()
     SOCKET_ERROR = auto()
+    MSG_VALUES_OUT_OF_RANGE_LIMITS = auto()
 
 
 class TcpConnection:
@@ -125,8 +126,8 @@ class TcpConnection:
         return self._attr_socket
 
     @socket.setter
-    def socket(self, socket: socket.socket | None) -> None:
-        self._attr_socket = socket
+    def socket(self, socket_new: socket.socket | None) -> None:
+        self._attr_socket = socket_new
 
     @property
     def received_packages(self) -> list[Any]:
