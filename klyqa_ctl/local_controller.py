@@ -4,19 +4,16 @@ in connection controller, they are basically the same."""
 from __future__ import annotations
 
 import asyncio
-import json
 from typing import Any
 
 from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
 )
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.general.general import Command, get_asyncio_loop
-from klyqa_ctl.general.message import Message
-from klyqa_ctl.general.unit_id import UnitId
+from klyqa_ctl.general.general import ShutDownHandler, get_asyncio_loop
 
 
-class LocalController:
+class LocalController(ShutDownHandler):
     """Controls local connections via tcp and udp for broadcasts and
     connections directly to devices."""
 
@@ -25,6 +22,8 @@ class LocalController:
         controller_data: ControllerData,
     ) -> None:
         """Initializes the local controller."""
+
+        super().__init__()
 
         self.connection_hdl: LocalConnectionHandler | None = None
         self.controller_data: ControllerData = controller_data
@@ -38,45 +37,10 @@ class LocalController:
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
         result: str = loop.run_until_complete(
-            self.send_to_device_native(
-                UnitId(unit_id), key, Command(_json=json.loads(command))
-            )
+            self.connection_hdl.send_to_device(unit_id, key, command)
         )
 
         return result
-
-    async def send_to_device_native(
-        self, unit_id: UnitId, key: str, command: Command
-    ) -> str:
-        """Sends json message from command object to device with unit id and
-        aes key."""
-
-        if not self.connection_hdl:
-            return ""
-
-        self.connection_hdl.controller_data.aes_keys[
-            str(unit_id)
-        ] = bytes.fromhex(key)
-
-        msg_answer: str = ""
-
-        msg: Message | None = await self.connection_hdl.send_message(
-            send_msgs=[command],
-            target_device_uid=unit_id,
-            time_to_live_secs=11111,
-        )
-        if msg:
-            if msg.exception:
-                raise msg.exception
-            msg_answer = msg.answer_utf8
-
-        return msg_answer
-
-    async def shutdown(self) -> None:
-        """Shuts down the local controller."""
-
-        if self.connection_hdl:
-            await self.connection_hdl.shutdown()
 
     @classmethod
     def create_default(
@@ -100,10 +64,10 @@ class LocalController:
             network_interface=network_interface,
         )
 
-        lc: LocalController = LocalController(controller_data)
-        lc.connection_hdl = lc_hdl
+        lctlr: LocalController = LocalController(controller_data)
+        lctlr.connection_hdl = lc_hdl
 
-        return lc
+        return lctlr
 
     @classmethod
     async def async_create_standalone(
@@ -117,14 +81,18 @@ class LocalController:
         Params:
             network_interface: eth0, wlan0 or None (uses default interface)
         """
+
         controller_data: ControllerData = await ControllerData.create_default(
             interactive_prompts=interactive_prompts, offline=True
         )
 
-        lc: LocalController = LocalController.create_default(
+        ctrl: LocalController = LocalController.create_default(
             controller_data, server_ip, network_interface
         )
-        return lc
+        if ctrl.connection_hdl:
+            ctrl._shutdown_handler.append(ctrl.connection_hdl.shutdown)
+
+        return ctrl
 
     @classmethod
     def create_standalone(

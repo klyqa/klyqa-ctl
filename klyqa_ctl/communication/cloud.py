@@ -17,14 +17,14 @@ import httpx
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
-    get_asyncio_loop,
     LOGGER,
     PROD_HOST,
-    Device_config,
+    DeviceConfig,
     EventQueuePrinter,
     TypeJson,
     async_json_cache,
     format_uid,
+    get_asyncio_loop,
     task_log_debug,
     task_log_trace_ex,
 )
@@ -33,6 +33,8 @@ DEFAULT_HTTP_REQUEST_TIMEOUT_SECS: int = 30
 
 
 class RequestMethod(str, Enum):
+    """HTTP request methods."""
+
     POST = "POST"
     GET = "GET"
 
@@ -88,7 +90,7 @@ class CloudBackend:
             LOGGER.error("Timed out get device config http request!")
             return None
         if config:
-            device_configs[product_id] = Device_config(config)
+            device_configs[product_id] = DeviceConfig(config)
         return None
 
     async def get_device_configs(self, device_product_ids: set[str]) -> None:
@@ -177,7 +179,7 @@ class CloudBackend:
         try:
             answer = json.loads(response.text)
         except json.JSONDecodeError as err:
-            LOGGER.error(f"{err.msg}")
+            LOGGER.error(err.msg)
             task_log_debug(f"{traceback.format_exc()} {err.msg}")
             answer = None
         return answer
@@ -214,8 +216,10 @@ class CloudBackend:
             cloud_device_id: str = device.acc_sets["cloudDeviceId"]
             unit_id: str = format_uid(device.acc_sets["localDeviceId"])
             LOGGER.info(
-                f"Post {target} to the device '{cloud_device_id}' (unit_id:"
-                f" {unit_id}) over the cloud."
+                "Post {target} to the device '%s' (unit_id:"
+                " %s) over the cloud.",
+                cloud_device_id,
+                unit_id,
             )
             response: TypeJson = {
                 cloud_device_id: await self.request(
@@ -239,16 +243,15 @@ class CloudBackend:
         ) -> int:
             if not await device.use_lock():
                 LOGGER.error(
-                    f"Couldn't get use lock for device {device.get_name()})"
+                    "Couldn't get use lock for device %s)", device.get_name()
                 )
                 return 1
             try:
                 await _cloud_post(device, json_message, target)
             except CancelledError:
                 LOGGER.error(
-                    "Cancelled cloud send "
-                    + (device.u_id if device.u_id else "")
-                    + "."
+                    "Cancelled cloud send %s.",
+                    device.u_id if device.u_id else "",
                 )
             finally:
                 device.use_unlock()
@@ -306,19 +309,19 @@ class CloudBackend:
 
             count: int = 0
             timeout: float = timeout_ms / 1000
-            for t, device in threads:
+            for worker, device in threads:
                 count = count + 1
                 # wait at most timeout_ms wanted minus seconds elapsed since
                 # sending
                 try:
                     await asyncio.wait_for(
-                        t,
+                        worker,
                         timeout=timeout
                         - (datetime.datetime.now() - started).seconds,
                     )
                 except asyncio.TimeoutError:
-                    LOGGER.error(f'Timeout for "{device.get_name()}"!')
-                    t.cancel()
+                    LOGGER.error('Timeout for "%s""!', device.get_name())
+                    worker.cancel()
                 except Exception:
                     task_log_trace_ex()
 
@@ -330,7 +333,7 @@ class CloudBackend:
 
         queue_printer.stop()
 
-        if len(response_queue):
+        if response_queue:
             success = True
         return success
 
@@ -339,6 +342,6 @@ class CloudBackend:
         cls: Any, controller_data: ControllerData, host: str = PROD_HOST
     ) -> CloudBackend:
         """Factory for cloud backend."""
-        cb: CloudBackend = CloudBackend(controller_data=controller_data)
-        cb.host = host
-        return cb
+        cloud: CloudBackend = CloudBackend(controller_data=controller_data)
+        cloud.host = host
+        return cloud

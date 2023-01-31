@@ -175,7 +175,7 @@ class Client(ControllerData):
         # identification message from the devices in the aes_search and
         # send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.local.send_message(
+        await self.local.send_command_to_device(
             message_queue_tx_local,
             UnitId("all"),
             discover_timeout_secs,
@@ -467,7 +467,7 @@ class Client(ControllerData):
 
                         send_tasks.append(
                             loop.create_task(
-                                self.local.send_message(
+                                self.local.send_command_to_device(
                                     send_msgs=message_queue_tx_local.copy(),
                                     target_device_uid=UnitId(uid),
                                     # callback=async_answer_callback_local,
