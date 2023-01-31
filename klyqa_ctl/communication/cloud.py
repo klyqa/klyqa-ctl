@@ -17,6 +17,7 @@ import httpx
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
+    get_asyncio_loop,
     LOGGER,
     PROD_HOST,
     Device_config,
@@ -258,7 +259,7 @@ class CloudBackend:
 
         async def process_cloud_messages(target_uids: set[str]) -> None:
 
-            loop: AbstractEventLoop = asyncio.get_event_loop()
+            loop: AbstractEventLoop = get_asyncio_loop()
             threads: list[Any] = []
             target_devices: list[Device] = [
                 b

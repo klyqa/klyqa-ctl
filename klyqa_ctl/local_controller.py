@@ -7,11 +7,9 @@ import asyncio
 import json
 from typing import Any
 
-from klyqa_ctl.communication.local.connection_handler import (
-    LocalConnectionHandler,
-)
+from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.general.general import Command
+from klyqa_ctl.general.general import Command, get_asyncio_loop
 from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
 
@@ -35,7 +33,7 @@ class LocalController:
         if not self.connection_hdl:
             return ""
 
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
         result: str = loop.run_until_complete(
             self.send_to_device_native(

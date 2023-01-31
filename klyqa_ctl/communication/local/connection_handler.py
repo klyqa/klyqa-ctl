@@ -33,6 +33,7 @@ from klyqa_ctl.general.general import (
     Command,
     ReferencePass,
     TypeJson,
+    get_asyncio_loop,
     task_log,
     task_log_debug,
     task_log_error,
@@ -330,8 +331,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         if device.u_id != "no_uid" and device.u_id not in self.devices:
 
             is_new_device = True
-            new_dev: Device = await self.controller_data.get_or_create_device(
-                unit_id=identity.unit_id, product_id=identity.product_id
+            new_dev: Device = (
+                await self.controller_data.get_or_create_device_ident(
+                    identity=identity
+                )
             )
             new_dev.ident = identity
             if (
@@ -383,7 +386,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         if not is_new_device and device.ident:
             task_log(f"Found device {device.ident.unit_id}")
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
         if "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
@@ -480,12 +483,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
 
-            if (
-                msg_sent
-                and msg_sent.callback is not None
-                and device is not None
-            ):
-                await msg_sent.callback(msg_sent, device.u_id)
+            if msg_sent and device is not None:
+                await msg_sent.call_cb()
                 task_log_debug(
                     f"device {device.u_id} answered msg {msg_sent.msg_queue}"
                 )
@@ -553,7 +552,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         not cwcv._force  # pylint: disable=protected-access
                         and not cwcv.check_values(device=device)
                     ):
-                        msg.state == MessageState.VALUE_RANGE_LIMITS
+                        msg.state = MessageState.VALUE_RANGE_LIMITS
                         self.remove_msg_from_queue(msg, device)
                         return DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
 
@@ -561,9 +560,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     if await connection.encrypt_and_send_msg(text, device):
 
                         return_val = DeviceTcpReturn.NO_ERROR
-                        # if isinstance(msg, BroadCastMessage):
-                        #     bcm: BroadCastMessage = msg
-                        #     bcm.sent_to_uids.add(device.u_id)
                         j = j + 1
                         msg.msg_queue_sent.append(text)
 
@@ -791,7 +787,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def send_udp_broadcast_task(self) -> bool:
         """Send qcx-syn broadcast on udp socket."""
 
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
 
         try:
             task_log_debug("Broadcasting QCX-SYN Burst")
@@ -815,7 +811,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def send_udp_broadcast_task_loop(self) -> None:
 
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
         self.send_udp_broadcast_task_loop_set: asyncio.Event = asyncio.Event()
         while True:
             await self.send_udp_broadcast_task()
@@ -829,7 +825,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def send_udp_broadcast(self) -> None:
 
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
         self.udp_broadcast_task: asyncio.Task
 
         if self.udp_broadcast_task is None or self.udp_broadcast_task.done():
@@ -841,7 +837,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def read_incoming_tcp_con_task(self) -> None:
 
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
         try:
             print("Read incoming connections\n")
             con, address = await loop.sock_accept(tcp)
@@ -851,7 +847,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def standby(self) -> None:
         """Standby search devices and create incoming connection tasks."""
 
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
         try:
             task_log_debug("sleep task create (broadcasts)..")
             self.__send_loop_sleep = loop.create_task(
@@ -874,7 +870,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> tuple[list[Any], list[Any], list[Any]] | None:
         """Read incoming connections on tcp socket."""
 
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
 
         timeout_read: float = 0.3
         task_log_debug("Read again tcp port..")
@@ -956,7 +952,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         process."""
         if not self.tcp:
             return
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
         device: Device = Device()
         addr: tuple
         connection: TcpConnection = TcpConnection()
@@ -1123,7 +1119,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     def search_and_send_loop_task_alive(self) -> None:
         """Ensure broadcast's and connection handler's task is alive."""
-        loop: AbstractEventLoop = asyncio.get_event_loop()
+        loop: AbstractEventLoop = get_asyncio_loop()
 
         if not self.msg_ttl_task or self.msg_ttl_task.done():
             self.msg_ttl_task = loop.create_task(

@@ -53,7 +53,7 @@ class Light(Device):
     def set_brightness_range(self, device_config: TypeJson) -> None:
         brightness_enum: list[Any] = []
         try:
-            if self.ident and self.ident.product_id.endswith(".rgb-cw-ww.e27"):
+            if self.ident and self.product_id.endswith(".rgb-cw-ww.e27"):
                 brightness_enum = [
                     trait["value_schema"]["properties"]["brightness"]
                     for trait in device_config["deviceTraits"]
@@ -79,7 +79,7 @@ class Light(Device):
                     task_log_trace(
                         "Can't read brightness range%s. Falling back to"
                         " default Range.",
-                        f" for product id {self.ident.product_id}"
+                        f" for product id {self.product_id}"
                         if self.ident
                         else "",
                     )
@@ -91,7 +91,7 @@ class Light(Device):
 
     def set_temperature_range(self, device_config: TypeJson) -> None:
         try:
-            if self.ident and self.ident.product_id.endswith(".rgb-cw-ww.e27"):
+            if self.ident and self.product_id.endswith(".rgb-cw-ww.e27"):
                 self.temperature_range = Range(
                     *[
                         trait["value_schema"]["properties"][
@@ -128,7 +128,7 @@ class Light(Device):
                     task_log_trace(
                         "Can't read temperature range%s. Falling back to"
                         " default Range.",
-                        f" for product id {self.ident.product_id}"
+                        f" for product id {self.product_id}"
                         if self.ident
                         else "",
                     )
@@ -141,7 +141,7 @@ class Light(Device):
     def set_color_range(self, device_config: TypeJson) -> None:
         color_enum: list[Any] = []
         try:
-            if self.ident and self.ident.product_id.endswith(".rgb-cw-ww.e27"):
+            if self.ident and self.product_id.endswith(".rgb-cw-ww.e27"):
                 color_enum = [
                     trait["value_schema"]["definitions"]["color_value"]
                     for trait in device_config["deviceTraits"]
@@ -167,7 +167,7 @@ class Light(Device):
                     task_log_trace(
                         "Can't read color range%s. Falling back to "
                         + "default Range.",
-                        f" for product id {self.ident.product_id}"
+                        f" for product id {self.product_id}"
                         if self.ident
                         else "",
                     )
@@ -179,7 +179,7 @@ class Light(Device):
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
         self.set_temperature_range(device_config)
-        if self.ident and ".rgb" in self.ident.product_id:
+        if self.ident and ".rgb" in self.product_id:
             self.set_color_range(device_config)
 
     def set_temperature(self, temp: int) -> bool:

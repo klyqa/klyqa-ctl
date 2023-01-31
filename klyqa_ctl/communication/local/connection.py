@@ -14,6 +14,7 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
     ReferencePass,
+    get_asyncio_loop,
     task_log,
     task_log_debug,
     task_log_trace_ex,
@@ -174,7 +175,7 @@ class TcpConnection:
     ) -> DeviceTcpReturn:
         """Read from tcp socket and handle some exceptions."""
 
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
         if self.socket is None:
             return DeviceTcpReturn.SOCKET_ERROR
         try:
@@ -193,7 +194,7 @@ class TcpConnection:
     async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
         """Encrypt the msg with aes and send it over the socket."""
 
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
         info_str: str = (
             (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
             + 'Sending in local network to "'

@@ -81,13 +81,3 @@ class Message:
     @target_uid.setter
     def target_uid(self, target_uid: str) -> None:
         self._attr_target_uid = format_uid(target_uid)
-
-
-# @dataclass
-# class BroadCastMessage(Message):
-#     sent_to_uids: set[str] = field(default_factory=lambda: set())
-
-
-# @dataclass
-# class DiscoverMessage(Message):
-#     discovered_uids: set[str] = set()

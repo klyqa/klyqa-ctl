@@ -23,6 +23,7 @@ from klyqa_ctl.general.general import (
     aes_key_to_bytes,
     async_json_cache,
     format_uid,
+    get_asyncio_loop,
     task_log_debug,
 )
 
@@ -453,7 +454,7 @@ class Account:
             {"username": self.username}, "last_username.json"
         )
 
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
         devices_tasks: list[asyncio.Task[Any]] = [
             loop.create_task(
