@@ -523,7 +523,11 @@ def task_log(
 ) -> None:
     """Output task name and logging string."""
 
-    task_name_str: str = task_name()
+    task_name_str: str = (
+        task_name()
+        if LOGGER_debug.getEffectiveLevel() <= logging.DEBUG
+        else ""
+    )
     output_func(
         f"{task_name_str} - {msg}" if task_name_str else f"{msg}",
         **kwargs,
