@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::general::EventQueuePrinter</compoundname>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1ab5bcf6378aca4cc260c351532560edf8" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.EventQueuePrinter::Event</definition>
+        <argsstring></argsstring>
+        <name>Event</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="150" column="1" bodyfile="general/general.py" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a07e19f74365bf159fb8541d69f55b30f" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.EventQueuePrinter::bool</definition>
+        <argsstring></argsstring>
+        <name>bool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="151" column="1" bodyfile="general/general.py" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.EventQueuePrinter::None</definition>
+        <argsstring></argsstring>
+        <name>None</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="153" column="1" bodyfile="general/general.py" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a40ded802a519667c32233d1413461f76" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.EventQueuePrinter::printer_t</definition>
+        <argsstring></argsstring>
+        <name>printer_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="157" column="1" bodyfile="general/general.py" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a3159af5a0a8d5d87868330f2cc4cae91" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.EventQueuePrinter::not_finished</definition>
+        <argsstring></argsstring>
+        <name>not_finished</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="162" column="1" bodyfile="general/general.py" bodystart="162" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1aef746875ceea7d2514677d0850172d99" compoundref="general_2general_8py" startline="167" endline="175">klyqa_ctl.general.general.EventQueuePrinter.coroutine</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1adb373a47b99730f41dead6fa05704afc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.general.EventQueuePrinter.__init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>start printing helper thread routine</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="155" column="1" bodyfile="general/general.py" bodystart="155" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a41f1bacb0712b588612356205ec1baef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.general.EventQueuePrinter.stop</definition>
+        <argsstring>(self)</argsstring>
+        <name>stop</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>stop printing helper thread</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="160" column="1" bodyfile="general/general.py" bodystart="160" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1aef746875ceea7d2514677d0850172d99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.general.EventQueuePrinter.coroutine</definition>
+        <argsstring>(self)</argsstring>
+        <name>coroutine</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>printer thread routine, waits for data to print and/or a
+trigger event</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="167" column="1" bodyfile="general/general.py" bodystart="167" bodyend="175"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a3159af5a0a8d5d87868330f2cc4cae91" compoundref="general_2general_8py" startline="162">klyqa_ctl.general.general.EventQueuePrinter.not_finished</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a9cb7d11758b93fa02911321f66044d7c" compoundref="general_2general_8py" startline="176" endline="182">klyqa_ctl.general.general.EventQueuePrinter.print</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a9cb7d11758b93fa02911321f66044d7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.general.EventQueuePrinter.print</definition>
+        <argsstring>(self, str str)</argsstring>
+        <name>print</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>add string to the printer</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="176" column="1" bodyfile="general/general.py" bodystart="176" bodyend="182"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1aef746875ceea7d2514677d0850172d99" compoundref="general_2general_8py" startline="167" endline="175">klyqa_ctl.general.general.EventQueuePrinter.coroutine</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Single event queue printer for job printing.</verbatim> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.EventQueuePrinter</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter"/>
+      </node>
+    </collaborationgraph>
+    <location file="general/general.py" line="147" column="1" bodyfile="general/general.py" bodystart="147" bodyend="183"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1adb373a47b99730f41dead6fa05704afc" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a07e19f74365bf159fb8541d69f55b30f" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>bool</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1aef746875ceea7d2514677d0850172d99" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>coroutine</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1ab5bcf6378aca4cc260c351532560edf8" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>Event</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a1bf9d2bb427c7bb2b918c397f15a25f9" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>None</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a3159af5a0a8d5d87868330f2cc4cae91" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>not_finished</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a9cb7d11758b93fa02911321f66044d7c" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>print</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a40ded802a519667c32233d1413461f76" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>printer_t</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_1a41f1bacb0712b588612356205ec1baef" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::EventQueuePrinter</scope><name>stop</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

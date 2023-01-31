@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl</compoundname>
+    <innernamespace refid="namespaceklyqa__ctl_1_1____main____">klyqa_ctl::__main__</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1account">klyqa_ctl::account</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1account__control">klyqa_ctl::account_control</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1conf">klyqa_ctl::conf</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1controller__data">klyqa_ctl::controller_data</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1devices">klyqa_ctl::devices</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1general">klyqa_ctl::general</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1klyqa__ctl">klyqa_ctl::klyqa_ctl</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1local__controller">klyqa_ctl::local_controller</innernamespace>
+    <innernamespace refid="namespaceklyqa__ctl_1_1test__bind__socket">klyqa_ctl::test_bind_socket</innernamespace>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1ac1f9191d30b35ab942096351e56b3c07" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.str</definition>
+        <argsstring></argsstring>
+        <name>str</name>
+        <briefdescription>
+<para>Interactive Klyqa Control commandline client package. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Company: QConnex GmbH / Klyqa Author: Frederick Stallmeyer</para>
+<para>E-Mail: <ulink url="mailto:fraizy@gmx.de">fraizy@gmx.de</ulink> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="__init__.py" line="14" column="1" bodyfile="__init__.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>::<bold>main</bold> </para>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Allow user to run main klyqa ctl script</verbatim> </para>
+    </detaileddescription>
+    <location file="__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

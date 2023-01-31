@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</compoundname>
+    <basecompoundref refid="classklyqa__ctl_1_1devices_1_1device_1_1Device" prot="public" virt="non-virtual">klyqa_ctl.devices.device.Device</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner_1a61d6b100df4a5302d5934ed21bbe05bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.devices.vacuum.vacuum.VacuumCleaner.__init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__init__</name>
+        <reimplements refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a6f404a962e6b23554e59afc65a6b8d22">__init__</reimplements>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/vacuum.py" line="11" column="1" bodyfile="devices/vacuum/vacuum.py" bodystart="11" bodyend="14"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad6bc32c73114ceef2ec28b880095bbf3" compoundref="device_8py" startline="154" endline="156">klyqa_ctl.devices.device.Device.response_classes</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Vaccum cleaner</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.vacuum.VacuumCleaner</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.device.Device</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1Device"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.vacuum.VacuumCleaner</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.device.Device</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1Device"/>
+      </node>
+    </collaborationgraph>
+    <location file="devices/vacuum/vacuum.py" line="8" column="1" bodyfile="devices/vacuum/vacuum.py" bodystart="8" bodyend="14"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1vacuum_1_1VacuumCleaner_1a61d6b100df4a5302d5934ed21bbe05bb" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ab170bbcda2f489d6a938918d9ee7197b" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr__use_lock</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a8db52a2b8f73be2c28fb18df0a45deb9" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr__use_thread</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a710f4812c6eb9f32bc612f4a28085b35" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_acc_sets</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad117521203c694ca946b96598bd7aa11" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_cloud</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa9521437d7f21dcbbcf6632926326c0d" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_device_config</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a388d144625384f5487efe856d178d76e" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_ident</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a4b88920dd097d307cb32c68712954c8c" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_local_addr</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa531348d0d30f6735af7296e6a1e58a7" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_product_id</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aeaf9be33c3fa66a3993912c5fa2401b4" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_response_classes</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a6dfc8051faa5cac3a60a1bcb97acbe4e" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_status</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a18002d257f13b699ddd6e03bf0b20bd8" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_attr_u_id</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a9bd7e5475e03628af50b2ddaf1068ac4" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_use_lock</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a496610ad8a73f5e4c1e7961ce2985ecb" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_use_lock</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa86f84ebf8923ae2b0eb49ae89ee7e5a" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_use_lock</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a305e71b052ac32a061f15ca2a82fb0c9" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_use_thread</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ac814173abac55b80de30f5a09a52897f" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>_use_thread</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a34d9874a0a55b47729c2e1bce6623479" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>acc_sets</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1abff106c1db035023ad9e80b3456bd439" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>acc_sets</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a620bcc2824886b4d9063e3bfe39ab27b" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a5fb36462556dcd5980ff198bed7dd9e2" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>device_config</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a601de1bee20207d0d12411dc1409a3e0" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>device_config</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a25430b3dd4a2177531799fce68152e6a" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>device_config</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a7230c178c35cdd93a7242b150008b822" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>get_name</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a70445a28c25aad39023b0b7304a5c732" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>ident</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a146ecdc1f4fbd22e822c36bc6647209b" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>ident</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa720423431e3ca027da9e15091b77c7a" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>local_addr</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aeeb33fb9c418502d712816d7beb1935c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>local_addr</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a8d0ca351008a2098f40c402c998d6dff" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>product_id</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1afda41e95ea17474950b1a0d677a57ef3" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>product_id</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad6d431984375e5db88772bc82f28d709" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>read_device_config</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad6bc32c73114ceef2ec28b880095bbf3" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>response_classes</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a9d41ed646f02bd9a096dc1df524a4387" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>response_classes</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa24f94bc4cb0e5b9fee79360aca8819e" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>save_device_message</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad36a9e20a1af6d562671110c85edf319" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>send_msg</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ae1cc52edd0ae4a6c870314953abde498" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>send_msg_local</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a72eb3cd6ad4f562480bad4ddbe6851c4" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>status</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aeed20c5782407a76a85a32f54a8fd8ab" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>status</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a14d1f6a85748e2b9dcc5c77a34bd8a40" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>status</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a1a22488877c0690074c8d353a37806b9" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>u_id</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a285db910c65644677d9e67687b687386" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>u_id</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a94f0b671e20f3bbbc8b1e2c289f6b62d" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>use_lock</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1aa764f31ef3b8ed27e404ea780ce7e778" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::vacuum::VacuumCleaner</scope><name>use_unlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

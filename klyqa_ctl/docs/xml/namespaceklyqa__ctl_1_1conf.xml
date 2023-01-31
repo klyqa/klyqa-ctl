@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1conf" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::conf</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1a0bfb33b0209bbc8965fbfff3e1ff0953" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl::conf.project</definition>
+        <argsstring></argsstring>
+        <name>project</name>
+        <initializer>=  &apos;Klyqa-CTL&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="9" column="1" bodyfile="conf.py" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1a1e338009bb348907573e37c862d79a5e" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl::conf.copyright</definition>
+        <argsstring></argsstring>
+        <name>copyright</name>
+        <initializer>=  &apos;2023, FS&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="10" column="1" bodyfile="conf.py" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1a262bbe5251bdf6224f933f72ca6a8561" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl::conf.author</definition>
+        <argsstring></argsstring>
+        <name>author</name>
+        <initializer>=  &apos;FS&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="11" column="1" bodyfile="conf.py" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1aa5e016064b19c99705cafd006ae25857" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl::conf.release</definition>
+        <argsstring></argsstring>
+        <name>release</name>
+        <initializer>=  &apos;1.x&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="12" column="1" bodyfile="conf.py" bodystart="12" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_1a25fbc33880c976000ef3b6e70c7691c9" compoundref="general_2general_8py" startline="279" endline="293">klyqa_ctl.general.general.AsyncIoLock.release_within_task</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1a50d1b5d9c7459ec71ad5e8540396d06c" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list klyqa_ctl::conf.extensions</definition>
+        <argsstring></argsstring>
+        <name>extensions</name>
+        <initializer>=  []</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="17" column="1" bodyfile="conf.py" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1aac69889832006976cebbbe8ddb435ca5" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list klyqa_ctl::conf.templates_path</definition>
+        <argsstring></argsstring>
+        <name>templates_path</name>
+        <initializer>=  [&apos;_templates&apos;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="19" column="1" bodyfile="conf.py" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1adf8c065a2212a90cb3d23b4bf23f8d80" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list klyqa_ctl::conf.exclude_patterns</definition>
+        <argsstring></argsstring>
+        <name>exclude_patterns</name>
+        <initializer>=  [&apos;_build&apos;, &apos;Thumbs.db&apos;, &apos;.DS_Store&apos;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="20" column="1" bodyfile="conf.py" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1ac689ffe9a4bca13bf135d6d9a1ab96ec" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl::conf.html_theme</definition>
+        <argsstring></argsstring>
+        <name>html_theme</name>
+        <initializer>=  &apos;alabaster&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="27" column="1" bodyfile="conf.py" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceklyqa__ctl_1_1conf_1ac0a1f55839f664f08a5c033da4a7a030" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list klyqa_ctl::conf.html_static_path</definition>
+        <argsstring></argsstring>
+        <name>html_static_path</name>
+        <initializer>=  [&apos;_static&apos;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="conf.py" line="28" column="1" bodyfile="conf.py" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="conf.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_4fd64f67770002913f6d54e3631c23bd" kind="dir">
+    <compoundname>devices/vacuum</compoundname>
+    <innerfile refid="devices_2vacuum_2____init_____8py">__init__.py</innerfile>
+    <innerfile refid="vacuum_2commands_8py">commands.py</innerfile>
+    <innerfile refid="devices_2vacuum_2general_8py">general.py</innerfile>
+    <innerfile refid="vacuum_2response__status_8py">response_status.py</innerfile>
+    <innerfile refid="vacuum_8py">vacuum.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="devices/vacuum/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::aes_key::AesKey</compoundname>
+    <basecompoundref refid="classbytes" prot="public" virt="non-virtual">bytes</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a8869062df2d14c8b590f3316501e607d" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.aes_key.AesKey::bytes</definition>
+        <argsstring></argsstring>
+        <name>bytes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="8" column="1" bodyfile="general/aes_key.py" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.aes_key.AesKey::aes_key</definition>
+        <argsstring></argsstring>
+        <name>aes_key</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="11" column="1" bodyfile="general/aes_key.py" bodystart="11" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" compoundref="aes__key_8py" startline="16" endline="18">klyqa_ctl.general.aes_key.AesKey.aes_key</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.aes_key.AesKey::_attr_aes_key</definition>
+        <argsstring></argsstring>
+        <name>_attr_aes_key</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="21" column="1" bodyfile="general/aes_key.py" bodystart="21" bodyend="-1"/>
+        <referencedby refid="classlocal_1_1connection_1_1TcpConnection_1aae3f96e7c55fc45f5aa0c837c51a0069" compoundref="connection_8py" startline="61" endline="74">local.connection.TcpConnection.__init__</referencedby>
+        <referencedby refid="classlocal_1_1connection_1_1TcpConnection_1a1996ebbb501299a829bb433cebc0d303" compoundref="connection_8py" startline="156" endline="158">local.connection.TcpConnection.aes_key</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" compoundref="aes__key_8py" startline="16" endline="18">klyqa_ctl.general.aes_key.AesKey.aes_key</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1af02def269ba02833f11b2876a818172d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.aes_key.AesKey.__init__</definition>
+        <argsstring>(self, str|bytes aes_key=&quot;&quot;)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref>|<ref refid="classbytes" kindref="compound">bytes</ref></type>
+          <declname>aes_key</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="10" column="1" bodyfile="general/aes_key.py" bodystart="10" bodyend="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classbytes" kindref="compound">bytes</ref>|None</type>
+        <definition> bytes | None klyqa_ctl.general.aes_key.AesKey.aes_key</definition>
+        <argsstring>(self)</argsstring>
+        <name>aes_key</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="16" column="1" bodyfile="general/aes_key.py" bodystart="16" bodyend="18"/>
+        <references refid="classlocal_1_1connection_1_1TcpConnection_1a067873c0c97388f30c26eb172dc1c2c3" compoundref="connection_8py" startline="161">local.connection.TcpConnection._attr_aes_key</references>
+        <references refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" compoundref="aes__key_8py" startline="21">klyqa_ctl.general.aes_key.AesKey._attr_aes_key</references>
+        <references refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" compoundref="aes__key_8py" startline="11">klyqa_ctl.general.aes_key.AesKey.aes_key</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a9e79b38e6e36e73aae9465cdc33adab6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.aes_key.AesKey.aes_key</definition>
+        <argsstring>(self, bytes aes_key)</argsstring>
+        <name>aes_key</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classbytes" kindref="compound">bytes</ref></type>
+          <declname>aes_key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="20" column="1" bodyfile="general/aes_key.py" bodystart="20" bodyend="22"/>
+        <references refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" compoundref="aes__key_8py" startline="11">klyqa_ctl.general.aes_key.AesKey.aes_key</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1ae7c1b2b8199a5dff047cf345e2c77b88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classbytes" kindref="compound">bytes</ref></type>
+        <definition> bytes klyqa_ctl.general.aes_key.AesKey.from_string</definition>
+        <argsstring>(self, str aes_key)</argsstring>
+        <name>from_string</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>aes_key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/aes_key.py" line="23" column="1" bodyfile="general/aes_key.py" bodystart="23" bodyend="25"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.general.aes_key.AesKey</label>
+        <link refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>bytes</label>
+        <link refid="classbytes"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.aes_key.AesKey</label>
+        <link refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>bytes</label>
+        <link refid="classbytes"/>
+      </node>
+    </collaborationgraph>
+    <location file="general/aes_key.py" line="6" column="1" bodyfile="general/aes_key.py" bodystart="6" bodyend="25"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1af02def269ba02833f11b2876a818172d" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a78f9999d22a7dd63e88217425d5ade82" prot="private" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>_attr_aes_key</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1afb79c6b5edec85684f6233676a0fd758" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>aes_key</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1aa53b6fc1393985d9191ac9239d17a2ca" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>aes_key</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a9e79b38e6e36e73aae9465cdc33adab6" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>aes_key</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1a8869062df2d14c8b590f3316501e607d" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>bytes</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1aes__key_1_1AesKey_1ae7c1b2b8199a5dff047cf345e2c77b88" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::aes_key::AesKey</scope><name>from_string</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

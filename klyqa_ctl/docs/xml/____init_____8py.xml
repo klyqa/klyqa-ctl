@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="____init_____8py" kind="file" language="Python">
+    <compoundname>__init__.py</compoundname>
+    <innernamespace refid="namespaceklyqa__ctl">klyqa_ctl</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespaceklyqa__ctl" refkind="compound"><highlight class="comment">#!/usr/bin/env<sp/>python3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespaceklyqa__ctl_1ac1f9191d30b35ab942096351e56b3c07" refkind="member"><highlight class="normal">__version__:<sp/>str<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;1.0.17-next&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">__author__:<sp/>str<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Frederick<sp/>Stallmeyer<sp/>&lt;fraizy@gmx.de&gt;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">__license__:<sp/>str<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;MIT&quot;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="__init__.py"/>
+  </compounddef>
+</doxygen>

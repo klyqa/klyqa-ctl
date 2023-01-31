@@ -1,0 +1,1403 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1account_1_1Account" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::account::Account</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1a28518af1ac4261cd9cb4b2b52dd0db23" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr_username</definition>
+        <argsstring></argsstring>
+        <name>_attr_username</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="78" column="1" bodyfile="account.py" bodystart="78" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4d8817b0900560f1034addf01e65037b" compoundref="account_8py" startline="73" endline="75">klyqa_ctl.account.Account.username</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1a9e836c37e871fde4bfa876715e5d98ba" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr_password</definition>
+        <argsstring></argsstring>
+        <name>_attr_password</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="86" column="1" bodyfile="account.py" bodystart="86" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ab7c2e00758ea609ca93c2829ff12e3f3" compoundref="account_8py" startline="81" endline="83">klyqa_ctl.account.Account.password</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1a0909afdb890efc18d77f8bdc13d10dc8" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr_access_token</definition>
+        <argsstring></argsstring>
+        <name>_attr_access_token</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="94" column="1" bodyfile="account.py" bodystart="94" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aadca9a95f1b2985123f4a644058a7e24" compoundref="account_8py" startline="89" endline="91">klyqa_ctl.account.Account.access_token</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1a049f353b4bb0028e655ba38c7de0bc7e" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr_devices</definition>
+        <argsstring></argsstring>
+        <name>_attr_devices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="102" column="1" bodyfile="account.py" bodystart="102" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a45b182549e7e44dc4cffbdd2ec67c99d" compoundref="controller__data_8py" startline="25" endline="34">klyqa_ctl.controller_data.ControllerData.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a0c713697632158651e042a125d3a5dc6" compoundref="local_2connection__handler_8py" startline="74" endline="96">local.connection_handler.LocalConnectionHandler.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" compoundref="account_8py" startline="97" endline="99">klyqa_ctl.account.Account.devices</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4d307f6bd0b66f3cb9fac3057fc87972" compoundref="local_2connection__handler_8py" startline="114" endline="116">local.connection_handler.LocalConnectionHandler.devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" compoundref="controller__data_8py" startline="64" endline="67">klyqa_ctl.controller_data.ControllerData.devices</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr_cloud</definition>
+        <argsstring></argsstring>
+        <name>_attr_cloud</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="127" column="1" bodyfile="account.py" bodystart="127" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a6f404a962e6b23554e59afc65a6b8d22" compoundref="device_8py" startline="44" endline="64">klyqa_ctl.devices.device.Device.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a570182fabfabe16d361dc84af62bad0b" compoundref="klyqa__ctl_8py" startline="87" endline="96">klyqa_ctl.klyqa_ctl.Client.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1a0b4a40c1a870fe2fd52a538f278708f0" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr__settings_loaded_ts</definition>
+        <argsstring></argsstring>
+        <name>_attr__settings_loaded_ts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="137" column="1" bodyfile="account.py" bodystart="137" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a422b216be3c73d99668bc6d2501e17a0" compoundref="account_8py" startline="130" endline="132">klyqa_ctl.account.Account._settings_loaded_ts</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1af76aa7d7f0154a9c4cb5da8f07514e9a" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::_attr_settings</definition>
+        <argsstring></argsstring>
+        <name>_attr_settings</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="323" column="1" bodyfile="account.py" bodystart="323" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" compoundref="account_8py" startline="57" endline="71">klyqa_ctl.account.Account.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" compoundref="account_8py" startline="105" endline="107">klyqa_ctl.account.Account.settings</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::password</definition>
+        <argsstring></argsstring>
+        <name>password</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="193" column="1" bodyfile="account.py" bodystart="193" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ab7c2e00758ea609ca93c2829ff12e3f3" compoundref="account_8py" startline="81" endline="83">klyqa_ctl.account.Account.password</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" compoundref="account_8py" startline="350" endline="364">klyqa_ctl.account.Account.read_acc_settings_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" compoundref="account_8py" startline="185" endline="204">klyqa_ctl.account.Account.run_password_prompt</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::access_token</definition>
+        <argsstring></argsstring>
+        <name>access_token</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="236" column="1" bodyfile="account.py" bodystart="236" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aadca9a95f1b2985123f4a644058a7e24" compoundref="account_8py" startline="89" endline="91">klyqa_ctl.account.Account.access_token</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.account.Account::username</definition>
+        <argsstring></argsstring>
+        <name>username</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="260" column="1" bodyfile="account.py" bodystart="260" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acba85b49678b6d37567985738f7becf3" compoundref="account_8py" startline="249" endline="278">klyqa_ctl.account.Account.read_username_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4d8817b0900560f1034addf01e65037b" compoundref="account_8py" startline="73" endline="75">klyqa_ctl.account.Account.username</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.__init__</definition>
+        <argsstring>(self, ControllerData controller_data, CloudBackend|None cloud)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kindref="compound">ControllerData</ref></type>
+          <declname>controller_data</declname>
+        </param>
+        <param>
+          <type>CloudBackend|None</type>
+          <declname>cloud</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Initialize the account.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="55" column="1" bodyfile="account.py" bodystart="57" bodyend="71"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a0b4a40c1a870fe2fd52a538f278708f0" compoundref="account_8py" startline="137">klyqa_ctl.account.Account._attr__settings_loaded_ts</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a0909afdb890efc18d77f8bdc13d10dc8" compoundref="account_8py" startline="94">klyqa_ctl.account.Account._attr_access_token</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" compoundref="account_8py" startline="127">klyqa_ctl.account.Account._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad117521203c694ca946b96598bd7aa11" compoundref="device_8py" startline="103">klyqa_ctl.devices.device.Device._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" compoundref="klyqa__ctl_8py" startline="119">klyqa_ctl.klyqa_ctl.Client._attr_cloud</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ae4afde55789d67ca141f32cd0f2c2493" compoundref="local_2connection__handler_8py" startline="111">local.connection_handler.LocalConnectionHandler._attr_controller_data</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a049f353b4bb0028e655ba38c7de0bc7e" compoundref="account_8py" startline="102">klyqa_ctl.account.Account._attr_devices</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a6493a246d69932bec84ca4e7b6b388fe" compoundref="local_2connection__handler_8py" startline="119">local.connection_handler.LocalConnectionHandler._attr_devices</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a9e836c37e871fde4bfa876715e5d98ba" compoundref="account_8py" startline="86">klyqa_ctl.account.Account._attr_password</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1af76aa7d7f0154a9c4cb5da8f07514e9a" compoundref="account_8py" startline="323">klyqa_ctl.account.Account._attr_settings</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a28518af1ac4261cd9cb4b2b52dd0db23" compoundref="account_8py" startline="78">klyqa_ctl.account.Account._attr_username</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a4d8817b0900560f1034addf01e65037b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.account.Account.username</definition>
+        <argsstring>(self)</argsstring>
+        <name>username</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="73" column="1" bodyfile="account.py" bodystart="73" bodyend="75"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a28518af1ac4261cd9cb4b2b52dd0db23" compoundref="account_8py" startline="78">klyqa_ctl.account.Account._attr_username</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" compoundref="account_8py" startline="260">klyqa_ctl.account.Account.username</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acba85b49678b6d37567985738f7becf3" compoundref="account_8py" startline="249" endline="278">klyqa_ctl.account.Account.read_username_cache</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a8b8e31d138df3ad2107f790d57d6d6ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.username</definition>
+        <argsstring>(self, str username)</argsstring>
+        <name>username</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>username</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="77" column="1" bodyfile="account.py" bodystart="77" bodyend="79"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" compoundref="account_8py" startline="260">klyqa_ctl.account.Account.username</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acba85b49678b6d37567985738f7becf3" compoundref="account_8py" startline="249" endline="278">klyqa_ctl.account.Account.read_username_cache</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1ab7c2e00758ea609ca93c2829ff12e3f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.account.Account.password</definition>
+        <argsstring>(self)</argsstring>
+        <name>password</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="81" column="1" bodyfile="account.py" bodystart="81" bodyend="83"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a9e836c37e871fde4bfa876715e5d98ba" compoundref="account_8py" startline="86">klyqa_ctl.account.Account._attr_password</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" compoundref="account_8py" startline="193">klyqa_ctl.account.Account.password</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" compoundref="account_8py" startline="350" endline="364">klyqa_ctl.account.Account.read_acc_settings_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" compoundref="account_8py" startline="185" endline="204">klyqa_ctl.account.Account.run_password_prompt</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a64e4bc7603ec8085564bb001c01aabdb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.password</definition>
+        <argsstring>(self, str password)</argsstring>
+        <name>password</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>password</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="85" column="1" bodyfile="account.py" bodystart="85" bodyend="87"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" compoundref="account_8py" startline="193">klyqa_ctl.account.Account.password</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" compoundref="account_8py" startline="350" endline="364">klyqa_ctl.account.Account.read_acc_settings_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" compoundref="account_8py" startline="185" endline="204">klyqa_ctl.account.Account.run_password_prompt</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1aadca9a95f1b2985123f4a644058a7e24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.account.Account.access_token</definition>
+        <argsstring>(self)</argsstring>
+        <name>access_token</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="89" column="1" bodyfile="account.py" bodystart="89" bodyend="91"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a0909afdb890efc18d77f8bdc13d10dc8" compoundref="account_8py" startline="94">klyqa_ctl.account.Account._attr_access_token</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" compoundref="account_8py" startline="236">klyqa_ctl.account.Account.access_token</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1ab6cb34881f5441c412446fdbf79e72c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.access_token</definition>
+        <argsstring>(self, str access_token)</argsstring>
+        <name>access_token</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>access_token</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="93" column="1" bodyfile="account.py" bodystart="93" bodyend="95"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" compoundref="account_8py" startline="236">klyqa_ctl.account.Account.access_token</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>dict[<ref refid="classstr" kindref="compound">str</ref>, <ref refid="classklyqa__ctl_1_1account_1_1AccountDevice" kindref="compound">AccountDevice</ref>]</type>
+        <definition> dict[str, AccountDevice] klyqa_ctl.account.Account.devices</definition>
+        <argsstring>(self)</argsstring>
+        <name>devices</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="97" column="1" bodyfile="account.py" bodystart="97" bodyend="99"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a049f353b4bb0028e655ba38c7de0bc7e" compoundref="account_8py" startline="102">klyqa_ctl.account.Account._attr_devices</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a6493a246d69932bec84ca4e7b6b388fe" compoundref="local_2connection__handler_8py" startline="119">local.connection_handler.LocalConnectionHandler._attr_devices</references>
+        <referencedby refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a5b4b4e18362cea70b456d2ffc78467a3" compoundref="account__control_8py" startline="28" endline="35">klyqa_ctl.account_control.AccountControl.__init__</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a0b582d0bf1523d1d0404867ab921539f" compoundref="local_2connection__handler_8py" startline="743" endline="822">local.connection_handler.LocalConnectionHandler.device_handle_local_tcp</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aaa16efea1dd2cf549168e5d8702fc670" compoundref="account_8py" startline="101" endline="103">klyqa_ctl.account.Account.devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a006615491c01ae305bbf34eb2fc47e09" compoundref="controller__data_8py" startline="100" endline="122">klyqa_ctl.controller_data.ControllerData.get_or_create_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" compoundref="account_8py" startline="301" endline="319">klyqa_ctl.account.Account.get_or_create_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4ce11db96280d000941a91cb37df2842" compoundref="local_2connection__handler_8py" startline="307" endline="407">local.connection_handler.LocalConnectionHandler.process_device_identity_package</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a40aba5774804e631745f63c3c91ec049" compoundref="klyqa__ctl_8py" startline="215" endline="311">klyqa_ctl.klyqa_ctl.Client.select_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" compoundref="account_8py" startline="529" endline="554">klyqa_ctl.account.Account.update_device_configs</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a46d51f33622ad0e952a66d0d1b91eb12" compoundref="account__control_8py" startline="139" endline="163">klyqa_ctl.account_control.AccountControl.update_device_configs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1aaa16efea1dd2cf549168e5d8702fc670" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.devices</definition>
+        <argsstring>(self, dict[str, AccountDevice] devices)</argsstring>
+        <name>devices</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>dict</type>
+          <declname>devices</declname>
+          <array>[str, AccountDevice]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="101" column="1" bodyfile="account.py" bodystart="101" bodyend="103"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" compoundref="account_8py" startline="97" endline="99">klyqa_ctl.account.Account.devices</references>
+        <referencedby refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a5b4b4e18362cea70b456d2ffc78467a3" compoundref="account__control_8py" startline="28" endline="35">klyqa_ctl.account_control.AccountControl.__init__</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a0b582d0bf1523d1d0404867ab921539f" compoundref="local_2connection__handler_8py" startline="743" endline="822">local.connection_handler.LocalConnectionHandler.device_handle_local_tcp</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a006615491c01ae305bbf34eb2fc47e09" compoundref="controller__data_8py" startline="100" endline="122">klyqa_ctl.controller_data.ControllerData.get_or_create_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" compoundref="account_8py" startline="301" endline="319">klyqa_ctl.account.Account.get_or_create_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4ce11db96280d000941a91cb37df2842" compoundref="local_2connection__handler_8py" startline="307" endline="407">local.connection_handler.LocalConnectionHandler.process_device_identity_package</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a40aba5774804e631745f63c3c91ec049" compoundref="klyqa__ctl_8py" startline="215" endline="311">klyqa_ctl.klyqa_ctl.Client.select_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" compoundref="account_8py" startline="529" endline="554">klyqa_ctl.account.Account.update_device_configs</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a46d51f33622ad0e952a66d0d1b91eb12" compoundref="account__control_8py" startline="139" endline="163">klyqa_ctl.account_control.AccountControl.update_device_configs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TypeJson|None</type>
+        <definition> TypeJson | None klyqa_ctl.account.Account.settings</definition>
+        <argsstring>(self)</argsstring>
+        <name>settings</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="105" column="1" bodyfile="account.py" bodystart="105" bodyend="107"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1af76aa7d7f0154a9c4cb5da8f07514e9a" compoundref="account_8py" startline="323">klyqa_ctl.account.Account._attr_settings</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" compoundref="account_8py" startline="350" endline="364">klyqa_ctl.account.Account.read_acc_settings_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a5579a3240709174c5dc7c501e3c5cd2f" compoundref="account_8py" startline="109" endline="111">klyqa_ctl.account.Account.settings</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" compoundref="account_8py" startline="326" endline="347">klyqa_ctl.account.Account.sync_acc_settings_to_controller</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a5579a3240709174c5dc7c501e3c5cd2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.settings</definition>
+        <argsstring>(self, TypeJson|None settings)</argsstring>
+        <name>settings</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>TypeJson|None</type>
+          <declname>settings</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="109" column="1" bodyfile="account.py" bodystart="109" bodyend="111"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" compoundref="account_8py" startline="105" endline="107">klyqa_ctl.account.Account.settings</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" compoundref="account_8py" startline="350" endline="364">klyqa_ctl.account.Account.read_acc_settings_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" compoundref="account_8py" startline="326" endline="347">klyqa_ctl.account.Account.sync_acc_settings_to_controller</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1ad770c5568b6816f1c1aaaf2830a511ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>asyncio.Lock|None</type>
+        <definition> asyncio.Lock | None klyqa_ctl.account.Account.settings_lock</definition>
+        <argsstring>(self)</argsstring>
+        <name>settings_lock</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="113" column="1" bodyfile="account.py" bodystart="113" bodyend="115"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kindref="compound">ControllerData</ref></type>
+        <definition> ControllerData klyqa_ctl.account.Account.controller_data</definition>
+        <argsstring>(self)</argsstring>
+        <name>controller_data</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return or set the controller data object.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="117" column="1" bodyfile="account.py" bodystart="117" bodyend="120"/>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ae4afde55789d67ca141f32cd0f2c2493" compoundref="local_2connection__handler_8py" startline="111">local.connection_handler.LocalConnectionHandler._attr_controller_data</references>
+        <referencedby refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1ad820bb0d181aeb158a3177323ee35cdf" compoundref="local__controller_8py" startline="26" endline="31">klyqa_ctl.local_controller.LocalController.__init__</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a566850b368080b6ff85ee2675aa9b3e2" compoundref="cloud_8py" startline="93" endline="116">cloud.CloudBackend.get_device_configs</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" compoundref="account_8py" startline="301" endline="319">klyqa_ctl.account.Account.get_or_create_device</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4ce11db96280d000941a91cb37df2842" compoundref="local_2connection__handler_8py" startline="307" endline="407">local.connection_handler.LocalConnectionHandler.process_device_identity_package</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" compoundref="account_8py" startline="185" endline="204">klyqa_ctl.account.Account.run_password_prompt</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a8db40a99748dc3cc160e5093da0f84e8" compoundref="cloud_8py" startline="199" endline="333">cloud.CloudBackend.send</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" compoundref="account_8py" startline="326" endline="347">klyqa_ctl.account.Account.sync_acc_settings_to_controller</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" compoundref="account_8py" startline="529" endline="554">klyqa_ctl.account.Account.update_device_configs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CloudBackend|None</type>
+        <definition> CloudBackend | None klyqa_ctl.account.Account.cloud</definition>
+        <argsstring>(self)</argsstring>
+        <name>cloud</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="122" column="1" bodyfile="account.py" bodystart="122" bodyend="124"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" compoundref="account_8py" startline="127">klyqa_ctl.account.Account._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1ad117521203c694ca946b96598bd7aa11" compoundref="device_8py" startline="103">klyqa_ctl.devices.device.Device._attr_cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a662a27da095d439cea492bb5723f3e66" compoundref="klyqa__ctl_8py" startline="119">klyqa_ctl.klyqa_ctl.Client._attr_cloud</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aca64ae054b0be49da2e7733012961429" compoundref="account_8py" startline="126" endline="128">klyqa_ctl.account.Account.cloud</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1aca64ae054b0be49da2e7733012961429" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.cloud</definition>
+        <argsstring>(self, CloudBackend|None cloud)</argsstring>
+        <name>cloud</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>CloudBackend|None</type>
+          <declname>cloud</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="126" column="1" bodyfile="account.py" bodystart="126" bodyend="128"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ab129f0608f5651109b893aed3671e00e" compoundref="klyqa__ctl_8py" startline="131" endline="144">klyqa_ctl.klyqa_ctl.Client.add_account</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1ad5c42cd8dd34ed1d6329040e164bfc2e" compoundref="klyqa__ctl_8py" startline="318" endline="594">klyqa_ctl.klyqa_ctl.Client.send_to_devices</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" compoundref="account_8py" startline="179" endline="184">klyqa_ctl.account.Account.shutdown</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.backend_connected</definition>
+        <argsstring>(self)</argsstring>
+        <name>backend_connected</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>General cloud intended to be there check.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="139" column="1" bodyfile="account.py" bodystart="139" bodyend="146"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" compoundref="account_8py" startline="236">klyqa_ctl.account.Account.access_token</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TypeJson|None</type>
+        <definition> TypeJson | None klyqa_ctl.account.Account.request_beared</definition>
+        <argsstring>(self, RequestMethod method, str url, **Any kwargs)</argsstring>
+        <name>request_beared</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>RequestMethod</type>
+          <declname>method</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>url</declname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>When the user logged in and an access token exists, use it for http
+requests.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="147" column="1" bodyfile="account.py" bodystart="149" bodyend="167"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" compoundref="account_8py" startline="236">klyqa_ctl.account.Account.access_token</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" compoundref="account_8py" startline="168" endline="178">klyqa_ctl.account.Account.get_beared_request_header</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a748c13aed7b2a5c9c605c81234633cb8" compoundref="account_8py" startline="561" endline="589">klyqa_ctl.account.Account.cloud_post_to_device</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a1450d1baa029967965be433e4efb5a6d" compoundref="account_8py" startline="471" endline="481">klyqa_ctl.account.Account.request_cloud_device_state</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" compoundref="account_8py" startline="529" endline="554">klyqa_ctl.account.Account.update_device_configs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TypeJson</type>
+        <definition> TypeJson klyqa_ctl.account.Account.get_beared_request_header</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_beared_request_header</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Set default request header with cloud access token.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="168" column="1" bodyfile="account.py" bodystart="168" bodyend="178"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" compoundref="account_8py" startline="236">klyqa_ctl.account.Account.access_token</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aad61dc89317a902a169bf4346944f1bd" compoundref="general_2general_8py" startline="26">klyqa_ctl.general.general.TypeJson</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.shutdown</definition>
+        <argsstring>(self)</argsstring>
+        <name>shutdown</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Logout again from klyqa account.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="179" column="1" bodyfile="account.py" bodystart="179" bodyend="184"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" compoundref="account_8py" startline="236">klyqa_ctl.account.Account.access_token</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.run_password_prompt</definition>
+        <argsstring>(self)</argsstring>
+        <name>run_password_prompt</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Check if password is giving or prompt for it.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="185" column="1" bodyfile="account.py" bodystart="185" bodyend="204"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" compoundref="account_8py" startline="117" endline="120">klyqa_ctl.account.Account.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" compoundref="cloud_8py" startline="62" endline="65">cloud.CloudBackend.controller_data</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" compoundref="local_2connection__handler_8py" startline="106" endline="108">local.connection_handler.LocalConnectionHandler.controller_data</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" compoundref="account_8py" startline="193">klyqa_ctl.account.Account.password</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.perform_login</definition>
+        <argsstring>(self)</argsstring>
+        <name>perform_login</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Perform login in cloud backend and request account settings.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="205" column="1" bodyfile="account.py" bodystart="205" bodyend="248"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" compoundref="account_8py" startline="193">klyqa_ctl.account.Account.password</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" compoundref="account_8py" startline="185" endline="204">klyqa_ctl.account.Account.run_password_prompt</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" compoundref="account_8py" startline="260">klyqa_ctl.account.Account.username</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1acba85b49678b6d37567985738f7becf3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.read_username_cache</definition>
+        <argsstring>(self)</argsstring>
+        <name>read_username_cache</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Read username from cache.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="249" column="1" bodyfile="account.py" bodystart="249" bodyend="278"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aa34dc716ff5492dc4f325a2ae1a73a4f" compoundref="general_2general_8py" startline="376" endline="451">klyqa_ctl.general.general.async_json_cache</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" compoundref="account_8py" startline="260">klyqa_ctl.account.Account.username</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.request_device_configs_from_acc_sets</definition>
+        <argsstring>(self)</argsstring>
+        <name>request_device_configs_from_acc_sets</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request the device config from the product ids in the
+account setting&apos;s devices.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="279" column="1" bodyfile="account.py" bodystart="279" bodyend="295"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" compoundref="account_8py" startline="105" endline="107">klyqa_ctl.account.Account.settings</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" compoundref="account_8py" startline="326" endline="347">klyqa_ctl.account.Account.sync_acc_settings_to_controller</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1account_1_1AccountDevice" kindref="compound">AccountDevice</ref></type>
+        <definition> AccountDevice klyqa_ctl.account.Account.get_or_create_device</definition>
+        <argsstring>(self, str unit_id, str product_id=&quot;&quot;, TypeJson|None device_sets=None)</argsstring>
+        <name>get_or_create_device</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>unit_id</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>product_id</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>TypeJson|None</type>
+          <declname>device_sets</declname>
+          <defval>None</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Look for account device or create it. Create connected controller
+device as well.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="296" column="1" bodyfile="account.py" bodystart="301" bodyend="319"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" compoundref="account_8py" startline="117" endline="120">klyqa_ctl.account.Account.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" compoundref="cloud_8py" startline="62" endline="65">cloud.CloudBackend.controller_data</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" compoundref="local_2connection__handler_8py" startline="106" endline="108">local.connection_handler.LocalConnectionHandler.controller_data</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" compoundref="account_8py" startline="97" endline="99">klyqa_ctl.account.Account.devices</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4d307f6bd0b66f3cb9fac3057fc87972" compoundref="local_2connection__handler_8py" startline="114" endline="116">local.connection_handler.LocalConnectionHandler.devices</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" compoundref="controller__data_8py" startline="64" endline="67">klyqa_ctl.controller_data.ControllerData.devices</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aad61dc89317a902a169bf4346944f1bd" compoundref="general_2general_8py" startline="26">klyqa_ctl.general.general.TypeJson</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" compoundref="account_8py" startline="326" endline="347">klyqa_ctl.account.Account.sync_acc_settings_to_controller</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a769e052989dfe17d0420b0a73128f309" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.set_settings</definition>
+        <argsstring>(self, TypeJson settings)</argsstring>
+        <name>set_settings</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>TypeJson</type>
+          <declname>settings</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Async setter for account settings.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="320" column="1" bodyfile="account.py" bodystart="320" bodyend="325"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" compoundref="account_8py" startline="350" endline="364">klyqa_ctl.account.Account.read_acc_settings_cache</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.sync_acc_settings_to_controller</definition>
+        <argsstring>(self)</argsstring>
+        <name>sync_acc_settings_to_controller</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Apply the account settings to the controller.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="326" column="1" bodyfile="account.py" bodystart="326" bodyend="347"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" compoundref="account_8py" startline="117" endline="120">klyqa_ctl.account.Account.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" compoundref="cloud_8py" startline="62" endline="65">cloud.CloudBackend.controller_data</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" compoundref="local_2connection__handler_8py" startline="106" endline="108">local.connection_handler.LocalConnectionHandler.controller_data</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a2c729589c8f5ab77e718bb060d26425d" compoundref="general_2general_8py" startline="486" endline="489">klyqa_ctl.general.general.format_uid</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1a006615491c01ae305bbf34eb2fc47e09" compoundref="controller__data_8py" startline="100" endline="122">klyqa_ctl.controller_data.ControllerData.get_or_create_device</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" compoundref="account_8py" startline="301" endline="319">klyqa_ctl.account.Account.get_or_create_device</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" compoundref="account_8py" startline="279" endline="295">klyqa_ctl.account.Account.request_device_configs_from_acc_sets</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" compoundref="account_8py" startline="105" endline="107">klyqa_ctl.account.Account.settings</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.read_acc_settings_cache</definition>
+        <argsstring>(self)</argsstring>
+        <name>read_acc_settings_cache</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Read user account settings cache.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="348" column="1" bodyfile="account.py" bodystart="350" bodyend="364"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aa34dc716ff5492dc4f325a2ae1a73a4f" compoundref="general_2general_8py" startline="376" endline="451">klyqa_ctl.general.general.async_json_cache</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" compoundref="account_8py" startline="193">klyqa_ctl.account.Account.password</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a769e052989dfe17d0420b0a73128f309" compoundref="account_8py" startline="320" endline="325">klyqa_ctl.account.Account.set_settings</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" compoundref="account_8py" startline="105" endline="107">klyqa_ctl.account.Account.settings</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a89f11e1fb836b679181b21b9c9f92472" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.update_devices</definition>
+        <argsstring>(self)</argsstring>
+        <name>update_devices</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Stub for later.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="365" column="1" bodyfile="account.py" bodystart="365" bodyend="369"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a492d7cd1aff0fe4d6017d9f9da91082b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.read_cache</definition>
+        <argsstring>(self)</argsstring>
+        <name>read_cache</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get cached account data for login and check existing username and
+password.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="370" column="1" bodyfile="account.py" bodystart="370" bodyend="378"/>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1ac0ecb3d158306aa17e4b8101425a7302" compoundref="account_8py" startline="379" endline="383">klyqa_ctl.account.Account.init</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1ac0ecb3d158306aa17e4b8101425a7302" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.init</definition>
+        <argsstring>(self)</argsstring>
+        <name>init</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Initialize account.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="379" column="1" bodyfile="account.py" bodystart="379" bodyend="383"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a492d7cd1aff0fe4d6017d9f9da91082b" compoundref="account_8py" startline="370" endline="378">klyqa_ctl.account.Account.read_cache</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.device_request_and_print</definition>
+        <argsstring>(self, AccountDevice dev, bool print_onboarded_devices=False, int req_timeout=30)</argsstring>
+        <name>device_request_and_print</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1account_1_1AccountDevice" kindref="compound">AccountDevice</ref></type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>print_onboarded_devices</declname>
+          <defval>False</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>req_timeout</declname>
+          <defval>30</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request account device&apos;s states and print them.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="384" column="1" bodyfile="account.py" bodystart="389" bodyend="428"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" compoundref="account_8py" startline="139" endline="146">klyqa_ctl.account.Account.backend_connected</references>
+        <references refid="classklyqa__ctl_1_1account__control_1_1AccountControl_1a8938cb44ea82c6687990f061dd99828e" compoundref="account__control_8py" startline="136" endline="138">klyqa_ctl.account_control.AccountControl.backend_connected</references>
+        <references refid="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" compoundref="cloud_8py" startline="66" endline="69">cloud.CloudBackend.backend_connected</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a1450d1baa029967965be433e4efb5a6d" compoundref="account_8py" startline="471" endline="481">klyqa_ctl.account.Account.request_cloud_device_state</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" compoundref="account_8py" startline="429" endline="468">klyqa_ctl.account.Account.login</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.login</definition>
+        <argsstring>(self, bool print_onboarded_devices=False)</argsstring>
+        <name>login</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>print_onboarded_devices</declname>
+          <defval>False</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Login on klyqa account, get account settings, get onboarded
+device profiles, print all devices if parameter set.
+
+Params:
+    print_onboarded_devices:   print onboarded devices from the
+        klyqa account to the stdout
+
+Returns:
+    true:  on success of the login
+    false: on error
+</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="429" column="1" bodyfile="account.py" bodystart="429" bodyend="468"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aa34dc716ff5492dc4f325a2ae1a73a4f" compoundref="general_2general_8py" startline="376" endline="451">klyqa_ctl.general.general.async_json_cache</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" compoundref="account_8py" startline="97" endline="99">klyqa_ctl.account.Account.devices</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4d307f6bd0b66f3cb9fac3057fc87972" compoundref="local_2connection__handler_8py" startline="114" endline="116">local.connection_handler.LocalConnectionHandler.devices</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" compoundref="controller__data_8py" startline="64" endline="67">klyqa_ctl.controller_data.ControllerData.devices</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" compoundref="account_8py" startline="205" endline="248">klyqa_ctl.account.Account.perform_login</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a492d7cd1aff0fe4d6017d9f9da91082b" compoundref="account_8py" startline="370" endline="378">klyqa_ctl.account.Account.read_cache</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" compoundref="account_8py" startline="260">klyqa_ctl.account.Account.username</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a1450d1baa029967965be433e4efb5a6d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TypeJson|None</type>
+        <definition> TypeJson | None klyqa_ctl.account.Account.request_cloud_device_state</definition>
+        <argsstring>(self, str device_id, int timeout=30, **Any kwargs)</argsstring>
+        <name>request_cloud_device_state</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>device_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>timeout</declname>
+          <defval>30</defval>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request device state from the cloud.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="469" column="1" bodyfile="account.py" bodystart="471" bodyend="481"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool klyqa_ctl.account.Account.request_account_settings_eco</definition>
+        <argsstring>(self, int scan_interval=60)</argsstring>
+        <name>request_account_settings_eco</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>scan_interval</declname>
+          <defval>60</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Only send a new account settings http request when the last update
+was after the scan interval.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="482" column="1" bodyfile="account.py" bodystart="484" bodyend="507"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a422b216be3c73d99668bc6d2501e17a0" compoundref="account_8py" startline="130" endline="132">klyqa_ctl.account.Account._settings_loaded_ts</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="namespaceklyqa__ctl_1_1conf_1aa5e016064b19c99705cafd006ae25857" compoundref="conf_8py" startline="12">klyqa_ctl.conf.release</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1ad770c5568b6816f1c1aaaf2830a511ef" compoundref="account_8py" startline="113" endline="115">klyqa_ctl.account.Account.settings_lock</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" compoundref="account_8py" startline="510" endline="528">klyqa_ctl.account.Account.update_account_settings</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.update_account_settings</definition>
+        <argsstring>(self, TypeJson add_to_cache={})</argsstring>
+        <name>update_account_settings</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>TypeJson</type>
+          <declname>add_to_cache</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request the account settings from cloud and apply it.
+Get device configs from the product ids as well.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="508" column="1" bodyfile="account.py" bodystart="510" bodyend="528"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aa34dc716ff5492dc4f325a2ae1a73a4f" compoundref="general_2general_8py" startline="376" endline="451">klyqa_ctl.general.general.async_json_cache</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" compoundref="account_8py" startline="122" endline="124">klyqa_ctl.account.Account.cloud</references>
+        <references refid="classklyqa__ctl_1_1devices_1_1device_1_1Device_1a574647293c61d5f53e153d48ddb31f65" compoundref="device_8py" startline="98" endline="100">klyqa_ctl.devices.device.Device.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" compoundref="general_2general_8py" startline="111" endline="113">klyqa_ctl.general.general.Command.cloud</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand_1a6bbc8b1333f0a45ce38f1e81a6093bc1" compoundref="general_2general_8py" startline="125" endline="129">klyqa_ctl.general.general.CloudStateCommand.cloud</references>
+        <references refid="classklyqa__ctl_1_1klyqa__ctl_1_1Client_1a7d8a302d936e8e1889f175bac259f565" compoundref="klyqa__ctl_8py" startline="114" endline="116">klyqa_ctl.klyqa_ctl.Client.cloud</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a769e052989dfe17d0420b0a73128f309" compoundref="account_8py" startline="320" endline="325">klyqa_ctl.account.Account.set_settings</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" compoundref="account_8py" startline="105" endline="107">klyqa_ctl.account.Account.settings</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.update_device_configs</definition>
+        <argsstring>(self)</argsstring>
+        <name>update_device_configs</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request the account settings from the cloud.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="529" column="1" bodyfile="account.py" bodystart="529" bodyend="554"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" compoundref="account_8py" startline="117" endline="120">klyqa_ctl.account.Account.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" compoundref="cloud_8py" startline="62" endline="65">cloud.CloudBackend.controller_data</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" compoundref="local_2connection__handler_8py" startline="106" endline="108">local.connection_handler.LocalConnectionHandler.controller_data</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" compoundref="account_8py" startline="97" endline="99">klyqa_ctl.account.Account.devices</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4d307f6bd0b66f3cb9fac3057fc87972" compoundref="local_2connection__handler_8py" startline="114" endline="116">local.connection_handler.LocalConnectionHandler.devices</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1adf7af423388a9a883c428cf71e217650" compoundref="controller__data_8py" startline="64" endline="67">klyqa_ctl.controller_data.ControllerData.devices</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a748c13aed7b2a5c9c605c81234633cb8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.cloud_post_to_device</definition>
+        <argsstring>(self, AccountDevice acc_dev, TypeJson json_message, str target, **Any kwargs)</argsstring>
+        <name>cloud_post_to_device</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1account_1_1AccountDevice" kindref="compound">AccountDevice</ref></type>
+          <declname>acc_dev</declname>
+        </param>
+        <param>
+          <type>TypeJson</type>
+          <declname>json_message</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Post json message to account device via cloud.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="555" column="1" bodyfile="account.py" bodystart="561" bodyend="589"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a2c729589c8f5ab77e718bb060d26425d" compoundref="general_2general_8py" startline="486" endline="489">klyqa_ctl.general.general.format_uid</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" compoundref="account_8py" startline="149" endline="167">klyqa_ctl.account.Account.request_beared</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a372d813db2141719743dfe088dbe9552" compoundref="account_8py" startline="596" endline="614">klyqa_ctl.account.Account.cloud_post_command_to_dev</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a372d813db2141719743dfe088dbe9552" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account.cloud_post_command_to_dev</definition>
+        <argsstring>(self, AccountDevice device, Command command, CLOUD_DEVICE_TARGETS|None target=None, **Any kwargs)</argsstring>
+        <name>cloud_post_command_to_dev</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1account_1_1AccountDevice" kindref="compound">AccountDevice</ref></type>
+          <declname>device</declname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1general_1_1general_1_1Command" kindref="compound">Command</ref></type>
+          <declname>command</declname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS" kindref="compound">CLOUD_DEVICE_TARGETS</ref>|None</type>
+          <declname>target</declname>
+          <defval>None</defval>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Post command to account device via cloud.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="590" column="1" bodyfile="account.py" bodystart="596" bodyend="614"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a748c13aed7b2a5c9c605c81234633cb8" compoundref="account_8py" startline="561" endline="589">klyqa_ctl.account.Account.cloud_post_to_device</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1ab0537986f3010cd63886b8e48a64c379" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1account_1_1Account" kindref="compound">Account</ref></type>
+        <definition> Account klyqa_ctl.account.Account.create_default</definition>
+        <argsstring>(Any cls, ControllerData controller_data, CloudBackend|None cloud, str username=&quot;&quot;, str password=&quot;&quot;, bool print_onboarded_devices=False)</argsstring>
+        <name>create_default</name>
+        <param>
+          <type>Any</type>
+          <declname>cls</declname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kindref="compound">ControllerData</ref></type>
+          <declname>controller_data</declname>
+        </param>
+        <param>
+          <type>CloudBackend|None</type>
+          <declname>cloud</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>username</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>password</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>print_onboarded_devices</declname>
+          <defval>False</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create and initialize an account. Send login for access token.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="622" column="1" bodyfile="account.py" bodystart="629" bodyend="642"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1a422b216be3c73d99668bc6d2501e17a0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>datetime.datetime|None</type>
+        <definition> datetime.datetime | None klyqa_ctl.account.Account._settings_loaded_ts</definition>
+        <argsstring>(self)</argsstring>
+        <name>_settings_loaded_ts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="130" column="1" bodyfile="account.py" bodystart="130" bodyend="132"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a0b4a40c1a870fe2fd52a538f278708f0" compoundref="account_8py" startline="137">klyqa_ctl.account.Account._attr__settings_loaded_ts</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1af0575ef9bdf5304a26661f4a893b0c53" compoundref="account_8py" startline="136" endline="138">klyqa_ctl.account.Account._settings_loaded_ts</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1account_1_1Account_1af0575ef9bdf5304a26661f4a893b0c53" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.account.Account._settings_loaded_ts</definition>
+        <argsstring>(self, datetime.datetime _settings_loaded_ts)</argsstring>
+        <name>_settings_loaded_ts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>datetime.datetime</type>
+          <declname>_settings_loaded_ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="134" column="1" bodyfile="account.py" bodystart="136" bodyend="138"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a422b216be3c73d99668bc6d2501e17a0" compoundref="account_8py" startline="130" endline="132">klyqa_ctl.account.Account._settings_loaded_ts</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" compoundref="account_8py" startline="484" endline="507">klyqa_ctl.account.Account.request_account_settings_eco</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Account</verbatim> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.account.Account</label>
+        <link refid="classklyqa__ctl_1_1account_1_1Account"/>
+      </node>
+    </collaborationgraph>
+    <location file="account.py" line="44" column="1" bodyfile="account.py" bodystart="44" bodyend="642"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a127e9f0cf7373339272f06e8db6f276c" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a0b4a40c1a870fe2fd52a538f278708f0" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr__settings_loaded_ts</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a0909afdb890efc18d77f8bdc13d10dc8" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr_access_token</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ae0fff3653f1c52e727716b44deb88f4f" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr_cloud</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a049f353b4bb0028e655ba38c7de0bc7e" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr_devices</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a9e836c37e871fde4bfa876715e5d98ba" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr_password</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1af76aa7d7f0154a9c4cb5da8f07514e9a" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr_settings</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a28518af1ac4261cd9cb4b2b52dd0db23" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_attr_username</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a422b216be3c73d99668bc6d2501e17a0" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_settings_loaded_ts</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1af0575ef9bdf5304a26661f4a893b0c53" prot="private" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>_settings_loaded_ts</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1acfbc70677260b7607512953ade51a257" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>access_token</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1aadca9a95f1b2985123f4a644058a7e24" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>access_token</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ab6cb34881f5441c412446fdbf79e72c2" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>access_token</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a19bd2d6d0ae6a4e738c4d40453557606" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>backend_connected</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1aeb463ade6756bf093a809634f64c6ef6" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1aca64ae054b0be49da2e7733012961429" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a372d813db2141719743dfe088dbe9552" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>cloud_post_command_to_dev</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a748c13aed7b2a5c9c605c81234633cb8" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>cloud_post_to_device</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>controller_data</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ab0537986f3010cd63886b8e48a64c379" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>create_default</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>device_request_and_print</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a2265c38daf6829c96c852ad4a288b42d" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>devices</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1aaa16efea1dd2cf549168e5d8702fc670" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>devices</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ad608e3ee0ba1199f509e644a11081724" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>get_beared_request_header</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>get_or_create_device</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ac0ecb3d158306aa17e4b8101425a7302" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>init</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a0b171a600e4342d035ad26c39b384b38" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>login</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ac296a0b895a02f3706118b30afb9d875" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>password</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ab7c2e00758ea609ca93c2829ff12e3f3" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>password</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a64e4bc7603ec8085564bb001c01aabdb" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>password</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1acbc09f2b1b4cb6b7ed771b96ea79613b" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>perform_login</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1af365113f9fdd0cf5e66f6e9ab427df78" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>read_acc_settings_cache</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a492d7cd1aff0fe4d6017d9f9da91082b" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>read_cache</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1acba85b49678b6d37567985738f7becf3" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>read_username_cache</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1aeca1011f6c6e2f6bcdb2136ef48bc7fd" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>request_account_settings_eco</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a73506bd234f8e819e138c2bd663179b8" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>request_beared</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a1450d1baa029967965be433e4efb5a6d" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>request_cloud_device_state</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a6f7d45c2ee71e0c761145bea5084dda6" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>request_device_configs_from_acc_sets</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>run_password_prompt</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a769e052989dfe17d0420b0a73128f309" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>set_settings</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a3d4ca77937552eadd9f6a1d906eaf565" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>settings</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a5579a3240709174c5dc7c501e3c5cd2f" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>settings</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1ad770c5568b6816f1c1aaaf2830a511ef" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>settings_lock</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1af0e05ae15ad46c4b1b3bbb69b6bb7151" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>shutdown</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>sync_acc_settings_to_controller</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1af101070a97d556e95978748475933f72" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>update_account_settings</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>update_device_configs</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a89f11e1fb836b679181b21b9c9f92472" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>update_devices</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a088eb203a8882492412861b2bf1503e3" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>username</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a4d8817b0900560f1034addf01e65037b" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>username</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1Account_1a8b8e31d138df3ad2107f790d57d6d6ce" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::Account</scope><name>username</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

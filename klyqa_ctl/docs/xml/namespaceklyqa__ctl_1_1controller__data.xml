@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1controller__data" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::controller_data</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" prot="public">klyqa_ctl::controller_data::ControllerData</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Controller data.</verbatim> </para>
+    </detaileddescription>
+    <location file="controller_data.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -78,7 +78,8 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for cloud.CloudBackend:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -105,8 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a890d2669fa6b9550af8e14a17413aea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85f7e46764602842576d0a96ca804ea4"><td class="memItemLeft" align="right" valign="top">TypeJson|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcloud_1_1CloudBackend.html#a85f7e46764602842576d0a96ca804ea4">load_http_response</a> (self, httpx.Response response)</td></tr>
 <tr class="separator:a85f7e46764602842576d0a96ca804ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55182bd23ebf03d54d1754fffe7ca101"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcloud_1_1CloudBackend.html#a55182bd23ebf03d54d1754fffe7ca101">cloud_send</a> (self, argparse.Namespace args, set[<a class="el" href="classstr.html">str</a>] target_device_uids, set[<a class="el" href="classstr.html">str</a>] to_send_device_uids, <a class="el" href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">int</a> timeout_ms, list message_queue_tx_state_cloud, list message_queue_tx_command_cloud)</td></tr>
-<tr class="separator:a55182bd23ebf03d54d1754fffe7ca101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db40a99748dc3cc160e5093da0f84e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcloud_1_1CloudBackend.html#a8db40a99748dc3cc160e5093da0f84e8">send</a> (self, argparse.Namespace args, set[<a class="el" href="classstr.html">str</a>] target_device_uids, set[<a class="el" href="classstr.html">str</a>] to_send_device_uids, <a class="el" href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">int</a> timeout_ms, list message_queue_tx_state_cloud, list message_queue_tx_command_cloud)</td></tr>
+<tr class="separator:a8db40a99748dc3cc160e5093da0f84e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a549f101de99a135607eace6d67482c1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcloud_1_1CloudBackend.html">CloudBackend</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcloud_1_1CloudBackend.html#a549f101de99a135607eace6d67482c1f">create_default</a> (Any cls, <a class="el" href="classklyqa__ctl_1_1controller__data_1_1ControllerData.html">ControllerData</a> <a class="el" href="classcloud_1_1CloudBackend.html#aef174fe1ba95fff13c7901ff56354ec9">controller_data</a>, <a class="el" href="classstr.html">str</a> <a class="el" href="classcloud_1_1CloudBackend.html#ac4e934fc6667245f1a6fde13e5ab089e">host</a>=PROD_HOST)</td></tr>
 <tr class="separator:a549f101de99a135607eace6d67482c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -183,208 +184,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a55182bd23ebf03d54d1754fffe7ca101"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55182bd23ebf03d54d1754fffe7ca101">&#9670;&nbsp;</a></span>cloud_send()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> bool cloud.CloudBackend.cloud_send </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">argparse.Namespace&#160;</td>
-          <td class="paramname"><em>args</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">set[<a class="el" href="classstr.html">str</a>]&#160;</td>
-          <td class="paramname"><em>target_device_uids</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">set[
-            <a class="el" href="classstr.html">str</a>
-        ]&#160;</td>
-          <td class="paramname"><em>to_send_device_uids</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">int</a>&#160;</td>
-          <td class="paramname"><em>timeout_ms</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">list&#160;</td>
-          <td class="paramname"><em>message_queue_tx_state_cloud</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">list&#160;</td>
-          <td class="paramname"><em>message_queue_tx_command_cloud</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Cloud message processing.</pre> <div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    ) -&gt; bool:</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Cloud message processing.&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        queue_printer: EventQueuePrinter = EventQueuePrinter()</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        response_queue: list[Any] = []</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        success: bool = <span class="keyword">False</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        async <span class="keyword">def </span>_cloud_post(</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            device: Device, json_message: TypeJson, target: str</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        ) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="comment"># TODO: distinguish between standalone devicesettings like</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="comment"># cloudDeviceId and localDeviceId, and account settings per account</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            cloud_device_id: str = device.acc_sets[<span class="stringliteral">&quot;cloudDeviceId&quot;</span>]</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            unit_id: str = <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a2c729589c8f5ab77e718bb060d26425d">format_uid</a>(device.acc_sets[<span class="stringliteral">&quot;localDeviceId&quot;</span>])</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            LOGGER.info(</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                f<span class="stringliteral">&quot;Post {target} to the device &#39;{cloud_device_id}&#39; (unit_id:&quot;</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                f<span class="stringliteral">&quot; {unit_id}) over the cloud.&quot;</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            )</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            response: TypeJson = {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                cloud_device_id: await self.request(</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                    RequestMethod.POST,</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                    url=f<span class="stringliteral">&quot;device/{cloud_device_id}/{target}&quot;</span>,</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                    json=json_message,</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                )</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            }</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            resp_print: str = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            name: str = device.u_id</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keywordflow">if</span> device.acc_sets <span class="keywordflow">and</span> <span class="stringliteral">&quot;name&quot;</span> <span class="keywordflow">in</span> device.acc_sets:</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                name = device.acc_sets[<span class="stringliteral">&quot;name&quot;</span>]</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            resp_print = f<span class="stringliteral">&#39;Device &quot;{name}&quot; cloud response:&#39;</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            resp_print = json.dumps(response, sort_keys=<span class="keyword">True</span>, indent=4)</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            device.cloud.received_packages.append(response)</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            response_queue.append(resp_print)</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            queue_printer.print(resp_print)</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        async <span class="keyword">def </span>cloud_post(</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            device: Device, json_message: TypeJson, target: str</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        ) -&gt; int:</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">if</span> <span class="keywordflow">not</span> await device.use_lock():</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                LOGGER.error(</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                    f<span class="stringliteral">&quot;Couldn&#39;t get use lock for device {device.get_name()})&quot;</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                )</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                <span class="keywordflow">return</span> 1</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                await _cloud_post(device, json_message, target)</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <span class="keywordflow">except</span> CancelledError:</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                LOGGER.error(</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                    <span class="stringliteral">&quot;Cancelled cloud send &quot;</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                    + (device.u_id <span class="keywordflow">if</span> device.u_id <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                    + <span class="stringliteral">&quot;.&quot;</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                )</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">finally</span>:</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                device.use_unlock()</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            <span class="keywordflow">return</span> 0</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        started: datetime.datetime = datetime.datetime.now()</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="comment"># timeout_ms = 30000</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        async <span class="keyword">def </span>process_cloud_messages(target_uids: set[str]) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            loop: AbstractEventLoop = asyncio.get_event_loop()</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            threads: list[Any] = []</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            target_devices: list[Device] = [</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                b</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">for</span> b <span class="keywordflow">in</span> self.controller_data.devices.values()</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keywordflow">for</span> t <span class="keywordflow">in</span> target_uids</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                <span class="keywordflow">if</span> b.u_id == t</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            ]</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            <span class="keyword">def </span>create_post_threads(</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                target: str, msg: TypeJson</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            ) -&gt; list[tuple[Task[int], Device]]:</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keywordflow">return</span> [</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    (loop.create_task(cloud_post(b, msg, target)), b)</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                    <span class="keywordflow">for</span> b <span class="keywordflow">in</span> target_devices</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                ]</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            state_payload_message = dict(</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                ChainMap(*message_queue_tx_state_cloud)</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            )</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="comment"># state_payload_message = (</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="comment">#     json.loads(*message_queue_tx_state_cloud)</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            <span class="comment">#     if message_queue_tx_state_cloud</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="comment">#     else &quot;&quot;</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="comment"># )</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            command_payload_message = dict(</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                ChainMap(*message_queue_tx_command_cloud)</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            )</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <span class="comment"># command_payload_message = (</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="comment">#     json.loads(*message_queue_tx_command_cloud)</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="comment">#     if message_queue_tx_command_cloud</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="comment">#     else &quot;&quot;</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="comment"># )</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">if</span> state_payload_message:</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                threads.extend(</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                    create_post_threads(</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                        <span class="stringliteral">&quot;state&quot;</span>, {<span class="stringliteral">&quot;payload&quot;</span>: state_payload_message}</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                    )</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                )</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            <span class="keywordflow">if</span> command_payload_message:</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                threads.extend(</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                    create_post_threads(<span class="stringliteral">&quot;command&quot;</span>, command_payload_message)</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                )</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            count: int = 0</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            timeout: float = timeout_ms / 1000</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            <span class="keywordflow">for</span> t, device <span class="keywordflow">in</span> threads:</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                count = count + 1</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                <span class="comment"># wait at most timeout_ms wanted minus seconds elapsed since</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                <span class="comment"># sending</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    await asyncio.wait_for(</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                        t,</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                        timeout=timeout</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                        - (datetime.datetime.now() - started).seconds,</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    )</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">except</span> asyncio.TimeoutError:</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    LOGGER.error(f<span class="stringliteral">&#39;Timeout for &quot;{device.get_name()}&quot;!&#39;</span>)</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    t.cancel()</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                <span class="keywordflow">except</span> Exception:</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                    <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#ad6b753e482e539892c57f8144cf213cb">task_log_trace_ex</a>()</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        await process_cloud_messages(</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            target_device_uids <span class="keywordflow">if</span> args.cloud <span class="keywordflow">else</span> to_send_device_uids</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        )</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="comment"># if there are still target devices that the local send couldn&#39;t</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="comment"># reach, try send the to_send_device_uids via cloud</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        queue_printer.stop()</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keywordflow">if</span> len(response_queue):</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            success = <span class="keyword">True</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordflow">return</span> success</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1general_html_a2c729589c8f5ab77e718bb060d26425d"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1general.html#a2c729589c8f5ab77e718bb060d26425d">klyqa_ctl.general.general.format_uid</a></div><div class="ttdeci">Any format_uid(str text, **Any kwargs)</div><div class="ttdef"><b>Definition:</b> general.py:486</div></div>
-<div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1general_html_ad6b753e482e539892c57f8144cf213cb"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1general.html#ad6b753e482e539892c57f8144cf213cb">klyqa_ctl.general.general.task_log_trace_ex</a></div><div class="ttdeci">None task_log_trace_ex()</div><div class="ttdef"><b>Definition:</b> general.py:565</div></div>
-</div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101_cgraph.svg" width="100%" height="540"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
 <a id="aef174fe1ba95fff13c7901ff56354ec9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef174fe1ba95fff13c7901ff56354ec9">&#9670;&nbsp;</a></span>controller_data()</h2>
 
@@ -407,7 +206,8 @@ Here is the call graph for this function:</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -606,7 +406,8 @@ Here is the call graph for this function:</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -633,7 +434,8 @@ Here is the caller graph for this function:</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e_icgraph.svg" width="100%" height="431"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e_icgraph.svg" width="100%" height="430"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -674,7 +476,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1_icgraph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1_icgraph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -838,6 +641,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#ad6b753e482e539892c57f8144cf213cb">task_log_trace_ex</a>()</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">return</span> response</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1general_html_ad6b753e482e539892c57f8144cf213cb"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1general.html#ad6b753e482e539892c57f8144cf213cb">klyqa_ctl.general.general.task_log_trace_ex</a></div><div class="ttdeci">None task_log_trace_ex()</div><div class="ttdef"><b>Definition:</b> general.py:565</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -846,7 +650,210 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a8db40a99748dc3cc160e5093da0f84e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db40a99748dc3cc160e5093da0f84e8">&#9670;&nbsp;</a></span>send()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> bool cloud.CloudBackend.send </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">argparse.Namespace&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">set[<a class="el" href="classstr.html">str</a>]&#160;</td>
+          <td class="paramname"><em>target_device_uids</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">set[
+            <a class="el" href="classstr.html">str</a>
+        ]&#160;</td>
+          <td class="paramname"><em>to_send_device_uids</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">int</a>&#160;</td>
+          <td class="paramname"><em>timeout_ms</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">list&#160;</td>
+          <td class="paramname"><em>message_queue_tx_state_cloud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">list&#160;</td>
+          <td class="paramname"><em>message_queue_tx_command_cloud</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Cloud message processing.</pre> <div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    ) -&gt; bool:</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Cloud message processing.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        queue_printer: EventQueuePrinter = EventQueuePrinter()</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        response_queue: list[Any] = []</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        success: bool = <span class="keyword">False</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        async <span class="keyword">def </span>_cloud_post(</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            device: Device, json_message: TypeJson, target: str</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        ) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="comment"># TODO: distinguish between standalone devicesettings like</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="comment"># cloudDeviceId and localDeviceId, and account settings per account</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            cloud_device_id: str = device.acc_sets[<span class="stringliteral">&quot;cloudDeviceId&quot;</span>]</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            unit_id: str = <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a2c729589c8f5ab77e718bb060d26425d">format_uid</a>(device.acc_sets[<span class="stringliteral">&quot;localDeviceId&quot;</span>])</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            LOGGER.info(</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                f<span class="stringliteral">&quot;Post {target} to the device &#39;{cloud_device_id}&#39; (unit_id:&quot;</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                f<span class="stringliteral">&quot; {unit_id}) over the cloud.&quot;</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            )</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            response: TypeJson = {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                cloud_device_id: await self.request(</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                    RequestMethod.POST,</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                    url=f<span class="stringliteral">&quot;device/{cloud_device_id}/{target}&quot;</span>,</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                    json=json_message,</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                )</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            }</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            resp_print: str = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            name: str = device.u_id</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keywordflow">if</span> device.acc_sets <span class="keywordflow">and</span> <span class="stringliteral">&quot;name&quot;</span> <span class="keywordflow">in</span> device.acc_sets:</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                name = device.acc_sets[<span class="stringliteral">&quot;name&quot;</span>]</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            resp_print = f<span class="stringliteral">&#39;Device &quot;{name}&quot; cloud response:&#39;</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            resp_print = json.dumps(response, sort_keys=<span class="keyword">True</span>, indent=4)</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            device.cloud.received_packages.append(response)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            response_queue.append(resp_print)</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            queue_printer.print(resp_print)</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        async <span class="keyword">def </span>cloud_post(</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            device: Device, json_message: TypeJson, target: str</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        ) -&gt; int:</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">if</span> <span class="keywordflow">not</span> await device.use_lock():</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                LOGGER.error(</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                    f<span class="stringliteral">&quot;Couldn&#39;t get use lock for device {device.get_name()})&quot;</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                )</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                <span class="keywordflow">return</span> 1</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                await _cloud_post(device, json_message, target)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <span class="keywordflow">except</span> CancelledError:</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                LOGGER.error(</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                    <span class="stringliteral">&quot;Cancelled cloud send &quot;</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                    + (device.u_id <span class="keywordflow">if</span> device.u_id <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                    + <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                )</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">finally</span>:</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                device.use_unlock()</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            <span class="keywordflow">return</span> 0</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        started: datetime.datetime = datetime.datetime.now()</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="comment"># timeout_ms = 30000</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        async <span class="keyword">def </span>process_cloud_messages(target_uids: set[str]) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            loop: AbstractEventLoop = asyncio.get_event_loop()</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            threads: list[Any] = []</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            target_devices: list[Device] = [</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                b</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">for</span> b <span class="keywordflow">in</span> self.controller_data.devices.values()</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keywordflow">for</span> t <span class="keywordflow">in</span> target_uids</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                <span class="keywordflow">if</span> b.u_id == t</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            ]</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            <span class="keyword">def </span>create_post_threads(</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                target: str, msg: TypeJson</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            ) -&gt; list[tuple[Task[int], Device]]:</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keywordflow">return</span> [</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    (loop.create_task(cloud_post(b, msg, target)), b)</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                    <span class="keywordflow">for</span> b <span class="keywordflow">in</span> target_devices</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                ]</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            state_payload_message = dict(</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                ChainMap(*message_queue_tx_state_cloud)</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            )</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="comment"># state_payload_message = (</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="comment">#     json.loads(*message_queue_tx_state_cloud)</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            <span class="comment">#     if message_queue_tx_state_cloud</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="comment">#     else &quot;&quot;</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="comment"># )</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            command_payload_message = dict(</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                ChainMap(*message_queue_tx_command_cloud)</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            )</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <span class="comment"># command_payload_message = (</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="comment">#     json.loads(*message_queue_tx_command_cloud)</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="comment">#     if message_queue_tx_command_cloud</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="comment">#     else &quot;&quot;</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="comment"># )</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">if</span> state_payload_message:</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                threads.extend(</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                    create_post_threads(</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                        <span class="stringliteral">&quot;state&quot;</span>, {<span class="stringliteral">&quot;payload&quot;</span>: state_payload_message}</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                    )</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                )</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            <span class="keywordflow">if</span> command_payload_message:</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                threads.extend(</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                    create_post_threads(<span class="stringliteral">&quot;command&quot;</span>, command_payload_message)</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                )</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            count: int = 0</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            timeout: float = timeout_ms / 1000</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            <span class="keywordflow">for</span> t, device <span class="keywordflow">in</span> threads:</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                count = count + 1</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                <span class="comment"># wait at most timeout_ms wanted minus seconds elapsed since</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                <span class="comment"># sending</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    await asyncio.wait_for(</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                        t,</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                        timeout=timeout</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                        - (datetime.datetime.now() - started).seconds,</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    )</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">except</span> asyncio.TimeoutError:</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    LOGGER.error(f<span class="stringliteral">&#39;Timeout for &quot;{device.get_name()}&quot;!&#39;</span>)</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    t.cancel()</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                <span class="keywordflow">except</span> Exception:</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                    <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#ad6b753e482e539892c57f8144cf213cb">task_log_trace_ex</a>()</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        await process_cloud_messages(</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            target_device_uids <span class="keywordflow">if</span> args.cloud <span class="keywordflow">else</span> to_send_device_uids</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        )</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="comment"># if there are still target devices that the local send couldn&#39;t</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="comment"># reach, try send the to_send_device_uids via cloud</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        queue_printer.stop()</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keywordflow">if</span> len(response_queue):</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            success = <span class="keyword">True</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordflow">return</span> success</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
+<div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1general_html_a2c729589c8f5ab77e718bb060d26425d"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1general.html#a2c729589c8f5ab77e718bb060d26425d">klyqa_ctl.general.general.format_uid</a></div><div class="ttdeci">Any format_uid(str text, **Any kwargs)</div><div class="ttdef"><b>Definition:</b> general.py:486</div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classcloud_1_1CloudBackend_a8db40a99748dc3cc160e5093da0f84e8_cgraph.svg" width="100%" height="540"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>

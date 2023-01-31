@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceconnection__handler" kind="namespace" language="Python">
+    <compoundname>connection_handler</compoundname>
+    <innerclass refid="classconnection__handler_1_1ConnectionHandler" prot="public">connection_handler::ConnectionHandler</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>General connection handler</verbatim> </para>
+    </detaileddescription>
+    <location file="communication/connection_handler.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

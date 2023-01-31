@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacelocal_1_1data__package" kind="namespace" language="Python">
+    <compoundname>local::data_package</compoundname>
+    <innerclass refid="classlocal_1_1data__package_1_1PackageType" prot="public">local::data_package::PackageType</innerclass>
+    <innerclass refid="classlocal_1_1data__package_1_1PackageException" prot="public">local::data_package::PackageException</innerclass>
+    <innerclass refid="classlocal_1_1data__package_1_1DataPackage" prot="public">local::data_package::DataPackage</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Data package and data package types.</verbatim> </para>
+    </detaileddescription>
+    <location file="communication/local/data_package.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

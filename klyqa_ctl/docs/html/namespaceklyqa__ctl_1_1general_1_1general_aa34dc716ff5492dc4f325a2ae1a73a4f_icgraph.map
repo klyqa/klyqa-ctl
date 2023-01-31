@@ -1,12 +1,11 @@
 <map id="klyqa_ctl.general.general.async_json_cache" name="klyqa_ctl.general.general.async_json_cache">
-<area shape="rect" id="node1" title=" " alt="" coords="617,224,847,265"/>
+<area shape="rect" id="node1" title=" " alt="" coords="617,188,847,229"/>
 <area shape="rect" id="node2" href="$classcloud_1_1CloudBackend.html#a566850b368080b6ff85ee2675aa9b3e2" title=" " alt="" coords="345,5,523,47"/>
-<area shape="rect" id="node3" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#ac09ff4824e78b0347afa7af30a825e68" title=" " alt="" coords="343,71,525,112"/>
-<area shape="rect" id="node4" href="$classklyqa__ctl_1_1account__control_1_1AccountControl.html#afa68c76beee57c491239d9184cd32167" title=" " alt="" coords="299,136,569,177"/>
-<area shape="rect" id="node5" href="$classklyqa__ctl_1_1account_1_1Account.html#a0b171a600e4342d035ad26c39b384b38" title=" " alt="" coords="320,202,548,229"/>
-<area shape="rect" id="node6" href="$classklyqa__ctl_1_1account__control_1_1AccountControl.html#abec04a28ae718f252e846b0c05645e65" title=" " alt="" coords="333,253,535,295"/>
-<area shape="rect" id="node7" href="$classklyqa__ctl_1_1account_1_1Account.html#af365113f9fdd0cf5e66f6e9ab427df78" title=" " alt="" coords="321,319,547,360"/>
-<area shape="rect" id="node8" href="$classklyqa__ctl_1_1account_1_1Account.html#acba85b49678b6d37567985738f7becf3" title=" " alt="" coords="321,384,547,425"/>
-<area shape="rect" id="node9" href="$classklyqa__ctl_1_1account_1_1Account.html#af101070a97d556e95978748475933f72" title=" " alt="" coords="313,449,555,491"/>
-<area shape="rect" id="node10" href="$classklyqa__ctl_1_1account_1_1Account.html#aeca1011f6c6e2f6bcdb2136ef48bc7fd" title=" " alt="" coords="5,449,251,491"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1account__control_1_1AccountControl.html#afa68c76beee57c491239d9184cd32167" title=" " alt="" coords="299,71,569,112"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1account_1_1Account.html#a0b171a600e4342d035ad26c39b384b38" title=" " alt="" coords="320,137,548,163"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1account__control_1_1AccountControl.html#abec04a28ae718f252e846b0c05645e65" title=" " alt="" coords="333,188,535,229"/>
+<area shape="rect" id="node6" href="$classklyqa__ctl_1_1account_1_1Account.html#af365113f9fdd0cf5e66f6e9ab427df78" title=" " alt="" coords="321,253,547,295"/>
+<area shape="rect" id="node7" href="$classklyqa__ctl_1_1account_1_1Account.html#acba85b49678b6d37567985738f7becf3" title=" " alt="" coords="321,319,547,360"/>
+<area shape="rect" id="node8" href="$classklyqa__ctl_1_1account_1_1Account.html#af101070a97d556e95978748475933f72" title=" " alt="" coords="313,384,555,425"/>
+<area shape="rect" id="node9" href="$classklyqa__ctl_1_1account_1_1Account.html#aeca1011f6c6e2f6bcdb2136ef48bc7fd" title=" " alt="" coords="5,384,251,425"/>
 </map>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacelocal_1_1connection" kind="namespace" language="Python">
+    <compoundname>local::connection</compoundname>
+    <innerclass refid="classlocal_1_1connection_1_1AesConnectionState" prot="public">local::connection::AesConnectionState</innerclass>
+    <innerclass refid="classlocal_1_1connection_1_1DeviceTcpReturn" prot="public">local::connection::DeviceTcpReturn</innerclass>
+    <innerclass refid="classlocal_1_1connection_1_1TcpConnection" prot="public">local::connection::TcpConnection</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Local connection class</verbatim> </para>
+    </detaileddescription>
+    <location file="communication/local/connection.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

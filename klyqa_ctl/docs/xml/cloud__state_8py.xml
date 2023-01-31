@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="cloud__state_8py" kind="file" language="Python">
+    <compoundname>cloud_state.py</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState" prot="public">klyqa_ctl::devices::cloud_state::DeviceCloudState</innerclass>
+    <innernamespace refid="namespaceklyqa__ctl_1_1devices_1_1cloud__state">klyqa_ctl::devices::cloud_state</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespaceklyqa__ctl_1_1devices_1_1cloud__state" refkind="compound"><highlight class="stringliteral">&quot;&quot;&quot;Local<sp/>and<sp/>cloud<sp/>connections&quot;&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>__future__<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>annotations</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>typing<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Any</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState" kindref="compound">DeviceCloudState</ref>:</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;&quot;Device<sp/>cloud<sp/>connection<sp/>state&quot;&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>_attr_received_packages:<sp/>list[Any]</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>_attr_connected:<sp/>bool</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a5fd2af2fec06299e31b68e0f26ba32e9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a5fd2af2fec06299e31b68e0f26ba32e9" kindref="member">__init__</ref>(self)<sp/>-&gt;<sp/>None:</highlight></codeline>
+<codeline lineno="15" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" kindref="member">_attr_connected</ref>_attr_connected<sp/>=<sp/></highlight><highlight class="keyword">False</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" kindref="member">_attr_received_packages</ref>_attr_received_packages<sp/>=<sp/>[]</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">@property</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" kindref="member">received_packages</ref>(self)<sp/>-&gt;<sp/>list[Any]:</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>self.<ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" kindref="member">_attr_received_packages</ref>_attr_received_packages</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">@received_packages.setter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ae9b9cae827663d1b1f4e6b525006ce67" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a9260902f5035a4dd1795d0419d1dd073" kindref="member">received_packages</ref>(self,<sp/>received_packages:<sp/>list[Any])<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">None</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a4ce38882baea5d13b6a690ecfe16715c" kindref="member">_attr_received_packages</ref>_attr_received_packages<sp/>=<sp/>received_packages</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">@property</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" kindref="member">connected</ref>(self)<sp/>-&gt;<sp/>bool:</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>self.<ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" kindref="member">_attr_connected</ref>_attr_connected</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">@connected.setter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1abb28bd22c9e7885d2ad5057ec29fbc3b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal"><ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1ac04c3404b5ccc50d6cccf92140163995" kindref="member">connected</ref>(self,<sp/>connected:<sp/>bool)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">None</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>self.<ref refid="classklyqa__ctl_1_1devices_1_1cloud__state_1_1DeviceCloudState_1a682f489ba8283df91dd2b7698badeb51" kindref="member">_attr_connected</ref>_attr_connected<sp/>=<sp/>connected</highlight></codeline>
+    </programlisting>
+    <location file="devices/cloud_state.py"/>
+  </compounddef>
+</doxygen>

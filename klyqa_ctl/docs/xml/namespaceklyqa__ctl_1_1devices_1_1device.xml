@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1devices_1_1device" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::devices::device</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues" prot="public">klyqa_ctl::devices::device::CommandWithCheckValues</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1devices_1_1device_1_1Device" prot="public">klyqa_ctl::devices::device::Device</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>General device</verbatim> </para>
+    </detaileddescription>
+    <location file="devices/device.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

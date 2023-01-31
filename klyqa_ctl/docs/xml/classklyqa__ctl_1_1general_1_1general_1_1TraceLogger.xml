@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::general::TraceLogger</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">logging.Logger</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1ae409e7f9a9a4ff48d2bda382907e3c1e" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.TraceLogger::stream</definition>
+        <argsstring></argsstring>
+        <name>stream</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="510" column="1" bodyfile="general/general.py" bodystart="510" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a41b3ec9032d59ed2bf752625aadc0b7a" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.TraceLogger::level</definition>
+        <argsstring></argsstring>
+        <name>level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="512" column="1" bodyfile="general/general.py" bodystart="512" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1adb48b0cbb81fe74961c27974281f692d" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.TraceLogger::fmt</definition>
+        <argsstring></argsstring>
+        <name>fmt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="513" column="1" bodyfile="general/general.py" bodystart="513" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a4d8533550d78b9002a8ba212fa538be8" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.TraceLogger::TraceLogger</definition>
+        <argsstring></argsstring>
+        <name>TraceLogger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="517" column="1" bodyfile="general/general.py" bodystart="517" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1aaf33bc550b4624e4596da444baba45ec" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.TraceLogger::Formatter</definition>
+        <argsstring></argsstring>
+        <name>Formatter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="522" column="1" bodyfile="general/general.py" bodystart="522" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1afd4808aebb942b6bb8ffe86c6fe74cbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.TraceLogger.__init__</definition>
+        <argsstring>(self, str name, int level=logging.NOTSET)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>level</declname>
+          <defval>logging.NOTSET</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="491" column="1" bodyfile="general/general.py" bodystart="491" bodyend="495"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a05fff44f4a29a2d5a1e4314724c03d34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.TraceLogger.trace</definition>
+        <argsstring>(self, str msg, *Any args, **Any kwargs)</argsstring>
+        <name>trace</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>*Any</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="496" column="1" bodyfile="general/general.py" bodystart="496" bodyend="509"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.TraceLogger</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>logging::Logger</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.TraceLogger</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>logging::Logger</label>
+      </node>
+    </collaborationgraph>
+    <location file="general/general.py" line="490" column="1" bodyfile="general/general.py" bodystart="490" bodyend="527"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1afd4808aebb942b6bb8ffe86c6fe74cbe" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1adb48b0cbb81fe74961c27974281f692d" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>fmt</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1aaf33bc550b4624e4596da444baba45ec" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>Formatter</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a41b3ec9032d59ed2bf752625aadc0b7a" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>level</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1ae409e7f9a9a4ff48d2bda382907e3c1e" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>stream</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a05fff44f4a29a2d5a1e4314724c03d34" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>trace</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1TraceLogger_1a4d8533550d78b9002a8ba212fa538be8" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::TraceLogger</scope><name>TraceLogger</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

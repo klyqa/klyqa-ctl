@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classlocal_1_1data__package_1_1PackageType" kind="class" language="Python" prot="public">
+    <compoundname>local::data_package::PackageType</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classlocal_1_1data__package_1_1PackageType_1a619c82402adb58b2d1c47b936ee022c0" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int local.data_package.PackageType::PLAIN</definition>
+        <argsstring></argsstring>
+        <name>PLAIN</name>
+        <initializer>=  0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/local/data_package.py" line="14" column="1" bodyfile="communication/local/data_package.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlocal_1_1data__package_1_1PackageType_1a341f299c2a47ddf534138dd7d4d48a31" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int local.data_package.PackageType::IV</definition>
+        <argsstring></argsstring>
+        <name>IV</name>
+        <initializer>=  1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/local/data_package.py" line="15" column="1" bodyfile="communication/local/data_package.py" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlocal_1_1data__package_1_1PackageType_1a53ee9940e0762dbd8d36a7367c5a655d" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int local.data_package.PackageType::ENC</definition>
+        <argsstring></argsstring>
+        <name>ENC</name>
+        <initializer>=  2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/local/data_package.py" line="16" column="1" bodyfile="communication/local/data_package.py" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Data package types</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>local.data_package.PackageType</label>
+        <link refid="classlocal_1_1data__package_1_1PackageType"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>local.data_package.PackageType</label>
+        <link refid="classlocal_1_1data__package_1_1PackageType"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+ENC</edgelabel>
+          <edgelabel>+IV</edgelabel>
+          <edgelabel>+PLAIN</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>int</label>
+      </node>
+      <node id="2">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="communication/local/data_package.py" line="11" column="1" bodyfile="communication/local/data_package.py" bodystart="11" bodyend="19"/>
+    <listofallmembers>
+      <member refid="classlocal_1_1data__package_1_1PackageType_1a53ee9940e0762dbd8d36a7367c5a655d" prot="public" virt="non-virtual"><scope>local::data_package::PackageType</scope><name>ENC</name></member>
+      <member refid="classlocal_1_1data__package_1_1PackageType_1a341f299c2a47ddf534138dd7d4d48a31" prot="public" virt="non-virtual"><scope>local::data_package::PackageType</scope><name>IV</name></member>
+      <member refid="classlocal_1_1data__package_1_1PackageType_1a619c82402adb58b2d1c47b936ee022c0" prot="public" virt="non-virtual"><scope>local::data_package::PackageType</scope><name>PLAIN</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

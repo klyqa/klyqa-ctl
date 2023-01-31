@@ -2,7 +2,8 @@
 \label{classlocal_1_1data__package_1_1DataPackage}\index{local.data\_package.DataPackage@{local.data\_package.DataPackage}}
 
 
-Collaboration diagram for local.\+data\+\_\+package.\+Data\+Package\+:\nopagebreak
+Collaboration diagram for local.\+data\+\_\+package.\+Data\+Package\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -17,10 +18,6 @@ Collaboration diagram for local.\+data\+\_\+package.\+Data\+Package\+:\nopagebre
 \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage}{Data\+Package}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a0aa60df5ab8d3bb180f8697de7995656}{create}} (Any cls, \mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a5fbd3faa301f854e288dfdc808d9537c}{data}}, \mbox{\hyperlink{classlocal_1_1data__package_1_1PackageType}{Package\+Type}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a3ea216c7593e7be88f4a3bc074a470d3}{ptype}}=\mbox{\hyperlink{classlocal_1_1data__package_1_1PackageType_a619c82402adb58b2d1c47b936ee022c0}{Package\+Type.\+PLAIN}})
 \item 
 \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage}{Data\+Package}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a007ac689daf6b3001df5f09662046096}{deserialize}} (Any cls, \mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a5fbd3faa301f854e288dfdc808d9537c}{data}})
-\item 
-\mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_aee15db53515cd832abdbcedbb4daaabc}{raw\+\_\+data}} (self)
-\item 
-None \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_abfac033ecdb6ca57ce6df41b63134434}{raw\+\_\+data}} (self, \mbox{\hyperlink{classbytes}{bytes}} raw\+\_\+data)
 \item 
 \mbox{\hyperlink{classbytes}{bytes}} \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a5fbd3faa301f854e288dfdc808d9537c}{data}} (self)
 \item 
@@ -50,8 +47,6 @@ None \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_aaa954cb101d900
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a962c93dcee508363f9f0f2c75f100bb7}{\+\_\+attr\+\_\+raw\+\_\+data}}
 \item 
 \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_a79889650681d695892a48d27fe15d3c4}{\+\_\+attr\+\_\+data}}
 \item 
@@ -92,9 +87,9 @@ None \mbox{\hyperlink{classlocal_1_1data__package_1_1DataPackage_aaa954cb101d900
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{83     \textcolor{keyword}{def }data(self) -\/> bytes:}
-\DoxyCodeLine{84         \textcolor{keywordflow}{return} self.\_attr\_data}
-\DoxyCodeLine{85 }
+\DoxyCodeLine{75     \textcolor{keyword}{def }data(self) -\/> bytes:}
+\DoxyCodeLine{76         \textcolor{keywordflow}{return} self.\_attr\_data}
+\DoxyCodeLine{77 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -112,9 +107,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{87     \textcolor{keyword}{def }data(self, data: bytes) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{88         self.\_attr\_data = data}
-\DoxyCodeLine{89 }
+\DoxyCodeLine{79     \textcolor{keyword}{def }data(self, data: bytes) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{80         self.\_attr\_data = data}
+\DoxyCodeLine{81 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -173,9 +168,9 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{91     \textcolor{keyword}{def }length(self) -\/> int:}
-\DoxyCodeLine{92         \textcolor{keywordflow}{return} self.\_attr\_length}
-\DoxyCodeLine{93 }
+\DoxyCodeLine{83     \textcolor{keyword}{def }length(self) -\/> int:}
+\DoxyCodeLine{84         \textcolor{keywordflow}{return} self.\_attr\_length}
+\DoxyCodeLine{85 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -193,9 +188,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{95     \textcolor{keyword}{def }length(self, length: int) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{96         self.\_attr\_length = length}
-\DoxyCodeLine{97 }
+\DoxyCodeLine{87     \textcolor{keyword}{def }length(self, length: int) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{88         self.\_attr\_length = length}
+\DoxyCodeLine{89 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -213,9 +208,9 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{99     \textcolor{keyword}{def }ptype(self) -\/> PackageType:}
-\DoxyCodeLine{100         \textcolor{keywordflow}{return} self.\_attr\_type}
-\DoxyCodeLine{101 }
+\DoxyCodeLine{91     \textcolor{keyword}{def }ptype(self) -\/> PackageType:}
+\DoxyCodeLine{92         \textcolor{keywordflow}{return} self.\_attr\_type}
+\DoxyCodeLine{93 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -233,8 +228,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{103     \textcolor{keyword}{def }ptype(self, pkg\_type: PackageType) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{104         self.\_attr\_type = pkg\_type}
+\DoxyCodeLine{95     \textcolor{keyword}{def }ptype(self, pkg\_type: PackageType) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{96         self.\_attr\_type = pkg\_type}
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -242,46 +237,6 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classlocal_1_1data__package_1_1DataPackage_aaa954cb101d9006356e5390e4fb0530f_icgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{classlocal_1_1data__package_1_1DataPackage_aee15db53515cd832abdbcedbb4daaabc}\label{classlocal_1_1data__package_1_1DataPackage_aee15db53515cd832abdbcedbb4daaabc}} 
-\index{local.data\_package.DataPackage@{local.data\_package.DataPackage}!raw\_data@{raw\_data}}
-\index{raw\_data@{raw\_data}!local.data\_package.DataPackage@{local.data\_package.DataPackage}}
-\doxysubsubsection{\texorpdfstring{raw\_data()}{raw\_data()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily  \mbox{\hyperlink{classbytes}{bytes}} local.\+data\+\_\+package.\+Data\+Package.\+raw\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{75     \textcolor{keyword}{def }raw\_data(self) -\/> bytes:}
-\DoxyCodeLine{76         \textcolor{keywordflow}{return} self.\_attr\_raw\_data}
-\DoxyCodeLine{77 }
-
-\end{DoxyCode}
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classlocal_1_1data__package_1_1DataPackage_aee15db53515cd832abdbcedbb4daaabc_icgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{classlocal_1_1data__package_1_1DataPackage_abfac033ecdb6ca57ce6df41b63134434}\label{classlocal_1_1data__package_1_1DataPackage_abfac033ecdb6ca57ce6df41b63134434}} 
-\index{local.data\_package.DataPackage@{local.data\_package.DataPackage}!raw\_data@{raw\_data}}
-\index{raw\_data@{raw\_data}!local.data\_package.DataPackage@{local.data\_package.DataPackage}}
-\doxysubsubsection{\texorpdfstring{raw\_data()}{raw\_data()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily  None local.\+data\+\_\+package.\+Data\+Package.\+raw\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbytes}{bytes}}}]{raw\+\_\+data }\end{DoxyParamCaption})}
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{79     \textcolor{keyword}{def }raw\_data(self, raw\_data: bytes) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{80         self.\_attr\_raw\_data = raw\_data}
-\DoxyCodeLine{81 }
-
-\end{DoxyCode}
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classlocal_1_1data__package_1_1DataPackage_abfac033ecdb6ca57ce6df41b63134434_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classlocal_1_1data__package_1_1DataPackage_ac478113a6fa61199e9957442c1fb2c85}\label{classlocal_1_1data__package_1_1DataPackage_ac478113a6fa61199e9957442c1fb2c85}} 
@@ -333,12 +288,6 @@ Here is the call graph for this function\+:\nopagebreak
 \index{\_attr\_length@{\_attr\_length}!local.data\_package.DataPackage@{local.data\_package.DataPackage}}
 \doxysubsubsection{\texorpdfstring{\_attr\_length}{\_attr\_length}}
 {\footnotesize\ttfamily local.\+data\+\_\+package.\+Data\+Package.\+\_\+attr\+\_\+length\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{classlocal_1_1data__package_1_1DataPackage_a962c93dcee508363f9f0f2c75f100bb7}\label{classlocal_1_1data__package_1_1DataPackage_a962c93dcee508363f9f0f2c75f100bb7}} 
-\index{local.data\_package.DataPackage@{local.data\_package.DataPackage}!\_attr\_raw\_data@{\_attr\_raw\_data}}
-\index{\_attr\_raw\_data@{\_attr\_raw\_data}!local.data\_package.DataPackage@{local.data\_package.DataPackage}}
-\doxysubsubsection{\texorpdfstring{\_attr\_raw\_data}{\_attr\_raw\_data}}
-{\footnotesize\ttfamily local.\+data\+\_\+package.\+Data\+Package.\+\_\+attr\+\_\+raw\+\_\+data\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classlocal_1_1data__package_1_1DataPackage_a80aee91fcbae4a39efe73c153cdffb5c}\label{classlocal_1_1data__package_1_1DataPackage_a80aee91fcbae4a39efe73c153cdffb5c}} 
 \index{local.data\_package.DataPackage@{local.data\_package.DataPackage}!\_attr\_type@{\_attr\_type}}

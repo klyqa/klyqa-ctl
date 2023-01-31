@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1general_1_1DeviceType" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::general::DeviceType</compoundname>
+    <basecompoundref refid="classstr" prot="public" virt="non-virtual">str</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1aaf48075a9f9e176115fb1924ba0737ff" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.general.general.DeviceType::CLEANER</definition>
+        <argsstring></argsstring>
+        <name>CLEANER</name>
+        <initializer>=  &quot;cleaner&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="61" column="1" bodyfile="general/general.py" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1ac708df94dd921fb5fd723c92b42e8b1c" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.general.general.DeviceType::LIGHTING</definition>
+        <argsstring></argsstring>
+        <name>LIGHTING</name>
+        <initializer>=  &quot;lighting&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="62" column="1" bodyfile="general/general.py" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1ae57f581a2aa358b27b2f577b6ae9274e" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.DeviceType::bytes</definition>
+        <argsstring></argsstring>
+        <name>bytes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="65" column="1" bodyfile="general/general.py" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.DeviceType</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.DeviceType</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+CLEANER</edgelabel>
+          <edgelabel>+LIGHTING</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="general/general.py" line="60" column="1" bodyfile="general/general.py" bodystart="60" bodyend="87"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1ae57f581a2aa358b27b2f577b6ae9274e" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::DeviceType</scope><name>bytes</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1aaf48075a9f9e176115fb1924ba0737ff" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::DeviceType</scope><name>CLEANER</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1DeviceType_1ac708df94dd921fb5fd723c92b42e8b1c" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::DeviceType</scope><name>LIGHTING</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

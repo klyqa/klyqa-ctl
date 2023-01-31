@@ -55,157 +55,123 @@ Current bugs:
 \begin{DoxyVerb}Main function.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{706 async \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}{main}}() -\/> None:}
-\DoxyCodeLine{707     \textcolor{stringliteral}{"{}"{}"{}Main function."{}"{}"{}}}
+\DoxyCodeLine{700 async \textcolor{keyword}{def }\mbox{\hyperlink{namespaceklyqa__ctl_1_1klyqa__ctl_afe1b8490f9810b885e4048d7bef472a7}{main}}() -\/> None:}
+\DoxyCodeLine{701     \textcolor{stringliteral}{"{}"{}"{}Main function."{}"{}"{}}}
+\DoxyCodeLine{702 }
+\DoxyCodeLine{703     exit\_ret: int = 0}
+\DoxyCodeLine{704 }
+\DoxyCodeLine{705     parser: argparse.ArgumentParser = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a38b90c6125a60eeabd89d4addab053b4}{get\_description\_parser}}()}
+\DoxyCodeLine{706 }
+\DoxyCodeLine{707     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a4d4508f84ab7a6044c74575f197f852b}{add\_config\_args}}(parser=parser)}
 \DoxyCodeLine{708 }
-\DoxyCodeLine{709     exit\_ret: int = 0}
-\DoxyCodeLine{710     klyqa\_accs: dict[str, Account] | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{711     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} klyqa\_accs:}
-\DoxyCodeLine{712         klyqa\_accs = dict()}
-\DoxyCodeLine{713 }
-\DoxyCodeLine{714     parser: argparse.ArgumentParser = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a38b90c6125a60eeabd89d4addab053b4}{get\_description\_parser}}()}
+\DoxyCodeLine{709     args\_in: list[str] = sys.argv[1:]}
+\DoxyCodeLine{710 }
+\DoxyCodeLine{711     (}
+\DoxyCodeLine{712         config\_args\_parsed,}
+\DoxyCodeLine{713         \_,}
+\DoxyCodeLine{714     ) = parser.parse\_known\_args(args=args\_in)}
 \DoxyCodeLine{715 }
-\DoxyCodeLine{716     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1parameters_a4d4508f84ab7a6044c74575f197f852b}{add\_config\_args}}(parser=parser)}
-\DoxyCodeLine{717 }
-\DoxyCodeLine{718     args\_in: list[str] = sys.argv[1:]}
-\DoxyCodeLine{719 }
-\DoxyCodeLine{720     (}
-\DoxyCodeLine{721         config\_args\_parsed,}
-\DoxyCodeLine{722         \_,}
-\DoxyCodeLine{723     ) = parser.parse\_known\_args(args=args\_in)}
-\DoxyCodeLine{724 }
-\DoxyCodeLine{725     \textcolor{keywordflow}{if} config\_args\_parsed.type == DeviceType.CLEANER.value:}
-\DoxyCodeLine{726         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_ad486c28adf7b9c4ed9672fc04dfde7ef}{add\_command\_args\_cleaner}}(parser=parser)}
-\DoxyCodeLine{727     \textcolor{keywordflow}{elif} config\_args\_parsed.type == DeviceType.LIGHTING.value:}
-\DoxyCodeLine{728         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\_command\_args\_bulb}}(parser=parser)}
-\DoxyCodeLine{729     \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{730         LOGGER.error(\textcolor{stringliteral}{"{}Unknown command type."{}})}
-\DoxyCodeLine{731         sys.exit(1)}
-\DoxyCodeLine{732 }
-\DoxyCodeLine{733     \textcolor{keywordflow}{if} len(args\_in) < 2 \textcolor{keywordflow}{or} config\_args\_parsed.help:}
-\DoxyCodeLine{734         parser.print\_help()}
+\DoxyCodeLine{716     \textcolor{keywordflow}{if} config\_args\_parsed.type == DeviceType.CLEANER.value:}
+\DoxyCodeLine{717         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_ad486c28adf7b9c4ed9672fc04dfde7ef}{add\_command\_args\_cleaner}}(parser=parser)}
+\DoxyCodeLine{718     \textcolor{keywordflow}{elif} config\_args\_parsed.type == DeviceType.LIGHTING.value:}
+\DoxyCodeLine{719         \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_a9a2f224816a4dab65a2d877cd38b657b}{add\_command\_args\_bulb}}(parser=parser)}
+\DoxyCodeLine{720     \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{721         LOGGER.error(\textcolor{stringliteral}{"{}Unknown command type."{}})}
+\DoxyCodeLine{722         sys.exit(1)}
+\DoxyCodeLine{723 }
+\DoxyCodeLine{724     \textcolor{keywordflow}{if} len(args\_in) < 2 \textcolor{keywordflow}{or} config\_args\_parsed.help:}
+\DoxyCodeLine{725         parser.print\_help()}
+\DoxyCodeLine{726         sys.exit(1)}
+\DoxyCodeLine{727 }
+\DoxyCodeLine{728     args\_parsed: argparse.Namespace = parser.parse\_args(args=args\_in)}
+\DoxyCodeLine{729 }
+\DoxyCodeLine{730     \textcolor{keywordflow}{if} args\_parsed.version:}
+\DoxyCodeLine{731         print(\_\_version\_\_)}
+\DoxyCodeLine{732         sys.exit(0)}
+\DoxyCodeLine{733 }
+\DoxyCodeLine{734     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} args\_parsed:}
 \DoxyCodeLine{735         sys.exit(1)}
 \DoxyCodeLine{736 }
-\DoxyCodeLine{737     args\_parsed: argparse.Namespace = parser.parse\_args(args=args\_in)}
-\DoxyCodeLine{738 }
-\DoxyCodeLine{739     \textcolor{keywordflow}{if} args\_parsed.version:}
-\DoxyCodeLine{740         print(\_\_version\_\_)}
-\DoxyCodeLine{741         sys.exit(0)}
+\DoxyCodeLine{737     \textcolor{keywordflow}{if} args\_parsed.debug:}
+\DoxyCodeLine{738         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}{set\_debug\_logger}}(level=logging.DEBUG)}
+\DoxyCodeLine{739 }
+\DoxyCodeLine{740     \textcolor{keywordflow}{if} args\_parsed.trace:}
+\DoxyCodeLine{741         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}{set\_debug\_logger}}(level=TRACE)}
 \DoxyCodeLine{742 }
-\DoxyCodeLine{743     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} args\_parsed:}
-\DoxyCodeLine{744         sys.exit(1)}
-\DoxyCodeLine{745 }
-\DoxyCodeLine{746     \textcolor{keywordflow}{if} args\_parsed.debug:}
-\DoxyCodeLine{747         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}{set\_debug\_logger}}(level=logging.DEBUG)}
-\DoxyCodeLine{748 }
-\DoxyCodeLine{749     \textcolor{keywordflow}{if} args\_parsed.trace:}
-\DoxyCodeLine{750         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a6e74b8cc4bae98fa55902e4b875af67e}{set\_debug\_logger}}(level=TRACE)}
-\DoxyCodeLine{751 }
-\DoxyCodeLine{752     \textcolor{keywordflow}{if} args\_parsed.quiet:}
-\DoxyCodeLine{753         LOGGER.setLevel(level=logging.CRITICAL)}
-\DoxyCodeLine{754         logging\_hdl.setLevel(level=logging.CRITICAL)}
-\DoxyCodeLine{755 }
-\DoxyCodeLine{756     timeout\_ms: int = DEFAULT\_SEND\_TIMEOUT\_MS}
-\DoxyCodeLine{757     \textcolor{keywordflow}{if} args\_parsed.timeout:}
-\DoxyCodeLine{758         timeout\_ms = \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(args\_parsed.timeout[0]) * 1000}
-\DoxyCodeLine{759 }
-\DoxyCodeLine{760     server\_ip: str = args\_parsed.myip[0] \textcolor{keywordflow}{if} args\_parsed.myip \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}0.0.0.0"{}}}
-\DoxyCodeLine{761 }
-\DoxyCodeLine{762     controller\_data: ControllerData = await ControllerData.create\_default(}
-\DoxyCodeLine{763         interactive\_prompts=\textcolor{keyword}{True},}
-\DoxyCodeLine{764         \textcolor{comment}{\# user\_account=account,}}
-\DoxyCodeLine{765         offline=args\_parsed.offline,}
+\DoxyCodeLine{743     \textcolor{keywordflow}{if} args\_parsed.quiet:}
+\DoxyCodeLine{744         LOGGER.setLevel(level=logging.CRITICAL)}
+\DoxyCodeLine{745         logging\_hdl.setLevel(level=logging.CRITICAL)}
+\DoxyCodeLine{746 }
+\DoxyCodeLine{747     timeout\_ms: int = DEFAULT\_SEND\_TIMEOUT\_MS}
+\DoxyCodeLine{748     \textcolor{keywordflow}{if} args\_parsed.timeout:}
+\DoxyCodeLine{749         timeout\_ms = \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(args\_parsed.timeout[0]) * 1000}
+\DoxyCodeLine{750 }
+\DoxyCodeLine{751     server\_ip: str = args\_parsed.myip[0] \textcolor{keywordflow}{if} args\_parsed.myip \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}0.0.0.0"{}}}
+\DoxyCodeLine{752 }
+\DoxyCodeLine{753     client: Client = await Client.create(}
+\DoxyCodeLine{754         interactive\_prompts=\textcolor{keyword}{True},}
+\DoxyCodeLine{755         offline=args\_parsed.offline,}
+\DoxyCodeLine{756         server\_ip=server\_ip,}
+\DoxyCodeLine{757     )}
+\DoxyCodeLine{758 }
+\DoxyCodeLine{759     print\_onboarded\_devices: bool = client.interactive\_prompts}
+\DoxyCodeLine{760 }
+\DoxyCodeLine{761     print\_onboarded\_devices = (}
+\DoxyCodeLine{762         \textcolor{keywordflow}{not} args\_parsed.device\_name}
+\DoxyCodeLine{763         \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} args\_parsed.device\_unitids}
+\DoxyCodeLine{764         \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} args\_parsed.allDevices}
+\DoxyCodeLine{765         \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} args\_parsed.quiet}
 \DoxyCodeLine{766     )}
 \DoxyCodeLine{767 }
-\DoxyCodeLine{768     print\_onboarded\_devices: bool = controller\_data.interactive\_prompts}
+\DoxyCodeLine{768     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} args\_parsed.offline:}
 \DoxyCodeLine{769 }
-\DoxyCodeLine{770     print\_onboarded\_devices = (}
-\DoxyCodeLine{771         \textcolor{keywordflow}{not} args\_parsed.device\_name}
-\DoxyCodeLine{772         \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} args\_parsed.device\_unitids}
-\DoxyCodeLine{773         \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} args\_parsed.allDevices}
-\DoxyCodeLine{774         \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} args\_parsed.quiet}
-\DoxyCodeLine{775     )}
-\DoxyCodeLine{776 }
-\DoxyCodeLine{777     cloud\_backend: CloudBackend | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{778 }
-\DoxyCodeLine{779     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} args\_parsed.offline:}
-\DoxyCodeLine{780 }
-\DoxyCodeLine{781         host: str = PROD\_HOST}
-\DoxyCodeLine{782         \textcolor{keywordflow}{if} args\_parsed.host:}
-\DoxyCodeLine{783             host = args\_parsed.host[0]}
-\DoxyCodeLine{784 }
-\DoxyCodeLine{785         cloud\_backend = CloudBackend.create\_default(controller\_data, host)}
-\DoxyCodeLine{786 }
-\DoxyCodeLine{787         \textcolor{comment}{\# if cloud\_backend and not account.access\_token:}}
-\DoxyCodeLine{788         \textcolor{comment}{\#     try:}}
-\DoxyCodeLine{789         \textcolor{comment}{\#         if await cloud\_backend.login(}}
-\DoxyCodeLine{790         \textcolor{comment}{\#             print\_onboarded\_devices=print\_onboarded\_devices}}
-\DoxyCodeLine{791         \textcolor{comment}{\#         ):}}
-\DoxyCodeLine{792         \textcolor{comment}{\#             task\_log\_debug("{}login finished"{})}}
-\DoxyCodeLine{793         \textcolor{comment}{\#             klyqa\_accs[account.username] = account}}
-\DoxyCodeLine{794         \textcolor{comment}{\#         else:}}
-\DoxyCodeLine{795         \textcolor{comment}{\#             raise Exception()}}
-\DoxyCodeLine{796         \textcolor{comment}{\#     except Exception:}}
-\DoxyCodeLine{797         \textcolor{comment}{\#         LOGGER.error("{}Error during login."{})}}
-\DoxyCodeLine{798         \textcolor{comment}{\#         task\_log\_trace\_ex()}}
-\DoxyCodeLine{799         \textcolor{comment}{\#         sys.exit(1)}}
-\DoxyCodeLine{800 }
-\DoxyCodeLine{801     account: Account | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{802     accounts: dict[str, Account] = dict()}
-\DoxyCodeLine{803 }
-\DoxyCodeLine{804     \textcolor{keywordflow}{if} args\_parsed.dev:}
-\DoxyCodeLine{805         \textcolor{keywordflow}{if} args\_parsed.dev:}
-\DoxyCodeLine{806             LOGGER.info(\textcolor{stringliteral}{"{}development mode. Using default aes key."{}})}
-\DoxyCodeLine{807         print\_onboarded\_devices = \textcolor{keyword}{False}}
-\DoxyCodeLine{808 }
-\DoxyCodeLine{809     \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{810         \textcolor{keywordflow}{if} (}
-\DoxyCodeLine{811             args\_parsed.username \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}}
-\DoxyCodeLine{812             \textcolor{keywordflow}{and} args\_parsed.username[0] \textcolor{keywordflow}{in} klyqa\_accs}
-\DoxyCodeLine{813         ):}
-\DoxyCodeLine{814             account = klyqa\_accs[args\_parsed.username[0]]}
-\DoxyCodeLine{815         \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{816             account = await Account.create\_default(}
-\DoxyCodeLine{817                 controller\_data,}
-\DoxyCodeLine{818                 username=args\_parsed.username[0]}
-\DoxyCodeLine{819                 \textcolor{keywordflow}{if} args\_parsed.username}
-\DoxyCodeLine{820                 \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}"{}},}
-\DoxyCodeLine{821                 password=args\_parsed.password[0]}
-\DoxyCodeLine{822                 \textcolor{keywordflow}{if} args\_parsed.password}
-\DoxyCodeLine{823                 \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}"{}},}
-\DoxyCodeLine{824                 cloud=cloud\_backend,}
-\DoxyCodeLine{825                 print\_onboarded\_devices=print\_onboarded\_devices,}
-\DoxyCodeLine{826             )}
-\DoxyCodeLine{827             accounts[account.username] = account}
-\DoxyCodeLine{828 }
-\DoxyCodeLine{829     exit\_ret = 0}
-\DoxyCodeLine{830 }
-\DoxyCodeLine{831     intf: str | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{832     \textcolor{keywordflow}{if} args\_parsed.interface \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{833         intf = args\_parsed.interface[0]}
-\DoxyCodeLine{834 }
-\DoxyCodeLine{835     local\_con\_hdl: LocalConnectionHandler = LocalConnectionHandler(}
-\DoxyCodeLine{836         controller\_data, server\_ip, network\_interface=intf}
-\DoxyCodeLine{837     )}
-\DoxyCodeLine{838 }
-\DoxyCodeLine{839     client: Client = Client(}
-\DoxyCodeLine{840         controller\_data, local\_con\_hdl, cloud\_backend, accounts}
-\DoxyCodeLine{841     )}
-\DoxyCodeLine{842 }
-\DoxyCodeLine{843     \textcolor{keywordflow}{if} (}
-\DoxyCodeLine{844         await client.send\_to\_devices\_wrapped(}
-\DoxyCodeLine{845             args\_parsed, args\_in.copy(), timeout\_ms=timeout\_ms}
-\DoxyCodeLine{846         )}
-\DoxyCodeLine{847         > 0}
-\DoxyCodeLine{848     ):}
-\DoxyCodeLine{849         exit\_ret = 1}
-\DoxyCodeLine{850 }
-\DoxyCodeLine{851     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Shutting down.."{}})}
-\DoxyCodeLine{852     await client.shutdown()}
-\DoxyCodeLine{853 }
-\DoxyCodeLine{854     sys.exit(exit\_ret)}
-\DoxyCodeLine{855 }
-\DoxyCodeLine{856 }
+\DoxyCodeLine{770         \textcolor{keywordflow}{if} args\_parsed.host \textcolor{keywordflow}{and} client.cloud:}
+\DoxyCodeLine{771             client.cloud.host = args\_parsed.host[0]}
+\DoxyCodeLine{772 }
+\DoxyCodeLine{773         \textcolor{comment}{\# if cloud\_backend and not account.access\_token:}}
+\DoxyCodeLine{774         \textcolor{comment}{\#     try:}}
+\DoxyCodeLine{775         \textcolor{comment}{\#         if await cloud\_backend.login(}}
+\DoxyCodeLine{776         \textcolor{comment}{\#             print\_onboarded\_devices=print\_onboarded\_devices}}
+\DoxyCodeLine{777         \textcolor{comment}{\#         ):}}
+\DoxyCodeLine{778         \textcolor{comment}{\#             task\_log\_debug("{}login finished"{})}}
+\DoxyCodeLine{779         \textcolor{comment}{\#             klyqa\_accs[account.username] = account}}
+\DoxyCodeLine{780         \textcolor{comment}{\#         else:}}
+\DoxyCodeLine{781         \textcolor{comment}{\#             raise Exception()}}
+\DoxyCodeLine{782         \textcolor{comment}{\#     except Exception:}}
+\DoxyCodeLine{783         \textcolor{comment}{\#         LOGGER.error("{}Error during login."{})}}
+\DoxyCodeLine{784         \textcolor{comment}{\#         task\_log\_trace\_ex()}}
+\DoxyCodeLine{785         \textcolor{comment}{\#         sys.exit(1)}}
+\DoxyCodeLine{786     \textcolor{keywordflow}{if} args\_parsed.dev:}
+\DoxyCodeLine{787         \textcolor{keywordflow}{if} args\_parsed.dev:}
+\DoxyCodeLine{788             LOGGER.info(\textcolor{stringliteral}{"{}development mode. Using default aes key."{}})}
+\DoxyCodeLine{789         print\_onboarded\_devices = \textcolor{keyword}{False}}
+\DoxyCodeLine{790 }
+\DoxyCodeLine{791     \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{792         await client.add\_account(}
+\DoxyCodeLine{793             username=args\_parsed.username[0] \textcolor{keywordflow}{if} args\_parsed.username \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}"{}},}
+\DoxyCodeLine{794             password=args\_parsed.password[0] \textcolor{keywordflow}{if} args\_parsed.password \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}"{}},}
+\DoxyCodeLine{795             print\_onboarded\_devices=print\_onboarded\_devices,}
+\DoxyCodeLine{796         )}
+\DoxyCodeLine{797 }
+\DoxyCodeLine{798     exit\_ret = 0}
+\DoxyCodeLine{799 }
+\DoxyCodeLine{800     \textcolor{keywordflow}{if} args\_parsed.interface \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None} \textcolor{keywordflow}{and} client.local:}
+\DoxyCodeLine{801         client.local.network\_interface = args\_parsed.interface[0]}
+\DoxyCodeLine{802 }
+\DoxyCodeLine{803     \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{804         await client.send\_to\_devices\_wrapped(}
+\DoxyCodeLine{805             args\_parsed, args\_in.copy(), timeout\_ms=timeout\_ms}
+\DoxyCodeLine{806         )}
+\DoxyCodeLine{807         > 0}
+\DoxyCodeLine{808     ):}
+\DoxyCodeLine{809         exit\_ret = 1}
+\DoxyCodeLine{810 }
+\DoxyCodeLine{811     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Shutting down.."{}})}
+\DoxyCodeLine{812     await client.shutdown()}
+\DoxyCodeLine{813 }
+\DoxyCodeLine{814     sys.exit(exit\_ret)}
+\DoxyCodeLine{815 }
+\DoxyCodeLine{816 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak

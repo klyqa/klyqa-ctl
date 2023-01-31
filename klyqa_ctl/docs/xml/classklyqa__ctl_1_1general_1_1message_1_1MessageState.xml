@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1message_1_1MessageState" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::message::MessageState</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1a4230c2021b94ce9c06b637dbb5c734fe" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.general.message.MessageState::SENT</definition>
+        <argsstring></argsstring>
+        <name>SENT</name>
+        <initializer>=  0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="21" column="1" bodyfile="general/message.py" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1a776cb01e32e13ee78251896329497630" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.general.message.MessageState::ANSWERED</definition>
+        <argsstring></argsstring>
+        <name>ANSWERED</name>
+        <initializer>=  1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="22" column="1" bodyfile="general/message.py" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1aa77c739f74932bb76326565d887eb794" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.general.message.MessageState::UNSENT</definition>
+        <argsstring></argsstring>
+        <name>UNSENT</name>
+        <initializer>=  2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="23" column="1" bodyfile="general/message.py" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.general.message.MessageState</label>
+        <link refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.message.MessageState</label>
+        <link refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+ANSWERED</edgelabel>
+          <edgelabel>+SENT</edgelabel>
+          <edgelabel>+UNSENT</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>int</label>
+      </node>
+      <node id="2">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="general/message.py" line="20" column="1" bodyfile="general/message.py" bodystart="20" bodyend="26"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1a776cb01e32e13ee78251896329497630" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::MessageState</scope><name>ANSWERED</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1a4230c2021b94ce9c06b637dbb5c734fe" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::MessageState</scope><name>SENT</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1MessageState_1aa77c739f74932bb76326565d887eb794" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::MessageState</scope><name>UNSENT</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

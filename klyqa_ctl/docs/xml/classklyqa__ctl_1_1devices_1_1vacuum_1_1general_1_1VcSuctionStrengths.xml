@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1ad55870311cf2165217748b53e1b4e3e0" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.devices.vacuum.general.VcSuctionStrengths::NULL</definition>
+        <argsstring></argsstring>
+        <name>NULL</name>
+        <initializer>=  0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/general.py" line="22" column="1" bodyfile="devices/vacuum/general.py" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a69b72e4f403a98903d73ccf148b1570d" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.devices.vacuum.general.VcSuctionStrengths::STRONG</definition>
+        <argsstring></argsstring>
+        <name>STRONG</name>
+        <initializer>=  1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/general.py" line="23" column="1" bodyfile="devices/vacuum/general.py" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a2bdfd6483ab3284e95c26920fe6f8616" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.devices.vacuum.general.VcSuctionStrengths::SMALL</definition>
+        <argsstring></argsstring>
+        <name>SMALL</name>
+        <initializer>=  2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/general.py" line="24" column="1" bodyfile="devices/vacuum/general.py" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1ac73efca1d6ee0bb135136f6bdba89c79" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.devices.vacuum.general.VcSuctionStrengths::NORMAL</definition>
+        <argsstring></argsstring>
+        <name>NORMAL</name>
+        <initializer>=  3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/general.py" line="25" column="1" bodyfile="devices/vacuum/general.py" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a5480f73bff090cbba259c384e787f3d9" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int klyqa_ctl.devices.vacuum.general.VcSuctionStrengths::MAX</definition>
+        <argsstring></argsstring>
+        <name>MAX</name>
+        <initializer>=  4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/vacuum/general.py" line="26" column="1" bodyfile="devices/vacuum/general.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.general.VcSuctionStrengths</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.devices.vacuum.general.VcSuctionStrengths</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+MAX</edgelabel>
+          <edgelabel>+NORMAL</edgelabel>
+          <edgelabel>+NULL</edgelabel>
+          <edgelabel>+SMALL</edgelabel>
+          <edgelabel>+STRONG</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>int</label>
+      </node>
+      <node id="2">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="devices/vacuum/general.py" line="21" column="1" bodyfile="devices/vacuum/general.py" bodystart="21" bodyend="29"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a5480f73bff090cbba259c384e787f3d9" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</scope><name>MAX</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1ac73efca1d6ee0bb135136f6bdba89c79" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</scope><name>NORMAL</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1ad55870311cf2165217748b53e1b4e3e0" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</scope><name>NULL</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a2bdfd6483ab3284e95c26920fe6f8616" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</scope><name>SMALL</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcSuctionStrengths_1a69b72e4f403a98903d73ccf148b1570d" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::vacuum::general::VcSuctionStrengths</scope><name>STRONG</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,9 +1,7 @@
 <map id="klyqa_ctl.controller_data.ControllerData.get_or_create_device" name="klyqa_ctl.controller_data.ControllerData.get_or_create_device">
-<area shape="rect" id="node1" title=" " alt="" coords="5,180,188,236"/>
-<area shape="rect" id="node2" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#acf121380378cde9a2041430bac89ac97" title=" " alt="" coords="267,5,452,61"/>
-<area shape="rect" id="node3" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#afe5d9ecd2aec0bad65f3be2ed0ff4ce1" title=" " alt="" coords="258,85,461,141"/>
-<area shape="rect" id="node4" href="$classklyqa__ctl_1_1account_1_1Account.html#a2265c38daf6829c96c852ad4a288b42d" title=" " alt="" coords="236,165,483,192"/>
-<area shape="rect" id="node5" href="$classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a4d307f6bd0b66f3cb9fac3057fc87972" title=" " alt="" coords="243,217,476,258"/>
-<area shape="rect" id="node6" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#adf7af423388a9a883c428cf71e217650" title=" " alt="" coords="254,282,465,323"/>
-<area shape="rect" id="node7" href="$classklyqa__ctl_1_1klyqa__ctl_1_1Client.html#ab6e5eda10fb712850c3fb311fd1cd4a0" title=" " alt="" coords="239,348,479,375"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,100,188,156"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#afe5d9ecd2aec0bad65f3be2ed0ff4ce1" title=" " alt="" coords="258,5,461,61"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1account_1_1Account.html#a2265c38daf6829c96c852ad4a288b42d" title=" " alt="" coords="236,85,483,112"/>
+<area shape="rect" id="node4" href="$classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a4d307f6bd0b66f3cb9fac3057fc87972" title=" " alt="" coords="243,137,476,178"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#adf7af423388a9a883c428cf71e217650" title=" " alt="" coords="254,202,465,243"/>
 </map>

@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::unit_id::UnitId</compoundname>
+    <basecompoundref refid="classstr" prot="public" virt="non-virtual">str</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.unit_id.UnitId::None</definition>
+        <argsstring></argsstring>
+        <name>None</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="13" column="1" bodyfile="general/unit_id.py" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a7ab123ab827c045d92a7daf5427a2a33" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.unit_id.UnitId::unit_id</definition>
+        <argsstring></argsstring>
+        <name>unit_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="16" column="1" bodyfile="general/unit_id.py" bodystart="16" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a333fecd43aa5e812a0d1e0f8721ed27d" compoundref="unit__id_8py" startline="26" endline="28">klyqa_ctl.general.unit_id.UnitId.__str__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a5a85d7aa8a100a91752f3f222581e867" compoundref="unit__id_8py" startline="19" endline="21">klyqa_ctl.general.unit_id.UnitId.unit_id</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ae8aff3e6f9d9ad47235d125cc277ad29" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.unit_id.UnitId::_attr_unit_id</definition>
+        <argsstring></argsstring>
+        <name>_attr_unit_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="24" column="1" bodyfile="general/unit_id.py" bodystart="24" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a6379999ea8e8998c5d23a92ff97f9e42" compoundref="response__identity__message_8py" startline="15" endline="24">klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage.__init__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a24a6479aa43d7b9267810cdbc30b4640" compoundref="response__identity__message_8py" startline="29" endline="31">klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage.unit_id</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a5a85d7aa8a100a91752f3f222581e867" compoundref="unit__id_8py" startline="19" endline="21">klyqa_ctl.general.unit_id.UnitId.unit_id</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a9ccc6a6b46b6982dea6416bd6be3d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.unit_id.UnitId.__post_init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__post_init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="15" column="1" bodyfile="general/unit_id.py" bodystart="15" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a5a85d7aa8a100a91752f3f222581e867" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref>|<ref refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" kindref="member">None</ref></type>
+        <definition> str | None klyqa_ctl.general.unit_id.UnitId.unit_id</definition>
+        <argsstring>(self)</argsstring>
+        <name>unit_id</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="19" column="1" bodyfile="general/unit_id.py" bodystart="19" bodyend="21"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a117fe0dfcee57568c9ce80941701370e" compoundref="response__identity__message_8py" startline="34">klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage._attr_unit_id</references>
+        <references refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ae8aff3e6f9d9ad47235d125cc277ad29" compoundref="unit__id_8py" startline="24">klyqa_ctl.general.unit_id.UnitId._attr_unit_id</references>
+        <references refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a7ab123ab827c045d92a7daf5427a2a33" compoundref="unit__id_8py" startline="16">klyqa_ctl.general.unit_id.UnitId.unit_id</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a333fecd43aa5e812a0d1e0f8721ed27d" compoundref="unit__id_8py" startline="26" endline="28">klyqa_ctl.general.unit_id.UnitId.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ab207f25d3e8cbd769bc6a820e17bcb35" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.unit_id.UnitId.unit_id</definition>
+        <argsstring>(self, str|None unit_id)</argsstring>
+        <name>unit_id</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref>|<ref refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" kindref="member">None</ref></type>
+          <declname>unit_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="23" column="1" bodyfile="general/unit_id.py" bodystart="23" bodyend="25"/>
+        <references refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a7ab123ab827c045d92a7daf5427a2a33" compoundref="unit__id_8py" startline="16">klyqa_ctl.general.unit_id.UnitId.unit_id</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a333fecd43aa5e812a0d1e0f8721ed27d" compoundref="unit__id_8py" startline="26" endline="28">klyqa_ctl.general.unit_id.UnitId.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a333fecd43aa5e812a0d1e0f8721ed27d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.general.unit_id.UnitId.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/unit_id.py" line="26" column="1" bodyfile="general/unit_id.py" bodystart="26" bodyend="28"/>
+        <references refid="classklyqa__ctl_1_1devices_1_1response__identity__message_1_1ResponseIdentityMessage_1a24a6479aa43d7b9267810cdbc30b4640" compoundref="response__identity__message_8py" startline="29" endline="31">klyqa_ctl.devices.response_identity_message.ResponseIdentityMessage.unit_id</references>
+        <references refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a7ab123ab827c045d92a7daf5427a2a33" compoundref="unit__id_8py" startline="16">klyqa_ctl.general.unit_id.UnitId.unit_id</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.general.unit_id.UnitId</label>
+        <link refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.general.unit_id.UnitId</label>
+        <link refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="general/unit_id.py" line="11" column="1" bodyfile="general/unit_id.py" bodystart="11" bodyend="28"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a9ccc6a6b46b6982dea6416bd6be3d4de" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>__post_init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a333fecd43aa5e812a0d1e0f8721ed27d" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ae8aff3e6f9d9ad47235d125cc277ad29" prot="private" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>_attr_unit_id</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ac9e264cd36a8ead2ddd21d22d3607af0" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>None</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a7ab123ab827c045d92a7daf5427a2a33" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>unit_id</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1a5a85d7aa8a100a91752f3f222581e867" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>unit_id</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId_1ab207f25d3e8cbd769bc6a820e17bcb35" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::unit_id::UnitId</scope><name>unit_id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

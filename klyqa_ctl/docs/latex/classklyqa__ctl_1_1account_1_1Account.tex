@@ -139,21 +139,21 @@ None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a266
 \begin{DoxyVerb}Initialize the account.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{55     ) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{56         \textcolor{stringliteral}{"{}"{}"{}Initialize the account."{}"{}"{}}}
-\DoxyCodeLine{57 }
-\DoxyCodeLine{58         self.\_attr\_username: str = \textcolor{stringliteral}{"{}"{}}}
-\DoxyCodeLine{59         self.\_attr\_password: str = \textcolor{stringliteral}{"{}"{}}}
-\DoxyCodeLine{60         self.\_attr\_access\_token: str = \textcolor{stringliteral}{"{}"{}}}
-\DoxyCodeLine{61         self.\_attr\_settings: TypeJson | \textcolor{keywordtype}{None} = \{\}}
-\DoxyCodeLine{62         self.\_attr\_settings\_lock: asyncio.Lock | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{63         self.\_attr\_devices: dict[str, AccountDevice] = \{\}}
-\DoxyCodeLine{64         self.\_attr\_controller\_data: ControllerData = controller\_data}
-\DoxyCodeLine{65         self.\_attr\_cloud: CloudBackend | \textcolor{keywordtype}{None} = cloud}
-\DoxyCodeLine{66         self.print\_onboarded\_devices: bool = \textcolor{keyword}{False}  \textcolor{comment}{\# for login print}}
-\DoxyCodeLine{67 }
-\DoxyCodeLine{68         self.\_attr\_\_settings\_loaded\_ts: datetime.datetime | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{57     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{58         \textcolor{stringliteral}{"{}"{}"{}Initialize the account."{}"{}"{}}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60         self.\_attr\_username: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{61         self.\_attr\_password: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{62         self.\_attr\_access\_token: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{63         self.\_attr\_settings: TypeJson | \textcolor{keywordtype}{None} = \{\}}
+\DoxyCodeLine{64         self.\_attr\_settings\_lock: asyncio.Lock | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{65         self.\_attr\_devices: dict[str, AccountDevice] = \{\}}
+\DoxyCodeLine{66         self.\_attr\_controller\_data: ControllerData = controller\_data}
+\DoxyCodeLine{67         self.\_attr\_cloud: CloudBackend | \textcolor{keywordtype}{None} = cloud}
+\DoxyCodeLine{68         self.print\_onboarded\_devices: bool = \textcolor{keyword}{False}  \textcolor{comment}{\# for login print}}
 \DoxyCodeLine{69 }
+\DoxyCodeLine{70         self.\_attr\_\_settings\_loaded\_ts: datetime.datetime | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{71 }
 
 \end{DoxyCode}
 
@@ -167,9 +167,9 @@ None \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account_af0575ef9bdf5304a266
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{128     \textcolor{keyword}{def }\_settings\_loaded\_ts(self) -\/> datetime.datetime | None:}
-\DoxyCodeLine{129         \textcolor{keywordflow}{return} self.\_attr\_\_settings\_loaded\_ts}
-\DoxyCodeLine{130 }
+\DoxyCodeLine{130     \textcolor{keyword}{def }\_settings\_loaded\_ts(self) -\/> datetime.datetime | None:}
+\DoxyCodeLine{131         \textcolor{keywordflow}{return} self.\_attr\_\_settings\_loaded\_ts}
+\DoxyCodeLine{132 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -187,9 +187,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{134     ) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{135         self.\_attr\_\_settings\_loaded\_ts = \_settings\_loaded\_ts}
-\DoxyCodeLine{136 }
+\DoxyCodeLine{136     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{137         self.\_attr\_\_settings\_loaded\_ts = \_settings\_loaded\_ts}
+\DoxyCodeLine{138 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -214,9 +214,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{87     \textcolor{keyword}{def }access\_token(self) -\/> str:}
-\DoxyCodeLine{88         \textcolor{keywordflow}{return} self.\_attr\_access\_token}
-\DoxyCodeLine{89 }
+\DoxyCodeLine{89     \textcolor{keyword}{def }access\_token(self) -\/> str:}
+\DoxyCodeLine{90         \textcolor{keywordflow}{return} self.\_attr\_access\_token}
+\DoxyCodeLine{91 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -234,9 +234,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{91     \textcolor{keyword}{def }access\_token(self, access\_token: str) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{92         self.\_attr\_access\_token = access\_token}
-\DoxyCodeLine{93 }
+\DoxyCodeLine{93     \textcolor{keyword}{def }access\_token(self, access\_token: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{94         self.\_attr\_access\_token = access\_token}
+\DoxyCodeLine{95 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -255,14 +255,14 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}General cloud intended to be there check.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{137     \textcolor{keyword}{def }backend\_connected(self) -\/> bool:}
-\DoxyCodeLine{138         \textcolor{stringliteral}{"{}"{}"{}General cloud intended to be there check."{}"{}"{}}}
-\DoxyCodeLine{139         \textcolor{keywordflow}{return} (}
-\DoxyCodeLine{140             self.access\_token != \textcolor{stringliteral}{"{}"{}}}
-\DoxyCodeLine{141             \textcolor{keywordflow}{and} self.cloud \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}}
-\DoxyCodeLine{142             \textcolor{keywordflow}{and} self.cloud.backend\_connected()}
-\DoxyCodeLine{143         )}
-\DoxyCodeLine{144 }
+\DoxyCodeLine{139     \textcolor{keyword}{def }backend\_connected(self) -\/> bool:}
+\DoxyCodeLine{140         \textcolor{stringliteral}{"{}"{}"{}General cloud intended to be there check."{}"{}"{}}}
+\DoxyCodeLine{141         \textcolor{keywordflow}{return} (}
+\DoxyCodeLine{142             self.access\_token != \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{143             \textcolor{keywordflow}{and} self.cloud \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{144             \textcolor{keywordflow}{and} self.cloud.backend\_connected()}
+\DoxyCodeLine{145         )}
+\DoxyCodeLine{146 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -287,12 +287,13 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{120     \textcolor{keyword}{def }\mbox{\hyperlink{namespacecloud}{cloud}}(self) -\/> CloudBackend | None:}
-\DoxyCodeLine{121         \textcolor{keywordflow}{return} self.\_attr\_cloud}
-\DoxyCodeLine{122 }
+\DoxyCodeLine{122     \textcolor{keyword}{def }\mbox{\hyperlink{namespacecloud}{cloud}}(self) -\/> CloudBackend | None:}
+\DoxyCodeLine{123         \textcolor{keywordflow}{return} self.\_attr\_cloud}
+\DoxyCodeLine{124 }
 
 \end{DoxyCode}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -307,9 +308,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{124     \textcolor{keyword}{def }\mbox{\hyperlink{namespacecloud}{cloud}}(self, cloud: CloudBackend | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{125         self.\_attr\_cloud = cloud}
-\DoxyCodeLine{126 }
+\DoxyCodeLine{126     \textcolor{keyword}{def }\mbox{\hyperlink{namespacecloud}{cloud}}(self, cloud: CloudBackend | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{127         self.\_attr\_cloud = cloud}
+\DoxyCodeLine{128 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -319,7 +320,8 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classklyqa__ctl_1_1account_1_1Account_aca64ae054b0be49da2e7733012961429_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -335,25 +337,25 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Post command to account device via cloud.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{594     ) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{595         \textcolor{stringliteral}{"{}"{}"{}Post command to account device via cloud."{}"{}"{}}}
-\DoxyCodeLine{596 }
-\DoxyCodeLine{597         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} target:}
-\DoxyCodeLine{598             target = CLOUD\_DEVICE\_TARGETS.command}
-\DoxyCodeLine{599             \textcolor{keywordflow}{if} isinstance(command, CloudStateCommand):}
-\DoxyCodeLine{600                 target = CLOUD\_DEVICE\_TARGETS.state}
-\DoxyCodeLine{601 }
-\DoxyCodeLine{602         \textcolor{keywordflow}{if} target:}
-\DoxyCodeLine{603             \textcolor{keywordflow}{if} isinstance(command, CommandWithCheckValues):}
-\DoxyCodeLine{604                 c: CommandWithCheckValues = command}
-\DoxyCodeLine{605                 \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} c.check\_values(device.device):}
-\DoxyCodeLine{606                     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Command values to send out of range!"{}})}
-\DoxyCodeLine{607                     \textcolor{keywordflow}{return}}
-\DoxyCodeLine{608 }
-\DoxyCodeLine{609             await self.cloud\_post\_to\_device(}
-\DoxyCodeLine{610                 device, command.cloud(), target.value, **kwargs}
-\DoxyCodeLine{611             )}
-\DoxyCodeLine{612 }
+\DoxyCodeLine{596     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{597         \textcolor{stringliteral}{"{}"{}"{}Post command to account device via cloud."{}"{}"{}}}
+\DoxyCodeLine{598 }
+\DoxyCodeLine{599         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} target:}
+\DoxyCodeLine{600             target = CLOUD\_DEVICE\_TARGETS.command}
+\DoxyCodeLine{601             \textcolor{keywordflow}{if} isinstance(command, CloudStateCommand):}
+\DoxyCodeLine{602                 target = CLOUD\_DEVICE\_TARGETS.state}
+\DoxyCodeLine{603 }
+\DoxyCodeLine{604         \textcolor{keywordflow}{if} target:}
+\DoxyCodeLine{605             \textcolor{keywordflow}{if} isinstance(command, CommandWithCheckValues):}
+\DoxyCodeLine{606                 c: CommandWithCheckValues = command}
+\DoxyCodeLine{607                 \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} c.check\_values(device.device):}
+\DoxyCodeLine{608                     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Command values to send out of range!"{}})}
+\DoxyCodeLine{609                     \textcolor{keywordflow}{return}}
+\DoxyCodeLine{610 }
+\DoxyCodeLine{611             await self.cloud\_post\_to\_device(}
+\DoxyCodeLine{612                 device, command.cloud(), target.value, **kwargs}
+\DoxyCodeLine{613             )}
+\DoxyCodeLine{614 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -372,35 +374,35 @@ Here is the call graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Post json message to account device via cloud.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{559     ) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{560         \textcolor{stringliteral}{"{}"{}"{}Post json message to account device via cloud."{}"{}"{}}}
-\DoxyCodeLine{561 }
-\DoxyCodeLine{562         cloud\_device\_id: str = acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}cloudDeviceId"{}}]}
-\DoxyCodeLine{563         unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
-\DoxyCodeLine{564         LOGGER.info(}
-\DoxyCodeLine{565             f\textcolor{stringliteral}{"{}Post \{target\} to the device '\{cloud\_device\_id\}' (unit\_id:"{}}}
-\DoxyCodeLine{566             f\textcolor{stringliteral}{"{} \{unit\_id\}) over the cloud. Command: \{json\_message\}"{}}}
-\DoxyCodeLine{567         )}
-\DoxyCodeLine{568         response: TypeJson = \{}
-\DoxyCodeLine{569             cloud\_device\_id: await self.request\_beared(}
-\DoxyCodeLine{570                 RequestMethod.POST,}
-\DoxyCodeLine{571                 url=f\textcolor{stringliteral}{"{}device/\{cloud\_device\_id\}/\{target\}"{}},}
-\DoxyCodeLine{572                 json=json\_message,}
-\DoxyCodeLine{573                 **kwargs,}
-\DoxyCodeLine{574             )}
-\DoxyCodeLine{575         \}}
-\DoxyCodeLine{576 }
-\DoxyCodeLine{577         resp\_print: str = \textcolor{stringliteral}{"{}"{}}}
-\DoxyCodeLine{578         name: str = acc\_dev.device.u\_id}
-\DoxyCodeLine{579 }
-\DoxyCodeLine{580         \textcolor{keywordflow}{if} acc\_dev.acc\_settings \textcolor{keywordflow}{and} \textcolor{stringliteral}{"{}name"{}} \textcolor{keywordflow}{in} acc\_dev.acc\_settings:}
-\DoxyCodeLine{581             name = acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}name"{}}]}
-\DoxyCodeLine{582 }
-\DoxyCodeLine{583         resp\_print = f\textcolor{stringliteral}{'Device "{}\{name\}"{} cloud response:'}}
-\DoxyCodeLine{584         resp\_print = json.dumps(response, sort\_keys=\textcolor{keyword}{True}, indent=4)}
-\DoxyCodeLine{585         acc\_dev.device.cloud.received\_packages.append(response)}
-\DoxyCodeLine{586         print(resp\_print)}
-\DoxyCodeLine{587 }
+\DoxyCodeLine{561     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{562         \textcolor{stringliteral}{"{}"{}"{}Post json message to account device via cloud."{}"{}"{}}}
+\DoxyCodeLine{563 }
+\DoxyCodeLine{564         cloud\_device\_id: str = acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}cloudDeviceId"{}}]}
+\DoxyCodeLine{565         unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{566         LOGGER.info(}
+\DoxyCodeLine{567             f\textcolor{stringliteral}{"{}Post \{target\} to the device '\{cloud\_device\_id\}' (unit\_id:"{}}}
+\DoxyCodeLine{568             f\textcolor{stringliteral}{"{} \{unit\_id\}) over the cloud. Command: \{json\_message\}"{}}}
+\DoxyCodeLine{569         )}
+\DoxyCodeLine{570         response: TypeJson = \{}
+\DoxyCodeLine{571             cloud\_device\_id: await self.request\_beared(}
+\DoxyCodeLine{572                 RequestMethod.POST,}
+\DoxyCodeLine{573                 url=f\textcolor{stringliteral}{"{}device/\{cloud\_device\_id\}/\{target\}"{}},}
+\DoxyCodeLine{574                 json=json\_message,}
+\DoxyCodeLine{575                 **kwargs,}
+\DoxyCodeLine{576             )}
+\DoxyCodeLine{577         \}}
+\DoxyCodeLine{578 }
+\DoxyCodeLine{579         resp\_print: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{580         name: str = acc\_dev.device.u\_id}
+\DoxyCodeLine{581 }
+\DoxyCodeLine{582         \textcolor{keywordflow}{if} acc\_dev.acc\_settings \textcolor{keywordflow}{and} \textcolor{stringliteral}{"{}name"{}} \textcolor{keywordflow}{in} acc\_dev.acc\_settings:}
+\DoxyCodeLine{583             name = acc\_dev.acc\_settings[\textcolor{stringliteral}{"{}name"{}}]}
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585         resp\_print = f\textcolor{stringliteral}{'Device "{}\{name\}"{} cloud response:'}}
+\DoxyCodeLine{586         resp\_print = json.dumps(response, sort\_keys=\textcolor{keyword}{True}, indent=4)}
+\DoxyCodeLine{587         acc\_dev.device.cloud.received\_packages.append(response)}
+\DoxyCodeLine{588         print(resp\_print)}
+\DoxyCodeLine{589 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -426,13 +428,14 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Return or set the controller data object.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{115     \textcolor{keyword}{def }controller\_data(self) -\/> ControllerData:}
-\DoxyCodeLine{116         \textcolor{stringliteral}{"{}"{}"{}Return or set the controller data object."{}"{}"{}}}
-\DoxyCodeLine{117         \textcolor{keywordflow}{return} self.\_attr\_controller\_data}
-\DoxyCodeLine{118 }
+\DoxyCodeLine{117     \textcolor{keyword}{def }controller\_data(self) -\/> ControllerData:}
+\DoxyCodeLine{118         \textcolor{stringliteral}{"{}"{}"{}Return or set the controller data object."{}"{}"{}}}
+\DoxyCodeLine{119         \textcolor{keywordflow}{return} self.\_attr\_controller\_data}
+\DoxyCodeLine{120 }
 
 \end{DoxyCode}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -445,22 +448,22 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{create\_default()}{create\_default()}}
 {\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1account_1_1Account}{Account}} klyqa\+\_\+ctl.\+account.\+Account.\+create\+\_\+default (\begin{DoxyParamCaption}\item[{Any}]{cls,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data,  }\item[{Cloud\+Backend $\vert$ None}]{cloud,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{username = {\ttfamily \char`\"{}\char`\"{}},  }\item[{\mbox{\hyperlink{classstr}{str}} }]{password = {\ttfamily \char`\"{}\char`\"{}},  }\item[{bool }]{print\+\_\+onboarded\+\_\+devices = {\ttfamily False} }\end{DoxyParamCaption})}
 
-\begin{DoxyVerb}Factory for an account.\end{DoxyVerb}
+\begin{DoxyVerb}Create and initialize an account. Send login for access token.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{627     ) -\/> Account:}
-\DoxyCodeLine{628         \textcolor{stringliteral}{"{}"{}"{}Factory for an account."{}"{}"{}}}
-\DoxyCodeLine{629 }
-\DoxyCodeLine{630         acc: Account = Account(controller\_data, cloud)}
-\DoxyCodeLine{631         acc.username = username}
-\DoxyCodeLine{632         acc.password = password}
-\DoxyCodeLine{633         acc.print\_onboarded\_devices = print\_onboarded\_devices}
-\DoxyCodeLine{634 }
-\DoxyCodeLine{635         acc.\_attr\_settings\_lock = asyncio.Lock()}
-\DoxyCodeLine{636         await acc.init()}
-\DoxyCodeLine{637         \textcolor{keywordflow}{if} cloud:}
-\DoxyCodeLine{638             await acc.login(acc.print\_onboarded\_devices)}
-\DoxyCodeLine{639         \textcolor{keywordflow}{return} acc}
+\DoxyCodeLine{629     ) -\/> Account:}
+\DoxyCodeLine{630         \textcolor{stringliteral}{"{}"{}"{}Create and initialize an account. Send login for access token."{}"{}"{}}}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{632         acc: Account = Account(controller\_data, cloud)}
+\DoxyCodeLine{633         acc.username = username}
+\DoxyCodeLine{634         acc.password = password}
+\DoxyCodeLine{635         acc.print\_onboarded\_devices = print\_onboarded\_devices}
+\DoxyCodeLine{636 }
+\DoxyCodeLine{637         acc.\_attr\_settings\_lock = asyncio.Lock()}
+\DoxyCodeLine{638         await acc.init()}
+\DoxyCodeLine{639         \textcolor{keywordflow}{if} cloud:}
+\DoxyCodeLine{640             await acc.login(acc.print\_onboarded\_devices)}
+\DoxyCodeLine{641         \textcolor{keywordflow}{return} acc}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885}\label{classklyqa__ctl_1_1account_1_1Account_aa78870d05cc7fa5899d61733d124e885}} 
@@ -472,46 +475,46 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Request account device's states and print them.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{387     ) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{388         \textcolor{stringliteral}{"{}"{}"{}Request account device's states and print them."{}"{}"{}}}
-\DoxyCodeLine{389 }
-\DoxyCodeLine{390         cloud\_state: TypeJson | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{391         state\_str: str}
-\DoxyCodeLine{392         device: Device}
-\DoxyCodeLine{393 }
-\DoxyCodeLine{394         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.backend\_connected() \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{395             \textcolor{keywordflow}{return}}
-\DoxyCodeLine{396 }
-\DoxyCodeLine{397         state\_str = (}
-\DoxyCodeLine{398             f\textcolor{stringliteral}{'Name: "{}\{dev.acc\_settings["{}name"{}]\}"{}'}}
-\DoxyCodeLine{399             + f\textcolor{stringliteral}{'\(\backslash\)tAES-\/KEY: \{dev.acc\_settings["{}aesKey"{}]\}'}}
-\DoxyCodeLine{400             + f\textcolor{stringliteral}{'\(\backslash\)tUnit-\/ID: \{dev.acc\_settings["{}localDeviceId"{}]\}'}}
-\DoxyCodeLine{401             + f\textcolor{stringliteral}{'\(\backslash\)tCloud-\/ID: \{dev.acc\_settings["{}cloudDeviceId"{}]\}'}}
-\DoxyCodeLine{402             + f\textcolor{stringliteral}{'\(\backslash\)tType: \{dev.acc\_settings["{}productId"{}]\}'}}
-\DoxyCodeLine{403         )}
-\DoxyCodeLine{404 }
-\DoxyCodeLine{405         device = dev.device}
-\DoxyCodeLine{406         cloud\_state = await self.request\_cloud\_device\_state(}
-\DoxyCodeLine{407             dev.acc\_settings[\textcolor{stringliteral}{"{}cloudDeviceId"{}}], timeout=req\_timeout}
-\DoxyCodeLine{408         )}
-\DoxyCodeLine{409         \textcolor{keywordflow}{if} cloud\_state:}
-\DoxyCodeLine{410             \textcolor{keywordflow}{if} \textcolor{stringliteral}{"{}connected"{}} \textcolor{keywordflow}{in} cloud\_state:}
-\DoxyCodeLine{411                 state\_str = (}
-\DoxyCodeLine{412                     state\_str}
-\DoxyCodeLine{413                     + f\textcolor{stringliteral}{'\(\backslash\)tCloud-\/Connected: \{cloud\_state["{}connected"{}]\}'}}
-\DoxyCodeLine{414                 )}
-\DoxyCodeLine{415             device.cloud.connected = cloud\_state[\textcolor{stringliteral}{"{}connected"{}}]}
-\DoxyCodeLine{416 }
-\DoxyCodeLine{417             device.save\_device\_message(cloud\_state | \{\textcolor{stringliteral}{"{}type"{}}: \textcolor{stringliteral}{"{}status"{}}\})}
-\DoxyCodeLine{418         \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{419             LOGGER.info(}
-\DoxyCodeLine{420                 \textcolor{stringliteral}{"{}No answer for cloud device state request"{}}}
-\DoxyCodeLine{421                 f\textcolor{stringliteral}{' \{dev.acc\_settings["{}localDeviceId"{}]\}'}}
-\DoxyCodeLine{422             )}
-\DoxyCodeLine{423 }
-\DoxyCodeLine{424         \textcolor{keywordflow}{if} print\_onboarded\_devices:}
-\DoxyCodeLine{425             print(state\_str)}
-\DoxyCodeLine{426 }
+\DoxyCodeLine{389     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{390         \textcolor{stringliteral}{"{}"{}"{}Request account device's states and print them."{}"{}"{}}}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392         cloud\_state: TypeJson | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{393         state\_str: str}
+\DoxyCodeLine{394         device: Device}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.backend\_connected() \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{397             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399         state\_str = (}
+\DoxyCodeLine{400             f\textcolor{stringliteral}{'Name: "{}\{dev.acc\_settings["{}name"{}]\}"{}'}}
+\DoxyCodeLine{401             + f\textcolor{stringliteral}{'\(\backslash\)tAES-\/KEY: \{dev.acc\_settings["{}aesKey"{}]\}'}}
+\DoxyCodeLine{402             + f\textcolor{stringliteral}{'\(\backslash\)tUnit-\/ID: \{dev.acc\_settings["{}localDeviceId"{}]\}'}}
+\DoxyCodeLine{403             + f\textcolor{stringliteral}{'\(\backslash\)tCloud-\/ID: \{dev.acc\_settings["{}cloudDeviceId"{}]\}'}}
+\DoxyCodeLine{404             + f\textcolor{stringliteral}{'\(\backslash\)tType: \{dev.acc\_settings["{}productId"{}]\}'}}
+\DoxyCodeLine{405         )}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407         device = dev.device}
+\DoxyCodeLine{408         cloud\_state = await self.request\_cloud\_device\_state(}
+\DoxyCodeLine{409             dev.acc\_settings[\textcolor{stringliteral}{"{}cloudDeviceId"{}}], timeout=req\_timeout}
+\DoxyCodeLine{410         )}
+\DoxyCodeLine{411         \textcolor{keywordflow}{if} cloud\_state:}
+\DoxyCodeLine{412             \textcolor{keywordflow}{if} \textcolor{stringliteral}{"{}connected"{}} \textcolor{keywordflow}{in} cloud\_state:}
+\DoxyCodeLine{413                 state\_str = (}
+\DoxyCodeLine{414                     state\_str}
+\DoxyCodeLine{415                     + f\textcolor{stringliteral}{'\(\backslash\)tCloud-\/Connected: \{cloud\_state["{}connected"{}]\}'}}
+\DoxyCodeLine{416                 )}
+\DoxyCodeLine{417             device.cloud.connected = cloud\_state[\textcolor{stringliteral}{"{}connected"{}}]}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{419             device.save\_device\_message(cloud\_state | \{\textcolor{stringliteral}{"{}type"{}}: \textcolor{stringliteral}{"{}status"{}}\})}
+\DoxyCodeLine{420         \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{421             LOGGER.info(}
+\DoxyCodeLine{422                 \textcolor{stringliteral}{"{}No answer for cloud device state request"{}}}
+\DoxyCodeLine{423                 f\textcolor{stringliteral}{' \{dev.acc\_settings["{}localDeviceId"{}]\}'}}
+\DoxyCodeLine{424             )}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426         \textcolor{keywordflow}{if} print\_onboarded\_devices:}
+\DoxyCodeLine{427             print(state\_str)}
+\DoxyCodeLine{428 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -536,9 +539,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{95     \textcolor{keyword}{def }devices(self) -\/> dict[str, AccountDevice]:}
-\DoxyCodeLine{96         \textcolor{keywordflow}{return} self.\_attr\_devices}
-\DoxyCodeLine{97 }
+\DoxyCodeLine{97     \textcolor{keyword}{def }devices(self) -\/> dict[str, AccountDevice]:}
+\DoxyCodeLine{98         \textcolor{keywordflow}{return} self.\_attr\_devices}
+\DoxyCodeLine{99 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -556,9 +559,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{99     \textcolor{keyword}{def }devices(self, devices: dict[str, AccountDevice]) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{100         self.\_attr\_devices = devices}
-\DoxyCodeLine{101 }
+\DoxyCodeLine{101     \textcolor{keyword}{def }devices(self, devices: dict[str, AccountDevice]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{102         self.\_attr\_devices = devices}
+\DoxyCodeLine{103 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -584,17 +587,17 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Set default request header with cloud access token.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{166     \textcolor{keyword}{def }get\_beared\_request\_header(self) -\/> TypeJson:}
-\DoxyCodeLine{167         \textcolor{stringliteral}{"{}"{}"{}Set default request header with cloud access token."{}"{}"{}}}
-\DoxyCodeLine{168 }
-\DoxyCodeLine{169         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{170             \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}()}
-\DoxyCodeLine{171 }
-\DoxyCodeLine{172         \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}(}
-\DoxyCodeLine{173             self.cloud.get\_header\_default()}
-\DoxyCodeLine{174             | \{\textcolor{stringliteral}{"{}Authorization"{}}: \textcolor{stringliteral}{"{}Bearer "{}} + self.access\_token\}}
-\DoxyCodeLine{175         )}
-\DoxyCodeLine{176 }
+\DoxyCodeLine{168     \textcolor{keyword}{def }get\_beared\_request\_header(self) -\/> TypeJson:}
+\DoxyCodeLine{169         \textcolor{stringliteral}{"{}"{}"{}Set default request header with cloud access token."{}"{}"{}}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{172             \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}()}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174         \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}(}
+\DoxyCodeLine{175             self.cloud.get\_header\_default()}
+\DoxyCodeLine{176             | \{\textcolor{stringliteral}{"{}Authorization"{}}: \textcolor{stringliteral}{"{}Bearer "{}} + self.access\_token\}}
+\DoxyCodeLine{177         )}
+\DoxyCodeLine{178 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -621,28 +624,29 @@ Here is the caller graph for this function\+:\nopagebreak
 device as well.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{299     ) -\/> AccountDevice:}
-\DoxyCodeLine{300         \textcolor{stringliteral}{"{}"{}"{}Look for account device or create it. Create connected controller}}
-\DoxyCodeLine{301 \textcolor{stringliteral}{        device as well."{}"{}"{}}}
-\DoxyCodeLine{302 }
-\DoxyCodeLine{303         \textcolor{keywordflow}{if} device\_sets \textcolor{keywordflow}{is} \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{304             device\_sets = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}()}
-\DoxyCodeLine{305 }
-\DoxyCodeLine{306         dev: AccountDevice}
-\DoxyCodeLine{307         \textcolor{keywordflow}{if} unit\_id \textcolor{keywordflow}{in} self.devices:}
-\DoxyCodeLine{308             dev = self.devices[unit\_id]}
-\DoxyCodeLine{309         \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{310             device: Device = await self.controller\_data.get\_or\_create\_device(}
-\DoxyCodeLine{311                 unit\_id, product\_id}
-\DoxyCodeLine{312             )}
-\DoxyCodeLine{313             dev = AccountDevice(device\_sets, device)}
-\DoxyCodeLine{314             self.devices[unit\_id] = dev}
-\DoxyCodeLine{315 }
-\DoxyCodeLine{316         \textcolor{keywordflow}{return} dev}
+\DoxyCodeLine{301     ) -\/> AccountDevice:}
+\DoxyCodeLine{302         \textcolor{stringliteral}{"{}"{}"{}Look for account device or create it. Create connected controller}}
+\DoxyCodeLine{303 \textcolor{stringliteral}{        device as well."{}"{}"{}}}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305         \textcolor{keywordflow}{if} device\_sets \textcolor{keywordflow}{is} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{306             device\_sets = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aad61dc89317a902a169bf4346944f1bd}{TypeJson}}()}
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308         dev: AccountDevice}
+\DoxyCodeLine{309         \textcolor{keywordflow}{if} unit\_id \textcolor{keywordflow}{in} self.devices:}
+\DoxyCodeLine{310             dev = self.devices[unit\_id]}
+\DoxyCodeLine{311         \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{312             device: Device = await self.controller\_data.get\_or\_create\_device(}
+\DoxyCodeLine{313                 unit\_id, product\_id}
+\DoxyCodeLine{314             )}
+\DoxyCodeLine{315             dev = AccountDevice(device\_sets, device)}
+\DoxyCodeLine{316             self.devices[unit\_id] = dev}
 \DoxyCodeLine{317 }
+\DoxyCodeLine{318         \textcolor{keywordflow}{return} dev}
+\DoxyCodeLine{319 }
 
 \end{DoxyCode}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -665,11 +669,11 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Initialize account.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{377     async \textcolor{keyword}{def }init(self) -\/> None:}
-\DoxyCodeLine{378         \textcolor{stringliteral}{"{}"{}"{}Initialize account."{}"{}"{}}}
-\DoxyCodeLine{379 }
-\DoxyCodeLine{380         await self.read\_cache()}
+\DoxyCodeLine{379     async \textcolor{keyword}{def }init(self) -\/> None:}
+\DoxyCodeLine{380         \textcolor{stringliteral}{"{}"{}"{}Initialize account."{}"{}"{}}}
 \DoxyCodeLine{381 }
+\DoxyCodeLine{382         await self.read\_cache()}
+\DoxyCodeLine{383 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -698,49 +702,50 @@ Returns:
 \end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{427     async \textcolor{keyword}{def }login(self, print\_onboarded\_devices: bool = \textcolor{keyword}{False}) -\/> bool:}
-\DoxyCodeLine{428         \textcolor{stringliteral}{"{}"{}"{}Login on klyqa account, get account settings, get onboarded}}
-\DoxyCodeLine{429 \textcolor{stringliteral}{        device profiles, print all devices if parameter set.}}
-\DoxyCodeLine{430 \textcolor{stringliteral}{}}
-\DoxyCodeLine{431 \textcolor{stringliteral}{        Params:}}
-\DoxyCodeLine{432 \textcolor{stringliteral}{            print\_onboarded\_devices:   print onboarded devices from the}}
-\DoxyCodeLine{433 \textcolor{stringliteral}{                klyqa account to the stdout}}
-\DoxyCodeLine{434 \textcolor{stringliteral}{}}
-\DoxyCodeLine{435 \textcolor{stringliteral}{        Returns:}}
-\DoxyCodeLine{436 \textcolor{stringliteral}{            true:  on success of the login}}
-\DoxyCodeLine{437 \textcolor{stringliteral}{            false: on error}}
-\DoxyCodeLine{438 \textcolor{stringliteral}{        "{}"{}"{}}}
-\DoxyCodeLine{439 }
-\DoxyCodeLine{440         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{441             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{442 }
-\DoxyCodeLine{443         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_cache():}
-\DoxyCodeLine{444             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{445 }
-\DoxyCodeLine{446         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.perform\_login():}
-\DoxyCodeLine{447             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{448 }
-\DoxyCodeLine{449         await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
-\DoxyCodeLine{450             \{\textcolor{stringliteral}{"{}username"{}}: self.username\}, \textcolor{stringliteral}{"{}last\_username.json"{}}}
-\DoxyCodeLine{451         )}
-\DoxyCodeLine{452 }
-\DoxyCodeLine{453         loop: asyncio.AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{429     async \textcolor{keyword}{def }login(self, print\_onboarded\_devices: bool = \textcolor{keyword}{False}) -\/> bool:}
+\DoxyCodeLine{430         \textcolor{stringliteral}{"{}"{}"{}Login on klyqa account, get account settings, get onboarded}}
+\DoxyCodeLine{431 \textcolor{stringliteral}{        device profiles, print all devices if parameter set.}}
+\DoxyCodeLine{432 \textcolor{stringliteral}{}}
+\DoxyCodeLine{433 \textcolor{stringliteral}{        Params:}}
+\DoxyCodeLine{434 \textcolor{stringliteral}{            print\_onboarded\_devices:   print onboarded devices from the}}
+\DoxyCodeLine{435 \textcolor{stringliteral}{                klyqa account to the stdout}}
+\DoxyCodeLine{436 \textcolor{stringliteral}{}}
+\DoxyCodeLine{437 \textcolor{stringliteral}{        Returns:}}
+\DoxyCodeLine{438 \textcolor{stringliteral}{            true:  on success of the login}}
+\DoxyCodeLine{439 \textcolor{stringliteral}{            false: on error}}
+\DoxyCodeLine{440 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{443             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_cache():}
+\DoxyCodeLine{446             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{448         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.perform\_login():}
+\DoxyCodeLine{449             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{451         await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{452             \{\textcolor{stringliteral}{"{}username"{}}: self.username\}, \textcolor{stringliteral}{"{}last\_username.json"{}}}
+\DoxyCodeLine{453         )}
 \DoxyCodeLine{454 }
-\DoxyCodeLine{455         devices\_tasks: list[asyncio.Task[Any]] = [}
-\DoxyCodeLine{456             loop.create\_task(}
-\DoxyCodeLine{457                 self.device\_request\_and\_print(}
-\DoxyCodeLine{458                     acc\_dev, print\_onboarded\_devices, req\_timeout=30}
-\DoxyCodeLine{459                 )}
-\DoxyCodeLine{460             )}
-\DoxyCodeLine{461             \textcolor{keywordflow}{for} \_, acc\_dev \textcolor{keywordflow}{in} self.devices.items()}
-\DoxyCodeLine{462         ]}
-\DoxyCodeLine{463         await asyncio.wait(devices\_tasks)}
-\DoxyCodeLine{464 }
-\DoxyCodeLine{465         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{455         loop: asyncio.AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{456 }
+\DoxyCodeLine{457         devices\_tasks: list[asyncio.Task[Any]] = [}
+\DoxyCodeLine{458             loop.create\_task(}
+\DoxyCodeLine{459                 self.device\_request\_and\_print(}
+\DoxyCodeLine{460                     acc\_dev, print\_onboarded\_devices, req\_timeout=30}
+\DoxyCodeLine{461                 )}
+\DoxyCodeLine{462             )}
+\DoxyCodeLine{463             \textcolor{keywordflow}{for} \_, acc\_dev \textcolor{keywordflow}{in} self.devices.items()}
+\DoxyCodeLine{464         ]}
+\DoxyCodeLine{465         await asyncio.wait(devices\_tasks)}
 \DoxyCodeLine{466 }
+\DoxyCodeLine{467         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{468 }
 
 \end{DoxyCode}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -755,9 +760,9 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{79     \textcolor{keyword}{def }password(self) -\/> str:}
-\DoxyCodeLine{80         \textcolor{keywordflow}{return} self.\_attr\_password}
-\DoxyCodeLine{81 }
+\DoxyCodeLine{81     \textcolor{keyword}{def }password(self) -\/> str:}
+\DoxyCodeLine{82         \textcolor{keywordflow}{return} self.\_attr\_password}
+\DoxyCodeLine{83 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -775,9 +780,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{83     \textcolor{keyword}{def }password(self, password: str) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{84         self.\_attr\_password = password}
-\DoxyCodeLine{85 }
+\DoxyCodeLine{85     \textcolor{keyword}{def }password(self, password: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{86         self.\_attr\_password = password}
+\DoxyCodeLine{87 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -796,50 +801,50 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Perform login in cloud backend and request account settings.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{203     async \textcolor{keyword}{def }perform\_login(self) -\/> bool:}
-\DoxyCodeLine{204         \textcolor{stringliteral}{"{}"{}"{}Perform login in cloud backend and request account settings."{}"{}"{}}}
-\DoxyCodeLine{205 }
-\DoxyCodeLine{206         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud \textcolor{keywordflow}{or} self.cloud.offline:}
-\DoxyCodeLine{207             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{208 }
-\DoxyCodeLine{209         self.run\_password\_prompt()}
-\DoxyCodeLine{210         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.password:}
-\DoxyCodeLine{211             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{212 }
-\DoxyCodeLine{213         \textcolor{keywordflow}{if} self.username \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None} \textcolor{keywordflow}{and} self.password \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{214             login\_response: httpx.Response | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
-\DoxyCodeLine{215             login\_data: TypeJson = \{}
-\DoxyCodeLine{216                 \textcolor{stringliteral}{"{}email"{}}: self.username,}
-\DoxyCodeLine{217                 \textcolor{stringliteral}{"{}password"{}}: self.password,}
-\DoxyCodeLine{218             \}}
-\DoxyCodeLine{219 }
-\DoxyCodeLine{220             login\_response = await self.cloud.request(}
-\DoxyCodeLine{221                 RequestMethod.POST,}
-\DoxyCodeLine{222                 \textcolor{stringliteral}{"{}auth/login"{}},}
-\DoxyCodeLine{223                 json=login\_data,}
-\DoxyCodeLine{224                 timeout=10,}
-\DoxyCodeLine{225             )}
-\DoxyCodeLine{226             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} login\_response:}
-\DoxyCodeLine{227                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{228 }
-\DoxyCodeLine{229             login\_json: TypeJson | \textcolor{keywordtype}{None} = await self.cloud.load\_http\_response(}
-\DoxyCodeLine{230                 login\_response}
-\DoxyCodeLine{231             )}
-\DoxyCodeLine{232 }
-\DoxyCodeLine{233             \textcolor{keywordflow}{if} login\_json:}
-\DoxyCodeLine{234                 self.access\_token = \mbox{\hyperlink{classstr}{str}}(login\_json.get(\textcolor{stringliteral}{"{}accessToken"{}}))}
-\DoxyCodeLine{235                 await self.update\_account\_settings(}
-\DoxyCodeLine{236                     \{}
-\DoxyCodeLine{237                         \textcolor{stringliteral}{"{}time\_cached"{}}: datetime.datetime.now(),}
-\DoxyCodeLine{238                         \textcolor{stringliteral}{"{}password"{}}: self.password,}
-\DoxyCodeLine{239                     \}}
-\DoxyCodeLine{240                 )}
-\DoxyCodeLine{241 }
-\DoxyCodeLine{242             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings:}
-\DoxyCodeLine{243                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{244 }
-\DoxyCodeLine{245         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{205     async \textcolor{keyword}{def }perform\_login(self) -\/> bool:}
+\DoxyCodeLine{206         \textcolor{stringliteral}{"{}"{}"{}Perform login in cloud backend and request account settings."{}"{}"{}}}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud \textcolor{keywordflow}{or} self.cloud.offline:}
+\DoxyCodeLine{209             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211         self.run\_password\_prompt()}
+\DoxyCodeLine{212         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.password:}
+\DoxyCodeLine{213             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215         \textcolor{keywordflow}{if} self.username \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None} \textcolor{keywordflow}{and} self.password \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{216             login\_response: httpx.Response | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{217             login\_data: TypeJson = \{}
+\DoxyCodeLine{218                 \textcolor{stringliteral}{"{}email"{}}: self.username,}
+\DoxyCodeLine{219                 \textcolor{stringliteral}{"{}password"{}}: self.password,}
+\DoxyCodeLine{220             \}}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222             login\_response = await self.cloud.request(}
+\DoxyCodeLine{223                 RequestMethod.POST,}
+\DoxyCodeLine{224                 \textcolor{stringliteral}{"{}auth/login"{}},}
+\DoxyCodeLine{225                 json=login\_data,}
+\DoxyCodeLine{226                 timeout=10,}
+\DoxyCodeLine{227             )}
+\DoxyCodeLine{228             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} login\_response:}
+\DoxyCodeLine{229                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231             login\_json: TypeJson | \textcolor{keywordtype}{None} = await self.cloud.load\_http\_response(}
+\DoxyCodeLine{232                 login\_response}
+\DoxyCodeLine{233             )}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235             \textcolor{keywordflow}{if} login\_json:}
+\DoxyCodeLine{236                 self.access\_token = \mbox{\hyperlink{classstr}{str}}(login\_json.get(\textcolor{stringliteral}{"{}accessToken"{}}))}
+\DoxyCodeLine{237                 await self.update\_account\_settings(}
+\DoxyCodeLine{238                     \{}
+\DoxyCodeLine{239                         \textcolor{stringliteral}{"{}time\_cached"{}}: datetime.datetime.now(),}
+\DoxyCodeLine{240                         \textcolor{stringliteral}{"{}password"{}}: self.password,}
+\DoxyCodeLine{241                     \}}
+\DoxyCodeLine{242                 )}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings:}
+\DoxyCodeLine{245                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
 \DoxyCodeLine{246 }
+\DoxyCodeLine{247         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{248 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -865,21 +870,21 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Read user account settings cache.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{348     ) -\/> bool:}
-\DoxyCodeLine{349         \textcolor{stringliteral}{"{}"{}"{}Read user account settings cache."{}"{}"{}}}
-\DoxyCodeLine{350 }
-\DoxyCodeLine{351         acc\_settings: TypeJson | \textcolor{keywordtype}{None}}
-\DoxyCodeLine{352         cached: bool}
-\DoxyCodeLine{353         acc\_settings, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
-\DoxyCodeLine{354             \textcolor{keywordtype}{None}, f\textcolor{stringliteral}{"{}\{self.username\}.acc\_settings.cache.json"{}}}
-\DoxyCodeLine{355         )}
-\DoxyCodeLine{356         \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} acc\_settings:}
-\DoxyCodeLine{357             await self.set\_settings(acc\_settings)}
-\DoxyCodeLine{358             \textcolor{keywordflow}{if} self.settings \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} self.password:}
-\DoxyCodeLine{359                 self.password = self.settings[\textcolor{stringliteral}{"{}password"{}}]}
-\DoxyCodeLine{360 }
-\DoxyCodeLine{361         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{350     ) -\/> bool:}
+\DoxyCodeLine{351         \textcolor{stringliteral}{"{}"{}"{}Read user account settings cache."{}"{}"{}}}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{353         acc\_settings: TypeJson | \textcolor{keywordtype}{None}}
+\DoxyCodeLine{354         cached: bool}
+\DoxyCodeLine{355         acc\_settings, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{356             \textcolor{keywordtype}{None}, f\textcolor{stringliteral}{"{}\{self.username\}.acc\_settings.cache.json"{}}}
+\DoxyCodeLine{357         )}
+\DoxyCodeLine{358         \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} acc\_settings:}
+\DoxyCodeLine{359             await self.set\_settings(acc\_settings)}
+\DoxyCodeLine{360             \textcolor{keywordflow}{if} self.settings \textcolor{keywordflow}{and} \textcolor{keywordflow}{not} self.password:}
+\DoxyCodeLine{361                 self.password = self.settings[\textcolor{stringliteral}{"{}password"{}}]}
 \DoxyCodeLine{362 }
+\DoxyCodeLine{363         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{364 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -899,15 +904,15 @@ Here is the call graph for this function\+:\nopagebreak
 password.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{368     async \textcolor{keyword}{def }read\_cache(self) -\/> bool:}
-\DoxyCodeLine{369         \textcolor{stringliteral}{"{}"{}"{}Get cached account data for login and check existing username and}}
-\DoxyCodeLine{370 \textcolor{stringliteral}{        password."{}"{}"{}}}
-\DoxyCodeLine{371         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_username\_cache():}
-\DoxyCodeLine{372             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{373         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_acc\_settings\_cache():}
+\DoxyCodeLine{370     async \textcolor{keyword}{def }read\_cache(self) -\/> bool:}
+\DoxyCodeLine{371         \textcolor{stringliteral}{"{}"{}"{}Get cached account data for login and check existing username and}}
+\DoxyCodeLine{372 \textcolor{stringliteral}{        password."{}"{}"{}}}
+\DoxyCodeLine{373         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_username\_cache():}
 \DoxyCodeLine{374             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{375         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
-\DoxyCodeLine{376 }
+\DoxyCodeLine{375         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await self.read\_acc\_settings\_cache():}
+\DoxyCodeLine{376             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{377         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{378 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -926,36 +931,36 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Read username from cache.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{247     async \textcolor{keyword}{def }read\_username\_cache(self) -\/> bool:}
-\DoxyCodeLine{248         \textcolor{stringliteral}{"{}"{}"{}Read username from cache."{}"{}"{}}}
-\DoxyCodeLine{249 }
-\DoxyCodeLine{250         cached: bool}
-\DoxyCodeLine{251         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.username:}
-\DoxyCodeLine{252 }
-\DoxyCodeLine{253             user\_name\_cache: dict | \textcolor{keywordtype}{None}}
-\DoxyCodeLine{254             user\_name\_cache, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
-\DoxyCodeLine{255                 \textcolor{keywordtype}{None}, \textcolor{stringliteral}{"{}last\_username.json"{}}}
-\DoxyCodeLine{256             )}
-\DoxyCodeLine{257             \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} user\_name\_cache:}
-\DoxyCodeLine{258                 self.username = user\_name\_cache[\textcolor{stringliteral}{"{}username"{}}]}
-\DoxyCodeLine{259                 LOGGER.info(\textcolor{stringliteral}{"{}Using Klyqa account \%s."{}}, self.username)}
-\DoxyCodeLine{260             \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{261                 LOGGER.error(\textcolor{stringliteral}{"{}Username missing, username cache empty."{}})}
-\DoxyCodeLine{262 }
-\DoxyCodeLine{263                 \textcolor{keywordflow}{if} (}
-\DoxyCodeLine{264                     self.controller\_data}
-\DoxyCodeLine{265                     \textcolor{keywordflow}{and} self.controller\_data.interactive\_prompts}
-\DoxyCodeLine{266                 ):}
-\DoxyCodeLine{267                     self.username = input(}
-\DoxyCodeLine{268                         \textcolor{stringliteral}{"{} Please enter your Klyqa Account username (will"{}}}
-\DoxyCodeLine{269                         \textcolor{stringliteral}{"{} be cached for the script invoke): "{}}}
-\DoxyCodeLine{270                     )}
-\DoxyCodeLine{271                 \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{272                     LOGGER.info(\textcolor{stringliteral}{"{}Missing Klyqa account username. No login."{}})}
-\DoxyCodeLine{273                     \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{274 }
-\DoxyCodeLine{275         \textcolor{keywordflow}{return} self.username != \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{249     async \textcolor{keyword}{def }read\_username\_cache(self) -\/> bool:}
+\DoxyCodeLine{250         \textcolor{stringliteral}{"{}"{}"{}Read username from cache."{}"{}"{}}}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252         cached: bool}
+\DoxyCodeLine{253         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.username:}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255             user\_name\_cache: dict | \textcolor{keywordtype}{None}}
+\DoxyCodeLine{256             user\_name\_cache, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{257                 \textcolor{keywordtype}{None}, \textcolor{stringliteral}{"{}last\_username.json"{}}}
+\DoxyCodeLine{258             )}
+\DoxyCodeLine{259             \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} user\_name\_cache:}
+\DoxyCodeLine{260                 self.username = user\_name\_cache[\textcolor{stringliteral}{"{}username"{}}]}
+\DoxyCodeLine{261                 LOGGER.info(\textcolor{stringliteral}{"{}Using Klyqa account \%s."{}}, self.username)}
+\DoxyCodeLine{262             \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{263                 LOGGER.error(\textcolor{stringliteral}{"{}Username missing, username cache empty."{}})}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265                 \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{266                     self.controller\_data}
+\DoxyCodeLine{267                     \textcolor{keywordflow}{and} self.controller\_data.interactive\_prompts}
+\DoxyCodeLine{268                 ):}
+\DoxyCodeLine{269                     self.username = input(}
+\DoxyCodeLine{270                         \textcolor{stringliteral}{"{} Please enter your Klyqa Account username (will"{}}}
+\DoxyCodeLine{271                         \textcolor{stringliteral}{"{} be cached for the script invoke): "{}}}
+\DoxyCodeLine{272                     )}
+\DoxyCodeLine{273                 \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{274                     LOGGER.info(\textcolor{stringliteral}{"{}Missing Klyqa account username. No login."{}})}
+\DoxyCodeLine{275                     \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
 \DoxyCodeLine{276 }
+\DoxyCodeLine{277         \textcolor{keywordflow}{return} self.username != \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{278 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -975,30 +980,30 @@ Here is the call graph for this function\+:\nopagebreak
 was after the scan interval.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{482     ) -\/> bool:}
-\DoxyCodeLine{483         \textcolor{stringliteral}{"{}"{}"{}Only send a new account settings http request when the last update}}
-\DoxyCodeLine{484 \textcolor{stringliteral}{        was after the scan interval."{}"{}"{}}}
-\DoxyCodeLine{485 }
-\DoxyCodeLine{486         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{487             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{488 }
-\DoxyCodeLine{489         \textcolor{keywordflow}{if} self.settings\_lock:}
-\DoxyCodeLine{490             await self.settings\_lock.acquire()}
-\DoxyCodeLine{491         ret: bool = \textcolor{keyword}{True}}
-\DoxyCodeLine{492         \textcolor{keywordflow}{try}:}
-\DoxyCodeLine{493             now: datetime.datetime = datetime.datetime.now()}
-\DoxyCodeLine{494             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.\_settings\_loaded\_ts \textcolor{keywordflow}{or} (}
-\DoxyCodeLine{495                 now -\/ self.\_settings\_loaded\_ts}
-\DoxyCodeLine{496                 >= datetime.timedelta(seconds=scan\_interval)}
-\DoxyCodeLine{497             ):}
-\DoxyCodeLine{498                 \textcolor{stringliteral}{"{}"{}"{}look that the settings are loaded only once in the scan}}
-\DoxyCodeLine{499 \textcolor{stringliteral}{                interval"{}"{}"{}}}
-\DoxyCodeLine{500                 await self.update\_account\_settings()}
-\DoxyCodeLine{501         \textcolor{keywordflow}{finally}:}
-\DoxyCodeLine{502             \textcolor{keywordflow}{if} self.settings\_lock:}
-\DoxyCodeLine{503                 self.settings\_lock.\mbox{\hyperlink{namespaceklyqa__ctl_1_1conf_aa5e016064b19c99705cafd006ae25857}{release}}()}
-\DoxyCodeLine{504         \textcolor{keywordflow}{return} ret}
-\DoxyCodeLine{505 }
+\DoxyCodeLine{484     ) -\/> bool:}
+\DoxyCodeLine{485         \textcolor{stringliteral}{"{}"{}"{}Only send a new account settings http request when the last update}}
+\DoxyCodeLine{486 \textcolor{stringliteral}{        was after the scan interval."{}"{}"{}}}
+\DoxyCodeLine{487 }
+\DoxyCodeLine{488         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{489             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491         \textcolor{keywordflow}{if} self.settings\_lock:}
+\DoxyCodeLine{492             await self.settings\_lock.acquire()}
+\DoxyCodeLine{493         ret: bool = \textcolor{keyword}{True}}
+\DoxyCodeLine{494         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{495             now: datetime.datetime = datetime.datetime.now()}
+\DoxyCodeLine{496             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.\_settings\_loaded\_ts \textcolor{keywordflow}{or} (}
+\DoxyCodeLine{497                 now -\/ self.\_settings\_loaded\_ts}
+\DoxyCodeLine{498                 >= datetime.timedelta(seconds=scan\_interval)}
+\DoxyCodeLine{499             ):}
+\DoxyCodeLine{500                 \textcolor{stringliteral}{"{}"{}"{}look that the settings are loaded only once in the scan}}
+\DoxyCodeLine{501 \textcolor{stringliteral}{                interval"{}"{}"{}}}
+\DoxyCodeLine{502                 await self.update\_account\_settings()}
+\DoxyCodeLine{503         \textcolor{keywordflow}{finally}:}
+\DoxyCodeLine{504             \textcolor{keywordflow}{if} self.settings\_lock:}
+\DoxyCodeLine{505                 self.settings\_lock.\mbox{\hyperlink{namespaceklyqa__ctl_1_1conf_aa5e016064b19c99705cafd006ae25857}{release}}()}
+\DoxyCodeLine{506         \textcolor{keywordflow}{return} ret}
+\DoxyCodeLine{507 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1018,25 +1023,25 @@ Here is the call graph for this function\+:\nopagebreak
 requests.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{147     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{148         \textcolor{stringliteral}{"{}"{}"{}When the user logged in and an access token exists, use it for http}}
-\DoxyCodeLine{149 \textcolor{stringliteral}{        requests."{}"{}"{}}}
-\DoxyCodeLine{150 }
-\DoxyCodeLine{151         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{152             \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
-\DoxyCodeLine{153         resp: httpx.Response | \textcolor{keywordtype}{None} = await self.cloud.request(}
-\DoxyCodeLine{154             method,}
-\DoxyCodeLine{155             url,}
-\DoxyCodeLine{156             self.get\_beared\_request\_header()}
-\DoxyCodeLine{157             \textcolor{keywordflow}{if} self.access\_token}
-\DoxyCodeLine{158             \textcolor{keywordflow}{else} self.cloud.get\_header\_default(),}
-\DoxyCodeLine{159             **kwargs,}
-\DoxyCodeLine{160         )}
-\DoxyCodeLine{161         \textcolor{keywordflow}{if} resp:}
-\DoxyCodeLine{162             answer: TypeJson | \textcolor{keywordtype}{None} = await self.cloud.load\_http\_response(resp)}
-\DoxyCodeLine{163             \textcolor{keywordflow}{return} answer}
-\DoxyCodeLine{164         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
-\DoxyCodeLine{165 }
+\DoxyCodeLine{149     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{150         \textcolor{stringliteral}{"{}"{}"{}When the user logged in and an access token exists, use it for http}}
+\DoxyCodeLine{151 \textcolor{stringliteral}{        requests."{}"{}"{}}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{154             \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{155         resp: httpx.Response | \textcolor{keywordtype}{None} = await self.cloud.request(}
+\DoxyCodeLine{156             method,}
+\DoxyCodeLine{157             url,}
+\DoxyCodeLine{158             self.get\_beared\_request\_header()}
+\DoxyCodeLine{159             \textcolor{keywordflow}{if} self.access\_token}
+\DoxyCodeLine{160             \textcolor{keywordflow}{else} self.cloud.get\_header\_default(),}
+\DoxyCodeLine{161             **kwargs,}
+\DoxyCodeLine{162         )}
+\DoxyCodeLine{163         \textcolor{keywordflow}{if} resp:}
+\DoxyCodeLine{164             answer: TypeJson | \textcolor{keywordtype}{None} = await self.cloud.load\_http\_response(resp)}
+\DoxyCodeLine{165             \textcolor{keywordflow}{return} answer}
+\DoxyCodeLine{166         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{167 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1062,17 +1067,17 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Request device state from the cloud.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{469     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{470         \textcolor{stringliteral}{"{}"{}"{}Request device state from the cloud."{}"{}"{}}}
-\DoxyCodeLine{471 }
-\DoxyCodeLine{472         response: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
-\DoxyCodeLine{473             RequestMethod.GET,}
-\DoxyCodeLine{474             f\textcolor{stringliteral}{"{}device/\{device\_id\}/"{}} + CLOUD\_DEVICE\_TARGETS.state.value,}
-\DoxyCodeLine{475             timeout=timeout,}
-\DoxyCodeLine{476             **kwargs,}
-\DoxyCodeLine{477         )}
-\DoxyCodeLine{478         \textcolor{keywordflow}{return} response}
-\DoxyCodeLine{479 }
+\DoxyCodeLine{471     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{472         \textcolor{stringliteral}{"{}"{}"{}Request device state from the cloud."{}"{}"{}}}
+\DoxyCodeLine{473 }
+\DoxyCodeLine{474         response: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
+\DoxyCodeLine{475             RequestMethod.GET,}
+\DoxyCodeLine{476             f\textcolor{stringliteral}{"{}device/\{device\_id\}/"{}} + CLOUD\_DEVICE\_TARGETS.state.value,}
+\DoxyCodeLine{477             timeout=timeout,}
+\DoxyCodeLine{478             **kwargs,}
+\DoxyCodeLine{479         )}
+\DoxyCodeLine{480         \textcolor{keywordflow}{return} response}
+\DoxyCodeLine{481 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1099,23 +1104,23 @@ Here is the caller graph for this function\+:\nopagebreak
 account setting's devices.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{277     async \textcolor{keyword}{def }request\_device\_configs\_from\_acc\_sets(self) -\/> None:}
-\DoxyCodeLine{278         \textcolor{stringliteral}{"{}"{}"{}Request the device config from the product ids in the}}
-\DoxyCodeLine{279 \textcolor{stringliteral}{        account setting's devices."{}"{}"{}}}
-\DoxyCodeLine{280 }
-\DoxyCodeLine{281         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{282             \textcolor{keywordflow}{return}}
-\DoxyCodeLine{283 }
-\DoxyCodeLine{284         await self.cloud.get\_device\_configs(}
-\DoxyCodeLine{285             set(}
-\DoxyCodeLine{286                 [}
-\DoxyCodeLine{287                     device\_sets[\textcolor{stringliteral}{"{}productId"{}}]}
-\DoxyCodeLine{288                     \textcolor{keywordflow}{for} device\_sets \textcolor{keywordflow}{in} (self.settings[\textcolor{stringliteral}{"{}devices"{}}])}
-\DoxyCodeLine{289                     \textcolor{keywordflow}{if} \textcolor{stringliteral}{"{}productId"{}} \textcolor{keywordflow}{in} device\_sets \textcolor{keywordflow}{and} device\_sets[\textcolor{stringliteral}{"{}productId"{}}]}
-\DoxyCodeLine{290                 ]}
-\DoxyCodeLine{291             )}
-\DoxyCodeLine{292         )}
-\DoxyCodeLine{293 }
+\DoxyCodeLine{279     async \textcolor{keyword}{def }request\_device\_configs\_from\_acc\_sets(self) -\/> None:}
+\DoxyCodeLine{280         \textcolor{stringliteral}{"{}"{}"{}Request the device config from the product ids in the}}
+\DoxyCodeLine{281 \textcolor{stringliteral}{        account setting's devices."{}"{}"{}}}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{284             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286         await self.cloud.get\_device\_configs(}
+\DoxyCodeLine{287             set(}
+\DoxyCodeLine{288                 [}
+\DoxyCodeLine{289                     device\_sets[\textcolor{stringliteral}{"{}productId"{}}]}
+\DoxyCodeLine{290                     \textcolor{keywordflow}{for} device\_sets \textcolor{keywordflow}{in} (self.settings[\textcolor{stringliteral}{"{}devices"{}}])}
+\DoxyCodeLine{291                     \textcolor{keywordflow}{if} \textcolor{stringliteral}{"{}productId"{}} \textcolor{keywordflow}{in} device\_sets \textcolor{keywordflow}{and} device\_sets[\textcolor{stringliteral}{"{}productId"{}}]}
+\DoxyCodeLine{292                 ]}
+\DoxyCodeLine{293             )}
+\DoxyCodeLine{294         )}
+\DoxyCodeLine{295 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1141,26 +1146,26 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Check if password is giving or prompt for it.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{183     \textcolor{keyword}{def }run\_password\_prompt(self) -\/> bool:}
-\DoxyCodeLine{184         \textcolor{stringliteral}{"{}"{}"{}Check if password is giving or prompt for it."{}"{}"{}}}
-\DoxyCodeLine{185 }
-\DoxyCodeLine{186         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.password:}
-\DoxyCodeLine{187             \textcolor{keywordflow}{if} (}
-\DoxyCodeLine{188                 self.controller\_data}
-\DoxyCodeLine{189                 \textcolor{keywordflow}{and} self.controller\_data.interactive\_prompts}
-\DoxyCodeLine{190             ):}
-\DoxyCodeLine{191                 self.password = getpass.getpass(}
-\DoxyCodeLine{192                     prompt=(}
-\DoxyCodeLine{193                         \textcolor{stringliteral}{"{} Please enter your Klyqa Account password (will be"{}}}
-\DoxyCodeLine{194                         \textcolor{stringliteral}{"{} saved): "{}}}
-\DoxyCodeLine{195                     ),}
-\DoxyCodeLine{196                     stream=\textcolor{keywordtype}{None},}
-\DoxyCodeLine{197                 )}
-\DoxyCodeLine{198             \textcolor{keywordflow}{else}:}
-\DoxyCodeLine{199                 LOGGER.error(\textcolor{stringliteral}{"{}Missing Klyqa account password. Login failed."{}})}
-\DoxyCodeLine{200                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{201         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
-\DoxyCodeLine{202 }
+\DoxyCodeLine{185     \textcolor{keyword}{def }run\_password\_prompt(self) -\/> bool:}
+\DoxyCodeLine{186         \textcolor{stringliteral}{"{}"{}"{}Check if password is giving or prompt for it."{}"{}"{}}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.password:}
+\DoxyCodeLine{189             \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{190                 self.controller\_data}
+\DoxyCodeLine{191                 \textcolor{keywordflow}{and} self.controller\_data.interactive\_prompts}
+\DoxyCodeLine{192             ):}
+\DoxyCodeLine{193                 self.password = getpass.getpass(}
+\DoxyCodeLine{194                     prompt=(}
+\DoxyCodeLine{195                         \textcolor{stringliteral}{"{} Please enter your Klyqa Account password (will be"{}}}
+\DoxyCodeLine{196                         \textcolor{stringliteral}{"{} saved): "{}}}
+\DoxyCodeLine{197                     ),}
+\DoxyCodeLine{198                     stream=\textcolor{keywordtype}{None},}
+\DoxyCodeLine{199                 )}
+\DoxyCodeLine{200             \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{201                 LOGGER.error(\textcolor{stringliteral}{"{}Missing Klyqa account password. Login failed."{}})}
+\DoxyCodeLine{202                 \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{203         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{204 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1186,12 +1191,12 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Async setter for account settings.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{318     async \textcolor{keyword}{def }set\_settings(self, settings: TypeJson) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{319         \textcolor{stringliteral}{"{}"{}"{}Async setter for account settings."{}"{}"{}}}
-\DoxyCodeLine{320 }
-\DoxyCodeLine{321         self.\_attr\_settings = settings}
-\DoxyCodeLine{322         await self.sync\_acc\_settings\_to\_controller()}
-\DoxyCodeLine{323 }
+\DoxyCodeLine{320     async \textcolor{keyword}{def }set\_settings(self, settings: TypeJson) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{321         \textcolor{stringliteral}{"{}"{}"{}Async setter for account settings."{}"{}"{}}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323         self.\_attr\_settings = settings}
+\DoxyCodeLine{324         await self.sync\_acc\_settings\_to\_controller()}
+\DoxyCodeLine{325 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -1209,9 +1214,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{103     \textcolor{keyword}{def }settings(self) -\/> TypeJson | None:}
-\DoxyCodeLine{104         \textcolor{keywordflow}{return} self.\_attr\_settings}
-\DoxyCodeLine{105 }
+\DoxyCodeLine{105     \textcolor{keyword}{def }settings(self) -\/> TypeJson | None:}
+\DoxyCodeLine{106         \textcolor{keywordflow}{return} self.\_attr\_settings}
+\DoxyCodeLine{107 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -1229,9 +1234,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{107     \textcolor{keyword}{def }settings(self, settings: TypeJson | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{108         \textcolor{keywordflow}{raise} NotImplementedError(\textcolor{stringliteral}{"{}Use set\_settings()!"{}})}
-\DoxyCodeLine{109 }
+\DoxyCodeLine{109     \textcolor{keyword}{def }settings(self, settings: TypeJson | \textcolor{keywordtype}{None}) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{110         \textcolor{keywordflow}{raise} NotImplementedError(\textcolor{stringliteral}{"{}Use set\_settings()!"{}})}
+\DoxyCodeLine{111 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1256,9 +1261,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{111     \textcolor{keyword}{def }settings\_lock(self) -\/> asyncio.Lock | None:}
-\DoxyCodeLine{112         \textcolor{keywordflow}{return} self.\_attr\_settings\_lock}
-\DoxyCodeLine{113 }
+\DoxyCodeLine{113     \textcolor{keyword}{def }settings\_lock(self) -\/> asyncio.Lock | None:}
+\DoxyCodeLine{114         \textcolor{keywordflow}{return} self.\_attr\_settings\_lock}
+\DoxyCodeLine{115 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -1277,12 +1282,12 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Logout again from klyqa account.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{177     async \textcolor{keyword}{def }shutdown(self) -\/> None:}
-\DoxyCodeLine{178         \textcolor{stringliteral}{"{}"{}"{}Logout again from klyqa account."{}"{}"{}}}
-\DoxyCodeLine{179         \textcolor{keywordflow}{if} self.access\_token \textcolor{keywordflow}{and} self.cloud:}
-\DoxyCodeLine{180             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Logout user from cloud backend."{}})}
-\DoxyCodeLine{181             await self.cloud.request(RequestMethod.POST, \textcolor{stringliteral}{"{}/auth/logout"{}})}
-\DoxyCodeLine{182 }
+\DoxyCodeLine{179     async \textcolor{keyword}{def }shutdown(self) -\/> None:}
+\DoxyCodeLine{180         \textcolor{stringliteral}{"{}"{}"{}Logout again from klyqa account."{}"{}"{}}}
+\DoxyCodeLine{181         \textcolor{keywordflow}{if} self.access\_token \textcolor{keywordflow}{and} self.cloud:}
+\DoxyCodeLine{182             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Logout user from cloud backend."{}})}
+\DoxyCodeLine{183             await self.cloud.request(RequestMethod.POST, \textcolor{stringliteral}{"{}/auth/logout"{}})}
+\DoxyCodeLine{184 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1301,31 +1306,32 @@ Here is the call graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Apply the account settings to the controller.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{324     async \textcolor{keyword}{def }sync\_acc\_settings\_to\_controller(self) -\/> bool:}
-\DoxyCodeLine{325         \textcolor{stringliteral}{"{}"{}"{}Apply the account settings to the controller."{}"{}"{}}}
-\DoxyCodeLine{326 }
-\DoxyCodeLine{327         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings:}
-\DoxyCodeLine{328             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
-\DoxyCodeLine{329 }
-\DoxyCodeLine{330         await self.request\_device\_configs\_from\_acc\_sets()}
+\DoxyCodeLine{326     async \textcolor{keyword}{def }sync\_acc\_settings\_to\_controller(self) -\/> bool:}
+\DoxyCodeLine{327         \textcolor{stringliteral}{"{}"{}"{}Apply the account settings to the controller."{}"{}"{}}}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.settings:}
+\DoxyCodeLine{330             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
 \DoxyCodeLine{331 }
-\DoxyCodeLine{332         \textcolor{keywordflow}{for} device\_sets \textcolor{keywordflow}{in} self.settings[\textcolor{stringliteral}{"{}devices"{}}]:}
+\DoxyCodeLine{332         await self.request\_device\_configs\_from\_acc\_sets()}
 \DoxyCodeLine{333 }
-\DoxyCodeLine{334             self.controller\_data.aes\_keys[}
-\DoxyCodeLine{335                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
-\DoxyCodeLine{336             ] = bytes.fromhex(device\_sets[\textcolor{stringliteral}{"{}aesKey"{}}])}
-\DoxyCodeLine{337 }
-\DoxyCodeLine{338             unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{334         \textcolor{keywordflow}{for} device\_sets \textcolor{keywordflow}{in} self.settings[\textcolor{stringliteral}{"{}devices"{}}]:}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336             self.controller\_data.aes\_keys[}
+\DoxyCodeLine{337                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{338             ] = bytes.fromhex(device\_sets[\textcolor{stringliteral}{"{}aesKey"{}}])}
 \DoxyCodeLine{339 }
-\DoxyCodeLine{340             await self.get\_or\_create\_device(}
-\DoxyCodeLine{341                 unit\_id, device\_sets[\textcolor{stringliteral}{"{}productId"{}}], device\_sets}
-\DoxyCodeLine{342             )}
-\DoxyCodeLine{343 }
-\DoxyCodeLine{344         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{340             unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342             await self.get\_or\_create\_device(}
+\DoxyCodeLine{343                 unit\_id, device\_sets[\textcolor{stringliteral}{"{}productId"{}}], device\_sets}
+\DoxyCodeLine{344             )}
 \DoxyCodeLine{345 }
+\DoxyCodeLine{346         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{347 }
 
 \end{DoxyCode}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1342,25 +1348,25 @@ Here is the call graph for this function\+:\nopagebreak
 Get device configs from the product ids as well.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{508     ) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{509         \textcolor{stringliteral}{"{}"{}"{}Request the account settings from cloud and apply it.}}
-\DoxyCodeLine{510 \textcolor{stringliteral}{        Get device configs from the product ids as well."{}"{}"{}}}
-\DoxyCodeLine{511 }
-\DoxyCodeLine{512         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
-\DoxyCodeLine{513             \textcolor{keywordflow}{return}}
-\DoxyCodeLine{514 }
-\DoxyCodeLine{515         acc\_settings: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
-\DoxyCodeLine{516             RequestMethod.GET, \textcolor{stringliteral}{"{}settings"{}}}
-\DoxyCodeLine{517         )}
-\DoxyCodeLine{518         \textcolor{keywordflow}{if} acc\_settings:}
-\DoxyCodeLine{519             await self.set\_settings(acc\_settings)}
-\DoxyCodeLine{520             \textcolor{comment}{\# save user account settings in cache}}
-\DoxyCodeLine{521             \textcolor{keywordflow}{if} self.settings:}
-\DoxyCodeLine{522                 await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
-\DoxyCodeLine{523                     self.settings | add\_to\_cache,}
-\DoxyCodeLine{524                     f\textcolor{stringliteral}{"{}\{self.username\}.acc\_settings.cache.json"{}},}
-\DoxyCodeLine{525                 )}
-\DoxyCodeLine{526 }
+\DoxyCodeLine{510     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{511         \textcolor{stringliteral}{"{}"{}"{}Request the account settings from cloud and apply it.}}
+\DoxyCodeLine{512 \textcolor{stringliteral}{        Get device configs from the product ids as well."{}"{}"{}}}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.cloud:}
+\DoxyCodeLine{515             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{516 }
+\DoxyCodeLine{517         acc\_settings: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
+\DoxyCodeLine{518             RequestMethod.GET, \textcolor{stringliteral}{"{}settings"{}}}
+\DoxyCodeLine{519         )}
+\DoxyCodeLine{520         \textcolor{keywordflow}{if} acc\_settings:}
+\DoxyCodeLine{521             await self.set\_settings(acc\_settings)}
+\DoxyCodeLine{522             \textcolor{comment}{\# save user account settings in cache}}
+\DoxyCodeLine{523             \textcolor{keywordflow}{if} self.settings:}
+\DoxyCodeLine{524                 await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{525                     self.settings | add\_to\_cache,}
+\DoxyCodeLine{526                     f\textcolor{stringliteral}{"{}\{self.username\}.acc\_settings.cache.json"{}},}
+\DoxyCodeLine{527                 )}
+\DoxyCodeLine{528 }
 
 \end{DoxyCode}
 Here is the call graph for this function\+:\nopagebreak
@@ -1386,35 +1392,36 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Request the account settings from the cloud.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{527     async \textcolor{keyword}{def }update\_device\_configs(self) -\/> None:}
-\DoxyCodeLine{528         \textcolor{stringliteral}{"{}"{}"{}Request the account settings from the cloud."{}"{}"{}}}
-\DoxyCodeLine{529 }
-\DoxyCodeLine{530         product\_ids: set[str] = \{}
-\DoxyCodeLine{531             acc\_device.device.ident.product\_id}
-\DoxyCodeLine{532             \textcolor{keywordflow}{for} uid, acc\_device \textcolor{keywordflow}{in} self.devices.items()}
-\DoxyCodeLine{533             \textcolor{keywordflow}{if} acc\_device.device.ident \textcolor{keywordflow}{and} acc\_device.device.ident.product\_id}
-\DoxyCodeLine{534         \}}
-\DoxyCodeLine{535 }
-\DoxyCodeLine{536         \textcolor{keywordflow}{for} product\_id \textcolor{keywordflow}{in} list(product\_ids):}
-\DoxyCodeLine{537             \textcolor{keywordflow}{if} (}
-\DoxyCodeLine{538                 self.controller\_data.device\_configs}
-\DoxyCodeLine{539                 \textcolor{keywordflow}{and} product\_id \textcolor{keywordflow}{in} self.controller\_data.device\_configs}
-\DoxyCodeLine{540             ):}
-\DoxyCodeLine{541                 \textcolor{keywordflow}{continue}}
-\DoxyCodeLine{542             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Try to request device config from server."{}})}
-\DoxyCodeLine{543 }
-\DoxyCodeLine{544             config: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
-\DoxyCodeLine{545                 RequestMethod.GET,}
-\DoxyCodeLine{546                 \textcolor{stringliteral}{"{}config/product/"{}} + product\_id,}
-\DoxyCodeLine{547                 timeout=30,}
-\DoxyCodeLine{548             )}
-\DoxyCodeLine{549             device\_config: Device\_config | \textcolor{keywordtype}{None} = config}
-\DoxyCodeLine{550             \textcolor{keywordflow}{if} device\_config:}
-\DoxyCodeLine{551                 self.controller\_data.device\_configs[product\_id] = device\_config}
-\DoxyCodeLine{552 }
+\DoxyCodeLine{529     async \textcolor{keyword}{def }update\_device\_configs(self) -\/> None:}
+\DoxyCodeLine{530         \textcolor{stringliteral}{"{}"{}"{}Request the account settings from the cloud."{}"{}"{}}}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{532         product\_ids: set[str] = \{}
+\DoxyCodeLine{533             acc\_device.device.ident.product\_id}
+\DoxyCodeLine{534             \textcolor{keywordflow}{for} uid, acc\_device \textcolor{keywordflow}{in} self.devices.items()}
+\DoxyCodeLine{535             \textcolor{keywordflow}{if} acc\_device.device.ident \textcolor{keywordflow}{and} acc\_device.device.ident.product\_id}
+\DoxyCodeLine{536         \}}
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538         \textcolor{keywordflow}{for} product\_id \textcolor{keywordflow}{in} list(product\_ids):}
+\DoxyCodeLine{539             \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{540                 self.controller\_data.device\_configs}
+\DoxyCodeLine{541                 \textcolor{keywordflow}{and} product\_id \textcolor{keywordflow}{in} self.controller\_data.device\_configs}
+\DoxyCodeLine{542             ):}
+\DoxyCodeLine{543                 \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{544             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}Try to request device config from server."{}})}
+\DoxyCodeLine{545 }
+\DoxyCodeLine{546             config: TypeJson | \textcolor{keywordtype}{None} = await self.request\_beared(}
+\DoxyCodeLine{547                 RequestMethod.GET,}
+\DoxyCodeLine{548                 \textcolor{stringliteral}{"{}config/product/"{}} + product\_id,}
+\DoxyCodeLine{549                 timeout=30,}
+\DoxyCodeLine{550             )}
+\DoxyCodeLine{551             device\_config: Device\_config | \textcolor{keywordtype}{None} = config}
+\DoxyCodeLine{552             \textcolor{keywordflow}{if} device\_config:}
+\DoxyCodeLine{553                 self.controller\_data.device\_configs[product\_id] = device\_config}
+\DoxyCodeLine{554 }
 
 \end{DoxyCode}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1430,11 +1437,11 @@ Here is the call graph for this function\+:\nopagebreak
 \begin{DoxyVerb}Stub for later.\end{DoxyVerb}
  
 \begin{DoxyCode}{0}
-\DoxyCodeLine{363     async \textcolor{keyword}{def }update\_devices(self) -\/> None:}
-\DoxyCodeLine{364         \textcolor{stringliteral}{"{}"{}"{}Stub for later."{}"{}"{}}}
-\DoxyCodeLine{365         \textcolor{comment}{\# for}}
-\DoxyCodeLine{366         \textcolor{comment}{\# self.devices[uid].acc\_sets}}
-\DoxyCodeLine{367 }
+\DoxyCodeLine{365     async \textcolor{keyword}{def }update\_devices(self) -\/> None:}
+\DoxyCodeLine{366         \textcolor{stringliteral}{"{}"{}"{}Stub for later."{}"{}"{}}}
+\DoxyCodeLine{367         \textcolor{comment}{\# for}}
+\DoxyCodeLine{368         \textcolor{comment}{\# self.devices[uid].acc\_sets}}
+\DoxyCodeLine{369 }
 
 \end{DoxyCode}
 \mbox{\Hypertarget{classklyqa__ctl_1_1account_1_1Account_a4d8817b0900560f1034addf01e65037b}\label{classklyqa__ctl_1_1account_1_1Account_a4d8817b0900560f1034addf01e65037b}} 
@@ -1445,9 +1452,9 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{71     \textcolor{keyword}{def }username(self) -\/> str:}
-\DoxyCodeLine{72         \textcolor{keywordflow}{return} self.\_attr\_username}
-\DoxyCodeLine{73 }
+\DoxyCodeLine{73     \textcolor{keyword}{def }username(self) -\/> str:}
+\DoxyCodeLine{74         \textcolor{keywordflow}{return} self.\_attr\_username}
+\DoxyCodeLine{75 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak
@@ -1465,9 +1472,9 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{75     \textcolor{keyword}{def }username(self, username: str) -\/> \textcolor{keywordtype}{None}:}
-\DoxyCodeLine{76         self.\_attr\_username = username}
-\DoxyCodeLine{77 }
+\DoxyCodeLine{77     \textcolor{keyword}{def }username(self, username: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{78         self.\_attr\_username = username}
+\DoxyCodeLine{79 }
 
 \end{DoxyCode}
 Here is the caller graph for this function\+:\nopagebreak

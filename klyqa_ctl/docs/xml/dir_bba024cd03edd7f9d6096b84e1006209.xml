@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_bba024cd03edd7f9d6096b84e1006209" kind="dir">
+    <compoundname>general</compoundname>
+    <innerfile refid="general_2____init_____8py">__init__.py</innerfile>
+    <innerfile refid="aes__key_8py">aes_key.py</innerfile>
+    <innerfile refid="general_2general_8py">general.py</innerfile>
+    <innerfile refid="logging_8py">logging.py</innerfile>
+    <innerfile refid="message_8py">message.py</innerfile>
+    <innerfile refid="parameters_8py">parameters.py</innerfile>
+    <innerfile refid="unit__id_8py">unit_id.py</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="general/"/>
+  </compounddef>
+</doxygen>

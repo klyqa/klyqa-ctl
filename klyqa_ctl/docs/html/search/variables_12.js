@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['udp_1218',['udp',['../classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a8707b5729524d2c0a4e5e1b2116d22c2',1,'local::connection_handler::LocalConnectionHandler']]],
-  ['unit_5fid_1219',['unit_id',['../classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId.html#a7ab123ab827c045d92a7daf5427a2a33',1,'klyqa_ctl::general::unit_id::UnitId']]],
-  ['unknown_5ferror_1220',['UNKNOWN_ERROR',['../classlocal_1_1connection_1_1DeviceTcpReturn.html#a219cbb351173c4ea383f5988f4979497',1,'local::connection::DeviceTcpReturn']]],
-  ['unsent_1221',['UNSENT',['../classklyqa__ctl_1_1general_1_1message_1_1MessageState.html#aa77c739f74932bb76326565d887eb794',1,'klyqa_ctl::general::message::MessageState']]],
-  ['username_1222',['username',['../classklyqa__ctl_1_1account_1_1Account.html#a088eb203a8882492412861b2bf1503e3',1,'klyqa_ctl::account::Account']]]
+  ['wait_5fiv_1135',['WAIT_IV',['../classlocal_1_1connection_1_1AesConnectionState.html#a3c62cbad8d666329210c08da2c1868e3',1,'local::connection::AesConnectionState']]],
+  ['wall_5ffollow_1136',['WALL_FOLLOW',['../classklyqa__ctl_1_1devices_1_1vacuum_1_1general_1_1VcWorkingMode.html#a81b56a1be2f26ddddf3b0042c4d22159',1,'klyqa_ctl::devices::vacuum::general::VcWorkingMode']]],
+  ['wrong_5faes_1137',['WRONG_AES',['../classlocal_1_1connection_1_1DeviceTcpReturn.html#a26a728a36cff51e549829cbb29fc26f0',1,'local::connection::DeviceTcpReturn']]],
+  ['wrong_5funit_5fid_1138',['WRONG_UNIT_ID',['../classlocal_1_1connection_1_1DeviceTcpReturn.html#aa46179a3e84509cc6d0f2a3472a035c6',1,'local::connection::DeviceTcpReturn']]]
 ];

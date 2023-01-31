@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1account" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::account</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS" prot="public">klyqa_ctl::account::CLOUD_DEVICE_TARGETS</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1account_1_1AccountDevice" prot="public">klyqa_ctl::account::AccountDevice</innerclass>
+    <innerclass refid="classklyqa__ctl_1_1account_1_1Account" prot="public">klyqa_ctl::account::Account</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Klyqa account.</verbatim> </para>
+    </detaileddescription>
+    <location file="account.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

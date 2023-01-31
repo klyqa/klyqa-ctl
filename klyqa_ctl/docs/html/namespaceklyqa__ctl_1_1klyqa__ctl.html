@@ -131,157 +131,123 @@ Current bugs:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Main function.</pre> <div class="fragment"><div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;async <span class="keyword">def </span><a class="code" href="namespaceklyqa__ctl_1_1klyqa__ctl.html#afe1b8490f9810b885e4048d7bef472a7">main</a>() -&gt; None:</div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    <span class="stringliteral">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span></div>
+<pre class="fragment">Main function.</pre> <div class="fragment"><div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;async <span class="keyword">def </span><a class="code" href="namespaceklyqa__ctl_1_1klyqa__ctl.html#afe1b8490f9810b885e4048d7bef472a7">main</a>() -&gt; None:</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    <span class="stringliteral">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160; </div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;    exit_ret: int = 0</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160; </div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    parser: argparse.ArgumentParser = <a class="code" href="namespaceklyqa__ctl_1_1general_1_1parameters.html#a38b90c6125a60eeabd89d4addab053b4">get_description_parser</a>()</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160; </div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    <a class="code" href="namespaceklyqa__ctl_1_1general_1_1parameters.html#a4d4508f84ab7a6044c74575f197f852b">add_config_args</a>(parser=parser)</div>
 <div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160; </div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    exit_ret: int = 0</div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    klyqa_accs: dict[str, Account] | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> klyqa_accs:</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        klyqa_accs = dict()</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160; </div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    parser: argparse.ArgumentParser = <a class="code" href="namespaceklyqa__ctl_1_1general_1_1parameters.html#a38b90c6125a60eeabd89d4addab053b4">get_description_parser</a>()</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    args_in: list[str] = sys.argv[1:]</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160; </div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    (</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        config_args_parsed,</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        _,</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    ) = parser.parse_known_args(args=args_in)</div>
 <div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160; </div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    <a class="code" href="namespaceklyqa__ctl_1_1general_1_1parameters.html#a4d4508f84ab7a6044c74575f197f852b">add_config_args</a>(parser=parser)</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160; </div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    args_in: list[str] = sys.argv[1:]</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    (</div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        config_args_parsed,</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        _,</div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    ) = parser.parse_known_args(args=args_in)</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160; </div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    <span class="keywordflow">if</span> config_args_parsed.type == DeviceType.CLEANER.value:</div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands.html#ad486c28adf7b9c4ed9672fc04dfde7ef">add_command_args_cleaner</a>(parser=parser)</div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    <span class="keywordflow">elif</span> config_args_parsed.type == DeviceType.LIGHTING.value:</div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands.html#a9a2f224816a4dab65a2d877cd38b657b">add_command_args_bulb</a>(parser=parser)</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        LOGGER.error(<span class="stringliteral">&quot;Unknown command type.&quot;</span>)</div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        sys.exit(1)</div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160; </div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    <span class="keywordflow">if</span> len(args_in) &lt; 2 <span class="keywordflow">or</span> config_args_parsed.help:</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        parser.print_help()</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    <span class="keywordflow">if</span> config_args_parsed.type == DeviceType.CLEANER.value:</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands.html#ad486c28adf7b9c4ed9672fc04dfde7ef">add_command_args_cleaner</a>(parser=parser)</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keywordflow">elif</span> config_args_parsed.type == DeviceType.LIGHTING.value:</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands.html#a9a2f224816a4dab65a2d877cd38b657b">add_command_args_bulb</a>(parser=parser)</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        LOGGER.error(<span class="stringliteral">&quot;Unknown command type.&quot;</span>)</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        sys.exit(1)</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160; </div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    <span class="keywordflow">if</span> len(args_in) &lt; 2 <span class="keywordflow">or</span> config_args_parsed.help:</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;        parser.print_help()</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        sys.exit(1)</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160; </div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    args_parsed: argparse.Namespace = parser.parse_args(args=args_in)</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160; </div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    <span class="keywordflow">if</span> args_parsed.version:</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        print(__version__)</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        sys.exit(0)</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160; </div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> args_parsed:</div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        sys.exit(1)</div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    args_parsed: argparse.Namespace = parser.parse_args(args=args_in)</div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160; </div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;    <span class="keywordflow">if</span> args_parsed.version:</div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        print(__version__)</div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        sys.exit(0)</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    <span class="keywordflow">if</span> args_parsed.debug:</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a6e74b8cc4bae98fa55902e4b875af67e">set_debug_logger</a>(level=logging.DEBUG)</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160; </div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    <span class="keywordflow">if</span> args_parsed.trace:</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a6e74b8cc4bae98fa55902e4b875af67e">set_debug_logger</a>(level=TRACE)</div>
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160; </div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> args_parsed:</div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        sys.exit(1)</div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160; </div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;    <span class="keywordflow">if</span> args_parsed.debug:</div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a6e74b8cc4bae98fa55902e4b875af67e">set_debug_logger</a>(level=logging.DEBUG)</div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160; </div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    <span class="keywordflow">if</span> args_parsed.trace:</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a6e74b8cc4bae98fa55902e4b875af67e">set_debug_logger</a>(level=TRACE)</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160; </div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordflow">if</span> args_parsed.quiet:</div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        LOGGER.setLevel(level=logging.CRITICAL)</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        logging_hdl.setLevel(level=logging.CRITICAL)</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160; </div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    <span class="keywordflow">if</span> args_parsed.timeout:</div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;        timeout_ms = <a class="code" href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">int</a>(args_parsed.timeout[0]) * 1000</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160; </div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    server_ip: str = args_parsed.myip[0] <span class="keywordflow">if</span> args_parsed.myip <span class="keywordflow">else</span> <span class="stringliteral">&quot;0.0.0.0&quot;</span></div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160; </div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    controller_data: ControllerData = await ControllerData.create_default(</div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;        interactive_prompts=<span class="keyword">True</span>,</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;        <span class="comment"># user_account=account,</span></div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;        offline=args_parsed.offline,</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keywordflow">if</span> args_parsed.quiet:</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        LOGGER.setLevel(level=logging.CRITICAL)</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;        logging_hdl.setLevel(level=logging.CRITICAL)</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160; </div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    <span class="keywordflow">if</span> args_parsed.timeout:</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;        timeout_ms = <a class="code" href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">int</a>(args_parsed.timeout[0]) * 1000</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160; </div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    server_ip: str = args_parsed.myip[0] <span class="keywordflow">if</span> args_parsed.myip <span class="keywordflow">else</span> <span class="stringliteral">&quot;0.0.0.0&quot;</span></div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160; </div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    client: Client = await Client.create(</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        interactive_prompts=<span class="keyword">True</span>,</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;        offline=args_parsed.offline,</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;        server_ip=server_ip,</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    )</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160; </div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    print_onboarded_devices: bool = client.interactive_prompts</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160; </div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    print_onboarded_devices = (</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;        <span class="keywordflow">not</span> args_parsed.device_name</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;        <span class="keywordflow">and</span> <span class="keywordflow">not</span> args_parsed.device_unitids</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;        <span class="keywordflow">and</span> <span class="keywordflow">not</span> args_parsed.allDevices</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;        <span class="keywordflow">and</span> <span class="keywordflow">not</span> args_parsed.quiet</div>
 <div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    )</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160; </div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    print_onboarded_devices: bool = controller_data.interactive_prompts</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> args_parsed.offline:</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160; </div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    print_onboarded_devices = (</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        <span class="keywordflow">not</span> args_parsed.device_name</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        <span class="keywordflow">and</span> <span class="keywordflow">not</span> args_parsed.device_unitids</div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        <span class="keywordflow">and</span> <span class="keywordflow">not</span> args_parsed.allDevices</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        <span class="keywordflow">and</span> <span class="keywordflow">not</span> args_parsed.quiet</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    )</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160; </div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    cloud_backend: CloudBackend | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160; </div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> args_parsed.offline:</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160; </div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        host: str = PROD_HOST</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        <span class="keywordflow">if</span> args_parsed.host:</div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;            host = args_parsed.host[0]</div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160; </div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;        cloud_backend = CloudBackend.create_default(controller_data, host)</div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160; </div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        <span class="comment"># if cloud_backend and not account.access_token:</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        <span class="comment">#     try:</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        <span class="comment">#         if await cloud_backend.login(</span></div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        <span class="comment">#             print_onboarded_devices=print_onboarded_devices</span></div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;        <span class="comment">#         ):</span></div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        <span class="comment">#             task_log_debug(&quot;login finished&quot;)</span></div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;        <span class="comment">#             klyqa_accs[account.username] = account</span></div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        <span class="comment">#         else:</span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;        <span class="comment">#             raise Exception()</span></div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;        <span class="comment">#     except Exception:</span></div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        <span class="comment">#         LOGGER.error(&quot;Error during login.&quot;)</span></div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        <span class="comment">#         task_log_trace_ex()</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;        <span class="comment">#         sys.exit(1)</span></div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160; </div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    account: Account | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    accounts: dict[str, Account] = dict()</div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160; </div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <span class="keywordflow">if</span> args_parsed.dev:</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        <span class="keywordflow">if</span> args_parsed.dev:</div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;            LOGGER.info(<span class="stringliteral">&quot;development mode. Using default aes key.&quot;</span>)</div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        print_onboarded_devices = <span class="keyword">False</span></div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160; </div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        <span class="keywordflow">if</span> (</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;            args_parsed.username <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;            <span class="keywordflow">and</span> args_parsed.username[0] <span class="keywordflow">in</span> klyqa_accs</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        ):</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;            account = klyqa_accs[args_parsed.username[0]]</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;            account = await Account.create_default(</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;                controller_data,</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;                username=args_parsed.username[0]</div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;                <span class="keywordflow">if</span> args_parsed.username</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;                <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;                password=args_parsed.password[0]</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;                <span class="keywordflow">if</span> args_parsed.password</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;                <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;                cloud=cloud_backend,</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;                print_onboarded_devices=print_onboarded_devices,</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;            )</div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;            accounts[account.username] = account</div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160; </div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    exit_ret = 0</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160; </div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    intf: str | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    <span class="keywordflow">if</span> args_parsed.interface <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;        intf = args_parsed.interface[0]</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    local_con_hdl: LocalConnectionHandler = LocalConnectionHandler(</div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;        controller_data, server_ip, network_interface=intf</div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    )</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    client: Client = Client(</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;        controller_data, local_con_hdl, cloud_backend, accounts</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    )</div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160; </div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    <span class="keywordflow">if</span> (</div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;        await client.send_to_devices_wrapped(</div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;            args_parsed, args_in.copy(), timeout_ms=timeout_ms</div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        )</div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;        &gt; 0</div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    ):</div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;        exit_ret = 1</div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a1afe30a73cc28a3b65babeeab27e36c8">task_log_debug</a>(<span class="stringliteral">&quot;Shutting down..&quot;</span>)</div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    await client.shutdown()</div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160; </div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    sys.exit(exit_ret)</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160; </div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        <span class="keywordflow">if</span> args_parsed.host <span class="keywordflow">and</span> client.cloud:</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;            client.cloud.host = args_parsed.host[0]</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160; </div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        <span class="comment"># if cloud_backend and not account.access_token:</span></div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        <span class="comment">#     try:</span></div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        <span class="comment">#         if await cloud_backend.login(</span></div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;        <span class="comment">#             print_onboarded_devices=print_onboarded_devices</span></div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        <span class="comment">#         ):</span></div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        <span class="comment">#             task_log_debug(&quot;login finished&quot;)</span></div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        <span class="comment">#             klyqa_accs[account.username] = account</span></div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;        <span class="comment">#         else:</span></div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        <span class="comment">#             raise Exception()</span></div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        <span class="comment">#     except Exception:</span></div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;        <span class="comment">#         LOGGER.error(&quot;Error during login.&quot;)</span></div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        <span class="comment">#         task_log_trace_ex()</span></div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;        <span class="comment">#         sys.exit(1)</span></div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    <span class="keywordflow">if</span> args_parsed.dev:</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        <span class="keywordflow">if</span> args_parsed.dev:</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;            LOGGER.info(<span class="stringliteral">&quot;development mode. Using default aes key.&quot;</span>)</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        print_onboarded_devices = <span class="keyword">False</span></div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160; </div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        await client.add_account(</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;            username=args_parsed.username[0] <span class="keywordflow">if</span> args_parsed.username <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;            password=args_parsed.password[0] <span class="keywordflow">if</span> args_parsed.password <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;            print_onboarded_devices=print_onboarded_devices,</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;        )</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160; </div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    exit_ret = 0</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    <span class="keywordflow">if</span> args_parsed.interface <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span> <span class="keywordflow">and</span> client.local:</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;        client.local.network_interface = args_parsed.interface[0]</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160; </div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    <span class="keywordflow">if</span> (</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        await client.send_to_devices_wrapped(</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;            args_parsed, args_in.copy(), timeout_ms=timeout_ms</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;        )</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        &gt; 0</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    ):</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        exit_ret = 1</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160; </div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <a class="code" href="namespaceklyqa__ctl_1_1general_1_1general.html#a1afe30a73cc28a3b65babeeab27e36c8">task_log_debug</a>(<span class="stringliteral">&quot;Shutting down..&quot;</span>)</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    await client.shutdown()</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160; </div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    sys.exit(exit_ret)</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160; </div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160; </div>
 <div class="ttc" id="anamespacecloud_html_a8ff77cd5353527f3ef3c4e2216d86949"><div class="ttname"><a href="namespacecloud.html#a8ff77cd5353527f3ef3c4e2216d86949">cloud.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> cloud.py:31</div></div>
 <div class="ttc" id="anamespaceklyqa__ctl_1_1devices_1_1light_1_1commands_html_a9a2f224816a4dab65a2d877cd38b657b"><div class="ttname"><a href="namespaceklyqa__ctl_1_1devices_1_1light_1_1commands.html#a9a2f224816a4dab65a2d877cd38b657b">klyqa_ctl.devices.light.commands.add_command_args_bulb</a></div><div class="ttdeci">None add_command_args_bulb(argparse.ArgumentParser parser)</div><div class="ttdef"><b>Definition:</b> commands.py:468</div></div>
 <div class="ttc" id="anamespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands_html_ad486c28adf7b9c4ed9672fc04dfde7ef"><div class="ttname"><a href="namespaceklyqa__ctl_1_1devices_1_1vacuum_1_1commands.html#ad486c28adf7b9c4ed9672fc04dfde7ef">klyqa_ctl.devices.vacuum.commands.add_command_args_cleaner</a></div><div class="ttdeci">None add_command_args_cleaner(argparse.ArgumentParser parser)</div><div class="ttdef"><b>Definition:</b> commands.py:263</div></div>
@@ -289,7 +255,7 @@ Current bugs:
 <div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1general_html_a6e74b8cc4bae98fa55902e4b875af67e"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1general.html#a6e74b8cc4bae98fa55902e4b875af67e">klyqa_ctl.general.general.set_debug_logger</a></div><div class="ttdeci">None set_debug_logger(int level=logging.DEBUG)</div><div class="ttdef"><b>Definition:</b> general.py:527</div></div>
 <div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1parameters_html_a38b90c6125a60eeabd89d4addab053b4"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1parameters.html#a38b90c6125a60eeabd89d4addab053b4">klyqa_ctl.general.parameters.get_description_parser</a></div><div class="ttdeci">argparse.ArgumentParser get_description_parser()</div><div class="ttdef"><b>Definition:</b> parameters.py:10</div></div>
 <div class="ttc" id="anamespaceklyqa__ctl_1_1general_1_1parameters_html_a4d4508f84ab7a6044c74575f197f852b"><div class="ttname"><a href="namespaceklyqa__ctl_1_1general_1_1parameters.html#a4d4508f84ab7a6044c74575f197f852b">klyqa_ctl.general.parameters.add_config_args</a></div><div class="ttdeci">None add_config_args(argparse.ArgumentParser parser)</div><div class="ttdef"><b>Definition:</b> parameters.py:29</div></div>
-<div class="ttc" id="anamespaceklyqa__ctl_1_1klyqa__ctl_html_afe1b8490f9810b885e4048d7bef472a7"><div class="ttname"><a href="namespaceklyqa__ctl_1_1klyqa__ctl.html#afe1b8490f9810b885e4048d7bef472a7">klyqa_ctl.klyqa_ctl.main</a></div><div class="ttdeci">None main()</div><div class="ttdef"><b>Definition:</b> klyqa_ctl.py:706</div></div>
+<div class="ttc" id="anamespaceklyqa__ctl_1_1klyqa__ctl_html_afe1b8490f9810b885e4048d7bef472a7"><div class="ttname"><a href="namespaceklyqa__ctl_1_1klyqa__ctl.html#afe1b8490f9810b885e4048d7bef472a7">klyqa_ctl.klyqa_ctl.main</a></div><div class="ttdeci">None main()</div><div class="ttdef"><b>Definition:</b> klyqa_ctl.py:700</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

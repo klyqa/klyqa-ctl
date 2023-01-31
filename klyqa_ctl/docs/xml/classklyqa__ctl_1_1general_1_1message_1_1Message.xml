@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1message_1_1Message" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::message::Message</compoundname>
+    <derivedcompoundref refid="classklyqa__ctl_1_1general_1_1message_1_1BroadCastMessage" prot="public" virt="non-virtual">klyqa_ctl.general.message.BroadCastMessage</derivedcompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a49e0162cb75f631b2b280331a7fc91ff" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::default_factory</definition>
+        <argsstring></argsstring>
+        <name>default_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="36" column="1" bodyfile="general/message.py" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a1b970f42ae928bab59f97914466f2dc5" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::MessageState</definition>
+        <argsstring></argsstring>
+        <name>MessageState</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="37" column="1" bodyfile="general/message.py" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a8b56c60989ac55954e8cffba18694ef7" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::None</definition>
+        <argsstring></argsstring>
+        <name>None</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="38" column="1" bodyfile="general/message.py" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1aa5729ded77d4239d0a5d63f077d0bf38" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::bytes</definition>
+        <argsstring></argsstring>
+        <name>bytes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="41" column="1" bodyfile="general/message.py" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae36d2058696d8c6196b4bfcb79fa5b45" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::str</definition>
+        <argsstring></argsstring>
+        <name>str</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="42" column="1" bodyfile="general/message.py" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a1871df3836bb09d3cb3ec280c8479d19" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::TypeJson</definition>
+        <argsstring></argsstring>
+        <name>TypeJson</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="43" column="1" bodyfile="general/message.py" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1aec4ef7225c8fb24d53778413bf640127" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::bool</definition>
+        <argsstring></argsstring>
+        <name>bool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="46" column="1" bodyfile="general/message.py" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a5deb75569877b0203b6ae428f74d2d0f" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::float</definition>
+        <argsstring></argsstring>
+        <name>float</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="47" column="1" bodyfile="general/message.py" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a94dfea71bd34c25da7b11dad0c8fe6b5" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::int</definition>
+        <argsstring></argsstring>
+        <name>int</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="48" column="1" bodyfile="general/message.py" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a02028ebe4d01a0470b9ff85e8ecc2b4c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::msg_counter</definition>
+        <argsstring></argsstring>
+        <name>msg_counter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="54" column="1" bodyfile="general/message.py" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a4d77dd41efbcfc76e46ed99c62c52205" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::cb_called</definition>
+        <argsstring></argsstring>
+        <name>cb_called</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="60" column="1" bodyfile="general/message.py" bodystart="60" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" compoundref="message_8py" startline="57" endline="61">klyqa_ctl.general.message.Message.call_cb</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae51660f54fe0ec8bf19dda70fa9b34c2" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.message.Message::_attr_target_uid</definition>
+        <argsstring></argsstring>
+        <name>_attr_target_uid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="82" column="1" bodyfile="general/message.py" bodystart="82" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aac78e76d46b64b9bf9cb1d9737544585" compoundref="message_8py" startline="77" endline="79">klyqa_ctl.general.message.Message.target_uid</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1ab749e70b0610fa91461927f23b46b51d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a8b56c60989ac55954e8cffba18694ef7" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.message.Message.__post_init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__post_init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="52" column="1" bodyfile="general/message.py" bodystart="52" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a8b56c60989ac55954e8cffba18694ef7" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.message.Message.call_cb</definition>
+        <argsstring>(self)</argsstring>
+        <name>call_cb</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="57" column="1" bodyfile="general/message.py" bodystart="57" bodyend="61"/>
+        <references refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a4d77dd41efbcfc76e46ed99c62c52205" compoundref="message_8py" startline="60">klyqa_ctl.general.message.Message.cb_called</references>
+        <references refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aac78e76d46b64b9bf9cb1d9737544585" compoundref="message_8py" startline="77" endline="79">klyqa_ctl.general.message.Message.target_uid</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a670561cf07691d77ef03db5705ddea75" compoundref="message_8py" startline="62" endline="75">klyqa_ctl.general.message.Message.check_msg_ttl</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a670561cf07691d77ef03db5705ddea75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aec4ef7225c8fb24d53778413bf640127" kindref="member">bool</ref></type>
+        <definition> bool klyqa_ctl.general.message.Message.check_msg_ttl</definition>
+        <argsstring>(self)</argsstring>
+        <name>check_msg_ttl</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Verify time to live, if exceeded call the callback</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="62" column="1" bodyfile="general/message.py" bodystart="62" bodyend="75"/>
+        <references refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" compoundref="message_8py" startline="57" endline="61">klyqa_ctl.general.message.Message.call_cb</references>
+        <references refid="classlocal_1_1connection_1_1TcpConnection_1a47f1fe8d61f1bb165008723a321e376b" compoundref="connection_8py" startline="164" endline="166">local.connection.TcpConnection.started</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1aac78e76d46b64b9bf9cb1d9737544585" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.general.message.Message.target_uid</definition>
+        <argsstring>(self)</argsstring>
+        <name>target_uid</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="77" column="1" bodyfile="general/message.py" bodystart="77" bodyend="79"/>
+        <references refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae51660f54fe0ec8bf19dda70fa9b34c2" compoundref="message_8py" startline="82">klyqa_ctl.general.message.Message._attr_target_uid</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" compoundref="message_8py" startline="57" endline="61">klyqa_ctl.general.message.Message.call_cb</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a7ce6ef4fadad18a090eb588d6c586413" compoundref="message_8py" startline="81" endline="85">klyqa_ctl.general.message.Message.target_uid</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1message_1_1Message_1a7ce6ef4fadad18a090eb588d6c586413" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a8b56c60989ac55954e8cffba18694ef7" kindref="member">None</ref></type>
+        <definition> None klyqa_ctl.general.message.Message.target_uid</definition>
+        <argsstring>(self, str target_uid)</argsstring>
+        <name>target_uid</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>target_uid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/message.py" line="81" column="1" bodyfile="general/message.py" bodystart="81" bodyend="85"/>
+        <references refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aac78e76d46b64b9bf9cb1d9737544585" compoundref="message_8py" startline="77" endline="79">klyqa_ctl.general.message.Message.target_uid</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" compoundref="message_8py" startline="57" endline="61">klyqa_ctl.general.message.Message.call_cb</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Message</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>klyqa_ctl.general.message.BroadCastMessage</label>
+        <link refid="classklyqa__ctl_1_1general_1_1message_1_1BroadCastMessage"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.general.message.Message</label>
+        <link refid="classklyqa__ctl_1_1general_1_1message_1_1Message"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.message.Message</label>
+        <link refid="classklyqa__ctl_1_1general_1_1message_1_1Message"/>
+      </node>
+    </collaborationgraph>
+    <location file="general/message.py" line="30" column="1" bodyfile="general/message.py" bodystart="30" bodyend="86"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ab749e70b0610fa91461927f23b46b51d" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>__post_init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae51660f54fe0ec8bf19dda70fa9b34c2" prot="private" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>_attr_target_uid</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aec4ef7225c8fb24d53778413bf640127" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>bool</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aa5729ded77d4239d0a5d63f077d0bf38" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>bytes</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a26f0da6e41fb9da0612f7ffdb5b94c5b" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>call_cb</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a4d77dd41efbcfc76e46ed99c62c52205" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>cb_called</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a670561cf07691d77ef03db5705ddea75" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>check_msg_ttl</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a49e0162cb75f631b2b280331a7fc91ff" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a5deb75569877b0203b6ae428f74d2d0f" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>float</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a94dfea71bd34c25da7b11dad0c8fe6b5" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>int</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a1b970f42ae928bab59f97914466f2dc5" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>MessageState</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a02028ebe4d01a0470b9ff85e8ecc2b4c" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>msg_counter</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a8b56c60989ac55954e8cffba18694ef7" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>None</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1ae36d2058696d8c6196b4bfcb79fa5b45" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1aac78e76d46b64b9bf9cb1d9737544585" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>target_uid</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a7ce6ef4fadad18a090eb588d6c586413" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>target_uid</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1message_1_1Message_1a1871df3836bb09d3cb3ec280c8479d19" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::message::Message</scope><name>TypeJson</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

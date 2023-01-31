@@ -1,13 +1,12 @@
 <map id="local.connection_handler.LocalConnectionHandler.process_device_identity_package" name="local.connection_handler.LocalConnectionHandler.process_device_identity_package">
-<area shape="rect" id="node1" title=" " alt="" coords="5,217,239,273"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,188,239,244"/>
 <area shape="rect" id="node2" href="$classklyqa__ctl_1_1account_1_1Account.html#a7bcb9ac9804621630ea08a688abecd18" title=" " alt="" coords="287,5,581,32"/>
 <area shape="rect" id="node3" href="$classcloud_1_1CloudBackend.html#aef174fe1ba95fff13c7901ff56354ec9" title=" " alt="" coords="307,56,561,83"/>
 <area shape="rect" id="node4" href="$classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a8f938ae53b3c24bbdc02f377671cf263" title=" " alt="" coords="293,107,575,149"/>
 <area shape="rect" id="node5" href="$classklyqa__ctl_1_1account_1_1Account.html#a2265c38daf6829c96c852ad4a288b42d" title=" " alt="" coords="311,173,557,200"/>
 <area shape="rect" id="node6" href="$classlocal_1_1connection__handler_1_1LocalConnectionHandler.html#a4d307f6bd0b66f3cb9fac3057fc87972" title=" " alt="" coords="317,225,551,266"/>
 <area shape="rect" id="node7" href="$classklyqa__ctl_1_1controller__data_1_1ControllerData.html#adf7af423388a9a883c428cf71e217650" title=" " alt="" coords="329,290,539,331"/>
-<area shape="rect" id="node8" href="$classklyqa__ctl_1_1klyqa__ctl_1_1Client.html#ab6e5eda10fb712850c3fb311fd1cd4a0" title=" " alt="" coords="314,356,554,383"/>
-<area shape="rect" id="node9" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a9df3b50dfc0fcc7c8ec991bb9be9c5ba" title=" " alt="" coords="629,436,876,463"/>
-<area shape="rect" id="node11" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a1afe30a73cc28a3b65babeeab27e36c8" title=" " alt="" coords="325,458,543,499"/>
-<area shape="rect" id="node10" href="$namespaceklyqa__ctl_1_1general_1_1general.html#aea905150cafee39fa2ca211f1e60f012" title=" " alt="" coords="924,436,1187,463"/>
+<area shape="rect" id="node8" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a9df3b50dfc0fcc7c8ec991bb9be9c5ba" title=" " alt="" coords="629,385,876,412"/>
+<area shape="rect" id="node10" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a1afe30a73cc28a3b65babeeab27e36c8" title=" " alt="" coords="325,407,543,449"/>
+<area shape="rect" id="node9" href="$namespaceklyqa__ctl_1_1general_1_1general.html#aea905150cafee39fa2ca211f1e60f012" title=" " alt="" coords="924,385,1187,412"/>
 </map>

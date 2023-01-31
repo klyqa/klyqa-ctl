@@ -96,7 +96,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a109a225aaf7b2944bedd487a755ef4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><pre class="fragment">Local controller.</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<div class="textblock"><pre class="fragment">Controls local connections via tcp and udp for broadcasts and
+connections directly to devices.</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad820bb0d181aeb158a3177323ee35cdf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad820bb0d181aeb158a3177323ee35cdf">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -122,12 +123,12 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initialize local controller.</pre> <div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    ) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Initialize local controller.&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        self.connection_hdl: LocalConnectionHandler | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        self.controller_data: ControllerData = controller_data</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<pre class="fragment">Initializes the local controller.</pre> <div class="fragment"><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    ) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Initializes the local controller.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        self.connection_hdl: LocalConnectionHandler | <span class="keywordtype">None</span> = <span class="keywordtype">None</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        self.controller_data: ControllerData = controller_data</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -174,34 +175,34 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Factory for local only controller.
+<pre class="fragment">Builds a default local controller.
 
 Params:
     network_interface: leave it on None if you are unsure, else e. g.
         eth0, wlan0, etc.
     server_ip: The host IP to bind the server for incoming tcp
         connections on port 3333.
-</pre> <div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    ) -&gt; LocalController:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Factory for local only controller.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="stringliteral">        Params:</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="stringliteral">            network_interface: leave it on None if you are unsure, else e. g.</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="stringliteral">                eth0, wlan0, etc.</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="stringliteral">            server_ip: The host IP to bind the server for incoming tcp</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">                connections on port 3333.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            controller_data=controller_data,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            server_ip=server_ip,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            network_interface=network_interface,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        )</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        lc: LocalController = LocalController(controller_data)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        lc.connection_hdl = lc_hdl</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">return</span> lc</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+</pre> <div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    ) -&gt; LocalController:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Builds a default local controller.</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">        Params:</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral">            network_interface: leave it on None if you are unsure, else e. g.</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="stringliteral">                eth0, wlan0, etc.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="stringliteral">            server_ip: The host IP to bind the server for incoming tcp</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">                connections on port 3333.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            controller_data=controller_data,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            server_ip=server_ip,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            network_interface=network_interface,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        )</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        lc: LocalController = LocalController(controller_data)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        lc.connection_hdl = lc_hdl</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">return</span> lc</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -242,26 +243,24 @@ Params:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Factory for local only controller.
+<pre class="fragment">Factories a standalone local controller.
 
-param:
-    network_interface: leave it on None if you are unsure, else e. g.
-        eth0, wlan0, etc.
-</pre> <div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    ) -&gt; LocalController:</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Factory for local only controller.</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="stringliteral">        param:</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="stringliteral">            network_interface: leave it on None if you are unsure, else e. g.</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="stringliteral">                eth0, wlan0, etc.</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        controller_data: ControllerData = await ControllerData.create_default(</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            interactive_prompts=interactive_prompts, offline=<span class="keyword">True</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        )</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        lc: LocalController = LocalController.create_default(</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            controller_data, server_ip, network_interface</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        )</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> lc</div>
+Params:
+    network_interface: eth0, wlan0 or None (uses default interface)
+</pre> <div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    ) -&gt; LocalController:</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Factories a standalone local controller.</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="stringliteral">        Params:</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="stringliteral">            network_interface: eth0, wlan0 or None (uses default interface)</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        controller_data: ControllerData = await ControllerData.create_default(</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            interactive_prompts=interactive_prompts, offline=<span class="keyword">True</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        )</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        lc: LocalController = LocalController.create_default(</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            controller_data, server_ip, network_interface</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        )</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keywordflow">return</span> lc</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -302,22 +301,22 @@ param:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Send command string to device with unit id and aes key.</pre> <div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">def </span>send_to_device(self, unit_id: str, key: str, command: str) -&gt; str:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Send command string to device with unit id and aes key.&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.connection_hdl:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        result: str = loop.run_until_complete(</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            self.send_to_device_native(</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                UnitId(unit_id), key, Command(_json=json.loads(command))</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            )</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        )</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> result</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<pre class="fragment">Sends command string to device with unit id and aes key.</pre> <div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">def </span>send_to_device(self, unit_id: str, key: str, command: str) -&gt; str:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Sends command string to device with unit id and aes key.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.connection_hdl:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        result: str = loop.run_until_complete(</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            self.send_to_device_native(</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                UnitId(unit_id), key, Command(_json=json.loads(command))</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            )</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        )</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> result</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -364,32 +363,32 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Send json message from command object to device with unit id and
-aes key.</pre> <div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ) -&gt; str:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Send json message from command object to device with unit id and</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral">        aes key.&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.connection_hdl:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        self.connection_hdl.controller_data.aes_keys[</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <a class="code" href="classstr.html">str</a>(unit_id)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        ] = bytes.fromhex(key)</div>
+<pre class="fragment">Sends json message from command object to device with unit id and
+aes key.</pre> <div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    ) -&gt; str:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Sends json message from command object to device with unit id and</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">        aes key.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.connection_hdl:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        msg_answer: str = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        msg: Message | <span class="keywordtype">None</span> = await self.connection_hdl.send_message(</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            send_msgs=[command],</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            target_device_uid=unit_id,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            time_to_live_secs=11111,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        )</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> msg:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> msg.exception:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">raise</span> msg.exception</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            msg_answer = msg.answer_utf8</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">return</span> msg_answer</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        self.connection_hdl.controller_data.aes_keys[</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <a class="code" href="classstr.html">str</a>(unit_id)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        ] = bytes.fromhex(key)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        msg_answer: str = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        msg: Message | <span class="keywordtype">None</span> = await self.connection_hdl.send_message(</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            send_msgs=[command],</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            target_device_uid=unit_id,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            time_to_live_secs=11111,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        )</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">if</span> msg:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">if</span> msg.exception:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keywordflow">raise</span> msg.exception</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            msg_answer = msg.answer_utf8</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">return</span> msg_answer</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="ttc" id="aclassstr_html"><div class="ttname"><a href="classstr.html">str</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -414,12 +413,12 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Shut down local controller.</pre> <div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    async <span class="keyword">def </span>shutdown(self) -&gt; None:</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Shut down local controller.&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">if</span> self.connection_hdl:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            await self.connection_hdl.shutdown()</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<pre class="fragment">Shuts down the local controller.</pre> <div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    async <span class="keyword">def </span>shutdown(self) -&gt; None:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Shuts down the local controller.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">if</span> self.connection_hdl:</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            await self.connection_hdl.shutdown()</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>

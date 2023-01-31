@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceklyqa__ctl_1_1general_1_1unit__id" kind="namespace" language="Python">
+    <compoundname>klyqa_ctl::general::unit_id</compoundname>
+    <innerclass refid="classklyqa__ctl_1_1general_1_1unit__id_1_1UnitId" prot="public">klyqa_ctl::general::unit_id::UnitId</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>UnitId class</verbatim> </para>
+    </detaileddescription>
+    <location file="general/unit_id.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,409 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classcloud_1_1CloudBackend" kind="class" language="Python" prot="public">
+    <compoundname>cloud::CloudBackend</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcloud_1_1CloudBackend_1a73a0fffa7df86b858325c41d919428b9" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>cloud.CloudBackend::_attr_host</definition>
+        <argsstring></argsstring>
+        <name>_attr_host</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="54" column="1" bodyfile="communication/cloud.py" bodystart="54" bodyend="-1"/>
+        <referencedby refid="classcloud_1_1CloudBackend_1ac0d15541a884bfef94e99527d3c171ee" compoundref="cloud_8py" startline="42" endline="46">cloud.CloudBackend.__init__</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" compoundref="cloud_8py" startline="48" endline="51">cloud.CloudBackend.host</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1ac0d15541a884bfef94e99527d3c171ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None cloud.CloudBackend.__init__</definition>
+        <argsstring>(self, ControllerData controller_data)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kindref="compound">ControllerData</ref></type>
+          <declname>controller_data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="42" column="1" bodyfile="communication/cloud.py" bodystart="42" bodyend="46"/>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ae4afde55789d67ca141f32cd0f2c2493" compoundref="local_2connection__handler_8py" startline="111">local.connection_handler.LocalConnectionHandler._attr_controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1a73a0fffa7df86b858325c41d919428b9" compoundref="cloud_8py" startline="54">cloud.CloudBackend._attr_host</references>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str cloud.CloudBackend.host</definition>
+        <argsstring>(self)</argsstring>
+        <name>host</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return or set the host.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="48" column="1" bodyfile="communication/cloud.py" bodystart="48" bodyend="51"/>
+        <references refid="classcloud_1_1CloudBackend_1a73a0fffa7df86b858325c41d919428b9" compoundref="cloud_8py" startline="54">cloud.CloudBackend._attr_host</references>
+        <referencedby refid="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" compoundref="cloud_8py" startline="66" endline="69">cloud.CloudBackend.backend_connected</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1abe810e894a06b18f0e875603f2d8b4e1" compoundref="cloud_8py" startline="53" endline="55">cloud.CloudBackend.host</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" compoundref="cloud_8py" startline="133" endline="158">cloud.CloudBackend.request</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1abe810e894a06b18f0e875603f2d8b4e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None cloud.CloudBackend.host</definition>
+        <argsstring>(self, str host)</argsstring>
+        <name>host</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>host</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="53" column="1" bodyfile="communication/cloud.py" bodystart="53" bodyend="55"/>
+        <references refid="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" compoundref="cloud_8py" startline="48" endline="51">cloud.CloudBackend.host</references>
+        <referencedby refid="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" compoundref="cloud_8py" startline="66" endline="69">cloud.CloudBackend.backend_connected</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" compoundref="cloud_8py" startline="133" endline="158">cloud.CloudBackend.request</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1adf95478dcc03f91d222b6cc3c5317175" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool cloud.CloudBackend.offline</definition>
+        <argsstring>(self)</argsstring>
+        <name>offline</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return or set the offline attribute.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="57" column="1" bodyfile="communication/cloud.py" bodystart="57" bodyend="60"/>
+        <referencedby refid="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" compoundref="cloud_8py" startline="66" endline="69">cloud.CloudBackend.backend_connected</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kindref="compound">ControllerData</ref></type>
+        <definition> ControllerData cloud.CloudBackend.controller_data</definition>
+        <argsstring>(self)</argsstring>
+        <name>controller_data</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Return or set the controller data object.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="62" column="1" bodyfile="communication/cloud.py" bodystart="62" bodyend="65"/>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1ae4afde55789d67ca141f32cd0f2c2493" compoundref="local_2connection__handler_8py" startline="111">local.connection_handler.LocalConnectionHandler._attr_controller_data</references>
+        <referencedby refid="classklyqa__ctl_1_1local__controller_1_1LocalController_1ad820bb0d181aeb158a3177323ee35cdf" compoundref="local__controller_8py" startline="26" endline="31">klyqa_ctl.local_controller.LocalController.__init__</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a566850b368080b6ff85ee2675aa9b3e2" compoundref="cloud_8py" startline="93" endline="116">cloud.CloudBackend.get_device_configs</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1adad4d644a9bbb3633405dac89e86edd3" compoundref="account_8py" startline="301" endline="319">klyqa_ctl.account.Account.get_or_create_device</referencedby>
+        <referencedby refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a4ce11db96280d000941a91cb37df2842" compoundref="local_2connection__handler_8py" startline="307" endline="407">local.connection_handler.LocalConnectionHandler.process_device_identity_package</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a5ab3a2f4382c4437255871d4296cee9a" compoundref="account_8py" startline="185" endline="204">klyqa_ctl.account.Account.run_password_prompt</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a8db40a99748dc3cc160e5093da0f84e8" compoundref="cloud_8py" startline="199" endline="333">cloud.CloudBackend.send</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a8e93f6fe918bf32c172447d4ef439d2d" compoundref="account_8py" startline="326" endline="347">klyqa_ctl.account.Account.sync_acc_settings_to_controller</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1a4fb47c923d3a579054e8cc72480906fb" compoundref="account_8py" startline="529" endline="554">klyqa_ctl.account.Account.update_device_configs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool cloud.CloudBackend.backend_connected</definition>
+        <argsstring>(self)</argsstring>
+        <name>backend_connected</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>General cloud intended to be there check.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="66" column="1" bodyfile="communication/cloud.py" bodystart="66" bodyend="69"/>
+        <references refid="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" compoundref="cloud_8py" startline="48" endline="51">cloud.CloudBackend.host</references>
+        <references refid="classcloud_1_1CloudBackend_1adf95478dcc03f91d222b6cc3c5317175" compoundref="cloud_8py" startline="57" endline="60">cloud.CloudBackend.offline</references>
+        <references refid="classklyqa__ctl_1_1controller__data_1_1ControllerData_1acb31c4dc35406e234e75902d1972ae7a" compoundref="controller__data_8py" startline="44" endline="46">klyqa_ctl.controller_data.ControllerData.offline</references>
+        <referencedby refid="classklyqa__ctl_1_1account_1_1Account_1aa78870d05cc7fa5899d61733d124e885" compoundref="account_8py" startline="389" endline="428">klyqa_ctl.account.Account.device_request_and_print</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a58e4bd598358583c0eb7c50fdf0c6bc1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None cloud.CloudBackend.get_device_config</definition>
+        <argsstring>(self, str product_id, TypeJson device_configs)</argsstring>
+        <name>get_device_config</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>product_id</declname>
+        </param>
+        <param>
+          <type>TypeJson</type>
+          <declname>device_configs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request device config from the cloud.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="70" column="1" bodyfile="communication/cloud.py" bodystart="72" bodyend="92"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a199d42aeb5404a13cfee81a040deaa2b" compoundref="general_2general_8py" startline="367">klyqa_ctl.general.general.Device_config</references>
+        <references refid="classcloud_1_1CloudBackend_1a85f7e46764602842576d0a96ca804ea4" compoundref="cloud_8py" startline="161" endline="182">cloud.CloudBackend.load_http_response</references>
+        <references refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" compoundref="cloud_8py" startline="133" endline="158">cloud.CloudBackend.request</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <referencedby refid="classcloud_1_1CloudBackend_1a566850b368080b6ff85ee2675aa9b3e2" compoundref="cloud_8py" startline="93" endline="116">cloud.CloudBackend.get_device_configs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a566850b368080b6ff85ee2675aa9b3e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None cloud.CloudBackend.get_device_configs</definition>
+        <argsstring>(self, set[str] device_product_ids)</argsstring>
+        <name>get_device_configs</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>set</type>
+          <declname>device_product_ids</declname>
+          <array>[str]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Request device configs by product id from the cloud.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="93" column="1" bodyfile="communication/cloud.py" bodystart="93" bodyend="116"/>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1aa34dc716ff5492dc4f325a2ae1a73a4f" compoundref="general_2general_8py" startline="376" endline="451">klyqa_ctl.general.general.async_json_cache</references>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" compoundref="account_8py" startline="117" endline="120">klyqa_ctl.account.Account.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" compoundref="cloud_8py" startline="62" endline="65">cloud.CloudBackend.controller_data</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" compoundref="local_2connection__handler_8py" startline="106" endline="108">local.connection_handler.LocalConnectionHandler.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1a58e4bd598358583c0eb7c50fdf0c6bc1" compoundref="cloud_8py" startline="72" endline="92">cloud.CloudBackend.get_device_config</references>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1af39d1bfe4ff58db5af7f373b7ca965a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TypeJson</type>
+        <definition> TypeJson cloud.CloudBackend.get_header_default</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_header_default</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get default request header for cloud request.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="117" column="1" bodyfile="communication/cloud.py" bodystart="117" bodyend="126"/>
+        <referencedby refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" compoundref="cloud_8py" startline="133" endline="158">cloud.CloudBackend.request</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>httpx.Response|None</type>
+        <definition> httpx.Response | None cloud.CloudBackend.request</definition>
+        <argsstring>(self, RequestMethod method, str url, TypeJson|None headers=None, **Any kwargs)</argsstring>
+        <name>request</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classcloud_1_1RequestMethod" kindref="compound">RequestMethod</ref></type>
+          <declname>method</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>url</declname>
+        </param>
+        <param>
+          <type>TypeJson|None</type>
+          <declname>headers</declname>
+          <defval>None</defval>
+        </param>
+        <param>
+          <type>**Any</type>
+          <declname>kwargs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Send http request with request method to url with headers.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="127" column="1" bodyfile="communication/cloud.py" bodystart="133" bodyend="158"/>
+        <references refid="classcloud_1_1CloudBackend_1af39d1bfe4ff58db5af7f373b7ca965a0" compoundref="cloud_8py" startline="117" endline="126">cloud.CloudBackend.get_header_default</references>
+        <references refid="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" compoundref="cloud_8py" startline="48" endline="51">cloud.CloudBackend.host</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1ad6b753e482e539892c57f8144cf213cb" compoundref="general_2general_8py" startline="565" endline="568">klyqa_ctl.general.general.task_log_trace_ex</references>
+        <referencedby refid="classcloud_1_1CloudBackend_1a58e4bd598358583c0eb7c50fdf0c6bc1" compoundref="cloud_8py" startline="72" endline="92">cloud.CloudBackend.get_device_config</referencedby>
+        <referencedby refid="classcloud_1_1CloudBackend_1a8db40a99748dc3cc160e5093da0f84e8" compoundref="cloud_8py" startline="199" endline="333">cloud.CloudBackend.send</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a85f7e46764602842576d0a96ca804ea4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TypeJson|None</type>
+        <definition> TypeJson | None cloud.CloudBackend.load_http_response</definition>
+        <argsstring>(self, httpx.Response response)</argsstring>
+        <name>load_http_response</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>httpx.Response</type>
+          <declname>response</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="159" column="1" bodyfile="communication/cloud.py" bodystart="161" bodyend="182"/>
+        <references refid="namespacecloud_1a8ff77cd5353527f3ef3c4e2216d86949" compoundref="cloud_8py" startline="31">cloud.int</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a1afe30a73cc28a3b65babeeab27e36c8" compoundref="general_2general_8py" startline="550" endline="554">klyqa_ctl.general.general.task_log_debug</references>
+        <referencedby refid="classcloud_1_1CloudBackend_1a58e4bd598358583c0eb7c50fdf0c6bc1" compoundref="cloud_8py" startline="72" endline="92">cloud.CloudBackend.get_device_config</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a8db40a99748dc3cc160e5093da0f84e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition> bool cloud.CloudBackend.send</definition>
+        <argsstring>(self, argparse.Namespace args, set[str] target_device_uids, set[str] to_send_device_uids, int timeout_ms, list message_queue_tx_state_cloud, list message_queue_tx_command_cloud)</argsstring>
+        <name>send</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>argparse.Namespace</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>set</type>
+          <declname>target_device_uids</declname>
+          <array>[str]</array>
+        </param>
+        <param>
+          <type>set</type>
+          <declname>to_send_device_uids</declname>
+          <array>[str]</array>
+        </param>
+        <param>
+          <type><ref refid="namespacecloud_1a8ff77cd5353527f3ef3c4e2216d86949" kindref="member">int</ref></type>
+          <declname>timeout_ms</declname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>message_queue_tx_state_cloud</declname>
+        </param>
+        <param>
+          <type>list</type>
+          <declname>message_queue_tx_command_cloud</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Cloud message processing.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="189" column="1" bodyfile="communication/cloud.py" bodystart="199" bodyend="333"/>
+        <references refid="classklyqa__ctl_1_1account_1_1Account_1a7bcb9ac9804621630ea08a688abecd18" compoundref="account_8py" startline="117" endline="120">klyqa_ctl.account.Account.controller_data</references>
+        <references refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" compoundref="cloud_8py" startline="62" endline="65">cloud.CloudBackend.controller_data</references>
+        <references refid="classlocal_1_1connection__handler_1_1LocalConnectionHandler_1a8f938ae53b3c24bbdc02f377671cf263" compoundref="local_2connection__handler_8py" startline="106" endline="108">local.connection_handler.LocalConnectionHandler.controller_data</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1a2c729589c8f5ab77e718bb060d26425d" compoundref="general_2general_8py" startline="486" endline="489">klyqa_ctl.general.general.format_uid</references>
+        <references refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" compoundref="cloud_8py" startline="133" endline="158">cloud.CloudBackend.request</references>
+        <references refid="namespaceklyqa__ctl_1_1general_1_1general_1ad6b753e482e539892c57f8144cf213cb" compoundref="general_2general_8py" startline="565" endline="568">klyqa_ctl.general.general.task_log_trace_ex</references>
+      </memberdef>
+      <memberdef kind="function" id="classcloud_1_1CloudBackend_1a549f101de99a135607eace6d67482c1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classcloud_1_1CloudBackend" kindref="compound">CloudBackend</ref></type>
+        <definition> CloudBackend cloud.CloudBackend.create_default</definition>
+        <argsstring>(Any cls, ControllerData controller_data, str host=PROD_HOST)</argsstring>
+        <name>create_default</name>
+        <param>
+          <type>Any</type>
+          <declname>cls</declname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1controller__data_1_1ControllerData" kindref="compound">ControllerData</ref></type>
+          <declname>controller_data</declname>
+        </param>
+        <param>
+          <type><ref refid="classstr" kindref="compound">str</ref></type>
+          <declname>host</declname>
+          <defval>PROD_HOST</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Factory for cloud backend.</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="communication/cloud.py" line="335" column="1" bodyfile="communication/cloud.py" bodystart="337" bodyend="342"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Cloud backend</verbatim> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>cloud.CloudBackend</label>
+        <link refid="classcloud_1_1CloudBackend"/>
+      </node>
+    </collaborationgraph>
+    <location file="communication/cloud.py" line="39" column="1" bodyfile="communication/cloud.py" bodystart="39" bodyend="342"/>
+    <listofallmembers>
+      <member refid="classcloud_1_1CloudBackend_1ac0d15541a884bfef94e99527d3c171ee" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>__init__</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a73a0fffa7df86b858325c41d919428b9" prot="private" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>_attr_host</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a2aa84632596a773fb8d2f979138b2bda" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>backend_connected</name></member>
+      <member refid="classcloud_1_1CloudBackend_1aef174fe1ba95fff13c7901ff56354ec9" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>controller_data</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a549f101de99a135607eace6d67482c1f" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>create_default</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a58e4bd598358583c0eb7c50fdf0c6bc1" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>get_device_config</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a566850b368080b6ff85ee2675aa9b3e2" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>get_device_configs</name></member>
+      <member refid="classcloud_1_1CloudBackend_1af39d1bfe4ff58db5af7f373b7ca965a0" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>get_header_default</name></member>
+      <member refid="classcloud_1_1CloudBackend_1ac4e934fc6667245f1a6fde13e5ab089e" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>host</name></member>
+      <member refid="classcloud_1_1CloudBackend_1abe810e894a06b18f0e875603f2d8b4e1" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>host</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a85f7e46764602842576d0a96ca804ea4" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>load_http_response</name></member>
+      <member refid="classcloud_1_1CloudBackend_1adf95478dcc03f91d222b6cc3c5317175" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>offline</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a890d2669fa6b9550af8e14a17413aea2" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>request</name></member>
+      <member refid="classcloud_1_1CloudBackend_1a8db40a99748dc3cc160e5093da0f84e8" prot="public" virt="non-virtual"><scope>cloud::CloudBackend</scope><name>send</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

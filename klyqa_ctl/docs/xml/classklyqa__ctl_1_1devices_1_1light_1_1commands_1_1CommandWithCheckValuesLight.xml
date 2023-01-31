@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</compoundname>
+    <basecompoundref refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues" prot="public" virt="non-virtual">klyqa_ctl.devices.device.CommandWithCheckValues</basecompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand" prot="public" virt="non-virtual">klyqa_ctl.devices.light.commands.BrightnessCommand</derivedcompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand" prot="public" virt="non-virtual">klyqa_ctl.devices.light.commands.ColorCommand</derivedcompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand" prot="public" virt="non-virtual">klyqa_ctl.devices.light.commands.RoutinePutCommand</derivedcompoundref>
+    <derivedcompoundref refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand" prot="public" virt="non-virtual">klyqa_ctl.devices.light.commands.TemperatureCommand</derivedcompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1add33b25987f5672d71c9672626dd6bc6" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight::None</definition>
+        <argsstring></argsstring>
+        <name>None</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="120" column="1" bodyfile="devices/light/commands.py" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1a44c064638b5ab33bc6515688644d2d12" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight::_light</definition>
+        <argsstring></argsstring>
+        <name>_light</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="126" column="1" bodyfile="devices/light/commands.py" bodystart="126" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1a398df61cf2d815c4d338ef0131482c6d" compoundref="light_2commands_8py" startline="150" endline="175">klyqa_ctl.devices.light.commands.ColorCommand.check_values</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a34847a5ef38a13569bc640791d11508b" compoundref="light_2commands_8py" startline="189" endline="214">klyqa_ctl.devices.light.commands.TemperatureCommand.check_values</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1ab63f32fce3e15998369f6b058810906b" compoundref="light_2commands_8py" startline="232" endline="255">klyqa_ctl.devices.light.commands.BrightnessCommand.check_values</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1ac8eea472765742d8c9bbfaada1f7f40c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1a1ec9d149deafea09d8681f2b45f5b656" kindref="member">bool</ref></type>
+        <definition> bool klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight.check_values</definition>
+        <argsstring>(self, Device device)</argsstring>
+        <name>check_values</name>
+        <reimplements refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1adff1dec3cc2f6b12e158de8b61cfd5a5">check_values</reimplements>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_1a398df61cf2d815c4d338ef0131482c6d">check_values</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand_1a34847a5ef38a13569bc640791d11508b">check_values</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand_1ab63f32fce3e15998369f6b058810906b">check_values</reimplementedby>
+        <reimplementedby refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand_1a3e37b57fa082d61d47bb370f39217874">check_values</reimplementedby>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classklyqa__ctl_1_1devices_1_1device_1_1Device" kindref="compound">Device</ref></type>
+          <declname>device</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="devices/light/commands.py" line="123" column="1" bodyfile="devices/light/commands.py" bodystart="123" bodyend="130"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Check command values range limits.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="6">
+        <label>klyqa_ctl.devices.light.commands.ColorCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>klyqa_ctl.devices.light.commands.RoutinePutCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>klyqa_ctl.devices.light.commands.BrightnessCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="8">
+        <label>klyqa_ctl.devices.light.commands.TemperatureCommand</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.device.CommandWithCheckValues</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>klyqa_ctl.general.general.Command</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1Command"/>
+      </node>
+      <node id="2">
+        <label>klyqa_ctl.devices.device.CommandWithCheckValues</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>klyqa_ctl.general.general.CommandTyped</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.devices.light.commands.CommandWithCheckValuesLight</label>
+        <link refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="devices/light/commands.py" line="117" column="1" bodyfile="devices/light/commands.py" bodystart="117" bodyend="131"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a86ac6b91392108a0e640037ab271bbb8" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1a44c064638b5ab33bc6515688644d2d12" prot="private" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>_light</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_1a1ec9d149deafea09d8681f2b45f5b656" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>bool</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1ac8eea472765742d8c9bbfaada1f7f40c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>check_values</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a4aa9e4db12aecf5520e974204c635d38" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>cloud</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a748ac3aa4c335da42d06dd8d8599f5bd" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>default_factory</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1a96dfd43912c4640f381424bdd44eebca" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>json</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1a282b2ced7b14ae00b8315e33082108ab" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>msg_str</name></member>
+      <member refid="classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_1add33b25987f5672d71c9672626dd6bc6" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>None</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1CommandTyped_1ae7b76f7b278feff1e6a6973f1eb1687e" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>str</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1Command_1aa35c4fcf3320729d223b8fe6dfd4457c" prot="public" virt="non-virtual"><scope>klyqa_ctl::devices::light::commands::CommandWithCheckValuesLight</scope><name>TypeJson</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

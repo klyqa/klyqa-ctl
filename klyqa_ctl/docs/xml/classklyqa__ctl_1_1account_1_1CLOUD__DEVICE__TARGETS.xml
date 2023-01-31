@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::account::CLOUD_DEVICE_TARGETS</compoundname>
+    <basecompoundref refid="classstr" prot="public" virt="non-virtual">str</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Enum</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS_1a673616cc91b780afd37e68600d38d12a" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.account.CLOUD_DEVICE_TARGETS::command</definition>
+        <argsstring></argsstring>
+        <name>command</name>
+        <initializer>=  &quot;command&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="32" column="1" bodyfile="account.py" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS_1af023b0fcc7ea214ab758eeeee24de7bd" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string klyqa_ctl.account.CLOUD_DEVICE_TARGETS::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <initializer>=  &quot;state&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="account.py" line="33" column="1" bodyfile="account.py" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Rest calls, cloud device targets.</verbatim> </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.account.CLOUD_DEVICE_TARGETS</label>
+        <link refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>str</label>
+        <link refid="classstr"/>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="1">
+        <label>klyqa_ctl.account.CLOUD_DEVICE_TARGETS</label>
+        <link refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+command</edgelabel>
+          <edgelabel>+state</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Enum</label>
+      </node>
+    </collaborationgraph>
+    <location file="account.py" line="29" column="1" bodyfile="account.py" bodystart="29" bodyend="37"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS_1a673616cc91b780afd37e68600d38d12a" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::CLOUD_DEVICE_TARGETS</scope><name>command</name></member>
+      <member refid="classklyqa__ctl_1_1account_1_1CLOUD__DEVICE__TARGETS_1af023b0fcc7ea214ab758eeeee24de7bd" prot="public" virt="non-virtual"><scope>klyqa_ctl::account::CLOUD_DEVICE_TARGETS</scope><name>state</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

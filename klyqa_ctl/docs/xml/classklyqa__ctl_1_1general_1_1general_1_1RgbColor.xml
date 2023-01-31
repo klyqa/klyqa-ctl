@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor" kind="class" language="Python" prot="public">
+    <compoundname>klyqa_ctl::general::general::RgbColor</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a67fdfed044371248a782c2a24dbc52c4" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.RgbColor::_attr_r</definition>
+        <argsstring></argsstring>
+        <name>_attr_r</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="220" column="1" bodyfile="general/general.py" bodystart="220" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae48a2be31c240c3f44eef952d2b1315d" compoundref="general_2general_8py" startline="225" endline="227">klyqa_ctl.general.general.RgbColor.r</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1afc4b66791d4319fd6e2c5970c5a31d1e" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.RgbColor::_attr_g</definition>
+        <argsstring></argsstring>
+        <name>_attr_g</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="221" column="1" bodyfile="general/general.py" bodystart="221" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a20790d4cce637e2ef9b3d8498d52ea0b" compoundref="general_2general_8py" startline="233" endline="235">klyqa_ctl.general.general.RgbColor.g</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1abb4f70a9b85f0796d8cd3f1577c307d7" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>klyqa_ctl.general.general.RgbColor::_attr_b</definition>
+        <argsstring></argsstring>
+        <name>_attr_b</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="222" column="1" bodyfile="general/general.py" bodystart="222" bodyend="-1"/>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae7f8987c23f5a9e354475951261074c8" compoundref="general_2general_8py" startline="241" endline="243">klyqa_ctl.general.general.RgbColor.b</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classstr" kindref="compound">str</ref></type>
+        <definition> str klyqa_ctl.general.general.RgbColor.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="215" column="1" bodyfile="general/general.py" bodystart="215" bodyend="218"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae7f8987c23f5a9e354475951261074c8" compoundref="general_2general_8py" startline="241" endline="243">klyqa_ctl.general.general.RgbColor.b</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a20790d4cce637e2ef9b3d8498d52ea0b" compoundref="general_2general_8py" startline="233" endline="235">klyqa_ctl.general.general.RgbColor.g</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae48a2be31c240c3f44eef952d2b1315d" compoundref="general_2general_8py" startline="225" endline="227">klyqa_ctl.general.general.RgbColor.r</references>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ac22ace363ebacaf7dc5d7f6d29168ee8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.RgbColor.__init__</definition>
+        <argsstring>(self, int r, int g, int b)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="219" column="1" bodyfile="general/general.py" bodystart="219" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae48a2be31c240c3f44eef952d2b1315d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+        <definition> int klyqa_ctl.general.general.RgbColor.r</definition>
+        <argsstring>(self)</argsstring>
+        <name>r</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="225" column="1" bodyfile="general/general.py" bodystart="225" bodyend="227"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a67fdfed044371248a782c2a24dbc52c4" compoundref="general_2general_8py" startline="220">klyqa_ctl.general.general.RgbColor._attr_r</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" compoundref="general_2general_8py" startline="215" endline="218">klyqa_ctl.general.general.RgbColor.__str__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a2b5b82000ecf5a8dd35ac04a9059f253" compoundref="general_2general_8py" startline="229" endline="231">klyqa_ctl.general.general.RgbColor.r</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a2b5b82000ecf5a8dd35ac04a9059f253" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.RgbColor.r</definition>
+        <argsstring>(self, int r)</argsstring>
+        <name>r</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="229" column="1" bodyfile="general/general.py" bodystart="229" bodyend="231"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a67fdfed044371248a782c2a24dbc52c4" compoundref="general_2general_8py" startline="220">klyqa_ctl.general.general.RgbColor._attr_r</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae48a2be31c240c3f44eef952d2b1315d" compoundref="general_2general_8py" startline="225" endline="227">klyqa_ctl.general.general.RgbColor.r</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" compoundref="general_2general_8py" startline="215" endline="218">klyqa_ctl.general.general.RgbColor.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a20790d4cce637e2ef9b3d8498d52ea0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+        <definition> int klyqa_ctl.general.general.RgbColor.g</definition>
+        <argsstring>(self)</argsstring>
+        <name>g</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="233" column="1" bodyfile="general/general.py" bodystart="233" bodyend="235"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1afc4b66791d4319fd6e2c5970c5a31d1e" compoundref="general_2general_8py" startline="221">klyqa_ctl.general.general.RgbColor._attr_g</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" compoundref="general_2general_8py" startline="215" endline="218">klyqa_ctl.general.general.RgbColor.__str__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1aae3c91dacabd2e47d22e5f53699035f7" compoundref="general_2general_8py" startline="237" endline="239">klyqa_ctl.general.general.RgbColor.g</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1aae3c91dacabd2e47d22e5f53699035f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.RgbColor.g</definition>
+        <argsstring>(self, int g)</argsstring>
+        <name>g</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>g</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="237" column="1" bodyfile="general/general.py" bodystart="237" bodyend="239"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1afc4b66791d4319fd6e2c5970c5a31d1e" compoundref="general_2general_8py" startline="221">klyqa_ctl.general.general.RgbColor._attr_g</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a20790d4cce637e2ef9b3d8498d52ea0b" compoundref="general_2general_8py" startline="233" endline="235">klyqa_ctl.general.general.RgbColor.g</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" compoundref="general_2general_8py" startline="215" endline="218">klyqa_ctl.general.general.RgbColor.__str__</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae7f8987c23f5a9e354475951261074c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+        <definition> int klyqa_ctl.general.general.RgbColor.b</definition>
+        <argsstring>(self)</argsstring>
+        <name>b</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="241" column="1" bodyfile="general/general.py" bodystart="241" bodyend="243"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1abb4f70a9b85f0796d8cd3f1577c307d7" compoundref="general_2general_8py" startline="222">klyqa_ctl.general.general.RgbColor._attr_b</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" compoundref="general_2general_8py" startline="215" endline="218">klyqa_ctl.general.general.RgbColor.__str__</referencedby>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a3d4e95d3c7aad662f8c7bf465845d023" compoundref="general_2general_8py" startline="245" endline="248">klyqa_ctl.general.general.RgbColor.b</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a3d4e95d3c7aad662f8c7bf465845d023" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None klyqa_ctl.general.general.RgbColor.b</definition>
+        <argsstring>(self, int b)</argsstring>
+        <name>b</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespaceklyqa__ctl_1_1general_1_1general_1ac1d7946ecd2135959d9dc1c950d3e99b" kindref="member">int</ref></type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="general/general.py" line="245" column="1" bodyfile="general/general.py" bodystart="245" bodyend="248"/>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1abb4f70a9b85f0796d8cd3f1577c307d7" compoundref="general_2general_8py" startline="222">klyqa_ctl.general.general.RgbColor._attr_b</references>
+        <references refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae7f8987c23f5a9e354475951261074c8" compoundref="general_2general_8py" startline="241" endline="243">klyqa_ctl.general.general.RgbColor.b</references>
+        <referencedby refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" compoundref="general_2general_8py" startline="215" endline="218">klyqa_ctl.general.general.RgbColor.__str__</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>RGBColor</verbatim> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>klyqa_ctl.general.general.RgbColor</label>
+        <link refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor"/>
+      </node>
+    </collaborationgraph>
+    <location file="general/general.py" line="208" column="1" bodyfile="general/general.py" bodystart="208" bodyend="249"/>
+    <listofallmembers>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ac22ace363ebacaf7dc5d7f6d29168ee8" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>__init__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a47efa8d378514bb43f1adb1f6d512105" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>__str__</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1abb4f70a9b85f0796d8cd3f1577c307d7" prot="private" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>_attr_b</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1afc4b66791d4319fd6e2c5970c5a31d1e" prot="private" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>_attr_g</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a67fdfed044371248a782c2a24dbc52c4" prot="private" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>_attr_r</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae7f8987c23f5a9e354475951261074c8" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>b</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a3d4e95d3c7aad662f8c7bf465845d023" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>b</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a20790d4cce637e2ef9b3d8498d52ea0b" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>g</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1aae3c91dacabd2e47d22e5f53699035f7" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>g</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1ae48a2be31c240c3f44eef952d2b1315d" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>r</name></member>
+      <member refid="classklyqa__ctl_1_1general_1_1general_1_1RgbColor_1a2b5b82000ecf5a8dd35ac04a9059f253" prot="public" virt="non-virtual"><scope>klyqa_ctl::general::general::RgbColor</scope><name>r</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
