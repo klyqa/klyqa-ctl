@@ -58,6 +58,8 @@ SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
 
 
 class DeviceType(str, Enum):
+    """Device types."""
+
     CLEANER = "cleaner"
     LIGHTING = "lighting"
 
@@ -68,6 +70,8 @@ AES_KEY_DEV_BYTES: bytes = bytes.fromhex(AES_KEY_DEV)
 
 
 class CommandType(str, Enum):
+    """Send/request command types."""
+
     PING = "ping"
     REQUEST = "request"
     FACTORY_RESET = "factory_reset"
@@ -89,13 +93,17 @@ class Command:
 
     def json(self) -> TypeJson:
         """Return json command."""
+
         return self._json
 
     def cloud(self) -> TypeJson:
+        """Return json command for cloud."""
+
         return self.json()
 
     def msg_str(self) -> str:
         """Return json command as string."""
+
         return json.dumps(self.json())
 
     def __str__(self) -> str:
@@ -137,11 +145,13 @@ class EventQueuePrinter:
 
     def __init__(self) -> None:
         """start printing helper thread routine"""
+
         self.printer_t = Thread(target=self.coroutine)
         self.printer_t.start()
 
     def stop(self) -> None:
         """stop printing helper thread"""
+
         self.not_finished = False
         self.event.set()
         if self.printer_t is not None:
@@ -150,20 +160,24 @@ class EventQueuePrinter:
     def coroutine(self) -> None:
         """printer thread routine, waits for data to print and/or a
         trigger event"""
+
         while self.not_finished:
             if not self.print_strings:
                 self.event.wait()
             while self.print_strings and (l_str := self.print_strings.pop(0)):
                 print(l_str, flush=True)
 
-    def print(self, str: str) -> None:
+    def print(self, val: str) -> None:
         """add string to the printer"""
-        self.print_strings.append(str)
+
+        self.print_strings.append(val)
         self.event.set()
 
 
 @dataclass
 class Range:
+    """Range of values class."""
+
     _attr_min: int
     _attr_max: int
 
@@ -173,19 +187,23 @@ class Range:
 
     @property
     def min(self) -> int:
+        """Minimum getter."""
+
         return self._attr_min
 
     @min.setter
-    def min(self, min: int) -> None:
-        self._attr_min = min
+    def min(self, val: int) -> None:
+        self._attr_min = val
 
     @property
     def max(self) -> int:
+        """Maximum getter."""
+
         return self._attr_max
 
     @max.setter
-    def max(self, max: int) -> None:
-        self._attr_max = max
+    def max(self, val: int) -> None:
+        self._attr_max = val
 
 
 class RgbColor:
@@ -206,30 +224,38 @@ class RgbColor:
 
     @property
     def r(self) -> int:
+        """Red color part getter."""
+
         return self._attr_r
 
     @r.setter
-    def r(self, r: int) -> None:
-        self._attr_r = r
+    def r(self, red: int) -> None:
+        self._attr_r = red
 
     @property
     def g(self) -> int:
+        """Green color part getter."""
+
         return self._attr_g
 
     @g.setter
-    def g(self, g: int) -> None:
-        self._attr_g = g
+    def g(self, green: int) -> None:
+        self._attr_g = green
 
     @property
     def b(self) -> int:
+        """Blue color part getter."""
+
         return self._attr_b
 
     @b.setter
-    def b(self, b: int) -> None:
-        self._attr_b = b
+    def b(self, blue: int) -> None:
+        self._attr_b = blue
 
 
 class AsyncIoLock(asyncio.Lock):
+    """AsyncIo lock with remembering of the task within it was locked."""
+
     def __init__(self, name: str = "") -> None:
         super().__init__()
         self.name: str = name
@@ -238,7 +264,7 @@ class AsyncIoLock(asyncio.Lock):
     async def acquire_within_task(
         self, timeout: int = 30, **kwargs: Any
     ) -> bool:
-        """Get asyncio lock."""
+        """Get asyncio lock and remember the task within it was locked."""
 
         try:
             task_log_debug(f"wait for lock... {self.name}")
@@ -251,86 +277,42 @@ class AsyncIoLock(asyncio.Lock):
             return True
         except asyncio.TimeoutError:
             LOGGER.error(
-                f'Timeout for getting the lock for device "{self.name}"'
+                'Timeout for getting the lock for device "%s"', self.name
             )
-        except Exception:
-            task_log_error("Error while trying to get device lock!")
-            task_log_trace_ex()
 
         return False
 
     def release_within_task(self) -> None:
+        """Release the lock from inside the task where the lock was locked."""
+
         if self.locked() and self.locked_in_task == asyncio.current_task():
             try:
                 super().release()
                 self.locked_in_task = None
                 task_log_debug(f"got unlock... {self.name}")
-            except Exception as e:
+            except Exception as exception:
                 task_log_error(
                     "Error while trying to unlock the device! (Probably now"
                     " locked until restart)"
                 )
                 task_log_trace_ex()
-                raise e
+                raise exception
 
 
 def task_name() -> str:
     """Return asyncio task name."""
-    task_name: str = ""
+
+    name: str = ""
     try:
         task: asyncio.Task[Any] | None = asyncio.current_task()
-        task_name = task.get_name() if task is not None else ""
+        name = task.get_name() if task is not None else ""
     except RuntimeError:
         # if no current async loop running skip
         return ""
-    return task_name
+    return name
 
 
-# class AsyncIoLockTask:
-#     """Async IO Lock"""
-
-#     task: asyncio.Task | None
-#     lock: asyncio.Lock
-#     _instance = None
-
-#     def __init__(self) -> None:
-#         """__init__"""
-#         self.lock = asyncio.Lock()
-#         self.task = None
-
-#     async def acquire(self) -> None:
-#         """acquire"""
-#         await self.lock.acquire()
-#         self.task = asyncio.current_task()
-
-#     def release(self) -> None:
-#         """release"""
-#         self.lock.release()
-
-#     def force_unlock(self) -> bool:
-#         """force_unlock"""
-#         try:
-#             if self.task:
-#                 self.task.cancel()
-#             self.lock.release()
-#         except:
-#             return False
-#         return True
-
-#     @classmethod
-#     def instance(
-#         cls: Any,
-#     ) -> Any:
-#         """instance"""
-#         if cls._instance is None:
-#             task_log_debug("Creating new AsyncIOLock instance")
-#             cls._instance = cls.__new__(cls)
-#             # Put any initialization here.
-#             cls._instance.__init__()
-#         return cls._instance
-
-
-class ReferencePass:
+class ReferencePass:  # pylint: disable=too-few-public-methods
     """Reference passing to functions."""
 
     _attr_ref: Any = None
@@ -340,6 +322,8 @@ class ReferencePass:
 
     @property
     def ref(self) -> Any:
+        """Reference getter."""
+
         return self._attr_ref
 
     @ref.setter
@@ -347,7 +331,7 @@ class ReferencePass:
         self._attr_ref = ref
 
 
-Device_config = dict
+DeviceConfig = dict
 
 ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
 
@@ -376,29 +360,28 @@ async def async_json_cache(
     Path(klyqa_data_path).mkdir(parents=True, exist_ok=True)
 
     if json_data:
-        """
-        save the json for offline cache in dirpath where called script resides
-        ids: { sets }
-        """
+        # Save the json for offline cache in dirpath where the called script
+        # resides ids: { sets }.
+
         return_json = json_data
         try:
-            s: str = ""
+            data: str = ""
             sets: str | datetime.datetime | datetime.date
-            for id, sets in json_data.items():
+            for key, sets in json_data.items():
                 if isinstance(sets, (datetime.datetime, datetime.date)):
                     sets = sets.isoformat()
-                s = s + '"' + id + '": ' + json.dumps(sets) + ", "
-            s = "{" + s[:-2] + "}"
+                data = data + '"' + key + '": ' + json.dumps(sets) + ", "
+            data = "{" + data[:-2] + "}"
             async with aiofiles.open(
                 klyqa_data_path + f"/{json_file}", mode="w"
             ) as f:
-                await f.write(s)
+                await f.write(data)
         except IOError:
             LOGGER.warning(
-                f'Could not save cache for json file "{json_file}".'
+                'Could not save cache for json file "%s".', json_file
             )
     else:
-        """no json data, take cached json from disk if available"""
+        # No json data, take cached json from disk if available.
 
         k_ctl_main_path_parts: list[str] = list(
             Path(__file__).absolute().parts[:-2]
@@ -411,77 +394,88 @@ async def async_json_cache(
             task_log_trace(f"Try read cache file {cache_path}.")
             try:
                 async with aiofiles.open(cache_path, mode="r") as f:
-                    s = await f.read()
-                    return_json = json.loads(s)
+                    data = await f.read()
+                    return_json = json.loads(data)
                     cached = True
                     task_log_trace(f"Read cache file {cache_path} succeeded.")
                     break
             except FileNotFoundError:
                 LOGGER.warning(
-                    f'No cache from json file "{cache_path}" available.'
+                    'No cache from json file "%s" available.', cache_path
                 )
             except json.decoder.JSONDecodeError:
                 LOGGER.error(
-                    f'Could not read cache from json file "{cache_path}"!'
+                    'Could not read cache from json file "%s"!', cache_path
                 )
-            except Exception:
+            except Exception as exception:
                 LOGGER.warning(
-                    "Error during loading cache from json file"
-                    f' "{cache_path}".'
+                    'Error during loading cache from json file "%s".',
+                    cache_path,
                 )
+                raise exception
     return (return_json, cached)
 
 
-def get_fields(object: Any) -> Any | list[str]:
-    """get_fields"""
-    if hasattr(object, "__dict__"):
-        return object.__dict__.keys()
+def get_fields(obj: Any) -> Any | list[str]:
+    """Get attributes from object."""
+
+    if hasattr(obj, "__dict__"):
+        return obj.__dict__.keys()
     else:
-        return dir(object)
+        return dir(obj)
 
 
-def get_obj_attrs_as_string(object: Any) -> str:
-    """get_obj_attrs_as_string"""
-    fields: Any | list[str] = get_fields(object)
+def get_obj_attrs_as_string(obj: Any) -> str:
+    """Get all attributes names from the object besides private ones."""
+
+    fields: Any | list[str] = get_fields(obj)
     attrs: list[Any | str] = [
         a
         for a in fields
-        if not a.startswith("__") and not callable(getattr(object, a))
+        if not a.startswith("__") and not callable(getattr(obj, a))
     ]
     return ", ".join(attrs)
 
 
-def get_obj_attr_values_as_string(object: Any) -> str:
-    """get_obj_attr_values_as_string"""
-    fields: Any | list[str] = get_fields(object)
+def get_obj_attr_values_as_string(obj: Any) -> str:
+    """Get all attribute values from the object besides private ones."""
+
+    fields: Any | list[str] = get_fields(obj)
     attrs: list[Any | str] = [
         a
         for a in fields
-        if not a.startswith("__") and not callable(getattr(object, a))
+        if not a.startswith("__") and not callable(getattr(obj, a))
     ]
     vals: list[str] = []
     for a in attrs:
-        _str: str = str(getattr(object, a))
+        _str: str = str(getattr(obj, a))
         vals.append(_str if _str else '""')
     return ", ".join(vals)
 
 
 def format_uid(text: str, **kwargs: Any) -> Any:
+    """Format unit ids to on single format."""
+
     return slugify.slugify(text)
 
 
 def aes_key_to_bytes(key: str) -> bytes:
     """Translate hexadecimal AES key into bytes array."""
+
     return bytes.fromhex(key)
 
 
 class TraceLogger(logging.Logger):
+    """Trace logger level class for the logging framework."""
+
     def __init__(self, name: str, level: int = logging.NOTSET) -> None:
         super().__init__(name, level)
 
         logging.addLevelName(TRACE, "TRACE")
 
     def trace(self, msg: str, *args: Any, **kwargs: Any) -> None:
+        """Print message in trace logging level."""
+
         if self.isEnabledFor(TRACE):
             self._log(TRACE, msg, args, **kwargs)
 
@@ -510,24 +504,30 @@ LOGGER_debug.setLevel(level=logging.INFO)
 debug_formatter: logging.Formatter = logging.Formatter(
     "%(asctime)s %(levelname)-8s - %(message)s"
 )
+trace_log_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
+    stream=sys.stderr
+)
+LOGGER_debug.addHandler(trace_log_hdl)
 
 
 def set_debug_logger(level: int = logging.DEBUG) -> None:
     """Stream logging handler to stderr pipe."""
-    trace_log_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
-        stream=sys.stderr
-    )
+
     LOGGER_debug.setLevel(level)
     trace_log_hdl.setLevel(level)
     trace_log_hdl.setFormatter(debug_formatter)
-    LOGGER_debug.addHandler(trace_log_hdl)
 
 
 def task_log(
     msg: str, output_func: Callable = LOGGER.info, *args: Any, **kwargs: Any
 ) -> None:
     """Output task name and logging string."""
-    task_name_str: str = task_name()
+
+    task_name_str: str = (
+        task_name()
+        if LOGGER_debug.getEffectiveLevel() <= logging.DEBUG
+        else ""
+    )
     output_func(
         f"{task_name_str} - {msg}" if task_name_str else f"{msg}",
         *args,
@@ -537,21 +537,25 @@ def task_log(
 
 def task_log_debug(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
+
     task_log(msg, LOGGER_debug.debug, *args, **kwargs)
 
 
 def task_log_trace(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
+
     task_log(msg, LOGGER_debug.trace, *args, **kwargs)
 
 
 def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output error message with task name."""
-    task_log(msg, LOGGER.error, *args, **kwargs)
+
+    task_log(msg, LOGGER_debug.trace, *args, **kwargs)
 
 
 def task_log_trace_ex() -> None:
     """Log exception trace within task."""
+
     task_log_trace(traceback.format_exc())
 
 

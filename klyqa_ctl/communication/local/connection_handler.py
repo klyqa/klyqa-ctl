@@ -23,7 +23,7 @@ from klyqa_ctl.communication.local.data_package import (
 )
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
-from klyqa_ctl.devices.light.commands import PingCommand, TransitionCommand
+from klyqa_ctl.devices.light.commands import PingCommand
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
@@ -79,6 +79,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_devices: dict[str, Device] = controller_data.devices
         self._attr_tcp: socket.socket | None = None
         self._attr_udp: socket.socket | None = None
+        self.udp_broadcast_task: asyncio.Task | None = None
+        self.send_udp_broadcast_task_loop_set: asyncio.Event = asyncio.Event()
         self._attr_server_ip: str = server_ip
         # here message queue key needs to be string not UnitId to be hashable
         # for dictionaries and sets
@@ -97,6 +99,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def network_interface(self) -> str | None:
+        """Get network interface."""
+
         return self._attr_network_interface
 
     @network_interface.setter
@@ -105,6 +109,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def controller_data(self) -> ControllerData:
+        """Get controller data."""
+
         return self._attr_controller_data
 
     @controller_data.setter
@@ -113,6 +119,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def devices(self) -> dict[str, Device]:
+        """Get devices list."""
+
         return self._attr_devices
 
     @devices.setter
@@ -121,6 +129,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def tcp(self) -> socket.socket | None:
+        """Get TCP socket."""
+
         return self._attr_tcp
 
     @tcp.setter
@@ -129,6 +139,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def udp(self) -> socket.socket | None:
+        """Get UDP socket."""
+
         return self._attr_udp
 
     @udp.setter
@@ -137,6 +149,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def server_ip(self) -> str:
+        """Get server ip."""
+
         return self._attr_server_ip
 
     @server_ip.setter
@@ -145,6 +159,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def message_queue(self) -> dict[str, list[Message]]:
+        """Get message queue."""
+
         return self._attr_message_queue
 
     @message_queue.setter
@@ -184,6 +200,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def handle_connections_task(self) -> Task | None:
+        """Get connection handle task."""
+
         return self._attr_handlec_connections_task
 
     @handle_connections_task.setter
@@ -194,6 +212,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def handle_connections_task_end_now(self) -> bool:
+        """Get connection handle task end now."""
+
         return self._attr_handle_connections_task_end_now
 
     @handle_connections_task_end_now.setter
@@ -206,6 +226,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def __read_tcp_task(self) -> Task | None:
+        """Read TCP socket task."""
+
         return self.__attr_read_tcp_task
 
     @__read_tcp_task.setter
@@ -214,6 +236,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     @property
     def current_addr_connections(self) -> set[str]:
+        """Get current address connections."""
+
         return self._attr_current_addr_connections
 
     @current_addr_connections.setter
@@ -729,7 +753,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
         except CancelledError:
             LOGGER.error(
-                f"Cancelled local send to {connection.address['ip']}!"
+                "Cancelled local send to %s!", connection.address["ip"]
             )
         except Exception as exception:
             task_log_trace_ex()
@@ -772,8 +796,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
             elif return_state == DeviceTcpReturn.UNKNOWN_ERROR:
                 LOGGER.error(
-                    "Unknown error during send (and handshake) with device"
-                    f" {unit_id}."
+                    "Unknown error during send (and handshake) with"
+                    " device %s.",
+                    unit_id,
                 )
 
             task_log(
@@ -810,9 +835,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return True
 
     async def send_udp_broadcast_task_loop(self) -> None:
+        """Send UDP broadcast in a loop."""
 
-        loop: AbstractEventLoop = get_asyncio_loop()
-        self.send_udp_broadcast_task_loop_set: asyncio.Event = asyncio.Event()
         while True:
             await self.send_udp_broadcast_task()
             self.send_udp_broadcast_task_loop_set.clear()
@@ -824,9 +848,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 pass
 
     async def send_udp_broadcast(self) -> None:
+        """Start send UDP broadcasts for discover."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
-        self.udp_broadcast_task: asyncio.Task
 
         if self.udp_broadcast_task is None or self.udp_broadcast_task.done():
             self.udp_broadcast_task = loop.create_task(
@@ -834,15 +858,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
         else:
             self.send_udp_broadcast_task_loop_set.set()
-
-    async def read_incoming_tcp_con_task(self) -> None:
-
-        loop: AbstractEventLoop = get_asyncio_loop()
-        try:
-            print("Read incoming connections\n")
-            con, address = await loop.sock_accept(tcp)
-        except asyncio.exceptions.CancelledError:
-            pass
 
     async def standby(self) -> None:
         """Standby search devices and create incoming connection tasks."""
@@ -1001,8 +1016,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if not self.tcp or not self.udp:
                     break
                 # for debug cursor jump:
-                a: bool = False
-                if a:
+                stop: bool = False
+                if stop:
                     break
 
                 if self.message_queue:

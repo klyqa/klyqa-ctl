@@ -18,7 +18,7 @@ from klyqa_ctl.general.general import (
     LOGGER,
     CloudStateCommand,
     Command,
-    Device_config,
+    DeviceConfig,
     TypeJson,
     aes_key_to_bytes,
     async_json_cache,
@@ -28,11 +28,11 @@ from klyqa_ctl.general.general import (
 )
 
 
-class CLOUD_DEVICE_TARGETS(str, Enum):
+class CloudDeviceTargets(str, Enum):
     """Rest calls, cloud device targets."""
 
-    command = "command"
-    state = "state"
+    COMMAND = "command"
+    STATE = "state"
 
 
 @dataclass()
@@ -73,6 +73,8 @@ class Account:
 
     @property
     def username(self) -> str:
+        """Get account username."""
+
         return self._attr_username
 
     @username.setter
@@ -81,6 +83,8 @@ class Account:
 
     @property
     def password(self) -> str:
+        """Get account password."""
+
         return self._attr_password
 
     @password.setter
@@ -89,6 +93,8 @@ class Account:
 
     @property
     def access_token(self) -> str:
+        """Get access token."""
+
         return self._attr_access_token
 
     @access_token.setter
@@ -97,6 +103,8 @@ class Account:
 
     @property
     def devices(self) -> dict[str, AccountDevice]:
+        """Get devices list."""
+
         return self._attr_devices
 
     @devices.setter
@@ -105,6 +113,8 @@ class Account:
 
     @property
     def settings(self) -> TypeJson | None:
+        """Get account settings."""
+
         return self._attr_settings
 
     @settings.setter
@@ -113,6 +123,8 @@ class Account:
 
     @property
     def settings_lock(self) -> asyncio.Lock | None:
+        """Get account settings lock."""
+
         return self._attr_settings_lock
 
     @property
@@ -122,6 +134,8 @@ class Account:
 
     @property
     def cloud(self) -> CloudBackend | None:
+        """Get cloud backend control."""
+
         return self._attr_cloud
 
     @cloud.setter
@@ -421,8 +435,8 @@ class Account:
             device.save_device_message(cloud_state | {"type": "status"})
         else:
             LOGGER.info(
-                "No answer for cloud device state request"
-                f' {dev.acc_settings["localDeviceId"]}'
+                "No answer for cloud device state request %s",
+                dev.acc_settings["localDeviceId"],
             )
 
         if print_onboarded_devices:
@@ -475,7 +489,7 @@ class Account:
 
         response: TypeJson | None = await self.request_beared(
             RequestMethod.GET,
-            f"device/{device_id}/" + CLOUD_DEVICE_TARGETS.state.value,
+            f"device/{device_id}/" + CloudDeviceTargets.STATE.value,
             timeout=timeout,
             **kwargs,
         )
@@ -550,7 +564,7 @@ class Account:
                 "config/product/" + product_id,
                 timeout=30,
             )
-            device_config: Device_config | None = config
+            device_config: DeviceConfig | None = config
             if device_config:
                 self.controller_data.device_configs[product_id] = device_config
 
@@ -593,20 +607,20 @@ class Account:
         self,
         device: AccountDevice,
         command: Command,
-        target: CLOUD_DEVICE_TARGETS | None = None,
+        target: CloudDeviceTargets | None = None,
         **kwargs: Any,
     ) -> None:
         """Post command to account device via cloud."""
 
         if not target:
-            target = CLOUD_DEVICE_TARGETS.command
+            target = CloudDeviceTargets.COMMAND
             if isinstance(command, CloudStateCommand):
-                target = CLOUD_DEVICE_TARGETS.state
+                target = CloudDeviceTargets.STATE
 
         if target:
             if isinstance(command, CommandWithCheckValues):
-                c: CommandWithCheckValues = command
-                if not c.check_values(device.device):
+                cwcv: CommandWithCheckValues = command
+                if not cwcv.check_values(device.device):
                     task_log_debug("Command values to send out of range!")
                     return
 
@@ -621,7 +635,7 @@ class Account:
     #     await self.cloud_post_to_device(device, json_message, "state")
 
     @classmethod
-    async def create_default(
+    async def create_default(  # pylint: disable=too-many-arguments
         cls: Any,
         controller_data: ControllerData,
         cloud: CloudBackend | None,
