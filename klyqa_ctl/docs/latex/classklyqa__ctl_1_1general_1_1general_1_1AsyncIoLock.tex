@@ -1,0 +1,141 @@
+\hypertarget{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock}{}\doxysection{klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock Class Reference}
+\label{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock}\index{klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}}
+
+
+Inheritance diagram for klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a03d06fdae864c5afc92586db49485430}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classstr}{str}} name=\char`\"{}\char`\"{})
+\item 
+bool \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a871a28c7421aecc1cd55f0dc9c6fa166}{acquire\+\_\+within\+\_\+task}} (self, \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ac1d7946ecd2135959d9dc1c950d3e99b}{int}} timeout=30, $\ast$$\ast$Any kwargs)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a25fbc33880c976000ef3b6e70c7691c9}{release\+\_\+within\+\_\+task}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a84c7d1709eaea2a0100b9a8340e05e1c}{locked\+\_\+in\+\_\+task}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a03d06fdae864c5afc92586db49485430}\label{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a03d06fdae864c5afc92586db49485430}} 
+\index{klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{name = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{250     \textcolor{keyword}{def }\_\_init\_\_(self, name: str = \textcolor{stringliteral}{"{}"{}}) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{251         super().\_\_init\_\_()}
+\DoxyCodeLine{252         self.name: str = name}
+\DoxyCodeLine{253         self.locked\_in\_task: asyncio.Task[Any] | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{254 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a871a28c7421aecc1cd55f0dc9c6fa166}\label{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a871a28c7421aecc1cd55f0dc9c6fa166}} 
+\index{klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}!acquire\_within\_task@{acquire\_within\_task}}
+\index{acquire\_within\_task@{acquire\_within\_task}!klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}}
+\doxysubsubsection{\texorpdfstring{acquire\_within\_task()}{acquire\_within\_task()}}
+{\footnotesize\ttfamily  bool klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock.\+acquire\+\_\+within\+\_\+task (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ac1d7946ecd2135959d9dc1c950d3e99b}{int}} }]{timeout = {\ttfamily 30},  }\item[{$\ast$$\ast$Any     }]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get asyncio lock.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{257     ) -\/> bool:}
+\DoxyCodeLine{258         \textcolor{stringliteral}{"{}"{}"{}Get asyncio lock."{}"{}"{}}}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{261             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(f\textcolor{stringliteral}{"{}wait for lock... \{self.name\}"{}})}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263             await asyncio.wait\_for(self.acquire(), timeout)}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265             self.locked\_in\_task = asyncio.current\_task()}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}{task\_log}}(f\textcolor{stringliteral}{"{}got lock... \{self.name\}"{}})}
+\DoxyCodeLine{268             \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{269         \textcolor{keywordflow}{except} asyncio.TimeoutError:}
+\DoxyCodeLine{270             LOGGER.error(}
+\DoxyCodeLine{271                 f\textcolor{stringliteral}{'Timeout for getting the lock for device "{}\{self.name\}"{}'}}
+\DoxyCodeLine{272             )}
+\DoxyCodeLine{273         \textcolor{keywordflow}{except} Exception:}
+\DoxyCodeLine{274             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}{task\_log\_error}}(\textcolor{stringliteral}{"{}Error while trying to get device lock!"{}})}
+\DoxyCodeLine{275             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\_log\_trace\_ex}}()}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277         \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{278 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a871a28c7421aecc1cd55f0dc9c6fa166_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a25fbc33880c976000ef3b6e70c7691c9}\label{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a25fbc33880c976000ef3b6e70c7691c9}} 
+\index{klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}!release\_within\_task@{release\_within\_task}}
+\index{release\_within\_task@{release\_within\_task}!klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}}
+\doxysubsubsection{\texorpdfstring{release\_within\_task()}{release\_within\_task()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock.\+release\+\_\+within\+\_\+task (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{279     \textcolor{keyword}{def }release\_within\_task(self) -\/> None:}
+\DoxyCodeLine{280         \textcolor{keywordflow}{if} self.locked() \textcolor{keywordflow}{and} self.locked\_in\_task == asyncio.current\_task():}
+\DoxyCodeLine{281             \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{282                 super().\mbox{\hyperlink{namespaceklyqa__ctl_1_1conf_aa5e016064b19c99705cafd006ae25857}{release}}()}
+\DoxyCodeLine{283                 self.locked\_in\_task = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{284                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(f\textcolor{stringliteral}{"{}got unlock... \{self.name\}"{}})}
+\DoxyCodeLine{285             \textcolor{keywordflow}{except} Exception \textcolor{keyword}{as} e:}
+\DoxyCodeLine{286                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}{task\_log\_error}}(}
+\DoxyCodeLine{287                     \textcolor{stringliteral}{"{}Error while trying to unlock the device! (Probably now"{}}}
+\DoxyCodeLine{288                     \textcolor{stringliteral}{"{} locked until restart)"{}}}
+\DoxyCodeLine{289                 )}
+\DoxyCodeLine{290                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\_log\_trace\_ex}}()}
+\DoxyCodeLine{291                 \textcolor{keywordflow}{raise} e}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a25fbc33880c976000ef3b6e70c7691c9_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a84c7d1709eaea2a0100b9a8340e05e1c}\label{classklyqa__ctl_1_1general_1_1general_1_1AsyncIoLock_a84c7d1709eaea2a0100b9a8340e05e1c}} 
+\index{klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}!locked\_in\_task@{locked\_in\_task}}
+\index{locked\_in\_task@{locked\_in\_task}!klyqa\_ctl.general.general.AsyncIoLock@{klyqa\_ctl.general.general.AsyncIoLock}}
+\doxysubsubsection{\texorpdfstring{locked\_in\_task}{locked\_in\_task}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Async\+Io\+Lock.\+locked\+\_\+in\+\_\+task}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+general/\mbox{\hyperlink{general_2general_8py}{general.\+py}}\end{DoxyCompactItemize}

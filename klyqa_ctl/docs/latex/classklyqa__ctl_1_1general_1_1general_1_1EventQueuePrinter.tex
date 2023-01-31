@@ -1,0 +1,173 @@
+\hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter}{}\doxysection{klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer Class Reference}
+\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter}\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_adb373a47b99730f41dead6fa05704afc}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a41f1bacb0712b588612356205ec1baef}{stop}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_aef746875ceea7d2514677d0850172d99}{coroutine}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a9cb7d11758b93fa02911321f66044d7c}{print}} (self, \mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classstr}{str}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a40ded802a519667c32233d1413461f76}{printer\+\_\+t}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a3159af5a0a8d5d87868330f2cc4cae91}{not\+\_\+finished}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_ab5bcf6378aca4cc260c351532560edf8}{Event}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a07e19f74365bf159fb8541d69f55b30f}{bool}}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Single event queue printer for job printing.\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_adb373a47b99730f41dead6fa05704afc}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_adb373a47b99730f41dead6fa05704afc}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}start printing helper thread routine\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{155     \textcolor{keyword}{def }\_\_init\_\_(self) -\/> None:}
+\DoxyCodeLine{156         \textcolor{stringliteral}{"{}"{}"{}start printing helper thread routine"{}"{}"{}}}
+\DoxyCodeLine{157         self.printer\_t = Thread(target=self.coroutine)}
+\DoxyCodeLine{158         self.printer\_t.start()}
+\DoxyCodeLine{159 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_aef746875ceea7d2514677d0850172d99}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_aef746875ceea7d2514677d0850172d99}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!coroutine@{coroutine}}
+\index{coroutine@{coroutine}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{coroutine()}{coroutine()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+coroutine (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}printer thread routine, waits for data to print and/or a
+trigger event\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{167     \textcolor{keyword}{def }coroutine(self) -\/> None:}
+\DoxyCodeLine{168         \textcolor{stringliteral}{"{}"{}"{}printer thread routine, waits for data to print and/or a}}
+\DoxyCodeLine{169 \textcolor{stringliteral}{        trigger event"{}"{}"{}}}
+\DoxyCodeLine{170         \textcolor{keywordflow}{while} self.not\_finished:}
+\DoxyCodeLine{171             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} self.print\_strings:}
+\DoxyCodeLine{172                 self.event.wait()}
+\DoxyCodeLine{173             \textcolor{keywordflow}{while} self.print\_strings \textcolor{keywordflow}{and} (l\_str := self.print\_strings.pop(0)):}
+\DoxyCodeLine{174                 print(l\_str, flush=\textcolor{keyword}{True})}
+\DoxyCodeLine{175 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_aef746875ceea7d2514677d0850172d99_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a9cb7d11758b93fa02911321f66044d7c}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a9cb7d11758b93fa02911321f66044d7c}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!print@{print}}
+\index{print@{print}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+print (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{str }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}add string to the printer\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{176     \textcolor{keyword}{def }print(self, str: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{177         \textcolor{stringliteral}{"{}"{}"{}add string to the printer"{}"{}"{}}}
+\DoxyCodeLine{178         self.print\_strings.append(str)}
+\DoxyCodeLine{179         self.event.set()}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{preprocessor}{@dataclass}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a9cb7d11758b93fa02911321f66044d7c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a41f1bacb0712b588612356205ec1baef}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a41f1bacb0712b588612356205ec1baef}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!stop@{stop}}
+\index{stop@{stop}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}{None}} klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+stop (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}stop printing helper thread\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{160     \textcolor{keyword}{def }stop(self) -\/> None:}
+\DoxyCodeLine{161         \textcolor{stringliteral}{"{}"{}"{}stop printing helper thread"{}"{}"{}}}
+\DoxyCodeLine{162         self.not\_finished = \textcolor{keyword}{False}}
+\DoxyCodeLine{163         self.event.set()}
+\DoxyCodeLine{164         \textcolor{keywordflow}{if} self.printer\_t \textcolor{keywordflow}{is} \textcolor{keywordflow}{not} \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{165             self.printer\_t.join(timeout=5)}
+\DoxyCodeLine{166 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a07e19f74365bf159fb8541d69f55b30f}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a07e19f74365bf159fb8541d69f55b30f}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!bool@{bool}}
+\index{bool@{bool}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{bool}{bool}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+bool\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_ab5bcf6378aca4cc260c351532560edf8}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_ab5bcf6378aca4cc260c351532560edf8}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!Event@{Event}}
+\index{Event@{Event}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{Event}{Event}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+Event\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a1bf9d2bb427c7bb2b918c397f15a25f9}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!None@{None}}
+\index{None@{None}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{None}{None}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+None\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a3159af5a0a8d5d87868330f2cc4cae91}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a3159af5a0a8d5d87868330f2cc4cae91}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!not\_finished@{not\_finished}}
+\index{not\_finished@{not\_finished}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{not\_finished}{not\_finished}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+not\+\_\+finished}
+
+\mbox{\Hypertarget{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a40ded802a519667c32233d1413461f76}\label{classklyqa__ctl_1_1general_1_1general_1_1EventQueuePrinter_a40ded802a519667c32233d1413461f76}} 
+\index{klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}!printer\_t@{printer\_t}}
+\index{printer\_t@{printer\_t}!klyqa\_ctl.general.general.EventQueuePrinter@{klyqa\_ctl.general.general.EventQueuePrinter}}
+\doxysubsubsection{\texorpdfstring{printer\_t}{printer\_t}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+general.\+general.\+Event\+Queue\+Printer.\+printer\+\_\+t}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+general/\mbox{\hyperlink{general_2general_8py}{general.\+py}}\end{DoxyCompactItemize}

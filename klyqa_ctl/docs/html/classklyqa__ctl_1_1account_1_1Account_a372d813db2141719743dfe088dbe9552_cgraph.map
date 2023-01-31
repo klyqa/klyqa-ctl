@@ -1,0 +1,42 @@
+<map id="klyqa_ctl.account.Account.cloud_post_command_to_dev" name="klyqa_ctl.account.Account.cloud_post_command_to_dev">
+<area shape="rect" id="node1" title=" " alt="" coords="5,665,236,707"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1account_1_1Account.html#a748c13aed7b2a5c9c605c81234633cb8" title=" " alt="" coords="284,625,515,667"/>
+<area shape="rect" id="node38" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a1afe30a73cc28a3b65babeeab27e36c8" title=" " alt="" coords="290,697,509,739"/>
+<area shape="rect" id="node3" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a2c729589c8f5ab77e718bb060d26425d" title=" " alt="" coords="563,633,825,659"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1account_1_1Account.html#a73506bd234f8e819e138c2bd663179b8" title=" " alt="" coords="571,563,817,604"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1account_1_1Account.html#aeb463ade6756bf093a809634f64c6ef6" title=" " alt="" coords="1184,586,1415,613"/>
+<area shape="rect" id="node6" href="$classklyqa__ctl_1_1devices_1_1device_1_1Device.html#a574647293c61d5f53e153d48ddb31f65" title=" " alt="" coords="1206,647,1393,688"/>
+<area shape="rect" id="node7" href="$classklyqa__ctl_1_1general_1_1general_1_1Command.html#a4aa9e4db12aecf5520e974204c635d38" title=" " alt="" coords="1204,463,1395,504"/>
+<area shape="rect" id="node35" href="$classklyqa__ctl_1_1general_1_1general_1_1CloudStateCommand.html#a6bbc8b1333f0a45ce38f1e81a6093bc1" title=" " alt="" coords="1200,397,1399,439"/>
+<area shape="rect" id="node36" href="$classklyqa__ctl_1_1klyqa__ctl_1_1Client.html#a7d8a302d936e8e1889f175bac259f565" title=" " alt="" coords="1187,531,1412,558"/>
+<area shape="rect" id="node37" href="$classklyqa__ctl_1_1account_1_1Account.html#ad608e3ee0ba1199f509e644a11081724" title=" " alt="" coords="896,504,1113,545"/>
+<area shape="rect" id="node8" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand.html#a9de3441c7fbba5f5a19ea914970a3db7" title=" " alt="" coords="1474,5,1722,47"/>
+<area shape="rect" id="node10" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand.html#aaf9d8431e346c86b9959102c2d7f3316" title=" " alt="" coords="1474,463,1722,504"/>
+<area shape="rect" id="node11" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand.html#afa8f262e4047666707237c4dfe8615c3" title=" " alt="" coords="1474,71,1722,112"/>
+<area shape="rect" id="node14" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand.html#aaa297cd598227ab2f33a6d111532e5e0" title=" " alt="" coords="1474,136,1722,177"/>
+<area shape="rect" id="node17" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand.html#a946e7180dd8f3bd4621c23b24e63469a" title=" " alt="" coords="1474,201,1722,243"/>
+<area shape="rect" id="node20" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ExternalSourceCommand.html#a393710b54f709b852bfd0f3769c39ce6" title=" " alt="" coords="1474,724,1722,765"/>
+<area shape="rect" id="node21" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutineCommand.html#af3395a663a3dbdff8117ee708f80adec" title=" " alt="" coords="1474,789,1722,831"/>
+<area shape="rect" id="node22" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand.html#a23d375f048835d4b0f12602764d2a6c1" title=" " alt="" coords="1463,332,1733,373"/>
+<area shape="rect" id="node24" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand.html#a216966811184b718a4659bf081113f38" title=" " alt="" coords="1463,397,1733,439"/>
+<area shape="rect" id="node26" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand.html#a1ac56b80427d60d9f55079ae846ae25e" title=" " alt="" coords="1463,528,1733,569"/>
+<area shape="rect" id="node28" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand.html#a354b74be46f4b7d8a56811eaab910959" title=" " alt="" coords="1463,593,1733,635"/>
+<area shape="rect" id="node30" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand.html#a926a94c8cc5104275078e438fb301028" title=" " alt="" coords="1463,659,1733,700"/>
+<area shape="rect" id="node32" href="$classklyqa__ctl_1_1general_1_1general_1_1Command.html#a8c8ad93fedd0da0e0021f58714ec7fb5" title=" " alt="" coords="1503,267,1693,308"/>
+<area shape="rect" id="node33" href="$classklyqa__ctl_1_1general_1_1general_1_1CommandTyped.html#a96dfd43912c4640f381424bdd44eebca" title=" " alt="" coords="1503,855,1693,896"/>
+<area shape="rect" id="node9" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1FwUpdateCommand.html#a7dc482a4e9a65d49ce0a61671ed6868e" title=" " alt="" coords="1803,5,2051,47"/>
+<area shape="rect" id="node12" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand.html#a6ce99d7f4f232fb2f11e6efb7e85e778" title=" " alt="" coords="1803,71,2051,112"/>
+<area shape="rect" id="node13" href="$classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus.html#a327c18fd6f8a38e75e1bbc2f895df592" title=" " alt="" coords="2136,71,2367,112"/>
+<area shape="rect" id="node15" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand.html#a0b45255dc9218a36450152f1118a8280" title=" " alt="" coords="1781,136,2072,177"/>
+<area shape="rect" id="node16" href="$classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus.html#a2e732c44c35f39dc3d8fe269c24aef8a" title=" " alt="" coords="2120,136,2383,177"/>
+<area shape="rect" id="node18" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand.html#aba34fce7f4d8d6aae6bcbaaa61c21a8c" title=" " alt="" coords="1795,201,2059,243"/>
+<area shape="rect" id="node19" href="$classklyqa__ctl_1_1devices_1_1light_1_1response__status_1_1ResponseStatus.html#a762787729b726f6ad8bd5a9a3ae40a67" title=" " alt="" coords="2127,201,2376,243"/>
+<area shape="rect" id="node23" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1ProductinfoCommand.html#a1950a810783ab6312c31fa43dd06182c" title=" " alt="" coords="1789,332,2064,373"/>
+<area shape="rect" id="node25" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestGetCommand.html#a71be3cb060fa2c05f2762d13267c6144" title=" " alt="" coords="1791,397,2062,439"/>
+<area shape="rect" id="node27" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestResetCommand.html#a53de7ccfeb12e1b8f4c0ea8a82410d4e" title=" " alt="" coords="1791,528,2062,569"/>
+<area shape="rect" id="node29" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RequestSetCommand.html#ac327b3b919e0d1a45ebe754e546f94f8" title=" " alt="" coords="1791,593,2062,635"/>
+<area shape="rect" id="node31" href="$classklyqa__ctl_1_1devices_1_1vacuum_1_1commands_1_1RoutineCommand.html#acaf3db880f88d37bb1cf8218a309e52c" title=" " alt="" coords="1791,659,2062,700"/>
+<area shape="rect" id="node34" href="$classklyqa__ctl_1_1devices_1_1response__message_1_1ResponseMessage.html#a076bcd25b3f41acdc763569b279c4545" title=" " alt="" coords="1803,855,2050,896"/>
+<area shape="rect" id="node39" href="$namespaceklyqa__ctl_1_1general_1_1general.html#a9df3b50dfc0fcc7c8ec991bb9be9c5ba" title=" " alt="" coords="571,718,817,745"/>
+<area shape="rect" id="node40" href="$namespaceklyqa__ctl_1_1general_1_1general.html#aea905150cafee39fa2ca211f1e60f012" title=" " alt="" coords="873,722,1136,749"/>
+</map>

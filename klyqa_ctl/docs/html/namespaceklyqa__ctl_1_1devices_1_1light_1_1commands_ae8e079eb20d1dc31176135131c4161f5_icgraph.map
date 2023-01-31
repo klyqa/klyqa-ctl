@@ -1,0 +1,7 @@
+<map id="klyqa_ctl.devices.light.commands.missing_config" name="klyqa_ctl.devices.light.commands.missing_config">
+<area shape="rect" id="node1" title=" " alt="" coords="316,104,615,145"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand.html#a398df61cf2d815c4d338ef0131482c6d" title=" " alt="" coords="13,5,261,47"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand.html#a34847a5ef38a13569bc640791d11508b" title=" " alt="" coords="5,71,268,112"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand.html#ab63f32fce3e15998369f6b058810906b" title=" " alt="" coords="11,136,262,177"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1RoutinePutCommand.html#a3e37b57fa082d61d47bb370f39217874" title=" " alt="" coords="11,201,263,243"/>
+</map>

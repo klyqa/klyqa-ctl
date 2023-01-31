@@ -1,0 +1,588 @@
+\hypertarget{classcloud_1_1CloudBackend}{}\doxysection{cloud.\+Cloud\+Backend Class Reference}
+\label{classcloud_1_1CloudBackend}\index{cloud.CloudBackend@{cloud.CloudBackend}}
+
+
+Collaboration diagram for cloud.\+Cloud\+Backend\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=277pt]{classcloud_1_1CloudBackend__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classcloud_1_1CloudBackend_ac0d15541a884bfef94e99527d3c171ee}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}{controller\+\_\+data}})
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}{host}} (self)
+\item 
+None \mbox{\hyperlink{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1}{host}} (self, \mbox{\hyperlink{classstr}{str}} host)
+\item 
+bool \mbox{\hyperlink{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175}{offline}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}{controller\+\_\+data}} (self)
+\item 
+bool \mbox{\hyperlink{classcloud_1_1CloudBackend_a2aa84632596a773fb8d2f979138b2bda}{backend\+\_\+connected}} (self)
+\item 
+None \mbox{\hyperlink{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1}{get\+\_\+device\+\_\+config}} (self, \mbox{\hyperlink{classstr}{str}} product\+\_\+id, Type\+Json device\+\_\+configs)
+\item 
+None \mbox{\hyperlink{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2}{get\+\_\+device\+\_\+configs}} (self, set\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]} device\+\_\+product\+\_\+ids)
+\item 
+Type\+Json \mbox{\hyperlink{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0}{get\+\_\+header\+\_\+default}} (self)
+\item 
+httpx.\+Response$\vert$None \mbox{\hyperlink{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2}{request}} (self, \mbox{\hyperlink{classcloud_1_1RequestMethod}{Request\+Method}} method, \mbox{\hyperlink{classstr}{str}} url, Type\+Json$\vert$None headers=None, $\ast$$\ast$Any kwargs)
+\item 
+Type\+Json$\vert$None \mbox{\hyperlink{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4}{load\+\_\+http\+\_\+response}} (self, httpx.\+Response response)
+\item 
+bool \mbox{\hyperlink{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101}{cloud\+\_\+send}} (self, argparse.\+Namespace args, set\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]} target\+\_\+device\+\_\+uids, set\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]} to\+\_\+send\+\_\+device\+\_\+uids, \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}} timeout\+\_\+ms, list message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud, list message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud)
+\item 
+\mbox{\hyperlink{classcloud_1_1CloudBackend}{Cloud\+Backend}} \mbox{\hyperlink{classcloud_1_1CloudBackend_a549f101de99a135607eace6d67482c1f}{create\+\_\+default}} (Any cls, \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} \mbox{\hyperlink{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}{controller\+\_\+data}}, \mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}{host}}=PROD\+\_\+\+HOST)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcloud_1_1CloudBackend_a73a0fffa7df86b858325c41d919428b9}{\+\_\+attr\+\_\+host}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Cloud backend\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_ac0d15541a884bfef94e99527d3c171ee}\label{classcloud_1_1CloudBackend_ac0d15541a884bfef94e99527d3c171ee}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None cloud.\+Cloud\+Backend.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{42     \textcolor{keyword}{def }\_\_init\_\_(self, controller\_data: ControllerData) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{43         self.\_attr\_controller\_data: ControllerData = controller\_data}
+\DoxyCodeLine{44         self.\_attr\_offline: bool = \textcolor{keyword}{False}}
+\DoxyCodeLine{45         self.\_attr\_host: str = PROD\_HOST}
+\DoxyCodeLine{46 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a2aa84632596a773fb8d2f979138b2bda}\label{classcloud_1_1CloudBackend_a2aa84632596a773fb8d2f979138b2bda}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!backend\_connected@{backend\_connected}}
+\index{backend\_connected@{backend\_connected}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{backend\_connected()}{backend\_connected()}}
+{\footnotesize\ttfamily  bool cloud.\+Cloud\+Backend.\+backend\+\_\+connected (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}General cloud intended to be there check.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{66     \textcolor{keyword}{def }backend\_connected(self) -\/> bool:}
+\DoxyCodeLine{67         \textcolor{stringliteral}{"{}"{}"{}General cloud intended to be there check."{}"{}"{}}}
+\DoxyCodeLine{68         \textcolor{keywordflow}{return} \textcolor{keywordflow}{not} self.offline \textcolor{keywordflow}{and} self.host != \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{69 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a2aa84632596a773fb8d2f979138b2bda_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a2aa84632596a773fb8d2f979138b2bda_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101}\label{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!cloud\_send@{cloud\_send}}
+\index{cloud\_send@{cloud\_send}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{cloud\_send()}{cloud\_send()}}
+{\footnotesize\ttfamily  bool cloud.\+Cloud\+Backend.\+cloud\+\_\+send (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{argparse.\+Namespace}]{args,  }\item[{set\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]}}]{target\+\_\+device\+\_\+uids,  }\item[{set\mbox{[}             \mbox{\hyperlink{classstr}{str}}         \mbox{]}}]{to\+\_\+send\+\_\+device\+\_\+uids,  }\item[{\mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}}]{timeout\+\_\+ms,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+state\+\_\+cloud,  }\item[{list}]{message\+\_\+queue\+\_\+tx\+\_\+command\+\_\+cloud }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Cloud message processing.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{199     ) -\/> bool:}
+\DoxyCodeLine{200         \textcolor{stringliteral}{"{}"{}"{}Cloud message processing."{}"{}"{}}}
+\DoxyCodeLine{201         queue\_printer: EventQueuePrinter = EventQueuePrinter()}
+\DoxyCodeLine{202         response\_queue: list[Any] = []}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204         success: bool = \textcolor{keyword}{False}}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206         async \textcolor{keyword}{def }\_cloud\_post(}
+\DoxyCodeLine{207             device: Device, json\_message: TypeJson, target: str}
+\DoxyCodeLine{208         ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{209             \textcolor{comment}{\# TODO: distinguish between standalone devicesettings like}}
+\DoxyCodeLine{210             \textcolor{comment}{\# cloudDeviceId and localDeviceId, and account settings per account}}
+\DoxyCodeLine{211             cloud\_device\_id: str = device.acc\_sets[\textcolor{stringliteral}{"{}cloudDeviceId"{}}]}
+\DoxyCodeLine{212             unit\_id: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a2c729589c8f5ab77e718bb060d26425d}{format\_uid}}(device.acc\_sets[\textcolor{stringliteral}{"{}localDeviceId"{}}])}
+\DoxyCodeLine{213             LOGGER.info(}
+\DoxyCodeLine{214                 f\textcolor{stringliteral}{"{}Post \{target\} to the device '\{cloud\_device\_id\}' (unit\_id:"{}}}
+\DoxyCodeLine{215                 f\textcolor{stringliteral}{"{} \{unit\_id\}) over the cloud."{}}}
+\DoxyCodeLine{216             )}
+\DoxyCodeLine{217             response: TypeJson = \{}
+\DoxyCodeLine{218                 cloud\_device\_id: await self.request(}
+\DoxyCodeLine{219                     RequestMethod.POST,}
+\DoxyCodeLine{220                     url=f\textcolor{stringliteral}{"{}device/\{cloud\_device\_id\}/\{target\}"{}},}
+\DoxyCodeLine{221                     json=json\_message,}
+\DoxyCodeLine{222                 )}
+\DoxyCodeLine{223             \}}
+\DoxyCodeLine{224             resp\_print: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{225             name: str = device.u\_id}
+\DoxyCodeLine{226             \textcolor{keywordflow}{if} device.acc\_sets \textcolor{keywordflow}{and} \textcolor{stringliteral}{"{}name"{}} \textcolor{keywordflow}{in} device.acc\_sets:}
+\DoxyCodeLine{227                 name = device.acc\_sets[\textcolor{stringliteral}{"{}name"{}}]}
+\DoxyCodeLine{228             resp\_print = f\textcolor{stringliteral}{'Device "{}\{name\}"{} cloud response:'}}
+\DoxyCodeLine{229             resp\_print = json.dumps(response, sort\_keys=\textcolor{keyword}{True}, indent=4)}
+\DoxyCodeLine{230             device.cloud.received\_packages.append(response)}
+\DoxyCodeLine{231             response\_queue.append(resp\_print)}
+\DoxyCodeLine{232             queue\_printer.print(resp\_print)}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234         async \textcolor{keyword}{def }cloud\_post(}
+\DoxyCodeLine{235             device: Device, json\_message: TypeJson, target: str}
+\DoxyCodeLine{236         ) -\/> int:}
+\DoxyCodeLine{237             \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} await device.use\_lock():}
+\DoxyCodeLine{238                 LOGGER.error(}
+\DoxyCodeLine{239                     f\textcolor{stringliteral}{"{}Couldn't get use lock for device \{device.get\_name()\})"{}}}
+\DoxyCodeLine{240                 )}
+\DoxyCodeLine{241                 \textcolor{keywordflow}{return} 1}
+\DoxyCodeLine{242             \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{243                 await \_cloud\_post(device, json\_message, target)}
+\DoxyCodeLine{244             \textcolor{keywordflow}{except} CancelledError:}
+\DoxyCodeLine{245                 LOGGER.error(}
+\DoxyCodeLine{246                     \textcolor{stringliteral}{"{}Cancelled cloud send "{}}}
+\DoxyCodeLine{247                     + (device.u\_id \textcolor{keywordflow}{if} device.u\_id \textcolor{keywordflow}{else} \textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{248                     + \textcolor{stringliteral}{"{}."{}}}
+\DoxyCodeLine{249                 )}
+\DoxyCodeLine{250             \textcolor{keywordflow}{finally}:}
+\DoxyCodeLine{251                 device.use\_unlock()}
+\DoxyCodeLine{252             \textcolor{keywordflow}{return} 0}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254         started: datetime.datetime = datetime.datetime.now()}
+\DoxyCodeLine{255         \textcolor{comment}{\# timeout\_ms = 30000}}
+\DoxyCodeLine{256 }
+\DoxyCodeLine{257         async \textcolor{keyword}{def }process\_cloud\_messages(target\_uids: set[str]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259             loop: AbstractEventLoop = asyncio.get\_event\_loop()}
+\DoxyCodeLine{260             threads: list[Any] = []}
+\DoxyCodeLine{261             target\_devices: list[Device] = [}
+\DoxyCodeLine{262                 b}
+\DoxyCodeLine{263                 \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} self.controller\_data.devices.values()}
+\DoxyCodeLine{264                 \textcolor{keywordflow}{for} t \textcolor{keywordflow}{in} target\_uids}
+\DoxyCodeLine{265                 \textcolor{keywordflow}{if} b.u\_id == t}
+\DoxyCodeLine{266             ]}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268             \textcolor{keyword}{def }create\_post\_threads(}
+\DoxyCodeLine{269                 target: str, msg: TypeJson}
+\DoxyCodeLine{270             ) -\/> list[tuple[Task[int], Device]]:}
+\DoxyCodeLine{271                 \textcolor{keywordflow}{return} [}
+\DoxyCodeLine{272                     (loop.create\_task(cloud\_post(b, msg, target)), b)}
+\DoxyCodeLine{273                     \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} target\_devices}
+\DoxyCodeLine{274                 ]}
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276             state\_payload\_message = dict(}
+\DoxyCodeLine{277                 ChainMap(*message\_queue\_tx\_state\_cloud)}
+\DoxyCodeLine{278             )}
+\DoxyCodeLine{279             \textcolor{comment}{\# state\_payload\_message = (}}
+\DoxyCodeLine{280             \textcolor{comment}{\#     json.loads(*message\_queue\_tx\_state\_cloud)}}
+\DoxyCodeLine{281             \textcolor{comment}{\#     if message\_queue\_tx\_state\_cloud}}
+\DoxyCodeLine{282             \textcolor{comment}{\#     else "{}"{}}}
+\DoxyCodeLine{283             \textcolor{comment}{\# )}}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285             command\_payload\_message = dict(}
+\DoxyCodeLine{286                 ChainMap(*message\_queue\_tx\_command\_cloud)}
+\DoxyCodeLine{287             )}
+\DoxyCodeLine{288             \textcolor{comment}{\# command\_payload\_message = (}}
+\DoxyCodeLine{289             \textcolor{comment}{\#     json.loads(*message\_queue\_tx\_command\_cloud)}}
+\DoxyCodeLine{290             \textcolor{comment}{\#     if message\_queue\_tx\_command\_cloud}}
+\DoxyCodeLine{291             \textcolor{comment}{\#     else "{}"{}}}
+\DoxyCodeLine{292             \textcolor{comment}{\# )}}
+\DoxyCodeLine{293             \textcolor{keywordflow}{if} state\_payload\_message:}
+\DoxyCodeLine{294                 threads.extend(}
+\DoxyCodeLine{295                     create\_post\_threads(}
+\DoxyCodeLine{296                         \textcolor{stringliteral}{"{}state"{}}, \{\textcolor{stringliteral}{"{}payload"{}}: state\_payload\_message\}}
+\DoxyCodeLine{297                     )}
+\DoxyCodeLine{298                 )}
+\DoxyCodeLine{299             \textcolor{keywordflow}{if} command\_payload\_message:}
+\DoxyCodeLine{300                 threads.extend(}
+\DoxyCodeLine{301                     create\_post\_threads(\textcolor{stringliteral}{"{}command"{}}, command\_payload\_message)}
+\DoxyCodeLine{302                 )}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304             count: int = 0}
+\DoxyCodeLine{305             timeout: float = timeout\_ms / 1000}
+\DoxyCodeLine{306             \textcolor{keywordflow}{for} t, device \textcolor{keywordflow}{in} threads:}
+\DoxyCodeLine{307                 count = count + 1}
+\DoxyCodeLine{308                 \textcolor{comment}{\# wait at most timeout\_ms wanted minus seconds elapsed since}}
+\DoxyCodeLine{309                 \textcolor{comment}{\# sending}}
+\DoxyCodeLine{310                 \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{311                     await asyncio.wait\_for(}
+\DoxyCodeLine{312                         t,}
+\DoxyCodeLine{313                         timeout=timeout}
+\DoxyCodeLine{314                         -\/ (datetime.datetime.now() -\/ started).seconds,}
+\DoxyCodeLine{315                     )}
+\DoxyCodeLine{316                 \textcolor{keywordflow}{except} asyncio.TimeoutError:}
+\DoxyCodeLine{317                     LOGGER.error(f\textcolor{stringliteral}{'Timeout for "{}\{device.get\_name()\}"{}!'})}
+\DoxyCodeLine{318                     t.cancel()}
+\DoxyCodeLine{319                 \textcolor{keywordflow}{except} Exception:}
+\DoxyCodeLine{320                     \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\_log\_trace\_ex}}()}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322         await process\_cloud\_messages(}
+\DoxyCodeLine{323             target\_device\_uids \textcolor{keywordflow}{if} args.cloud \textcolor{keywordflow}{else} to\_send\_device\_uids}
+\DoxyCodeLine{324         )}
+\DoxyCodeLine{325         \textcolor{comment}{\# if there are still target devices that the local send couldn't}}
+\DoxyCodeLine{326         \textcolor{comment}{\# reach, try send the to\_send\_device\_uids via cloud}}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328         queue\_printer.stop()}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{330         \textcolor{keywordflow}{if} len(response\_queue):}
+\DoxyCodeLine{331             success = \textcolor{keyword}{True}}
+\DoxyCodeLine{332         \textcolor{keywordflow}{return} success}
+\DoxyCodeLine{333 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a55182bd23ebf03d54d1754fffe7ca101_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}\label{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!controller\_data@{controller\_data}}
+\index{controller\_data@{controller\_data}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{controller\_data()}{controller\_data()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}} cloud.\+Cloud\+Backend.\+controller\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the controller data object.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{62     \textcolor{keyword}{def }controller\_data(self) -\/> ControllerData:}
+\DoxyCodeLine{63         \textcolor{stringliteral}{"{}"{}"{}Return or set the controller data object."{}"{}"{}}}
+\DoxyCodeLine{64         \textcolor{keywordflow}{return} self.\_attr\_controller\_data}
+\DoxyCodeLine{65 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_aef174fe1ba95fff13c7901ff56354ec9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a549f101de99a135607eace6d67482c1f}\label{classcloud_1_1CloudBackend_a549f101de99a135607eace6d67482c1f}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!create\_default@{create\_default}}
+\index{create\_default@{create\_default}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{create\_default()}{create\_default()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classcloud_1_1CloudBackend}{Cloud\+Backend}} cloud.\+Cloud\+Backend.\+create\+\_\+default (\begin{DoxyParamCaption}\item[{Any}]{cls,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1controller__data_1_1ControllerData}{Controller\+Data}}}]{controller\+\_\+data,  }\item[{\mbox{\hyperlink{classstr}{str}} }]{host = {\ttfamily PROD\+\_\+HOST} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Factory for cloud backend.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{337     ) -\/> CloudBackend:}
+\DoxyCodeLine{338         \textcolor{stringliteral}{"{}"{}"{}Factory for cloud backend."{}"{}"{}}}
+\DoxyCodeLine{339         cb: CloudBackend = CloudBackend(controller\_data=controller\_data)}
+\DoxyCodeLine{340         cb.host = host}
+\DoxyCodeLine{341         \textcolor{keywordflow}{return} cb}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1}\label{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!get\_device\_config@{get\_device\_config}}
+\index{get\_device\_config@{get\_device\_config}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{get\_device\_config()}{get\_device\_config()}}
+{\footnotesize\ttfamily  None cloud.\+Cloud\+Backend.\+get\+\_\+device\+\_\+config (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{product\+\_\+id,  }\item[{Type\+Json     }]{device\+\_\+configs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request device config from the cloud.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{72     ) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{73         \textcolor{stringliteral}{"{}"{}"{}Request device config from the cloud."{}"{}"{}}}
+\DoxyCodeLine{74         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(}
+\DoxyCodeLine{75             f\textcolor{stringliteral}{"{}Try request device config for \{product\_id\} from server."{}}}
+\DoxyCodeLine{76         )}
+\DoxyCodeLine{77         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{78             config: TypeJson | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{79             config\_http: httpx.Response | \textcolor{keywordtype}{None} = await self.request(}
+\DoxyCodeLine{80                 RequestMethod.GET,}
+\DoxyCodeLine{81                 \textcolor{stringliteral}{"{}config/product/"{}} + product\_id,}
+\DoxyCodeLine{82                 timeout=DEFAULT\_HTTP\_REQUEST\_TIMEOUT\_SECS,}
+\DoxyCodeLine{83             )}
+\DoxyCodeLine{84             \textcolor{keywordflow}{if} config\_http:}
+\DoxyCodeLine{85                 config = await self.load\_http\_response(config\_http)}
+\DoxyCodeLine{86         \textcolor{keywordflow}{except} asyncio.TimeoutError:}
+\DoxyCodeLine{87             LOGGER.error(\textcolor{stringliteral}{"{}Timed out get device config http request!"{}})}
+\DoxyCodeLine{88             \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{89         \textcolor{keywordflow}{if} config:}
+\DoxyCodeLine{90             device\_configs[product\_id] = \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a199d42aeb5404a13cfee81a040deaa2b}{Device\_config}}(config)}
+\DoxyCodeLine{91         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{92 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a58e4bd598358583c0eb7c50fdf0c6bc1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2}\label{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!get\_device\_configs@{get\_device\_configs}}
+\index{get\_device\_configs@{get\_device\_configs}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{get\_device\_configs()}{get\_device\_configs()}}
+{\footnotesize\ttfamily  None cloud.\+Cloud\+Backend.\+get\+\_\+device\+\_\+configs (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{set\mbox{[}\mbox{\hyperlink{classstr}{str}}\mbox{]}}]{device\+\_\+product\+\_\+ids }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Request device configs by product id from the cloud.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{93     async \textcolor{keyword}{def }get\_device\_configs(self, device\_product\_ids: set[str]) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{94         \textcolor{stringliteral}{"{}"{}"{}Request device configs by product id from the cloud."{}"{}"{}}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96         \textcolor{keywordflow}{if} device\_product\_ids \textcolor{keywordflow}{and} self.controller\_data.device\_configs:}
+\DoxyCodeLine{97             device\_tasks: list[Task] = [}
+\DoxyCodeLine{98                 asyncio.create\_task(}
+\DoxyCodeLine{99                     self.get\_device\_config(}
+\DoxyCodeLine{100                         product\_id, self.controller\_data.device\_configs}
+\DoxyCodeLine{101                     )}
+\DoxyCodeLine{102                 )}
+\DoxyCodeLine{103                 \textcolor{keywordflow}{for} product\_id \textcolor{keywordflow}{in} device\_product\_ids}
+\DoxyCodeLine{104             ]}
+\DoxyCodeLine{105             await asyncio.wait(}
+\DoxyCodeLine{106                 device\_tasks, timeout=DEFAULT\_HTTP\_REQUEST\_TIMEOUT\_SECS}
+\DoxyCodeLine{107             )}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109         device\_configs\_cache, cached = await \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_aa34dc716ff5492dc4f325a2ae1a73a4f}{async\_json\_cache}}(}
+\DoxyCodeLine{110             self.controller\_data.device\_configs, \textcolor{stringliteral}{"{}device.configs.json"{}}}
+\DoxyCodeLine{111         )}
+\DoxyCodeLine{112         \textcolor{keywordflow}{if} cached \textcolor{keywordflow}{and} device\_configs\_cache:}
+\DoxyCodeLine{113             self.controller\_data.device\_configs = device\_configs\_cache}
+\DoxyCodeLine{114             LOGGER.info(\textcolor{stringliteral}{"{}No server reply for device configs. Using cache."{}})}
+\DoxyCodeLine{115         \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{116 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a566850b368080b6ff85ee2675aa9b3e2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0}\label{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!get\_header\_default@{get\_header\_default}}
+\index{get\_header\_default@{get\_header\_default}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{get\_header\_default()}{get\_header\_default()}}
+{\footnotesize\ttfamily  Type\+Json cloud.\+Cloud\+Backend.\+get\+\_\+header\+\_\+default (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get default request header for cloud request.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{117     \textcolor{keyword}{def }get\_header\_default(self) -\/> TypeJson:}
+\DoxyCodeLine{118         \textcolor{stringliteral}{"{}"{}"{}Get default request header for cloud request."{}"{}"{}}}
+\DoxyCodeLine{119         header: dict[str, str] = \{}
+\DoxyCodeLine{120             \textcolor{stringliteral}{"{}X-\/Request-\/Id"{}}: \mbox{\hyperlink{classstr}{str}}(uuid.uuid4()),}
+\DoxyCodeLine{121             \textcolor{stringliteral}{"{}Accept"{}}: \textcolor{stringliteral}{"{}application/json"{}},}
+\DoxyCodeLine{122             \textcolor{stringliteral}{"{}Content-\/Type"{}}: \textcolor{stringliteral}{"{}application/json"{}},}
+\DoxyCodeLine{123             \textcolor{stringliteral}{"{}accept-\/encoding"{}}: \textcolor{stringliteral}{"{}gzip, deflate, utf-\/8"{}},}
+\DoxyCodeLine{124         \}}
+\DoxyCodeLine{125         \textcolor{keywordflow}{return} header}
+\DoxyCodeLine{126 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_af39d1bfe4ff58db5af7f373b7ca965a0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}\label{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!host@{host}}
+\index{host@{host}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{host()}{host()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} cloud.\+Cloud\+Backend.\+host (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the host.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{48     \textcolor{keyword}{def }host(self) -\/> str:}
+\DoxyCodeLine{49         \textcolor{stringliteral}{"{}"{}"{}Return or set the host."{}"{}"{}}}
+\DoxyCodeLine{50         \textcolor{keywordflow}{return} self.\_attr\_host}
+\DoxyCodeLine{51 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_ac4e934fc6667245f1a6fde13e5ab089e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1}\label{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!host@{host}}
+\index{host@{host}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{host()}{host()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily  None cloud.\+Cloud\+Backend.\+host (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{host }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{53     \textcolor{keyword}{def }host(self, host: str) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{54         self.\_attr\_host = host}
+\DoxyCodeLine{55 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_abe810e894a06b18f0e875603f2d8b4e1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4}\label{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!load\_http\_response@{load\_http\_response}}
+\index{load\_http\_response@{load\_http\_response}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{load\_http\_response()}{load\_http\_response()}}
+{\footnotesize\ttfamily  Type\+Json $\vert$ None cloud.\+Cloud\+Backend.\+load\+\_\+http\+\_\+response (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{httpx.\+Response     }]{response }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{161     ) -\/> TypeJson | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{162         answer: TypeJson | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{163         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} response:}
+\DoxyCodeLine{164             LOGGER.error(\textcolor{stringliteral}{"{}No response from cloud request."{}})}
+\DoxyCodeLine{165             \textcolor{keywordflow}{return} \textcolor{keywordtype}{None}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167         \textcolor{keywordflow}{if} \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(\mbox{\hyperlink{classstr}{str}}(response.status\_code)[0]) \textcolor{keywordflow}{not} \textcolor{keywordflow}{in} [}
+\DoxyCodeLine{168             1,}
+\DoxyCodeLine{169             2,}
+\DoxyCodeLine{170             3,}
+\DoxyCodeLine{171         ]:}
+\DoxyCodeLine{172             LOGGER.error(\textcolor{stringliteral}{"{}Unvalid response from cloud request."{}})}
+\DoxyCodeLine{173             \textcolor{keywordflow}{raise} \mbox{\hyperlink{classException}{Exception}}(response.text)}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{176             answer = json.loads(response.text)}
+\DoxyCodeLine{177         \textcolor{keywordflow}{except} json.JSONDecodeError \textcolor{keyword}{as} err:}
+\DoxyCodeLine{178             LOGGER.error(f\textcolor{stringliteral}{"{}\{err.msg\}"{}})}
+\DoxyCodeLine{179             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(f\textcolor{stringliteral}{"{}\{traceback.format\_exc()\} \{err.msg\}"{}})}
+\DoxyCodeLine{180             answer = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{181         \textcolor{keywordflow}{return} answer}
+\DoxyCodeLine{182 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a85f7e46764602842576d0a96ca804ea4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175}\label{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!offline@{offline}}
+\index{offline@{offline}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{offline()}{offline()}}
+{\footnotesize\ttfamily  bool cloud.\+Cloud\+Backend.\+offline (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return or set the offline attribute.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{57     \textcolor{keyword}{def }offline(self) -\/> bool:}
+\DoxyCodeLine{58         \textcolor{stringliteral}{"{}"{}"{}Return or set the offline attribute."{}"{}"{}}}
+\DoxyCodeLine{59         \textcolor{keywordflow}{return} self.\_attr\_offline}
+\DoxyCodeLine{60 }
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_adf95478dcc03f91d222b6cc3c5317175_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2}\label{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!request@{request}}
+\index{request@{request}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{request()}{request()}}
+{\footnotesize\ttfamily  httpx.\+Response $\vert$ None cloud.\+Cloud\+Backend.\+request (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classcloud_1_1RequestMethod}{Request\+Method}}}]{method,  }\item[{\mbox{\hyperlink{classstr}{str}}}]{url,  }\item[{Type\+Json $\vert$ None }]{headers = {\ttfamily None},  }\item[{$\ast$$\ast$Any}]{kwargs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Send http request with request method to url with headers.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{133     ) -\/> httpx.Response | \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{134         \textcolor{stringliteral}{"{}"{}"{}Send http request with request method to url with headers."{}"{}"{}}}
+\DoxyCodeLine{135         response: httpx.Response | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{136         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{137             async \textcolor{keyword}{with} httpx.AsyncClient() \textcolor{keyword}{as} client:}
+\DoxyCodeLine{138                 response = await client.request(}
+\DoxyCodeLine{139                     method.value,}
+\DoxyCodeLine{140                     url=self.host + \textcolor{stringliteral}{"{}/"{}} + url,}
+\DoxyCodeLine{141                     headers=headers \textcolor{keywordflow}{if} headers \textcolor{keywordflow}{else} self.get\_header\_default(),}
+\DoxyCodeLine{142                     **kwargs,}
+\DoxyCodeLine{143                 )}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145         \textcolor{keywordflow}{except} EnvironmentError:}
+\DoxyCodeLine{146             LOGGER.error(}
+\DoxyCodeLine{147                 \textcolor{stringliteral}{"{}Environment error occured during send request to cloud"{}}}
+\DoxyCodeLine{148                 \textcolor{stringliteral}{"{} backend!"{}}}
+\DoxyCodeLine{149             )}
+\DoxyCodeLine{150             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\_log\_trace\_ex}}()}
+\DoxyCodeLine{151         \textcolor{keywordflow}{except} httpx.HTTPError:}
+\DoxyCodeLine{152             LOGGER.error(}
+\DoxyCodeLine{153                 \textcolor{stringliteral}{"{}Connection error occured during send request to cloud"{}}}
+\DoxyCodeLine{154                 \textcolor{stringliteral}{"{} backend!"{}}}
+\DoxyCodeLine{155             )}
+\DoxyCodeLine{156             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_ad6b753e482e539892c57f8144cf213cb}{task\_log\_trace\_ex}}()}
+\DoxyCodeLine{157         \textcolor{keywordflow}{return} response}
+\DoxyCodeLine{158 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcloud_1_1CloudBackend_a890d2669fa6b9550af8e14a17413aea2_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classcloud_1_1CloudBackend_a73a0fffa7df86b858325c41d919428b9}\label{classcloud_1_1CloudBackend_a73a0fffa7df86b858325c41d919428b9}} 
+\index{cloud.CloudBackend@{cloud.CloudBackend}!\_attr\_host@{\_attr\_host}}
+\index{\_attr\_host@{\_attr\_host}!cloud.CloudBackend@{cloud.CloudBackend}}
+\doxysubsubsection{\texorpdfstring{\_attr\_host}{\_attr\_host}}
+{\footnotesize\ttfamily cloud.\+Cloud\+Backend.\+\_\+attr\+\_\+host\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+communication/\mbox{\hyperlink{cloud_8py}{cloud.\+py}}\end{DoxyCompactItemize}

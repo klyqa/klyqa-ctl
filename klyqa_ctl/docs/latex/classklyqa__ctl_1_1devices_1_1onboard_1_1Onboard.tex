@@ -1,0 +1,316 @@
+\hypertarget{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard}{}\doxysection{klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard Class Reference}
+\label{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard}\index{klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a41bcc5977f41608b6eb4350eaa845e68}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+ssl.\+SSLSocket \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ad104380a7e47e96fe9af37ea7120166b}{build\+\_\+tcp\+\_\+socket\+\_\+connection}} (self)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_af28b551caec339826e2b209a20b88207}{Onboard\+\_\+receive}} (self, ssl.\+SSLSocket sec\+\_\+s)
+\item 
+None \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a04ff72b185dd79eb70ded5f29d7cc61c}{onboarding\+\_\+device}} (self)
+\item 
+\mbox{\hyperlink{classstr}{str}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ab324155b854711966deaa05c26eea973}{Lamp\+\_\+typ}} (self, \mbox{\hyperlink{classbytes}{bytes}} data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Onboard devices\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a41bcc5977f41608b6eb4350eaa845e68}\label{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a41bcc5977f41608b6eb4350eaa845e68}} 
+\index{klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{48     \textcolor{keyword}{def }\_\_init\_\_(self) -\/> None:}
+\DoxyCodeLine{49         \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{50 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ad104380a7e47e96fe9af37ea7120166b}\label{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ad104380a7e47e96fe9af37ea7120166b}} 
+\index{klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}!build\_tcp\_socket\_connection@{build\_tcp\_socket\_connection}}
+\index{build\_tcp\_socket\_connection@{build\_tcp\_socket\_connection}!klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}}
+\doxysubsubsection{\texorpdfstring{build\_tcp\_socket\_connection()}{build\_tcp\_socket\_connection()}}
+{\footnotesize\ttfamily  ssl.\+SSLSocket klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard.\+build\+\_\+tcp\+\_\+socket\+\_\+connection (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}establish tcp connection which is used for communication during
+Onboard process
+will be called by function >onboard_device<
+
+Returns
+-------
+ssl.SSLSocket
+    return Onboard_tcp
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{51     \textcolor{keyword}{def }build\_tcp\_socket\_connection(self) -\/> ssl.SSLSocket:}
+\DoxyCodeLine{52         \textcolor{stringliteral}{"{}"{}"{}establish tcp connection which is used for communication during}}
+\DoxyCodeLine{53 \textcolor{stringliteral}{        Onboard process}}
+\DoxyCodeLine{54 \textcolor{stringliteral}{        will be called by function >onboard\_device<}}
+\DoxyCodeLine{55 \textcolor{stringliteral}{}}
+\DoxyCodeLine{56 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{57 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{58 \textcolor{stringliteral}{        ssl.SSLSocket}}
+\DoxyCodeLine{59 \textcolor{stringliteral}{            return Onboard\_tcp}}
+\DoxyCodeLine{60 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}[Onboard].Onboard: start build\_tcp\_socket\_connection"{}})}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64         sock: socket.socket = socket.socket(socket.AF\_INET, socket.SOCK\_STREAM)}
+\DoxyCodeLine{65         \textcolor{comment}{\# s.setsockopt(socket.SOL\_SOCKET, 25, "{}wlan1"{}.encode("{}utf-\/8"{}))}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67         context: ssl.SSLContext = ssl.create\_default\_context()}
+\DoxyCodeLine{68         context.check\_hostname = \textcolor{keyword}{False}}
+\DoxyCodeLine{69         context.verify\_mode = ssl.CERT\_NONE}
+\DoxyCodeLine{70         context.verify\_flags = ssl.VERIFY\_DEFAULT.VERIFY\_DEFAULT}
+\DoxyCodeLine{71         context.options |= 0x4}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73         sec\_sock: ssl.SSLSocket = context.wrap\_socket(}
+\DoxyCodeLine{74             sock, server\_hostname=\textcolor{stringliteral}{"{}10.42.42.10"{}}}
+\DoxyCodeLine{75         )}
+\DoxyCodeLine{76         sec\_sock.connect((\textcolor{stringliteral}{"{}10.42.42.10"{}}, 2223))}
+\DoxyCodeLine{77         sec\_sock.settimeout(3)}
+\DoxyCodeLine{78         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(}
+\DoxyCodeLine{79             \textcolor{stringliteral}{"{}[Onboard].Onboard: build\_tcp\_socket\_connection -\/> ready"{}}}
+\DoxyCodeLine{80         )}
+\DoxyCodeLine{81         \textcolor{keywordflow}{return} sec\_sock}
+\DoxyCodeLine{82 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ab324155b854711966deaa05c26eea973}\label{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ab324155b854711966deaa05c26eea973}} 
+\index{klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}!Lamp\_typ@{Lamp\_typ}}
+\index{Lamp\_typ@{Lamp\_typ}!klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}}
+\doxysubsubsection{\texorpdfstring{Lamp\_typ()}{Lamp\_typ()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classstr}{str}} klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard.\+Lamp\+\_\+typ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbytes}{bytes}}}]{data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}check the wifi response for the type of KLYQA device
+Parameters
+----------
+    data
+        received list from the bulb
+Returns
+-------
+    list
+         type of KLYQA devices
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{189     \textcolor{keyword}{def }Lamp\_typ(self, data: bytes) -\/> str:}
+\DoxyCodeLine{190         \textcolor{stringliteral}{"{}"{}"{}check the wifi response for the type of KLYQA device}}
+\DoxyCodeLine{191 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{192 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{193 \textcolor{stringliteral}{            data}}
+\DoxyCodeLine{194 \textcolor{stringliteral}{                received list from the bulb}}
+\DoxyCodeLine{195 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{196 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{197 \textcolor{stringliteral}{            list}}
+\DoxyCodeLine{198 \textcolor{stringliteral}{                 type of KLYQA devices}}
+\DoxyCodeLine{199 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201         new\_data: bytes = data}
+\DoxyCodeLine{202         str5: str = \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{205             new\_data.decode()}
+\DoxyCodeLine{206             json\_object: TypeJson = json.loads(new\_data)}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208             \textcolor{keywordflow}{if} json\_object[\textcolor{stringliteral}{"{}type"{}}] == \textcolor{stringliteral}{"{}scan\_wifi\_results"{}}:}
+\DoxyCodeLine{209                 \textcolor{comment}{\# if 'ident' in json\_object and 'product\_id' in}}
+\DoxyCodeLine{210                 \textcolor{comment}{\# json\_object['ident']:}}
+\DoxyCodeLine{211                 str4: str = json\_object[\textcolor{stringliteral}{"{}ident"{}}][\textcolor{stringliteral}{"{}product\_id"{}}]}
+\DoxyCodeLine{212                 str5 = str4.split(\textcolor{stringliteral}{"{}."{}})[-\/1]}
+\DoxyCodeLine{213                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\textcolor{stringliteral}{"{}[Onboard].Lamp\_typ  : "{}} + \mbox{\hyperlink{classstr}{str}}(str5))}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215         \textcolor{keywordflow}{except} (}
+\DoxyCodeLine{216             UnicodeDecodeError,}
+\DoxyCodeLine{217             json.JSONDecodeError,}
+\DoxyCodeLine{218         ):  \textcolor{comment}{\# skip first unreadable message data}}
+\DoxyCodeLine{219             \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221         \textcolor{keywordflow}{return} str5}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_ab324155b854711966deaa05c26eea973_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_af28b551caec339826e2b209a20b88207}\label{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_af28b551caec339826e2b209a20b88207}} 
+\index{klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}!Onboard\_receive@{Onboard\_receive}}
+\index{Onboard\_receive@{Onboard\_receive}!klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}}
+\doxysubsubsection{\texorpdfstring{Onboard\_receive()}{Onboard\_receive()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard.\+Onboard\+\_\+receive (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{ssl.\+SSLSocket}]{sec\+\_\+s }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}receive data from tcp_connection
+
+Parameters
+----------
+sec_s : ssl.SSLSocket
+    tcp_connection which data will be received from
+
+Returns
+-------
+list
+    list of data, which has been fetched from tcp_connection
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{83     \textcolor{keyword}{def }Onboard\_receive(self, sec\_s: ssl.SSLSocket) -\/> \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{84         \textcolor{stringliteral}{"{}"{}"{}receive data from tcp\_connection}}
+\DoxyCodeLine{85 \textcolor{stringliteral}{}}
+\DoxyCodeLine{86 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{87 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{88 \textcolor{stringliteral}{        sec\_s : ssl.SSLSocket}}
+\DoxyCodeLine{89 \textcolor{stringliteral}{            tcp\_connection which data will be received from}}
+\DoxyCodeLine{90 \textcolor{stringliteral}{}}
+\DoxyCodeLine{91 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{92 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{93 \textcolor{stringliteral}{        list}}
+\DoxyCodeLine{94 \textcolor{stringliteral}{            list of data, which has been fetched from tcp\_connection}}
+\DoxyCodeLine{95 \textcolor{stringliteral}{        "{}"{}"{}}}
+\DoxyCodeLine{96         dbg\_name: str = \textcolor{stringliteral}{"{}[Onboard].Onboard\_receive :"{}}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}start "{}})}
+\DoxyCodeLine{99         data: bytes = b\textcolor{stringliteral}{"{}x"{}}}
+\DoxyCodeLine{100         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{101             \textcolor{keywordflow}{while} len(data):}
+\DoxyCodeLine{102                 data = sec\_s.recv(65536)}
+\DoxyCodeLine{103                 DUT\_Type: str = Onboard.Lamp\_typ(self, data)}
+\DoxyCodeLine{104                 \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(}
+\DoxyCodeLine{105                     \mbox{\hyperlink{classstr}{str}}(dbg\_name)}
+\DoxyCodeLine{106                     + \textcolor{stringliteral}{"{} data from ["{}}}
+\DoxyCodeLine{107                     + \mbox{\hyperlink{classstr}{str}}(DUT\_Type)}
+\DoxyCodeLine{108                     + \textcolor{stringliteral}{"{}]: "{}}}
+\DoxyCodeLine{109                     + \mbox{\hyperlink{classstr}{str}}(data)}
+\DoxyCodeLine{110                 )}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112         \textcolor{keywordflow}{except} socket.timeout:}
+\DoxyCodeLine{113             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}socket.timeout "{}})}
+\DoxyCodeLine{114             \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116         \textcolor{keywordflow}{except} Exception \textcolor{keyword}{as} e:}
+\DoxyCodeLine{117             tmp\_log: str = (}
+\DoxyCodeLine{118                 \textcolor{stringliteral}{"{}-\/-\/-\/> F E H L E R  "{}}}
+\DoxyCodeLine{119                 + \mbox{\hyperlink{classstr}{str}}(dbg\_name)}
+\DoxyCodeLine{120                 + \textcolor{stringliteral}{"{}: -\/>  "{}}}
+\DoxyCodeLine{121                 + \textcolor{stringliteral}{"{}(\{\})"{}}.format(e)}
+\DoxyCodeLine{122             )  \textcolor{comment}{\# KeyboardInterrupt:}}
+\DoxyCodeLine{123             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}{task\_log\_error}}(tmp\_log, exc\_info=\textcolor{keyword}{True})}
+\DoxyCodeLine{124             \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{125 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_af28b551caec339826e2b209a20b88207_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a04ff72b185dd79eb70ded5f29d7cc61c}\label{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a04ff72b185dd79eb70ded5f29d7cc61c}} 
+\index{klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}!onboarding\_device@{onboarding\_device}}
+\index{onboarding\_device@{onboarding\_device}!klyqa\_ctl.devices.onboard.Onboard@{klyqa\_ctl.devices.onboard.Onboard}}
+\doxysubsubsection{\texorpdfstring{onboarding\_device()}{onboarding\_device()}}
+{\footnotesize\ttfamily  None klyqa\+\_\+ctl.\+devices.\+onboard.\+Onboard.\+onboarding\+\_\+device (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Onboarding procedure.\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{126     \textcolor{keyword}{def }onboarding\_device(self) -\/> None:}
+\DoxyCodeLine{127         \textcolor{stringliteral}{"{}"{}"{}Onboarding procedure."{}"{}"{}}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129         dbg\_name: str = \textcolor{stringliteral}{"{}[Onboard].onbaording: "{}}}
+\DoxyCodeLine{130         \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a9df3b50dfc0fcc7c8ec991bb9be9c5ba}{task\_log}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}start Onboard"{}})}
+\DoxyCodeLine{131         sec\_s: ssl.SSLSocket | \textcolor{keywordtype}{None} = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{132         \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134             sec\_s = Onboard.build\_tcp\_socket\_connection(self)}
+\DoxyCodeLine{135             \textcolor{comment}{\# Onboard.Onboard\_receive(self, sec\_s)}}
+\DoxyCodeLine{136             tmp\_str: bytes = b\textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138             tmp\_str = b\textcolor{stringliteral}{"{}"{}"{}\(\backslash\)0\(\backslash\)x20\(\backslash\)0\(\backslash\)0\{"{}type"{}:"{}scan\_wifi"{}\}            "{}"{}"{}}}
+\DoxyCodeLine{139             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}first send  : "{}} + \mbox{\hyperlink{classstr}{str}}(tmp\_str))}
+\DoxyCodeLine{140             sec\_s.send(tmp\_str)}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142             Onboard.Onboard\_receive(self, sec\_s)}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144             json: bytes = (}
+\DoxyCodeLine{145                 b\textcolor{stringliteral}{'\{"{}type"{}:"{}identify\_uuid"{},"{}challenge"{}:'}}
+\DoxyCodeLine{146                 b\textcolor{stringliteral}{'"{}00112233445566778899AABBCCDDEEFF"{}\}'}}
+\DoxyCodeLine{147             )}
+\DoxyCodeLine{148             tmp\_str = b\textcolor{stringliteral}{"{}\(\backslash\)0\(\backslash\)x50\(\backslash\)0\(\backslash\)0"{}} + json + b\textcolor{stringliteral}{"{}         "{}}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}second send  : "{}} + \mbox{\hyperlink{classstr}{str}}(tmp\_str))}
+\DoxyCodeLine{151             sec\_s.send(tmp\_str)}
+\DoxyCodeLine{152             Onboard.Onboard\_receive(self, sec\_s)}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154             configuration: str = \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1onboard_a9a08fdcf65db848da6d9e4bec9ed2cc0}{build\_configuration\_and\_backend\_url}}(}
+\DoxyCodeLine{155                 \textcolor{stringliteral}{"{}QCXLTestNET"{}}, \textcolor{stringliteral}{"{}iotHH0049"{}}}
+\DoxyCodeLine{156             )}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158             \textcolor{keywordflow}{while} len(configuration) \% 16:}
+\DoxyCodeLine{159                 configuration = configuration + \textcolor{stringliteral}{"{} "{}}}
+\DoxyCodeLine{160             low: int = len(configuration) \% 256}
+\DoxyCodeLine{161             high: int = len(configuration) // 256}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163             \textcolor{comment}{\# print("{}Sending: "{}, bytes([high, low, 0, 0]) +}}
+\DoxyCodeLine{164             \textcolor{comment}{\# configuration.encode('utf8'))}}
+\DoxyCodeLine{165             tmp\_str = \mbox{\hyperlink{classbytes}{bytes}}([high, low, 0, 0]) + configuration.encode(\textcolor{stringliteral}{"{}utf8"{}})}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}Sending : "{}} + \mbox{\hyperlink{classstr}{str}}(tmp\_str))}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169             sec\_s.send(tmp\_str)}
+\DoxyCodeLine{170             Onboard.Onboard\_receive(self, sec\_s)}
+\DoxyCodeLine{171             sec\_s.close()}
+\DoxyCodeLine{172             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_a1afe30a73cc28a3b65babeeab27e36c8}{task\_log\_debug}}(\mbox{\hyperlink{classstr}{str}}(dbg\_name) + \textcolor{stringliteral}{"{}connection closed"{}})}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174         \textcolor{keywordflow}{except} Exception \textcolor{keyword}{as} e:}
+\DoxyCodeLine{175             tmp\_log: str = (}
+\DoxyCodeLine{176                 \textcolor{stringliteral}{"{}-\/-\/-\/> F E H L E R  "{}}}
+\DoxyCodeLine{177                 + \mbox{\hyperlink{classstr}{str}}(dbg\_name)}
+\DoxyCodeLine{178                 + \textcolor{stringliteral}{"{} -\/>  "{}}}
+\DoxyCodeLine{179                 + \textcolor{stringliteral}{"{}(\{\})"{}}.format(e)}
+\DoxyCodeLine{180             )}
+\DoxyCodeLine{181             \mbox{\hyperlink{namespaceklyqa__ctl_1_1general_1_1general_abab49b300927a080244615ee3ab494e3}{task\_log\_error}}(tmp\_log, exc\_info=\textcolor{keyword}{True})}
+\DoxyCodeLine{182             \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184         \textcolor{keywordflow}{finally}:}
+\DoxyCodeLine{185             \textcolor{keywordflow}{if} sec\_s:}
+\DoxyCodeLine{186                 sec\_s.close()}
+\DoxyCodeLine{187         \textcolor{keywordflow}{return}}
+\DoxyCodeLine{188 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1onboard_1_1Onboard_a04ff72b185dd79eb70ded5f29d7cc61c_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+devices/\mbox{\hyperlink{onboard_8py}{onboard.\+py}}\end{DoxyCompactItemize}

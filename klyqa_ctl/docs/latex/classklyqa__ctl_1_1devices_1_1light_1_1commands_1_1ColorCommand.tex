@@ -1,0 +1,169 @@
+\hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand}{}\doxysection{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command Class Reference}
+\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand}\index{klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}}
+
+
+Inheritance diagram for klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a6ce99d7f4f232fb2f11e6efb7e85e778}{color\+\_\+json}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_afa8f262e4047666707237c4dfe8615c3}{json}} (self)
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_a1ec9d149deafea09d8681f2b45f5b656}{bool}} \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a398df61cf2d815c4d338ef0131482c6d}{check\+\_\+values}} (self, \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}} device)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a8538745ea4d8a9eb740869a280232f52}{Rgb\+Color}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Color command.\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a398df61cf2d815c4d338ef0131482c6d}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a398df61cf2d815c4d338ef0131482c6d}} 
+\index{klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}!check\_values@{check\_values}}
+\index{check\_values@{check\_values}!klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}}
+\doxysubsubsection{\texorpdfstring{check\_values()}{check\_values()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1CommandWithCheckValues_a1ec9d149deafea09d8681f2b45f5b656}{bool}} klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command.\+check\+\_\+values (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1device_1_1Device}{Device}}}]{device }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check device color range.\end{DoxyVerb}
+ 
+
+Reimplemented from \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1CommandWithCheckValuesLight_ac8eea472765742d8c9bbfaada1f7f40c}{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Command\+With\+Check\+Values\+Light}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{150     \textcolor{keyword}{def }check\_values(self, device: Device) -\/> bool:}
+\DoxyCodeLine{151         \textcolor{stringliteral}{"{}"{}"{}Check device color range."{}"{}"{}}}
+\DoxyCodeLine{152         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} super().check\_values(device) \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.\_light:}
+\DoxyCodeLine{153             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{154         values: list = [self.color.r, self.color.g, self.color.b]}
+\DoxyCodeLine{155         \textcolor{keywordflow}{if} (\textcolor{keywordflow}{not} self.\_light.ident \textcolor{keywordflow}{or} \textcolor{keywordflow}{not} self.\_light.color\_range) \textcolor{keywordflow}{and} (}
+\DoxyCodeLine{156             \textcolor{keywordflow}{not} self.\_light.ident}
+\DoxyCodeLine{157             \textcolor{keywordflow}{or} \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_ae8e079eb20d1dc31176135131c4161f5}{missing\_config}}(self.\_force, self.\_light.ident.product\_id)}
+\DoxyCodeLine{158         ):}
+\DoxyCodeLine{159             \textcolor{keywordflow}{return} \textcolor{keyword}{False}}
+\DoxyCodeLine{160         \textcolor{keywordflow}{elif} self.\_light.color\_range:}
+\DoxyCodeLine{161             \textcolor{keywordflow}{for} value \textcolor{keywordflow}{in} values:}
+\DoxyCodeLine{162                 \textcolor{keywordflow}{if} (}
+\DoxyCodeLine{163                     \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(value) < self.\_light.color\_range.min}
+\DoxyCodeLine{164                     \textcolor{keywordflow}{or} \mbox{\hyperlink{namespacecloud_a8ff77cd5353527f3ef3c4e2216d86949}{int}}(value) > self.\_light.color\_range.max}
+\DoxyCodeLine{165                 ):}
+\DoxyCodeLine{166                     \textcolor{keywordflow}{return} \mbox{\hyperlink{namespaceklyqa__ctl_1_1devices_1_1light_1_1commands_abb5f7e9390b622da97654771e70c196d}{forced\_continue}}(}
+\DoxyCodeLine{167                         self.\_force,}
+\DoxyCodeLine{168                         f\textcolor{stringliteral}{"{}Color \{value\} out of range"{}}}
+\DoxyCodeLine{169                         f\textcolor{stringliteral}{"{} [\{self.\_light.color\_range.min\}.."{}}}
+\DoxyCodeLine{170                         f\textcolor{stringliteral}{"{}\{self.\_light.color\_range.max\}]."{}},}
+\DoxyCodeLine{171                     )}
+\DoxyCodeLine{172         \textcolor{keywordflow}{return} \textcolor{keyword}{True}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{preprocessor}{@dataclass}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a398df61cf2d815c4d338ef0131482c6d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a6ce99d7f4f232fb2f11e6efb7e85e778}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a6ce99d7f4f232fb2f11e6efb7e85e778}} 
+\index{klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}!color\_json@{color\_json}}
+\index{color\_json@{color\_json}!klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}}
+\doxysubsubsection{\texorpdfstring{color\_json()}{color\_json()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command.\+color\+\_\+json (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{138     \textcolor{keyword}{def }color\_json(self) -\/> TypeJson:}
+\DoxyCodeLine{139         \textcolor{keywordflow}{return} \{}
+\DoxyCodeLine{140             \textcolor{stringliteral}{"{}color"{}}: \{}
+\DoxyCodeLine{141                 \textcolor{stringliteral}{"{}red"{}}: self.color.r,}
+\DoxyCodeLine{142                 \textcolor{stringliteral}{"{}green"{}}: self.color.g,}
+\DoxyCodeLine{143                 \textcolor{stringliteral}{"{}blue"{}}: self.color.b,}
+\DoxyCodeLine{144             \}}
+\DoxyCodeLine{145         \}}
+\DoxyCodeLine{146 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a6ce99d7f4f232fb2f11e6efb7e85e778_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a6ce99d7f4f232fb2f11e6efb7e85e778_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_afa8f262e4047666707237c4dfe8615c3}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_afa8f262e4047666707237c4dfe8615c3}} 
+\index{klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}!json@{json}}
+\index{json@{json}!klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}}
+\doxysubsubsection{\texorpdfstring{json()}{json()}}
+{\footnotesize\ttfamily  \mbox{\hyperlink{classklyqa__ctl_1_1general_1_1general_1_1Command_aa35c4fcf3320729d223b8fe6dfd4457c}{Type\+Json}} klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command.\+json (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return json command.\end{DoxyVerb}
+ 
+
+Reimplemented from \mbox{\hyperlink{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TransitionCommand_aaf9d8431e346c86b9959102c2d7f3316}{klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Transition\+Command}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{147     \textcolor{keyword}{def }json(self) -\/> TypeJson:}
+\DoxyCodeLine{148         \textcolor{keywordflow}{return} super().json() | self.color\_json()}
+\DoxyCodeLine{149 }
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_afa8f262e4047666707237c4dfe8615c3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_afa8f262e4047666707237c4dfe8615c3_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a8538745ea4d8a9eb740869a280232f52}\label{classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand_a8538745ea4d8a9eb740869a280232f52}} 
+\index{klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}!RgbColor@{RgbColor}}
+\index{RgbColor@{RgbColor}!klyqa\_ctl.devices.light.commands.ColorCommand@{klyqa\_ctl.devices.light.commands.ColorCommand}}
+\doxysubsubsection{\texorpdfstring{RgbColor}{RgbColor}}
+{\footnotesize\ttfamily klyqa\+\_\+ctl.\+devices.\+light.\+commands.\+Color\+Command.\+Rgb\+Color\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+devices/light/\mbox{\hyperlink{light_2commands_8py}{commands.\+py}}\end{DoxyCompactItemize}

@@ -1,0 +1,8 @@
+<map id="klyqa_ctl.general.general.CloudStateCommand" name="klyqa_ctl.general.general.CloudStateCommand">
+<area shape="rect" id="node1" title=" " alt="" coords="442,204,633,296"/>
+<area shape="rect" id="node3" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1BrightnessCommand.html" title=" " alt="" coords="5,344,253,495"/>
+<area shape="rect" id="node4" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1ColorCommand.html" title=" " alt="" coords="277,344,525,495"/>
+<area shape="rect" id="node5" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1PowerCommand.html" title=" " alt="" coords="549,373,797,465"/>
+<area shape="rect" id="node6" href="$classklyqa__ctl_1_1devices_1_1light_1_1commands_1_1TemperatureCommand.html" title=" " alt="" coords="821,344,1069,495"/>
+<area shape="rect" id="node2" href="$classklyqa__ctl_1_1general_1_1general_1_1Command.html" title=" " alt="" coords="442,5,633,156"/>
+</map>
