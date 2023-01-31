@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>klyqa_ctl.devices.vacuum.commands &#8212; klyqa_ctl  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for klyqa_ctl.devices.vacuum.commands</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Vacuum cleaner commands&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.light.commands</span> <span class="kn">import</span> <span class="n">RequestCommand</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.vacuum.general</span> <span class="kn">import</span> <span class="n">VcSuctionStrengths</span><span class="p">,</span> <span class="n">VcWorkingMode</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.general</span> <span class="kn">import</span> <span class="n">CommandType</span> <span class="k">as</span> <span class="n">MessageCommandType</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.general</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.general</span> <span class="kn">import</span> <span class="n">TypeJson</span>
+
+
+<div class="viewcode-block" id="CommandType"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.CommandType">[docs]</a><span class="k">class</span> <span class="nc">CommandType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">GET</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">SET</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">RESET</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="ProductinfoCommand"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.ProductinfoCommand">[docs]</a><span class="k">class</span> <span class="nc">ProductinfoCommand</span><span class="p">(</span><span class="n">RequestCommand</span><span class="p">):</span>
+<div class="viewcode-block" id="ProductinfoCommand.productinfo_json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.ProductinfoCommand.productinfo_json">[docs]</a>    <span class="k">def</span> <span class="nf">productinfo_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;productinfo&quot;</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="ProductinfoCommand.json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.ProductinfoCommand.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">productinfo_json</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="RequestGetCommand"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestGetCommand">[docs]</a><span class="k">class</span> <span class="nc">RequestGetCommand</span><span class="p">(</span><span class="n">RequestCommand</span><span class="p">):</span>
+<div class="viewcode-block" id="RequestGetCommand.get_json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestGetCommand.get_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;get&quot;</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="RequestGetCommand.json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestGetCommand.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="RequestResetCommand"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestResetCommand">[docs]</a><span class="k">class</span> <span class="nc">RequestResetCommand</span><span class="p">(</span><span class="n">RequestCommand</span><span class="p">):</span>
+<div class="viewcode-block" id="RequestResetCommand.reset_json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestResetCommand.reset_json">[docs]</a>    <span class="k">def</span> <span class="nf">reset_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;reset&quot;</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="RequestResetCommand.json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestResetCommand.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_json</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="RequestSetCommand"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestSetCommand">[docs]</a><span class="k">class</span> <span class="nc">RequestSetCommand</span><span class="p">(</span><span class="n">RequestCommand</span><span class="p">):</span>
+<div class="viewcode-block" id="RequestSetCommand.set_json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestSetCommand.set_json">[docs]</a>    <span class="k">def</span> <span class="nf">set_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;set&quot;</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="RequestSetCommand.json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RequestSetCommand.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_json</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="RoutineCommandActions"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RoutineCommandActions">[docs]</a><span class="k">class</span> <span class="nc">RoutineCommandActions</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">ACTION</span> <span class="o">=</span> <span class="s2">&quot;action&quot;</span>
+    <span class="n">COUNT</span> <span class="o">=</span> <span class="s2">&quot;count&quot;</span>
+    <span class="n">LIST</span> <span class="o">=</span> <span class="s2">&quot;list&quot;</span>
+    <span class="n">DELETE</span> <span class="o">=</span> <span class="s2">&quot;delete&quot;</span>
+    <span class="n">START</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
+    <span class="n">PUT</span> <span class="o">=</span> <span class="s2">&quot;put&quot;</span></div>
+
+
+<div class="viewcode-block" id="RoutineCommand"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RoutineCommand">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">RoutineCommand</span><span class="p">(</span><span class="n">RequestCommand</span><span class="p">):</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">MessageCommandType</span> <span class="o">=</span> <span class="n">MessageCommandType</span><span class="o">.</span><span class="n">ROUTINE</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">RoutineCommandActions</span> <span class="o">=</span> <span class="n">RoutineCommandActions</span><span class="o">.</span><span class="n">ACTION</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">scene</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">commands</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="RoutineCommand.routine_json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RoutineCommand.routine_json">[docs]</a>    <span class="k">def</span> <span class="nf">routine_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">:</span> <span class="n">TypeJson</span> <span class="o">=</span> <span class="n">TypeJson</span><span class="p">()</span>
+        <span class="n">r</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;commands&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="RoutineCommand.json"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.RoutineCommand.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeJson</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">routine_json</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="create_device_message"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.create_device_message">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">create_device_message</span><span class="p">(</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span>
+    <span class="n">args_in</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">send_to_devices_callable</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">message_queue_tx_local</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">message_queue_tx_command_cloud</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">message_queue_tx_state_cloud</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;process_args_to_msg_cleaner&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">local_and_cloud_command_msg</span><span class="p">(</span><span class="n">json_msg</span><span class="p">:</span> <span class="n">TypeJson</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">message_queue_tx_local</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_msg</span><span class="p">),</span> <span class="n">timeout</span><span class="p">))</span>
+        <span class="n">message_queue_tx_command_cloud</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json_msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;productinfo&quot;</span><span class="p">:</span>
+            <span class="n">local_and_cloud_command_msg</span><span class="p">(</span><span class="n">ProductinfoCommand</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">get_command</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">local_and_cloud_command_msg</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">SET</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">set_command</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">local_and_cloud_command_msg</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">RESET</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">reset_command</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">local_and_cloud_command_msg</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;routine&quot;</span><span class="p">:</span>
+            <span class="n">routine</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_command"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.get_command">[docs]</a><span class="k">def</span> <span class="nf">get_command</span><span class="p">(</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">local_and_cloud_command_msg</span><span class="p">:</span> <span class="n">Callable</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get command.&quot;&quot;&quot;</span>
+
+    <span class="n">get_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">RequestGetCommand</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">power</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">cleaning</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;cleaning&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">beeping</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;beeping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">battery</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;battery&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">sidebrush</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;sidebrush&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">rollingbrush</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;rollingbrush&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filter</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">carpetbooster</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;carpetbooster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">area</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">calibrationtime</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;calibrationtime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">workingmode</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;workingmode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">workingstatus</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;workingstatus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">suction</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;suction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">water</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;water&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">direction</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;errors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">cleaningrec</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;cleaningrec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">equipmentmodel</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;equipmentmodel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">alarmmessages</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;alarmmessages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">commissioninfo</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;commissioninfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">mcu</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+        <span class="n">get_dict</span><span class="p">[</span><span class="s2">&quot;mcu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">local_and_cloud_command_msg</span><span class="p">(</span><span class="n">get_dict</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reset_command"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.reset_command">[docs]</a><span class="k">def</span> <span class="nf">reset_command</span><span class="p">(</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">local_and_cloud_command_msg</span><span class="p">:</span> <span class="n">Callable</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Reset command.&quot;&quot;&quot;</span>
+
+    <span class="n">reset_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">RequestResetCommand</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">sidebrush</span><span class="p">:</span>
+        <span class="n">reset_dict</span><span class="p">[</span><span class="s2">&quot;sidebrush&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">rollingbrush</span><span class="p">:</span>
+        <span class="n">reset_dict</span><span class="p">[</span><span class="s2">&quot;rollingbrush&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+        <span class="n">reset_dict</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">local_and_cloud_command_msg</span><span class="p">(</span><span class="n">reset_dict</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_command"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.set_command">[docs]</a><span class="k">def</span> <span class="nf">set_command</span><span class="p">(</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">local_and_cloud_command_msg</span><span class="p">:</span> <span class="n">Callable</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Set command.&quot;&quot;&quot;</span>
+
+    <span class="n">set_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">RequestSetCommand</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">power</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">power</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">cleaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;cleaning&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">cleaning</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">beeping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;beeping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">beeping</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">carpetbooster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;carpetbooster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">carpetbooster</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">workingmode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">VcWorkingMode</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">workingmode</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;workingmode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">suction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">suction</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">VcSuctionStrengths</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">suction</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;suction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suction</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">water</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;water&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">water</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">direction</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">commissioninfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;commissioninfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">commissioninfo</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">calibrationtime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">set_dict</span><span class="p">[</span><span class="s2">&quot;calibrationtime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">calibrationtime</span>
+    <span class="n">local_and_cloud_command_msg</span><span class="p">(</span><span class="n">set_dict</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="routine"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.routine">[docs]</a><span class="k">def</span> <span class="nf">routine</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Set routine.&quot;&quot;&quot;</span>
+
+    <span class="n">routine_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">RoutineCommand</span><span class="p">()</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
+        <span class="c1"># routine_dict[&quot;action&quot;] = &quot;count&quot;</span>
+        <span class="n">routine_dict</span> <span class="o">=</span> <span class="n">RoutineCommand</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RoutineCommandActions</span><span class="o">.</span><span class="n">COUNT</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">list</span><span class="p">:</span>
+        <span class="c1"># routine_dict[&quot;action&quot;] = &quot;list&quot;</span>
+        <span class="n">routine_dict</span> <span class="o">=</span> <span class="n">RoutineCommand</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="n">RoutineCommandActions</span><span class="o">.</span><span class="n">LIST</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">put</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">:</span>
+            <span class="n">routine_dict</span> <span class="o">=</span> <span class="n">RoutineCommand</span><span class="p">(</span>
+                <span class="n">action</span><span class="o">=</span><span class="n">RoutineCommandActions</span><span class="o">.</span><span class="n">PUT</span><span class="p">,</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="n">scene</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+                <span class="n">commands</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="c1"># routine_dict[&quot;action&quot;] = &quot;put&quot;</span>
+            <span class="c1"># routine_dict[&quot;id&quot;] = args.id</span>
+            <span class="c1"># routine_dict[&quot;scene&quot;] = &quot;none&quot;</span>
+            <span class="c1"># routine_dict[&quot;commands&quot;] = args.commands</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No ID and/or Commands given!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="n">routine_dict</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;delete&quot;</span>
+            <span class="n">routine_dict</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No ID to delete given!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="n">routine_dict</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
+            <span class="n">routine_dict</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<div class="viewcode-block" id="add_command_args_cleaner"><a class="viewcode-back" href="../../../../klyqa_ctl.devices.vacuum.html#klyqa_ctl.devices.vacuum.commands.add_command_args_cleaner">[docs]</a><span class="k">def</span> <span class="nf">add_command_args_cleaner</span><span class="p">(</span><span class="n">parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Add command parse arguments.&quot;&quot;&quot;</span>
+
+    <span class="n">sub</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span><span class="p">[</span>
+        <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;subcommands&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;command&quot;</span><span class="p">)</span>
+
+    <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;passive&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;vApp will passively listen for UDP SYN from devices&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">ota</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;ota&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;allows over the air programming of the device&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ota</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify http URL for ota&quot;</span><span class="p">)</span>
+
+    <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;send a ping and nothing else&quot;</span><span class="p">)</span>
+
+    <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;factory-reset&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;trigger a factory reset on the device - the device has to be&quot;</span>
+            <span class="s2">&quot; onboarded again afterwards)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;reboot&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;trigger a reboot&quot;</span><span class="p">)</span>
+
+    <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;productinfo&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;get product information&quot;</span><span class="p">)</span>
+
+    <span class="n">req</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;send state request&quot;</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--all&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the whole state will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--power&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--cleaning&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--beeping&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--battery&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--sidebrush&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--rollingbrush&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--filter&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--carpetbooster&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--area&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--time&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--calibrationtime&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--workingmode&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--workingstatus&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--suction&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--water&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--direction&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--errors&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--cleaningrec&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--equipmentmodel&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--alarmmessages&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--commissioninfo&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If this flag is set, the state element will be requested&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mcu&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Ask if mcu is online&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+
+    <span class="c1"># device specific</span>
+    <span class="n">set_parser</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">SET</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;enables use of the vc1 control arguments and will control vc1&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--power&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;on&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;turn power on/off&quot;</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--cleaning&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;on&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;turn cleaning on/off&quot;</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--beeping&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;on&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;enable/disable the find-vc function&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--carpetbooster&quot;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;strength&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;set the carpet booster strength (0-255)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--workingmode&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">VcWorkingMode</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;set the working mode&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--water&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;LOW&quot;</span><span class="p">,</span> <span class="s2">&quot;MID&quot;</span><span class="p">,</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;set water quantity&quot;</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--suction&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">VcSuctionStrengths</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;set suction power&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--direction&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;FORWARDS&quot;</span><span class="p">,</span> <span class="s2">&quot;BACKWARDS&quot;</span><span class="p">,</span> <span class="s2">&quot;TURN_LEFT&quot;</span><span class="p">,</span> <span class="s2">&quot;TURN_RIGHT&quot;</span><span class="p">,</span> <span class="s2">&quot;STOP&quot;</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;manually control movement&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--commissioninfo&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;set up to 256 characters of commisioning info&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">set_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--calibrationtime&quot;</span><span class="p">,</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;set the calibration time (1-1999999999)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">reset_parser</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">RESET</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;enables resetting consumables&quot;</span>
+    <span class="p">)</span>
+    <span class="n">reset_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--sidebrush&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;resets the sidebrush life counter&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">reset_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--rollingbrush&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;resets the rollingbrush life counter&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">reset_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--filter&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;resets the filter life counter&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">routine_parser</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;routine&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;routine functions&quot;</span><span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--list&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;lists stored routines&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--put&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;store new routine&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--delete&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;delete routine&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--start&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;start routine&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--id&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify routine id to act on (for put, start, delete)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--scene&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify routine scene label (for put)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--count&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;get the current free slots for routines&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span>
+    <span class="p">)</span>
+    <span class="n">routine_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--commands&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify routine program (for put)&quot;</span>
+    <span class="p">)</span></div>
+    <span class="c1"># routine_parser.set_defaults(func=routine_request)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">klyqa_ctl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../klyqa_ctl.html">klyqa_ctl package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

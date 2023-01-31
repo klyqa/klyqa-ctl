@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>klyqa_ctl.klyqa_ctl &mdash; klyqa_ctl  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> klyqa_ctl
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../klyqa_ctl.html">klyqa_ctl package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">klyqa_ctl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">klyqa_ctl.klyqa_ctl</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for klyqa_ctl.klyqa_ctl</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="sd">&quot;&quot;&quot;Klyqa control client.</span>
+
+<span class="sd">Interactive Klyqa Control commandline client</span>
+
+<span class="sd">Company: QConnex GmbH / Klyqa</span>
+<span class="sd">Author: Frederick Stallmeyer</span>
+
+<span class="sd">E-Mail: frederick.stallmeyer@gmx.de</span>
+
+<span class="sd">Information:</span>
+<span class="sd">The network_interface parameter for local connection handling (in</span>
+<span class="sd">LocalConnectionHandler) will ONLY work on LINUX systems, as it uses the linux</span>
+<span class="sd">specific socket option SO_BINDTODEVICE for communication.</span>
+
+<span class="sd">Nice to haves/missing:</span>
+<span class="sd">  -   list cloud connected devices in discovery.</span>
+<span class="sd">  -   offer for selected devices possible commands and arguments in</span>
+<span class="sd">      interactive mode based on their device profile</span>
+<span class="sd">  -   Implementation for the different device config profile versions and</span>
+<span class="sd">      check on send.</span>
+<span class="sd">  -   start scene support in cloud mode</span>
+
+<span class="sd">Current bugs:</span>
+<span class="sd"> - vc1 interactive command selection support.</span>
+<span class="sd"> - interactive light selection, command not applied</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">fabs</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">uvloop</span>
+
+<span class="kn">from</span> <span class="nn">klyqa_ctl</span> <span class="kn">import</span> <span class="n">controller_data</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.__init__</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.account</span> <span class="kn">import</span> <span class="n">Account</span><span class="p">,</span> <span class="n">AccountDevice</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.communication.cloud</span> <span class="kn">import</span> <span class="n">CloudBackend</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.communication.local.connection_handler</span> <span class="kn">import</span> <span class="n">LocalConnectionHandler</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.controller_data</span> <span class="kn">import</span> <span class="n">ControllerData</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.device</span> <span class="kn">import</span> <span class="n">Device</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.light.commands</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">add_device_command_to_queue</span> <span class="k">as</span> <span class="n">add_device_command_to_queue_light</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.light.commands</span> <span class="kn">import</span> <span class="n">add_command_args_bulb</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.light.light</span> <span class="kn">import</span> <span class="n">Light</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.light.response_status</span> <span class="kn">import</span> <span class="n">ResponseStatus</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.vacuum.commands</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_device_message</span> <span class="k">as</span> <span class="n">create_device_message_vacuum</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.vacuum.commands</span> <span class="kn">import</span> <span class="n">add_command_args_cleaner</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.devices.vacuum.vacuum</span> <span class="kn">import</span> <span class="n">VacuumCleaner</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.general</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AES_KEY_DEV</span><span class="p">,</span>
+    <span class="n">DEFAULT_SEND_TIMEOUT_MS</span><span class="p">,</span>
+    <span class="n">LOGGER</span><span class="p">,</span>
+    <span class="n">PROD_HOST</span><span class="p">,</span>
+    <span class="n">SEPARATION_WIDTH</span><span class="p">,</span>
+    <span class="n">TRACE</span><span class="p">,</span>
+    <span class="n">DeviceType</span><span class="p">,</span>
+    <span class="n">get_obj_attrs_as_string</span><span class="p">,</span>
+    <span class="n">logging_hdl</span><span class="p">,</span>
+    <span class="n">set_debug_logger</span><span class="p">,</span>
+    <span class="n">task_log_debug</span><span class="p">,</span>
+    <span class="n">task_log_trace_ex</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.message</span> <span class="kn">import</span> <span class="n">Message</span><span class="p">,</span> <span class="n">MessageState</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.parameters</span> <span class="kn">import</span> <span class="n">add_config_args</span><span class="p">,</span> <span class="n">get_description_parser</span>
+<span class="kn">from</span> <span class="nn">klyqa_ctl.general.unit_id</span> <span class="kn">import</span> <span class="n">UnitId</span>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ControllerData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Major klyqa-ctl client class.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">accounts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Account</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the client.&quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_local</span><span class="p">:</span> <span class="n">LocalConnectionHandler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_cloud</span><span class="p">:</span> <span class="n">CloudBackend</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_accounts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Account</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{}</span> <span class="k">if</span> <span class="n">accounts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">accounts</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">local</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LocalConnectionHandler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr_local</span>
+
+    <span class="nd">@local</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local</span><span class="p">:</span> <span class="n">LocalConnectionHandler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_local</span> <span class="o">=</span> <span class="n">local</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">accounts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Account</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr_accounts</span>
+
+    <span class="nd">@accounts</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">accounts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accounts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Account</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_accounts</span> <span class="o">=</span> <span class="n">accounts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cloud</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CloudBackend</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr_cloud</span>
+
+    <span class="nd">@cloud</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cloud</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cloud</span><span class="p">:</span> <span class="n">CloudBackend</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_cloud</span> <span class="o">=</span> <span class="n">cloud</span>
+
+    <span class="c1"># def backend_connected(self) -&gt; bool:</span>
+    <span class="c1">#     if self.cloud_backend:</span>
+    <span class="c1">#         return bool(self.cloud_backend.access_token != &quot;&quot;)</span>
+    <span class="c1">#     return False</span>
+
+<div class="viewcode-block" id="Client.add_account"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.add_account">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_account</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">print_onboarded_devices</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add user account to client.&quot;&quot;&quot;</span>
+
+        <span class="n">account</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Account</span><span class="o">.</span><span class="n">create_default</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">cloud</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cloud</span><span class="p">,</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+            <span class="n">print_onboarded_devices</span><span class="o">=</span><span class="n">print_onboarded_devices</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="n">account</span><span class="o">.</span><span class="n">username</span><span class="p">]</span> <span class="o">=</span> <span class="n">account</span>
+
+        <span class="k">return</span> <span class="n">account</span></div>
+
+<div class="viewcode-block" id="Client.shutdown"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.shutdown">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Logout again from klyqa account.&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">acc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">await</span> <span class="n">acc</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Client.discover_devices"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.discover_devices">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">discover_devices</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span>
+        <span class="n">message_queue_tx_local</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+        <span class="n">target_device_uids</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Discover devices.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">SEPARATION_WIDTH</span> <span class="o">*</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Search local network for devices ...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">SEPARATION_WIDTH</span> <span class="o">*</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+
+        <span class="n">discover_timeout_secs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+        <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;discover ping start&quot;</span><span class="p">)</span>
+        <span class="c1"># send a message to uid &quot;all&quot; which is fake but will get the</span>
+        <span class="c1"># identification message from the devices in the aes_search and</span>
+        <span class="c1"># send msg function and we can send then a real</span>
+        <span class="c1"># request message to these discovered devices.</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+            <span class="n">message_queue_tx_local</span><span class="p">,</span>
+            <span class="n">UnitId</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">),</span>
+            <span class="n">discover_timeout_secs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;discover ping end&quot;</span><span class="p">)</span></div>
+        <span class="c1"># if self.devices:</span>
+        <span class="c1">#     target_device_uids = set(</span>
+        <span class="c1"># u_id for u_id, v in self.devices.items())</span>
+        <span class="c1"># some code missing</span>
+
+    <span class="c1"># def device_name_to_uid(</span>
+    <span class="c1">#     self, args: argparse.Namespace, target_device_uids: set[str]</span>
+    <span class="c1"># ) -&gt; bool:</span>
+    <span class="c1">#     &quot;&quot;&quot;Set target device uid by device name argument.&quot;&quot;&quot;</span>
+
+    <span class="c1">#     if not self.account or not self.account.settings:</span>
+    <span class="c1">#         LOGGER.error(</span>
+    <span class="c1">#             &#39;Missing account settings to resolve device name  &quot;&#39;</span>
+    <span class="c1">#             + args.device_name</span>
+    <span class="c1">#             + &#39;&quot;to unit id.&#39;</span>
+    <span class="c1">#         )</span>
+    <span class="c1">#         return False</span>
+    <span class="c1">#     dev: list[str] = [</span>
+    <span class="c1">#         format_uid(device[&quot;localDeviceId&quot;])</span>
+    <span class="c1">#         for device in self.account.settings[&quot;devices&quot;]</span>
+    <span class="c1">#         if device[&quot;name&quot;] == args.device_name</span>
+    <span class="c1">#     ]</span>
+    <span class="c1">#     if not dev:</span>
+    <span class="c1">#         LOGGER.error(</span>
+    <span class="c1">#             &#39;Device name &quot;&#39;</span>
+    <span class="c1">#             + args.device_name</span>
+    <span class="c1">#             + &#39;&quot; not found in account settings.&#39;</span>
+    <span class="c1">#         )</span>
+    <span class="c1">#         return False</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         target_device_uids.add(format_uid(dev[0]))</span>
+    <span class="c1">#     return True</span>
+
+<div class="viewcode-block" id="Client.select_device"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.select_device">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">select_device</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">send_started_local</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Interactive select device.&quot;&quot;&quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">SEPARATION_WIDTH</span> <span class="o">*</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="c1"># devices_working = {</span>
+        <span class="c1">#     k: v for k, v in self.devices.items() if</span>
+        <span class="c1"># v.local.aes_key_confirmed</span>
+        <span class="c1"># }</span>
+        <span class="n">devices_working</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Device</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">u_id</span><span class="p">:</span> <span class="n">device</span>
+            <span class="k">for</span> <span class="n">u_id</span><span class="p">,</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DeviceType</span><span class="o">.</span><span class="n">LIGHTING</span><span class="o">.</span><span class="n">value</span>
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">Light</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DeviceType</span><span class="o">.</span><span class="n">CLEANER</span><span class="o">.</span><span class="n">value</span>
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">VacuumCleaner</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">device</span><span class="o">.</span><span class="n">status</span>
+                    <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">ts</span>
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">ts</span> <span class="o">&gt;</span> <span class="n">send_started_local</span>
+                <span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">cloud</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">tryLocalThanCloud</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">cloud</span>
+                    <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">connected</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Found &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">devices_working</span><span class="p">))</span>
+            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+            <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;device&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices_working</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;devices&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot; with working aes keys&quot;</span>
+            <span class="o">+</span> <span class="p">(</span><span class="s2">&quot; (dev aes key)&quot;</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dev</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices_working</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;no_devices&quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">SEPARATION_WIDTH</span> <span class="o">*</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">device_items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Device</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">devices_working</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">device_items</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Status attributes: (&quot;</span>
+                <span class="o">+</span> <span class="n">get_obj_attrs_as_string</span><span class="p">(</span><span class="n">ResponseStatus</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;) (local IP-Address)&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">device_items</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unit ID: </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">u_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">acc_sets</span> <span class="ow">and</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">acc_sets</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">acc_sets</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot; (local&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">local_addr</span><span class="p">[</span><span class="s1">&#39;ip&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">local_addr</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">local_addr</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span>
+                <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">cloud</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; (cloud connected)&quot;</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">connected</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">status</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">status</span> <span class="k">else</span> <span class="s2">&quot; (no status)&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">status</span><span class="si">}{</span><span class="n">address</span><span class="si">}{</span><span class="n">cloud</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">device_num_s</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span>
+                <span class="s2">&quot;Choose bulb number(s) (comma seperated) a&quot;</span>
+                <span class="s2">&quot; (all),[1-9]*{,[1-9]*}*: &quot;</span>
+            <span class="p">)</span>
+            <span class="n">target_device_uids_lcl</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">device_num_s</span> <span class="o">==</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">u_id</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">device_items</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">bulb_num</span> <span class="ow">in</span> <span class="n">device_num_s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+                    <span class="n">bulb_num_nr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bulb_num</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">bulb_num_nr</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">bulb_num_nr</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">:</span>
+                        <span class="n">target_device_uids_lcl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                            <span class="n">device_items</span><span class="p">[</span><span class="n">bulb_num_nr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">u_id</span>
+                        <span class="p">)</span>
+            <span class="k">return</span> <span class="n">target_device_uids_lcl</span>
+
+        <span class="c1"># No devices found. Exit script.</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.send_to_devices"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.send_to_devices">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_to_devices</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span>
+        <span class="n">args_in</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+        <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="n">async_answer_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Message</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Collect the messages for the devices to send to</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            args (Argsparse): Parsed args object</span>
+<span class="sd">            args_in (list): List of arguments parsed to the script call</span>
+<span class="sd">            timeout_ms (int, optional): Timeout to send. Defaults to 5000.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: Network or file errors</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+            <span class="n">send_started</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+            <span class="n">add_command_args_ch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">DeviceType</span><span class="o">.</span><span class="n">LIGHTING</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">add_command_args_bulb</span><span class="p">,</span>
+                <span class="n">DeviceType</span><span class="o">.</span><span class="n">CLEANER</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">add_command_args_cleaner</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">add_command_args</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_command_args_ch</span><span class="p">[</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">type</span>
+            <span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dev</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">tryLocalThanCloud</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">cloud</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+                <span class="n">set_debug_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="n">set_debug_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">TRACE</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">cloud</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">tryLocalThanCloud</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">aes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aes_keys</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">aes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="n">target_device_uids</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+            <span class="n">message_queue_tx_local</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">message_queue_tx_state_cloud</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">message_queue_tx_command_cloud</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># if args.device_name is not None:</span>
+            <span class="c1">#     if not self.device_name_to_uid(args, target_device_uids):</span>
+            <span class="c1">#         return False</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">device_unitids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">target_device_uids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+                    <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">device_unitids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
+                <span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;Send to device: &quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">device_unitids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+                <span class="p">)</span>
+
+            <span class="c1"># if (</span>
+            <span class="c1">#     not args.selectDevice</span>
+            <span class="c1">#     and self.cloud_backend</span>
+            <span class="c1">#     # and self.backend_connected()</span>
+            <span class="c1"># ):</span>
+            <span class="c1">#     await self.cloud_backend.update_device_configs()</span>
+
+            <span class="c1"># device specific commands #</span>
+
+            <span class="k">async</span> <span class="k">def</span> <span class="nf">send_to_devices_cb</span><span class="p">(</span>
+                <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">:</span>
+                <span class="sd">&quot;&quot;&quot;Send to devices callback for discover of devices option&quot;&quot;&quot;</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_to_devices</span><span class="p">(</span>
+                    <span class="n">args</span><span class="p">,</span>
+                    <span class="n">args_in</span><span class="p">,</span>
+                    <span class="n">timeout_ms</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">scene</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DeviceType</span><span class="o">.</span><span class="n">LIGHTING</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">add_device_command_to_queue_light</span><span class="p">(</span>
+                    <span class="n">args</span><span class="p">,</span>
+                    <span class="n">args_in</span><span class="p">,</span>
+                    <span class="n">send_to_devices_cb</span><span class="p">,</span>
+                    <span class="n">message_queue_tx_local</span><span class="p">,</span>
+                    <span class="n">scene</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DeviceType</span><span class="o">.</span><span class="n">CLEANER</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">create_device_message_vacuum</span><span class="p">(</span>
+                    <span class="n">args</span><span class="p">,</span>
+                    <span class="n">args_in</span><span class="p">,</span>
+                    <span class="n">send_to_devices_cb</span><span class="p">,</span>
+                    <span class="n">message_queue_tx_local</span><span class="p">,</span>
+                    <span class="n">message_queue_tx_command_cloud</span><span class="p">,</span>
+                    <span class="n">message_queue_tx_state_cloud</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Missing device type.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="n">success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">to_send_device_uids</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span> <span class="ow">and</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">local</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">tryLocalThanCloud</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">passive</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">udp</span><span class="p">:</span>
+                        <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;Waiting for UDP broadcast&quot;</span><span class="p">)</span>
+                        <span class="n">data</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">udp</span><span class="o">.</span><span class="n">recvfrom</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+                        <span class="n">task_log_debug</span><span class="p">(</span>
+                            <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> 2. UDP server received: &quot;</span><span class="p">,</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;from&quot;</span><span class="p">,</span>
+                            <span class="n">address</span><span class="p">,</span>
+                            <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+                        <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;3a. Sending UDP ack.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">udp</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span>
+                            <span class="s2">&quot;QCX-ACK&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="n">address</span>
+                        <span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;3b. Sending UDP ack.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">udp</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span>
+                            <span class="s2">&quot;QCX-ACK&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="n">address</span>
+                        <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="n">send_started_local</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+                    <span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">discover</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">discover_devices</span><span class="p">()</span>
+                        <span class="c1"># await self.discover_devices(</span>
+                        <span class="c1">#     args, message_queue_tx_local, target_device_uids</span>
+                        <span class="c1"># )</span>
+
+                    <span class="n">to_send_device_uids</span> <span class="o">=</span> <span class="n">target_device_uids</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                    <span class="n">send_tasks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">target_device_uids</span><span class="p">:</span>
+
+                        <span class="n">send_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+                                    <span class="n">send_msgs</span><span class="o">=</span><span class="n">message_queue_tx_local</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+                                    <span class="n">target_device_uid</span><span class="o">=</span><span class="n">UnitId</span><span class="p">(</span><span class="n">uid</span><span class="p">),</span>
+                                    <span class="c1"># callback=async_answer_callback_local,</span>
+                                    <span class="n">time_to_live_secs</span><span class="o">=</span><span class="p">(</span><span class="n">timeout_ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">),</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+
+                    <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;wait for all target device uids done.&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">send_tasks</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span>
+                                <span class="n">task</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="p">(</span><span class="n">timeout_ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                            <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;Timeout for send.&quot;</span><span class="p">)</span>
+                        <span class="n">msg</span><span class="p">:</span> <span class="n">Message</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">MessageState</span><span class="o">.</span><span class="n">SENT</span><span class="p">:</span>
+                            <span class="n">to_send_device_uids</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">UnitId</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">target_uid</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">selectDevice</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_device</span><span class="p">(</span>
+                            <span class="n">args</span><span class="p">,</span> <span class="n">send_started_local</span>
+                        <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">target_device_uids</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">to_send_device_uids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># Error</span>
+                    <span class="n">sent_locally_error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s2">&quot;The commands &quot;</span>
+                        <span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="p">])</span>
+                        <span class="o">+</span> <span class="s2">&quot; failed to send locally to the device(s): &quot;</span>
+                        <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">to_send_device_uids</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tryLocalThanCloud</span><span class="p">:</span>
+                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">sent_locally_error</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">sent_locally_error</span><span class="p">)</span>
+                    <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud</span> <span class="ow">and</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">cloud</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">tryLocalThanCloud</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">username</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">username</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">:</span>
+                    <span class="n">acc</span><span class="p">:</span> <span class="n">Account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">username</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">target_device_uids</span><span class="p">:</span>
+                        <span class="n">acc_dev</span><span class="p">:</span> <span class="n">AccountDevice</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="k">await</span> <span class="n">acc</span><span class="o">.</span><span class="n">get_or_create_device</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">message_queue_tx_local</span><span class="p">:</span>
+                            <span class="k">await</span> <span class="n">acc</span><span class="o">.</span><span class="n">cloud_post_command_to_dev</span><span class="p">(</span>
+                                <span class="n">acc_dev</span><span class="p">,</span> <span class="n">command</span>
+                            <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">success</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                        <span class="n">args</span><span class="p">,</span>
+                        <span class="n">target_device_uids</span><span class="p">,</span>
+                        <span class="n">to_send_device_uids</span><span class="p">,</span>
+                        <span class="n">timeout_ms</span><span class="p">,</span>
+                        <span class="n">message_queue_tx_state_cloud</span><span class="p">,</span>
+                        <span class="n">message_queue_tx_command_cloud</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">success</span> <span class="ow">and</span> <span class="n">scene</span><span class="p">:</span>
+                <span class="n">scene_start_args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                    <span class="s2">&quot;--routine_id&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;--routine_start&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+
+                <span class="n">orginal_args_parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">get_description_parser</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="n">scene_start_args_parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">get_description_parser</span><span class="p">()</span>
+                <span class="p">)</span>
+
+                <span class="n">add_config_args</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">orginal_args_parser</span><span class="p">)</span>
+                <span class="n">add_config_args</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">scene_start_args_parser</span><span class="p">)</span>
+                <span class="n">add_command_args</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">scene_start_args_parser</span><span class="p">)</span>
+
+                <span class="p">(</span>
+                    <span class="n">original_config_args_parsed</span><span class="p">,</span>
+                    <span class="n">_</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="n">orginal_args_parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args_in</span><span class="p">)</span>
+
+                <span class="n">scene_start_args_parsed</span> <span class="o">=</span> <span class="n">scene_start_args_parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span>
+                    <span class="n">scene_start_args</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">original_config_args_parsed</span>
+                <span class="p">)</span>
+
+                <span class="k">async</span> <span class="k">def</span> <span class="nf">async_print_answer</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">task_log_debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Answer received from </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                            <span class="n">format_answer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">answer</span><span class="p">),</span>
+                                <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="p">)</span>
+                            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_answer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+                            <span class="n">task_log_trace_ex</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error no message returned from </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+                <span class="n">ret</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_to_devices</span><span class="p">(</span>
+                    <span class="n">scene_start_args_parsed</span><span class="p">,</span>
+                    <span class="n">args_in</span><span class="p">,</span>
+                    <span class="n">timeout_ms</span><span class="o">=</span><span class="n">timeout_ms</span>
+                    <span class="o">-</span> <span class="nb">int</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">send_started</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+                    <span class="p">)</span>
+                    <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+                    <span class="n">async_answer_callback</span><span class="o">=</span><span class="n">async_print_answer</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ret</span><span class="p">:</span>
+                    <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t start scene </span><span class="si">{</span><span class="n">scene</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">return</span> <span class="n">success</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">task_log_trace_ex</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Client.send_to_devices_wrapped"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.send_to_devices_wrapped">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_to_devices_wrapped</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">args_parsed</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span>
+        <span class="n">args_in</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+        <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set up broadcast port and tcp reply connection port.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">cloud</span> <span class="ow">or</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="n">args_parsed</span><span class="o">.</span><span class="n">tryLocalThanCloud</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+            <span class="n">logging_hdl</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">TRACE</span><span class="p">)</span>
+            <span class="n">logging_hdl</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">TRACE</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">dev</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aes_keys</span><span class="p">[</span><span class="s2">&quot;dev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AES_KEY_DEV</span>
+
+        <span class="n">local_communication</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">args_parsed</span><span class="o">.</span><span class="n">local</span> <span class="ow">or</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">tryLocalThanCloud</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">local_communication</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">bind_ports</span><span class="p">():</span>
+                <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="n">exit_ret</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">async_answer_callback</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">task_log_debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Answer received from </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+                    <span class="n">format_answer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                        <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">answer</span><span class="p">),</span>
+                        <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_answer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                    <span class="n">task_log_trace_ex</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error no message returned from </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_to_devices</span><span class="p">(</span>
+            <span class="n">args_parsed</span><span class="p">,</span>
+            <span class="n">args_in</span><span class="p">,</span>
+            <span class="n">timeout_ms</span><span class="o">=</span><span class="n">timeout_ms</span><span class="p">,</span>
+            <span class="n">async_answer_callback</span><span class="o">=</span><span class="n">async_answer_callback</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">exit_ret</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;Closing ports&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">exit_ret</span></div>
+
+<div class="viewcode-block" id="Client.create"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.create">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">interactive_prompts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">offline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">server_ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+        <span class="n">network_interface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Client</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Client factory.&quot;&quot;&quot;</span>
+
+        <span class="n">cl</span><span class="p">:</span> <span class="n">Client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_attr_interactive_prompts</span> <span class="o">=</span> <span class="n">interactive_prompts</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_attr_offline</span> <span class="o">=</span> <span class="n">offline</span>
+        <span class="k">await</span> <span class="n">cl</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+        <span class="n">cl</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="n">LocalConnectionHandler</span><span class="o">.</span><span class="n">create_default</span><span class="p">(</span>
+            <span class="n">cl</span><span class="p">,</span>
+            <span class="n">server_ip</span><span class="o">=</span><span class="n">server_ip</span><span class="p">,</span>
+            <span class="n">network_interface</span><span class="o">=</span><span class="n">network_interface</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">cl</span><span class="o">.</span><span class="n">cloud</span> <span class="o">=</span> <span class="n">CloudBackend</span><span class="o">.</span><span class="n">create_default</span><span class="p">(</span><span class="n">cl</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cl</span></div>
+
+<div class="viewcode-block" id="Client.create_worker"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.Client.create_worker">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_worker</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">offline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">server_ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+        <span class="n">network_interface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Client</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Factory client used as a non-interactive library.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">Client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">interactive_prompts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">offline</span><span class="o">=</span><span class="n">offline</span><span class="p">,</span>
+            <span class="n">server_ip</span><span class="o">=</span><span class="n">server_ip</span><span class="p">,</span>
+            <span class="n">network_interface</span><span class="o">=</span><span class="n">network_interface</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../klyqa_ctl.html#klyqa_ctl.klyqa_ctl.main">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span>
+
+    <span class="n">exit_ret</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span> <span class="o">=</span> <span class="n">get_description_parser</span><span class="p">()</span>
+
+    <span class="n">add_config_args</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span>
+
+    <span class="n">args_in</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="p">(</span>
+        <span class="n">config_args_parsed</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args_in</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">config_args_parsed</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DeviceType</span><span class="o">.</span><span class="n">CLEANER</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">add_command_args_cleaner</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">config_args_parsed</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DeviceType</span><span class="o">.</span><span class="n">LIGHTING</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">add_command_args_bulb</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unknown command type.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args_in</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">config_args_parsed</span><span class="o">.</span><span class="n">help</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">args_parsed</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args_in</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args_parsed</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="n">set_debug_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+        <span class="n">set_debug_logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">TRACE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+        <span class="n">logging_hdl</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+
+    <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SEND_TIMEOUT_MS</span>
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+        <span class="n">timeout_ms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args_parsed</span><span class="o">.</span><span class="n">timeout</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">1000</span>
+
+    <span class="n">server_ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">myip</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">myip</span> <span class="k">else</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+
+    <span class="n">client</span><span class="p">:</span> <span class="n">Client</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">interactive_prompts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">offline</span><span class="o">=</span><span class="n">args_parsed</span><span class="o">.</span><span class="n">offline</span><span class="p">,</span>
+        <span class="n">server_ip</span><span class="o">=</span><span class="n">server_ip</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">print_onboarded_devices</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">interactive_prompts</span>
+
+    <span class="n">print_onboarded_devices</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">device_name</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">device_unitids</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">allDevices</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">quiet</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">offline</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">host</span> <span class="ow">and</span> <span class="n">client</span><span class="o">.</span><span class="n">cloud</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">host</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># if cloud_backend and not account.access_token:</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         if await cloud_backend.login(</span>
+        <span class="c1">#             print_onboarded_devices=print_onboarded_devices</span>
+        <span class="c1">#         ):</span>
+        <span class="c1">#             task_log_debug(&quot;login finished&quot;)</span>
+        <span class="c1">#             klyqa_accs[account.username] = account</span>
+        <span class="c1">#         else:</span>
+        <span class="c1">#             raise Exception()</span>
+        <span class="c1">#     except Exception:</span>
+        <span class="c1">#         LOGGER.error(&quot;Error during login.&quot;)</span>
+        <span class="c1">#         task_log_trace_ex()</span>
+        <span class="c1">#         sys.exit(1)</span>
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">dev</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">dev</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;development mode. Using default aes key.&quot;</span><span class="p">)</span>
+        <span class="n">print_onboarded_devices</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">add_account</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">args_parsed</span><span class="o">.</span><span class="n">username</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">username</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">args_parsed</span><span class="o">.</span><span class="n">password</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">password</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">print_onboarded_devices</span><span class="o">=</span><span class="n">print_onboarded_devices</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">exit_ret</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">interface</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">client</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">network_interface</span> <span class="o">=</span> <span class="n">args_parsed</span><span class="o">.</span><span class="n">interface</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">send_to_devices_wrapped</span><span class="p">(</span>
+            <span class="n">args_parsed</span><span class="p">,</span> <span class="n">args_in</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="n">timeout_ms</span>
+        <span class="p">)</span>
+        <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="p">):</span>
+        <span class="n">exit_ret</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">task_log_debug</span><span class="p">(</span><span class="s2">&quot;Shutting down..&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">exit_ret</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">uvloop</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+    <span class="n">loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Author.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
