@@ -43,7 +43,9 @@ import uvloop
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
+from klyqa_ctl.communication.local.connection_handler import (
+    LocalConnectionHandler,
+)
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
@@ -58,7 +60,7 @@ from klyqa_ctl.devices.vacuum.commands import (
 from klyqa_ctl.devices.vacuum.commands import add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
-    AES_KEY_DEV,
+    AES_KEY_DEV_BYTES,
     DEFAULT_SEND_TIMEOUT_MS,
     LOGGER,
     SEPARATION_WIDTH,
@@ -73,7 +75,10 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message, MessageState
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
+from klyqa_ctl.general.parameters import (
+    add_config_args,
+    get_description_parser,
+)
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -611,7 +616,7 @@ class Client(ControllerData):
             logging_hdl.setLevel(TRACE)
 
         if args_parsed.dev:
-            self.aes_keys["dev"] = AES_KEY_DEV
+            self.aes_keys["dev"] = AES_KEY_DEV_BYTES
 
         local_communication: bool = (
             args_parsed.local or args_parsed.tryLocalThanCloud

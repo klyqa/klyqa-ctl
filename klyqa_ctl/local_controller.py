@@ -7,7 +7,9 @@ import asyncio
 import json
 from typing import Any
 
-from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
+from klyqa_ctl.communication.local.connection_handler import (
+    LocalConnectionHandler,
+)
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.general.general import Command, get_asyncio_loop
 from klyqa_ctl.general.message import Message
