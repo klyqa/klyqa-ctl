@@ -129,37 +129,13 @@ async def load_test(client: Client) -> int:
 
 
 async def main() -> None:
+
     set_debug_logger(TRACE)
 
-    controller_data: ControllerData = await ControllerData.create_default(
+    client: Client = await Client.create(
         interactive_prompts=True, offline=False
     )
 
-    # build offline version here.
-    # account: Account = Account("", "")
-    connection_hdl: LocalConnectionHandler = LocalConnectionHandler(
-        controller_data
-    )
-    # cloud_backend: CloudBackend = CloudBackend(
-    #     controller_data, PROD_HOST, False
-    # )
-
-    # if (
-    #     cloud_backend
-    #     and cloud_backend.account
-    #     and not cloud_backend.account.access_token
-    # ):
-    #     try:
-    #         if await cloud_backend.login(print_onboarded_devices=True):
-    #             LOGGER.debug("login finished")
-    #         else:
-    #             raise Exception()
-    #     except Exception:
-    #         LOGGER.error("Error during login.")
-    #         task_log_trace_ex()
-    #         sys.exit(1)
-
-    client: Client = Client(controller_data, connection_hdl)
     await load_test(client)
 
 

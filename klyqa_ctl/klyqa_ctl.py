@@ -34,12 +34,14 @@ from collections.abc import Callable
 import datetime
 import json
 import logging
+from math import fabs
 import sys
 import time
 from typing import Any
 
 import uvloop
 
+from klyqa_ctl import controller_data
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
@@ -76,36 +78,21 @@ from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.general.unit_id import UnitId
 
 
-class Client:
-    """Client"""
+class Client(ControllerData):
+    """Major klyqa-ctl client class."""
 
     def __init__(
         self,
-        ctl_data: ControllerData,
-        local: LocalConnectionHandler | None = None,
-        cloud: CloudBackend | None = None,
-        devices: dict[str, Device] | None = None,
         accounts: dict[str, Account] | None = None,
     ) -> None:
         """Initialize the client."""
 
-        self._attr_ctl_data: ControllerData = ctl_data
-        self._attr_local: LocalConnectionHandler | None = local
-        self._attr_devices: dict[str, Device] = (
-            {} if devices is None else devices
-        )
-        self._attr_cloud: CloudBackend | None = cloud
+        super().__init__()
+        self._attr_local: LocalConnectionHandler | None = None
+        self._attr_cloud: CloudBackend | None = None
         self._attr_accounts: dict[str, Account] = (
             {} if accounts is None else accounts
         )
-
-    @property
-    def ctl_data(self) -> ControllerData:
-        return self._attr_ctl_data
-
-    @ctl_data.setter
-    def ctl_data(self, ctl_data: ControllerData) -> None:
-        self._attr_ctl_data = ctl_data
 
     @property
     def local(self) -> LocalConnectionHandler | None:
@@ -124,14 +111,6 @@ class Client:
         self._attr_accounts = accounts
 
     @property
-    def devices(self) -> dict[str, Device]:
-        return self._attr_devices
-
-    @devices.setter
-    def devices(self, devices: dict[str, Device]) -> None:
-        self._attr_devices = devices
-
-    @property
     def cloud(self) -> CloudBackend | None:
         return self._attr_cloud
 
@@ -143,6 +122,25 @@ class Client:
     #     if self.cloud_backend:
     #         return bool(self.cloud_backend.access_token != "")
     #     return False
+
+    async def add_account(
+        self,
+        username: str,
+        password: str = "",
+        print_onboarded_devices: bool = False,
+    ) -> Account:
+        """Add user account to client."""
+
+        account = await Account.create_default(
+            self,
+            cloud=self.cloud,
+            username=username,
+            password=password,
+            print_onboarded_devices=print_onboarded_devices,
+        )
+        self.accounts[account.username] = account
+
+        return account
 
     async def shutdown(self) -> None:
         """Logout again from klyqa account."""
@@ -173,7 +171,7 @@ class Client:
         # identification message from the devices in the aes_search and
         # send msg function and we can send then a real
         # request message to these discovered devices.
-        task_log_debug(cal.send_message(
+        await self.local.send_message(
             message_queue_tx_local,
             UnitId("all"),
             discover_timeout_secs,
@@ -359,7 +357,7 @@ class Client:
                 args.tryLocalThanCloud = False
 
             if args.aes is not None:
-                self.ctl_data.aes_keys["all"] = bytes.fromhex(args.aes[0])
+                self.aes_keys["all"] = bytes.fromhex(args.aes[0])
 
             target_device_uids: set[str] = set()
 
@@ -432,7 +430,7 @@ class Client:
                         task_log_debug(
                             "\n\n 2. UDP server received: ",
                             data.decode("utf-8"),
-                        task_log_debug(
+                            "from",
                             address,
                             "\n\n",
                         )
@@ -517,7 +515,7 @@ class Client:
                                 acc_dev, command
                             )
                 else:
-                    success = await self.cloud.cloud_send(
+                    success = await self.cloud.send(
                         args,
                         target_device_uids,
                         to_send_device_uids,
@@ -614,7 +612,7 @@ class Client:
             logging_hdl.setLevel(TRACE)
 
         if args_parsed.dev:
-            self.ctl_data.aes_keys["dev"] = AES_KEY_DEV
+            self.aes_keys["dev"] = AES_KEY_DEV
 
         local_communication: bool = (
             args_parsed.local or args_parsed.tryLocalThanCloud
@@ -667,32 +665,33 @@ class Client:
     ) -> Client:
         """Client factory."""
 
-        ctl_data: ControllerData = await ControllerData.create_default(
-            interactive_prompts=interactive_prompts, offline=offline
-        )
+        cl: Client = Client()
+        cl._attr_interactive_prompts = interactive_prompts
+        cl._attr_offline = offline
+        await cl.init()
 
-        lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(
-            ctl_data,
+        cl.local = LocalConnectionHandler.create_default(
+            cl,
             server_ip=server_ip,
             network_interface=network_interface,
         )
 
-        cloud: CloudBackend = CloudBackend.create_default(ctl_data)
-
-        cl: Client = Client(ctl_data=ctl_data, local=lc_hdl, cloud=cloud)
+        cl.cloud = CloudBackend.create_default(cl)
 
         return cl
 
     @classmethod
-    async def create_lib(
+    async def create_worker(
         cls: Any,
+        offline: bool = False,
         server_ip: str = "0.0.0.0",
         network_interface: str | None = None,
     ) -> Client:
         """Factory client used as a non-interactive library."""
+
         return await Client.create(
             interactive_prompts=False,
-            offline=False,
+            offline=offline,
             server_ip=server_ip,
             network_interface=network_interface,
         )
@@ -702,9 +701,6 @@ async def main() -> None:
     """Main function."""
 
     exit_ret: int = 0
-    klyqa_accs: dict[str, Account] | None = None
-    if not klyqa_accs:
-        klyqa_accs = dict()
 
     parser: argparse.ArgumentParser = get_description_parser()
 
@@ -754,13 +750,13 @@ async def main() -> None:
 
     server_ip: str = args_parsed.myip[0] if args_parsed.myip else "0.0.0.0"
 
-    controller_data: ControllerData = await ControllerData.create_default(
+    client: Client = await Client.create(
         interactive_prompts=True,
-        # user_account=account,
         offline=args_parsed.offline,
+        server_ip=server_ip,
     )
 
-    print_onboarded_devices: bool = controller_data.interactive_prompts
+    print_onboarded_devices: bool = client.interactive_prompts
 
     print_onboarded_devices = (
         not args_parsed.device_name
@@ -769,15 +765,10 @@ async def main() -> None:
         and not args_parsed.quiet
     )
 
-    cloud_backend: CloudBackend | None = None
-
     if not args_parsed.offline:
 
-        host: str = PROD_HOST
-        if args_parsed.host:
-            host = args_parsed.host[0]
-
-        cloud_backend = CloudBackend.create_default(controller_data, host)
+        if args_parsed.host and client.cloud:
+            client.cloud.host = args_parsed.host[0]
 
         # if cloud_backend and not account.access_token:
         #     try:
@@ -792,48 +783,22 @@ async def main() -> None:
         #         LOGGER.error("Error during login.")
         #         task_log_trace_ex()
         #         sys.exit(1)
-
-    account: Account | None = None
-    accounts: dict[str, Account] = dict()
-
     if args_parsed.dev:
         if args_parsed.dev:
             LOGGER.info("development mode. Using default aes key.")
         print_onboarded_devices = False
 
     else:
-        if (
-            args_parsed.username is not None
-            and args_parsed.username[0] in klyqa_accs
-        ):
-            account = klyqa_accs[args_parsed.username[0]]
-        else:
-            account = await Account.create_default(
-                controller_data,
-                username=args_parsed.username[0]
-                if args_parsed.username
-                else "",
-                password=args_parsed.password[0]
-                if args_parsed.password
-                else "",
-                cloud=cloud_backend,
-                print_onboarded_devices=print_onboarded_devices,
-            )
-            accounts[account.username] = account
+        await client.add_account(
+            username=args_parsed.username[0] if args_parsed.username else "",
+            password=args_parsed.password[0] if args_parsed.password else "",
+            print_onboarded_devices=print_onboarded_devices,
+        )
 
     exit_ret = 0
 
-    intf: str | None = None
-    if args_parsed.interface is not None:
-        intf = args_parsed.interface[0]
-
-    local_con_hdl: LocalConnectionHandler = LocalConnectionHandler(
-        controller_data, server_ip, network_interface=intf
-    )
-
-    client: Client = Client(
-        controller_data, local_con_hdl, cloud_backend, accounts
-    )
+    if args_parsed.interface is not None and client.local:
+        client.local.network_interface = args_parsed.interface[0]
 
     if (
         await client.send_to_devices_wrapped(
