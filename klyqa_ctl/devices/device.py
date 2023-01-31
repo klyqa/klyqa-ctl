@@ -4,7 +4,6 @@ from __future__ import annotations
 from abc import abstractmethod
 import asyncio
 from dataclasses import dataclass
-import traceback
 from typing import Any
 
 from klyqa_ctl.communication.device_connection_handler import (
@@ -19,6 +18,7 @@ from klyqa_ctl.general.general import (
     Command,
     CommandTyped,
     task_log_debug,
+    task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
@@ -215,7 +215,7 @@ class Device:
                     else:
                         self.status.update(**msg)
             except Exception:
-                LOGGER.error(f"{traceback.format_exc()}")
+                task_log_trace_ex()
                 LOGGER.error("Could not process device response: ")
                 LOGGER.error(f"{msg}")
 

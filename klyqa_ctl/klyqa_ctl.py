@@ -34,20 +34,16 @@ from collections.abc import Callable
 import datetime
 import json
 import logging
-from math import fabs
 import sys
 import time
 from typing import Any
 
 import uvloop
 
-from klyqa_ctl import controller_data
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.connection_handler import (
-    LocalConnectionHandler,
-)
+from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
@@ -65,11 +61,11 @@ from klyqa_ctl.general.general import (
     AES_KEY_DEV,
     DEFAULT_SEND_TIMEOUT_MS,
     LOGGER,
-    PROD_HOST,
     SEPARATION_WIDTH,
     TRACE,
     DeviceType,
     aes_key_to_bytes,
+    get_asyncio_loop,
     get_obj_attrs_as_string,
     logging_hdl,
     set_debug_logger,
@@ -77,10 +73,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message, MessageState
-from klyqa_ctl.general.parameters import (
-    add_config_args,
-    get_description_parser,
-)
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -336,7 +329,7 @@ class Client(ControllerData):
             bool: True if succeeded.
         """
         try:
-            loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+            loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
             send_started: datetime.datetime = datetime.datetime.now()
 
@@ -822,6 +815,6 @@ async def main() -> None:
 
 if __name__ == "__main__":
     uvloop.install()
-    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
     loop.run_until_complete(main())

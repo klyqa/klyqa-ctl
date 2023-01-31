@@ -570,3 +570,20 @@ def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
 def task_log_trace_ex() -> None:
     """Log exception trace within task."""
     task_log_trace(traceback.format_exc())
+
+
+def get_asyncio_loop() -> asyncio.AbstractEventLoop:
+    """Get asyncio loop."""
+
+    loop: asyncio.AbstractEventLoop
+    # Within a coroutine, simply use `asyncio.get_running_loop()`, since the
+    # coroutine wouldn't be ableto execute in the first place without a
+    # running event loop present.
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        # depending on context, you might debug or warning log that a running
+        # event loop wasn't found
+        loop = asyncio.get_event_loop()
+
+    return loop

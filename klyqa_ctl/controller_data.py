@@ -5,6 +5,7 @@ from typing import Any
 
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
+from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     AsyncIoLock,
@@ -92,6 +93,8 @@ class ControllerData:
             device = Device()
         device.u_id = unit_id
         device.product_id = product_id
+        device.ident.unit_id = unit_id
+        device.ident.product_id = product_id
 
         return device
 
@@ -119,6 +122,14 @@ class ControllerData:
                 self.add_devices_lock.release_within_task()
 
             return dev
+
+    async def get_or_create_device_ident(
+        self, identity: ResponseIdentityMessage
+    ) -> Device:
+        """Get or create device based on device identity."""
+        return await self.get_or_create_device(
+            unit_id=identity.unit_id, product_id=identity.product_id
+        )
 
     @classmethod
     async def create_default(

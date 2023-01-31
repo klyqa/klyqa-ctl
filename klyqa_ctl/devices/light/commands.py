@@ -152,9 +152,8 @@ class ColorCommand(
         if not super().check_values(device) or not self._light:
             return False
         values: list = [self.color.r, self.color.g, self.color.b]
-        if (not self._light.ident or not self._light.color_range) and (
-            not self._light.ident
-            or missing_config(self._force, self._light.ident.product_id)
+        if (not self._light.color_range) and (
+            missing_config(self._force, self._light.product_id)
         ):
             return False
         elif self._light.color_range:
@@ -192,9 +191,8 @@ class TemperatureCommand(
             return False
         value: int = self.temperature
 
-        if (not self._light.ident or not self._light.temperature_range) and (
-            not self._light.ident
-            or missing_config(self._force, self._light.ident.product_id)
+        if (not self._light.temperature_range) and (
+            missing_config(self._force, self._light.product_id)
         ):
             return False
         elif self._light.temperature_range:
@@ -234,9 +232,8 @@ class BrightnessCommand(
             return False
         value: int = self.brightness
 
-        if (not self._light.ident or not self._light.brightness_range) and (
-            not self._light.ident
-            or missing_config(self._force, self._light.ident.product_id)
+        if (not self._light.brightness_range) and (
+            missing_config(self._force, self._light.product_id)
         ):
             return False
         elif self._light.brightness_range:
@@ -402,7 +399,7 @@ class RoutinePutCommand(
             scene: dict[str, Any] = scene_result[0]
 
             # bulb has no colors, therefore only cwww scenes are allowed
-            if ".rgb" not in device.ident.product_id and "cwww" not in scene:
+            if ".rgb" not in device.product_id and "cwww" not in scene:
                 return forced_continue(
                     self._force,
                     f"Scene {scene['label']} not supported by device product"
@@ -411,7 +408,7 @@ class RoutinePutCommand(
                 )
 
         except Exception:
-            return not missing_config(self._force, device.ident.product_id)
+            return not missing_config(self._force, device.product_id)
         return True
 
 
