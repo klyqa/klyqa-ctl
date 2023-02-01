@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
 import sys
 
 import uvloop
@@ -36,11 +37,12 @@ async def main() -> None:
 
     exit_ret: int = 0
 
-    username = "frederick.stallmeyer@qconnex.com"
+    username: str = os.environ["KLYQA_USERNAME"]
+    password: str = os.environ["KLYQA_PASSWORD"]
 
     set_debug_logger(level=TRACE)
 
-    timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
+    # timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
 
     client: Client = await Client.create(
         interactive_prompts=True,
@@ -50,7 +52,7 @@ async def main() -> None:
 
     account: Account = await client.add_account(
         username=username,
-        # password=password,
+        password=password,
         print_onboarded_devices=print_onboarded_devices,
     )
 
