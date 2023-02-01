@@ -38,15 +38,21 @@ async def main() -> None:
     username: str = os.environ["KLYQA_USERNAME"]
     password: str = os.environ["KLYQA_PASSWORD"]
 
+    host: str = PROD_HOST
+    if "KLYQA_HOST" in os.environ and os.environ["KLYQA_HOST"]:
+        host = os.environ["KLYQA_HOST"]
+
     set_debug_logger(level=TRACE)
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
 
     client: Client = await Client.create(
         interactive_prompts=True,
-        # user_account=account,
         offline=False,
     )
+
+    if client.cloud:
+        client.cloud.host = host
 
     print_onboarded_devices: bool = True
 
