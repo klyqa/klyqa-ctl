@@ -68,6 +68,9 @@ AES_KEY_DEV: str = "00112233445566778899AABBCCDDEEFF"
 
 AES_KEY_DEV_BYTES: bytes = bytes.fromhex(AES_KEY_DEV)
 
+QCX_SYN: bytes = "QCX-SYN".encode("utf-8")
+QCX_DSYN: bytes = "QCX-DSYN".encode("utf-8")
+QCX_ACK: bytes = "QCX-ACK".encode("utf-8")
 
 class CommandType(str, Enum):
     """Send/request command types."""

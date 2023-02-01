@@ -61,6 +61,7 @@ from klyqa_ctl.general.general import (
     AES_KEY_DEV_BYTES,
     DEFAULT_SEND_TIMEOUT_MS,
     LOGGER,
+    QCX_ACK,
     SEPARATION_WIDTH,
     TRACE,
     DeviceType,
@@ -174,9 +175,9 @@ class Client(ControllerData):
         # send msg function and we can send then a real
         # request message to these discovered devices.
         await self.local.send_command_to_device(
-            message_queue_tx_local,
             UnitId("all"),
-            discover_timeout_secs,
+            message_queue_tx_local,
+            timeout_secs=discover_timeout_secs,
         )
         task_log_debug("discover ping end")
         # if self.devices:
@@ -361,6 +362,9 @@ class Client(ControllerData):
             if args.aes is not None:
                 self.aes_keys["all"] = aes_key_to_bytes(args.aes[0])
 
+            if args.passive and self.local:
+                self.local.broadcast_discovery = False
+
             target_device_uids: set[str] = set()
 
             message_queue_tx_local: list[Any] = []
@@ -438,14 +442,10 @@ class Client(ControllerData):
                         )
 
                         task_log_debug("3a. Sending UDP ack.\n")
-                        self.local.udp.sendto(
-                            "QCX-ACK".encode("utf-8"), address
-                        )
+                        self.local.udp.sendto(QCX_ACK, address)
                         time.sleep(1)
                         task_log_debug("3b. Sending UDP ack.\n")
-                        self.local.udp.sendto(
-                            "QCX-ACK".encode("utf-8"), address
-                        )
+                        self.local.udp.sendto(QCX_ACK, address)
                 else:
 
                     send_started_local: datetime.datetime = (
@@ -466,9 +466,8 @@ class Client(ControllerData):
                         send_tasks.append(
                             loop.create_task(
                                 self.local.send_command_to_device(
+                                    unit_id=UnitId(uid),
                                     send_msgs=message_queue_tx_local.copy(),
-                                    target_device_uid=UnitId(uid),
-                                    # callback=async_answer_callback_local,
                                     time_to_live_secs=(timeout_ms / 1000),
                                 )
                             )
@@ -667,20 +666,20 @@ class Client(ControllerData):
     ) -> Client:
         """Client factory."""
 
-        cl: Client = Client()
-        cl._attr_interactive_prompts = interactive_prompts
-        cl._attr_offline = offline
-        await cl.init()
+        client: Client = Client()
+        client._attr_interactive_prompts = interactive_prompts
+        client._attr_offline = offline
+        await client.init()
 
-        cl.local = LocalConnectionHandler.create_default(
-            cl,
+        client.local = LocalConnectionHandler.create_default(
+            client,
             server_ip=server_ip,
             network_interface=network_interface,
         )
 
-        cl.cloud = CloudBackend.create_default(cl)
+        client.cloud = CloudBackend.create_default(client)
 
-        return cl
+        return client
 
     @classmethod
     async def create_worker(

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from asyncio import AbstractEventLoop, CancelledError, Task
+from dataclasses import dataclass
 import datetime
 import json
 import select
@@ -28,6 +29,9 @@ from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
     LOGGER,
+    QCX_ACK,
+    QCX_DSYN,
+    QCX_SYN,
     SEND_LOOP_MAX_SLEEP_TIME,
     SEPARATION_WIDTH,
     Command,
@@ -96,6 +100,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self.msg_ttl_task: Task | None = None
         self._attr_current_addr_connections = set()
         self._attr_network_interface: str | None = network_interface
+        self._attr_read_udp_socket_task_hdl: Task[None] | None = None
+        self._attr_broadcast_discovery: bool = True
 
     @property
     def network_interface(self) -> str | None:
@@ -106,6 +112,16 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     @network_interface.setter
     def network_interface(self, network_interface: str | None) -> None:
         self._attr_network_interface = network_interface
+
+    @property
+    def broadcast_discovery(self) -> bool:
+        """Get broadcast device discovery switch state."""
+
+        return self._attr_broadcast_discovery
+
+    @broadcast_discovery.setter
+    def broadcast_discovery(self, broadcast_discovery: bool) -> None:
+        self._attr_broadcast_discovery = broadcast_discovery
 
     @property
     def controller_data(self) -> ControllerData:
@@ -809,6 +825,53 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         return return_state
 
+    async def reconnect_socket_udp(self) -> None:
+        if self.udp:
+            self.udp.close()
+            self.udp = None
+        if not await self.bind_ports():
+            raise socket.error
+
+    async def reconnect_socket_tcp(self) -> None:
+        if self.tcp:
+            self.tcp.close()
+            self.tcp = None
+        if not await self.bind_ports():
+            raise socket.error
+
+    async def read_udp_socket(self) -> None:
+
+        loop: AbstractEventLoop = get_asyncio_loop()
+        if not self.udp:
+            return
+
+        @dataclass
+        class Address:
+            ip: str
+            port: int
+
+        data: bytes
+        addr_tup: tuple
+        address: Address
+        while True:
+            data, addr_tup = await loop.run_in_executor(
+                None, self.udp.recvfrom, 4096
+            )
+            address = Address(*addr_tup)
+            task_log_debug(
+                "Received UDP package %r from %s.", data, address.__dict__
+            )
+            if data == QCX_SYN or data == QCX_DSYN:
+                try:
+                    ack_data: bytes = QCX_ACK
+                    task_log_debug(
+                        "Send %r to %s.", ack_data, address.__dict__
+                    )
+                    e = self.udp.sendto(ack_data, addr_tup)
+                    pass
+                except socket.error:
+                    await self.reconnect_socket_udp()
+
     async def send_udp_broadcast_task(self) -> bool:
         """Send qcx-syn broadcast on udp socket."""
 
@@ -820,7 +883,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 await loop.run_in_executor(
                     None,
                     self.udp.sendto,
-                    "QCX-SYN".encode("utf-8"),
+                    QCX_SYN,
                     ("255.255.255.255", 2222),
                 )
             else:
@@ -995,6 +1058,19 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         else:
             task_log_debug(f"Address {addr[0]} already in connection.")
 
+    async def read_udp_socket_task(self) -> None:
+        """Start read UDP socket for incoming syncs, when not running."""
+
+        if (
+            self._attr_read_udp_socket_task_hdl
+            and not self._attr_read_udp_socket_task_hdl.done()
+        ):
+            return
+        loop: AbstractEventLoop = get_asyncio_loop()
+        self._attr_read_udp_socket_task_hdl = loop.create_task(
+            self.read_udp_socket()
+        )
+
     async def handle_connections(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> bool:
@@ -1009,30 +1085,32 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             false: on exception or error
         """
 
+        loop: AbstractEventLoop = get_asyncio_loop()
         try:
             while not self.handle_connections_task_end_now:
                 if not await self.bind_ports():
                     break
                 if not self.tcp or not self.udp:
                     break
+
                 # for debug cursor jump:
                 stop: bool = False
                 if stop:
                     break
 
+                await self.read_udp_socket_task()
                 if self.message_queue:
+                    read_incoming_connections: bool = True
 
-                    read_broadcast_response: bool = True
-                    if not await self.send_udp_broadcast_task():
-                        read_broadcast_response = False
-                        continue
+                    if self.broadcast_discovery:
+                        await self.send_udp_broadcast()
 
-                    if not read_broadcast_response:
+                    if not read_incoming_connections:
                         await self.standby()
 
-                    while read_broadcast_response:
+                    while read_incoming_connections:
 
-                        self.__read_tcp_task = asyncio.create_task(
+                        self.__read_tcp_task = loop.create_task(
                             self.read_incoming_tcp_con_task()
                         )
 
@@ -1157,17 +1235,21 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def send_command_to_device(
         self,
+        unit_id: UnitId,
         send_msgs: list[Command],
-        target_device_uid: UnitId,
+        aes_key: str = "",
         time_to_live_secs: float = 30.0,
         **kwargs: Any,
     ) -> Message | None:
         """Add message to message's queue."""
         if not send_msgs:
-            LOGGER.error(
-                "No message queue to send in message to %s!", target_device_uid
-            )
+            LOGGER.error("No message queue to send in message to %s!", unit_id)
             return None
+
+        if aes_key:
+            self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(
+                aes_key
+            )
 
         response_event: asyncio.Event = asyncio.Event()
 
@@ -1178,7 +1260,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         msg: Message = Message(
             datetime.datetime.now(),
-            target_device_uid,
+            unit_id,
             msg_queue=send_msgs,
             callback=answer,
             time_to_live_secs=time_to_live_secs,
@@ -1189,11 +1271,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             return msg
 
         task_log_trace(
-            f"new message {msg.msg_counter} target"
-            f" {target_device_uid} {send_msgs}"
+            f"new message {msg.msg_counter} target {unit_id} {send_msgs}"
         )
 
-        self.message_queue.setdefault(str(target_device_uid), []).append(msg)
+        self.message_queue.setdefault(str(unit_id), []).append(msg)
 
         await self.send_udp_broadcast_task()
         self.search_and_send_loop_task_alive()
@@ -1204,8 +1285,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def send_to_device(
         self,
         unit_id: str,
-        key: str,
         command: str,
+        key: str,
         time_to_live_secs: float = 30.0,
     ) -> str:
         """Sends command string to device with unit id and aes key."""
@@ -1217,7 +1298,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         msg: Message | None = await self.send_command_to_device(
             send_msgs=[command_obj],
-            target_device_uid=UnitId(unit_id),
+            unit_id=UnitId(unit_id),
             time_to_live_secs=time_to_live_secs,
         )
         if msg:
@@ -1243,9 +1324,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # and send msg function and we can send then a real
         # request message to these discovered devices.
         await self.send_command_to_device(
-            [PingCommand()],
             UnitId("all"),
-            timeout_secs,
+            [PingCommand()],
+            time_to_live_secs=timeout_secs,
         )
 
     @classmethod

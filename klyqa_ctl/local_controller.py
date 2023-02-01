@@ -37,7 +37,7 @@ class LocalController(ShutDownHandler):
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
         result: str = loop.run_until_complete(
-            self.connection_hdl.send_to_device(unit_id, key, command)
+            self.connection_hdl.send_to_device(unit_id, command, key)
         )
 
         return result

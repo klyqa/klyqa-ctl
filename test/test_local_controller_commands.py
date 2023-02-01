@@ -63,33 +63,33 @@ def main() -> None:
 
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
-    lc: LocalController = LocalController.create_standalone(
+    local: LocalController = LocalController.create_standalone(
         network_interface="eth0", interactive_prompts=False
     )
 
-    if lc.connection_hdl:
-        loop.run_until_complete(lc.connection_hdl.discover_devices(0.3))
+    if local.connection_hdl:
+        loop.run_until_complete(local.connection_hdl.discover_devices(0.3))
 
     dev: Device | None = None
-    if "00ac629de9ad2f4409dc" in lc.controller_data.devices:
-        dev = lc.controller_data.devices["00ac629de9ad2f4409dc"]
+    if "00ac629de9ad2f4409dc" in local.controller_data.devices:
+        dev = local.controller_data.devices["00ac629de9ad2f4409dc"]
 
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
-    unit_id: UnitId = UnitId("00ac629de9ad2f4409dc")
+    unit_id: UnitId = UnitId("00ac629de9ad2f4409dc_oooo")
     aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
 
     req_color: ColorCommand = ColorCommand(
         color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
     )  # , force=True)json
 
-    reply: str = lc.send_to_device(
+    reply: str = local.send_to_device(
         str(unit_id), aes_key, json.dumps(req_color.json())
     )
 
     if dev:
         light: Light = dev
 
-        light.local_con = lc.connection_hdl
+        light.local_con = local.connection_hdl
         if light.local_con:
 
             ret: Message | None = loop.run_until_complete(
@@ -130,7 +130,7 @@ async def async_main() -> None:
 
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
-    lc: LocalController = LocalController.create_standalone(
+    local: LocalController = LocalController.create_standalone(
         network_interface="eth0", interactive_prompts=False
     )
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
@@ -140,7 +140,7 @@ async def async_main() -> None:
     req_color: ColorCommand = ColorCommand(
         color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
     )  # , force=True)json
-    lc.send_to_device(str(unit_id), aes_key, json.dumps(req_color.json()))
+    local.send_to_device(str(unit_id), aes_key, json.dumps(req_color.json()))
 
     sends: list = [
         # (
@@ -150,8 +150,8 @@ async def async_main() -> None:
         # ),
         (
             unit_id,
+            [TemperatureCommand(temperature=random.randrange(2500, 6000))],
             aes_key,
-            TemperatureCommand(temperature=random.randrange(2500, 6000)),
         ),
         # (
         #     unit_id,
@@ -201,11 +201,18 @@ async def async_main() -> None:
     #         )
     #     )
     #     count = count + 1
-    for s in sends:
-        tasks.append(
-            (count, s[0], loop.create_task(lc.send_to_device_native(*s)))
-        )
-        count = count + 1
+    if local.connection_hdl:
+        for s in sends:
+            tasks.append(
+                (
+                    count,
+                    s[0],
+                    loop.create_task(
+                        local.connection_hdl.send_command_to_device(*s)
+                    ),
+                )
+            )
+            count = count + 1
 
     await asyncio.wait([t for c, u_id, t in tasks])
 
@@ -217,7 +224,7 @@ async def async_main() -> None:
     # print(response)
     # await asyncio.sleep(1.2)
 
-    await lc.shutdown()
+    await local.shutdown()
 
 
 if __name__ == "__main__":
