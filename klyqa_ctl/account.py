@@ -64,6 +64,8 @@ class Account:
         self._attr_access_token: str = ""
         self._attr_settings: TypeJson | None = {}
         self._attr_settings_lock: asyncio.Lock | None = None
+
+        # Representation of unit_id and Account Device.
         self._attr_devices: dict[str, AccountDevice] = {}
         self._attr_controller_data: ControllerData = controller_data
         self._attr_cloud: CloudBackend | None = cloud
