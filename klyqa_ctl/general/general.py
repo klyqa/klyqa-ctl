@@ -72,6 +72,7 @@ QCX_SYN: bytes = "QCX-SYN".encode("utf-8")
 QCX_DSYN: bytes = "QCX-DSYN".encode("utf-8")
 QCX_ACK: bytes = "QCX-ACK".encode("utf-8")
 
+
 class CommandType(str, Enum):
     """Send/request command types."""
 
@@ -590,3 +591,11 @@ class ShutDownHandler:
 
         for awaitable in self._shutdown_handler:
             await awaitable()
+
+
+@dataclass
+class Address:
+    """Class for IP address with port."""
+
+    ip: str
+    port: int
