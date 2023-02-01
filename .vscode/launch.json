@@ -56,7 +56,11 @@
       "program": "test/test_account.py",
       "console": "integratedTerminal",
       "justMyCode": false,
-      "args": []
+      "args": [],
+      "env": {
+        "KLYQA_USERNAME": "",
+        "KLYQA_PASSWORD": "",
+      }
     },
     {
       "name": "Python: klyqa_ctl load test",
