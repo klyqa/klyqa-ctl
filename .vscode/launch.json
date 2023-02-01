@@ -27,7 +27,7 @@
       // ],
       "args": [
         "--aes",
-        "",
+        "deviceaeskey",
         "--request"
       ]
     },
@@ -36,6 +36,15 @@
       "type": "python",
       "request": "launch",
       "program": "test/test_local_controller.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": []
+    },
+    {
+      "name": "Python: test local controller commands",
+      "type": "python",
+      "request": "launch",
+      "program": "test/test_local_controller_commands.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": []
@@ -125,8 +134,7 @@
       "args": [
         "lighting",
         "--username",
-        // "fraizy@gmx.de",
-        "frederick.stallmeyer@qconnex.com",
+        "yourusername",
         // "--help",
         //   "--cloud",
         // "--debug",
@@ -164,7 +172,7 @@
       "args": [
         "lighting",
         "--username",
-        "frederick.stallmeyer@qconnex.com",
+        "yourusername",
         //   "--cloud",
         "--debug",
         "--WW",
@@ -194,7 +202,7 @@
       "args": [
         "lighting",
         "--username",
-        "frederick.stallmeyer@qconnex.com",
+        "yourusername",
         //   "--cloud",
         "--debug",
         "--party",
@@ -220,7 +228,7 @@
       "args": [
         "lighting",
         "--username",
-        "frederick.stallmeyer@qconnex.com",
+        "yourusername",
         "--cloud",
         "--reboot",
         "--debug",
@@ -228,7 +236,7 @@
         "--timeout",
         "120",
         "--aes",
-        "",
+        "bulbaeskey",
         "--device_unitids",
         ""
         //   "deviceuid",
@@ -251,7 +259,7 @@
       "args": [
         "cleaner",
         "--username",
-        "frederick.stallmeyer@qconnex.com",
+        "yourusername",
         //   "--cloud",
         "--debug",
         // "--device_unitids",
