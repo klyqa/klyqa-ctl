@@ -127,3 +127,23 @@ For running the bulbs in the development configuration locally without a klyqa a
 ```
 --dev
 ```
+
+
+## Development
+
+pip install -r klyqa_ctl/requirements_dev_additionals.txt
+
+### Create documentations files
+
+Doxygen documentation create into klyqa_ctl/docs/:
+```cd klyqa_ctl/ && doxygen```
+
+Use klyqa_ctl/docs/html/index.html.
+
+Sphinx documentation create into apidoc/:
+```cd klyqa_ctl/apidoc && make html```
+
+Use apidoc/_build/html/index.html.
+
+Dependency graph:
+```cd doxdepends && ./doxdepends.py -o klyqa_ctl/docs/dependency_graph.svg ../klyqa_ctl/docs/xml/```

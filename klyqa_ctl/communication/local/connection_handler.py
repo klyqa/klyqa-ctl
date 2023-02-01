@@ -34,6 +34,7 @@ from klyqa_ctl.general.general import (
     QCX_SYN,
     SEND_LOOP_MAX_SLEEP_TIME,
     SEPARATION_WIDTH,
+    Address,
     Command,
     ReferencePass,
     TypeJson,
@@ -266,6 +267,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         """Close sockets and Unbind local ports."""
 
         await self.handle_connections_task_stop()
+        if (
+            self._attr_read_udp_socket_task_hdl
+            and not self._attr_read_udp_socket_task_hdl.done()
+        ):
+            try:
+                self._attr_read_udp_socket_task_hdl.cancel()
+            except CancelledError:
+                task_log_debug("Read UDP socket task cancelled.")
 
         if self.tcp:
             try:
@@ -826,6 +835,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return return_state
 
     async def reconnect_socket_udp(self) -> None:
+        """Reconnect UDP socket."""
+
         if self.udp:
             self.udp.close()
             self.udp = None
@@ -833,6 +844,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             raise socket.error
 
     async def reconnect_socket_tcp(self) -> None:
+        """Reconnect TCP socket."""
+
         if self.tcp:
             self.tcp.close()
             self.tcp = None
@@ -840,15 +853,11 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             raise socket.error
 
     async def read_udp_socket(self) -> None:
+        """Read UDP socket for incoming syns."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
         if not self.udp:
             return
-
-        @dataclass
-        class Address:
-            ip: str
-            port: int
 
         data: bytes
         addr_tup: tuple
@@ -867,8 +876,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     task_log_debug(
                         "Send %r to %s.", ack_data, address.__dict__
                     )
-                    e = self.udp.sendto(ack_data, addr_tup)
-                    pass
+                    self.udp.sendto(ack_data, addr_tup)
                 except socket.error:
                     await self.reconnect_socket_udp()
 
