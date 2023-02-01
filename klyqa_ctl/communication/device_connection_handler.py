@@ -17,8 +17,9 @@ class DeviceConnectionHandler(ABC):  # pylint: disable=too-few-public-methods
     @abstractmethod
     async def send_command_to_device(
         self,
+        unit_id: UnitId,
         send_msgs: list[Command],
-        target_device_uid: UnitId,
+        aes_key: str = "",
         time_to_live_secs: float = 30.0,
         **kwargs: Any,
     ) -> Message | None:
@@ -28,8 +29,8 @@ class DeviceConnectionHandler(ABC):  # pylint: disable=too-few-public-methods
     async def send_to_device(
         self,
         unit_id: str,
-        key: str,
         command: str,
+        key: str = "",
         time_to_live_secs: float = 30.0,
     ) -> str:
         """Send message to device via connection handler."""

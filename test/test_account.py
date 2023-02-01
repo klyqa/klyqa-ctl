@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
 import sys
 
 import uvloop
@@ -36,7 +37,12 @@ async def main() -> None:
 
     exit_ret: int = 0
 
-    username = "frederick.stallmeyer@qconnex.com"
+    username: str = os.environ["KLYQA_USERNAME"]
+    password: str = os.environ["KLYQA_PASSWORD"]
+
+    host: str = PROD_HOST
+    if "KLYQA_HOST" in os.environ and os.environ["KLYQA_HOST"]:
+        host = os.environ["KLYQA_HOST"]
 
     set_debug_logger(level=TRACE)
 
@@ -44,15 +50,17 @@ async def main() -> None:
 
     client: Client = await Client.create(
         interactive_prompts=True,
-        # user_account=account,
         offline=False,
     )
+
+    if client.cloud:
+        client.cloud.host = host
 
     print_onboarded_devices: bool = True
 
     account: Account = await client.add_account(
         username=username,
-        # password=password,
+        password=password,
         print_onboarded_devices=print_onboarded_devices,
     )
 

@@ -72,7 +72,9 @@ class Device:
         connection handler (param: con)."""
 
         return await con.send_command_to_device(  # type: ignore[no-any-return]
-            commands, UnitId(self.u_id), time_to_live_secs
+            unit_id=UnitId(self.u_id),
+            send_msgs=commands,
+            timeout_secs=time_to_live_secs,
         )
 
     async def send_msg_local(
