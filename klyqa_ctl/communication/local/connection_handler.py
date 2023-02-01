@@ -267,6 +267,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         """Close sockets and Unbind local ports."""
 
         await self.handle_connections_task_stop()
+        if (
+            self._attr_read_udp_socket_task_hdl
+            and not self._attr_read_udp_socket_task_hdl.done()
+        ):
+            try:
+                self._attr_read_udp_socket_task_hdl.cancel()
+            except CancelledError:
+                task_log_debug("Read UDP socket task cancelled.")
 
         if self.tcp:
             try:
