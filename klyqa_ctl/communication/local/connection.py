@@ -189,6 +189,7 @@ class TcpConnection:
         except socket.error:
             task_log_trace_ex()
             return DeviceTcpReturn.SOCKET_ERROR
+
         return DeviceTcpReturn.NO_ERROR
 
     async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:

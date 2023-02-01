@@ -768,9 +768,6 @@ async def add_device_command_to_queue(
     if args.enable_tb is not None:
         enable_tb(args, msg_queue)
 
-    if args.passive:
-        pass
-
     if args.power:
         msg_queue.append(
             PowerCommand(status=args.power[0])
