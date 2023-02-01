@@ -247,7 +247,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_current_addr_connections = current_addr_connections
 
     async def shutdown(self) -> None:
-        """Close sockets and Unbind local ports."""
+        """Close sockets and unbind local ports."""
 
         await self.handle_connections_task_stop()
 
