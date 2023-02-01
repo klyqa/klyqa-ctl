@@ -16,3 +16,11 @@ build/*
 fraizy@gmx.de.asc
 *.pyc
 package.test.venv
+klyqa_ctl/apidoc/_build
+klyqa_ctl/docs/
+klyqa_ctl/old
+.vscode/settings.json
+.vscode/settings.default.json
+test_code
+core.[0-9]*
+klyqa-ctl-lcl
