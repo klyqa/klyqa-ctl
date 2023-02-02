@@ -10,6 +10,6 @@
 #
 ###################################################################
 
-__version__: str = "1.0.17-next"
+__version__: str = "1.0.18"
 __author__: str = "Frederick Stallmeyer"
 __license__: str = "MIT"
