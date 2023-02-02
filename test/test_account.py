@@ -4,8 +4,6 @@ import argparse
 import asyncio
 import sys
 
-import uvloop
-
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.controller_data import ControllerData
@@ -141,7 +139,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    uvloop.install()
     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
     loop.run_until_complete(main())
