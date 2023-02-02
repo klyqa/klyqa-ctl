@@ -1,0 +1,8 @@
+sphinx-rtd-theme
+sphinx-autodocgen
+pydeps
+black
+isort
+flake8
+epydoc
+snakefood
