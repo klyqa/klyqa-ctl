@@ -7,10 +7,9 @@
 # Company: QConnex GmbH / Klyqa
 # Author: Frederick Stallmeyer
 #
-# E-Mail: fraizy@gmx.de
 #
 ###################################################################
 
 __version__: str = "1.0.17-next"
-__author__: str = "Frederick Stallmeyer <fraizy@gmx.de>"
+__author__: str = "Frederick Stallmeyer"
 __license__: str = "MIT"
