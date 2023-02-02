@@ -16,3 +16,7 @@ build/*
 fraizy@gmx.de.asc
 *.pyc
 package.test.venv
+docs
+apidoc
+old
+test_code
