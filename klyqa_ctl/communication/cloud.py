@@ -173,8 +173,8 @@ class CloudBackend:
             2,
             3,
         ]:
-            LOGGER.error("Unvalid response from cloud request.")
-            raise Exception(response.text)
+            LOGGER.error("Invalid response from cloud request.")
+            return None
 
         try:
             answer = json.loads(response.text)

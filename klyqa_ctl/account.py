@@ -246,12 +246,9 @@ class Account:
             if not login_response:
                 return False
 
-            try:
-                login_json: TypeJson | None = (
-                    await self.cloud.load_http_response(login_response)
-                )
-            except Exception as ex:
-                pass
+            login_json: TypeJson | None = (
+                await self.cloud.load_http_response(login_response)
+            )
 
             if login_json:
                 self.access_token = str(login_json.get("accessToken"))
@@ -261,6 +258,8 @@ class Account:
                         "password": self.password,
                     }
                 )
+            else:
+                return False
 
             if not self.settings:
                 return False
