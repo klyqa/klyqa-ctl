@@ -134,7 +134,7 @@ class Client(ControllerData):
     ) -> Account:
         """Add user account to client."""
 
-        account = await Account.create_default(
+        account: Account = await Account.create_default(
             self,
             cloud=self.cloud,
             username=username,

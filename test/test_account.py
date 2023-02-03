@@ -23,10 +23,7 @@ from klyqa_ctl.general.general import (
     set_debug_logger,
     task_log_debug,
 )
-from klyqa_ctl.general.parameters import (
-    add_config_args,
-    get_description_parser,
-)
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import Client
 
 
@@ -61,6 +58,9 @@ async def main() -> None:
         password=password,
         print_onboarded_devices=print_onboarded_devices,
     )
+    await account.get_account_settings()
+    if account.cloud:
+        await account.cloud.update_device_configs()
 
     exit_ret = 0
 

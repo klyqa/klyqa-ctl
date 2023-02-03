@@ -117,6 +117,23 @@ class CloudBackend:
             LOGGER.info("No server reply for device configs. Using cache.")
         return None
 
+    async def update_device_configs(self) -> None:
+
+        dev: Device
+        await self.get_device_configs(
+            set(
+                [
+                    dev.product_id
+                    for _, dev in self.controller_data.devices.items()
+                ]
+            )
+        )
+
+        for _, dev in self.controller_data.devices.items():
+            dev.read_device_config(
+                device_config=self.controller_data.device_configs[dev.product_id]
+            )
+
     def get_header_default(self) -> TypeJson:
         """Get default request header for cloud request."""
         header: dict[str, str] = {
