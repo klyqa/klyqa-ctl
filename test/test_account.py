@@ -5,8 +5,6 @@ import asyncio
 import os
 import sys
 
-import uvloop
-
 from klyqa_ctl.account import Account
 from klyqa_ctl.communication.cloud import CloudBackend
 from klyqa_ctl.controller_data import ControllerData
@@ -25,10 +23,7 @@ from klyqa_ctl.general.general import (
     set_debug_logger,
     task_log_debug,
 )
-from klyqa_ctl.general.parameters import (
-    add_config_args,
-    get_description_parser,
-)
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.klyqa_ctl import Client
 
 
@@ -63,6 +58,9 @@ async def main() -> None:
         password=password,
         print_onboarded_devices=print_onboarded_devices,
     )
+    await account.get_account_settings()
+    if account.cloud:
+        await account.cloud.update_device_configs()
 
     exit_ret = 0
 
@@ -149,7 +147,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    uvloop.install()
     loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
     loop.run_until_complete(main())

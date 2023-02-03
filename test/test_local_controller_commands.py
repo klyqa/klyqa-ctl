@@ -228,9 +228,6 @@ async def async_main() -> None:
 
 
 if __name__ == "__main__":
-    import uvloop
-
-    uvloop.install()
     main()
     # loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
     # loop.run_until_complete(async_main())

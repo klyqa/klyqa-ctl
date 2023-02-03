@@ -232,35 +232,36 @@ class Account:
 
         if self.username is not None and self.password is not None:
             login_response: httpx.Response | None = None
-            login_data: TypeJson = {
-                "email": self.username,
-                "password": self.password,
-            }
 
-            login_response = await self.cloud.request(
-                RequestMethod.POST,
-                "auth/login",
-                json=login_data,
-                timeout=10,
-            )
-            if not login_response:
-                return False
+            while not self.access_token:
+                login_data: TypeJson = {
+                    "email": self.username,
+                    "password": self.password,
+                }
 
-            login_json: TypeJson | None = await self.cloud.load_http_response(
-                login_response
-            )
+                login_response = await self.cloud.request(
+                    RequestMethod.POST,
+                    "auth/login",
+                    json=login_data,
+                    timeout=10,
+                )
+                if not login_response:
+                    return False
 
-            if login_json:
-                self.access_token = str(login_json.get("accessToken"))
-                await self.update_account_settings(
-                    {
-                        "time_cached": datetime.datetime.now(),
-                        "password": self.password,
-                    }
+                login_json: TypeJson | None = (
+                    await self.cloud.load_http_response(login_response)
                 )
 
-            if not self.settings:
-                return False
+                if login_json:
+                    self.access_token = str(login_json.get("accessToken"))
+                    # await self.get_account_settings()
+                else:
+                    self.password = ""
+                    if not self.run_password_prompt():
+                        return False
+
+                if not self.settings:
+                    return False
 
         return True
 
@@ -347,8 +348,6 @@ class Account:
         if not self.settings:
             return False
 
-        await self.request_device_configs_from_acc_sets()
-
         for device_sets in self.settings["devices"]:
 
             self.controller_data.aes_keys[
@@ -380,10 +379,17 @@ class Account:
 
         return True
 
-    async def update_devices(self) -> None:
-        """Stub for later."""
-        # for
-        # self.devices[uid].acc_sets
+    # async def update_device_configs(self) -> None:
+
+    #     await self.request_device_configs_from_acc_sets()
+
+    #     for device_sets in self.settings["devices"]:
+
+    #         unit_id: str = format_uid(device_sets["localDeviceId"])
+
+    #         await self.get_or_create_device(
+    #             unit_id, device_sets["productId"], device_sets
+    #         )
 
     async def read_cache(self) -> bool:
         """Get cached account data for login and check existing username and
@@ -413,6 +419,8 @@ class Account:
 
         if not self.backend_connected() or not self.cloud:
             return
+
+        await self.cloud.update_device_configs()
 
         state_str = (
             f'Name: "{dev.acc_settings["name"]}"'
@@ -511,26 +519,38 @@ class Account:
         ret: bool = True
         try:
             now: datetime.datetime = datetime.datetime.now()
-            if not self._settings_loaded_ts or (
-                now - self._settings_loaded_ts
-                >= datetime.timedelta(seconds=scan_interval)
+            if (
+                not self.settings
+                or not self._settings_loaded_ts
+                or (
+                    now - self._settings_loaded_ts
+                    >= datetime.timedelta(seconds=scan_interval)
+                )
             ):
-                """look that the settings are loaded only once in the scan
-                interval"""
-                await self.update_account_settings()
+                # Look that the settings are loaded only once in the scan
+                # interval
+                await self.get_account_settings()
         finally:
             if self.settings_lock:
                 self.settings_lock.release()
         return ret
 
-    async def update_account_settings(
-        self, add_to_cache: TypeJson = {}
+    async def get_account_settings(
+        self, add_to_cache: TypeJson | None = None
     ) -> None:
         """Request the account settings from cloud and apply it.
         Get device configs from the product ids as well."""
 
         if not self.cloud:
             return
+
+        if not add_to_cache:
+            add_to_cache = {}
+
+        add_to_cache = add_to_cache | {
+            "time_cached": datetime.datetime.now(),
+            "password": self.password,
+        }
 
         acc_settings: TypeJson | None = await self.request_beared(
             RequestMethod.GET, "settings"

@@ -38,8 +38,6 @@ import sys
 import time
 from typing import Any
 
-import uvloop
-
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
@@ -136,7 +134,7 @@ class Client(ControllerData):
     ) -> Account:
         """Add user account to client."""
 
-        account = await Account.create_default(
+        account: Account = await Account.create_default(
             self,
             cloud=self.cloud,
             username=username,
@@ -700,7 +698,7 @@ class Client(ControllerData):
         )
 
 
-async def main() -> None:
+async def async_main() -> None:
     """Main function."""
 
     exit_ret: int = 0
@@ -817,8 +815,13 @@ async def main() -> None:
     sys.exit(exit_ret)
 
 
-if __name__ == "__main__":
-    uvloop.install()
+def main() -> None:
+    """Start main async function."""
+
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
-    loop.run_until_complete(main())
+    loop.run_until_complete(async_main())
+
+
+if __name__ == "__main__":
+    main()
