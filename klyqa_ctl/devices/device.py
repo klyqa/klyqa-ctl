@@ -13,6 +13,7 @@ from klyqa_ctl.devices.cloud_state import DeviceCloudState
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.general import (
+    DEFAULT_SEND_TIMEOUT_MS,
     LOGGER,
     AsyncIoLock,
     Command,
@@ -22,17 +23,6 @@ from klyqa_ctl.general.general import (
 )
 from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
-
-
-@dataclass
-class CommandWithCheckValues(CommandTyped):
-    """Command with check values range limits."""
-
-    _force: bool = False  # protected vars for non json msg usage
-
-    @abstractmethod
-    def check_values(self, device: Device) -> bool:
-        return False
 
 
 class Device:
@@ -80,7 +70,7 @@ class Device:
     async def send_msg_local(
         self,
         commands: list[Command],
-        time_to_live_secs: int,
+        time_to_live_secs: int = DEFAULT_SEND_TIMEOUT_MS,
     ) -> Message | None:
         """Send message to device via local connection."""
 

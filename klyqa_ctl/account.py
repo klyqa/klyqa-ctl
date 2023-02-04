@@ -13,7 +13,8 @@ import httpx
 
 from klyqa_ctl.communication.cloud import CloudBackend, RequestMethod
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices.device import CommandWithCheckValues, Device
+from klyqa_ctl.devices.commands import CommandWithCheckValues
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
     CloudStateCommand,

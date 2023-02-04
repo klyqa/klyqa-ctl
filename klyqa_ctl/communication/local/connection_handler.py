@@ -23,11 +23,12 @@ from klyqa_ctl.communication.local.data_package import (
     PackageType,
 )
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices.device import CommandWithCheckValues, Device
-from klyqa_ctl.devices.light.commands import PingCommand
+from klyqa_ctl.devices.commands import CommandWithCheckValues, PingCommand
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
+    DEFAULT_SEND_TIMEOUT_MS,
     LOGGER,
     QCX_ACK,
     QCX_DSYN,
@@ -1246,7 +1247,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         unit_id: UnitId,
         send_msgs: list[Command],
         aes_key: str = "",
-        time_to_live_secs: float = 30.0,
+        time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
         **kwargs: Any,
     ) -> Message | None:
         """Add message to message's queue."""
@@ -1295,7 +1296,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         unit_id: str,
         command: str,
         key: str,
-        time_to_live_secs: float = 30.0,
+        time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
     ) -> str:
         """Sends command string to device with unit id and aes key."""
 

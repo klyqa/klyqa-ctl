@@ -9,7 +9,8 @@ import json
 import sys
 from typing import Any, Callable
 
-from klyqa_ctl.devices.device import CommandWithCheckValues, Device
+from klyqa_ctl.devices.commands import CommandWithCheckValues
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
 from klyqa_ctl.general.general import (
@@ -80,27 +81,10 @@ class RequestCommand(CommandTyped):
 
 
 @dataclass
-class PingCommand(CommandTyped):
-    """Ping command."""
+class PowerCommand(RequestCommand, CloudStateCommand):
+    """Power command."""
 
-    def __post_init__(self) -> None:
-        self.type = CommandType.PING.value
-
-
-@dataclass
-class FwUpdateCommand(CommandTyped):
-    """Firmware update command."""
-
-    url: str = ""
-
-    def __post_init__(self) -> None:
-        self.type = CommandType.FW_UPDATE.value
-
-    def url_json(self) -> TypeJson:
-        return {"url": self.url}
-
-    def json(self) -> TypeJson:
-        return super().json() | self.url_json()
+    status: str = "on"
 
 
 @dataclass
@@ -282,29 +266,6 @@ class ExternalSourceCommand(CommandWithCheckValues, RequestCommand):
         # return check_external_source_command(
         #     force, device, value=self.brightness
         # )
-
-
-@dataclass
-class PowerCommand(RequestCommand, CloudStateCommand):
-    """Power command."""
-
-    status: str = "on"
-
-
-@dataclass
-class RebootCommand(CommandTyped):
-    """Reboot command."""
-
-    def __post_init__(self) -> None:
-        self.type = CommandType.REBOOT.value
-
-
-@dataclass
-class FactoryResetCommand(CommandTyped):
-    """Factory reset command."""
-
-    def __post_init__(self) -> None:
-        self.type = CommandType.FACTORY_RESET.value
 
 
 @dataclass
