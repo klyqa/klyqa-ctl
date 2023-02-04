@@ -271,13 +271,13 @@ class AsyncIoLock(asyncio.Lock):
         """Get asyncio lock and remember the task within it was locked."""
 
         try:
-            task_log_debug(f"wait for lock... {self.name}")
+            task_log_trace(f"wait for lock... {self.name}")
 
             await asyncio.wait_for(self.acquire(), timeout)
 
             self.locked_in_task = asyncio.current_task()
 
-            task_log(f"got lock... {self.name}")
+            task_log_trace(f"got lock... {self.name}")
             return True
         except asyncio.TimeoutError:
             LOGGER.error(
@@ -293,7 +293,7 @@ class AsyncIoLock(asyncio.Lock):
             try:
                 super().release()
                 self.locked_in_task = None
-                task_log_debug(f"got unlock... {self.name}")
+                task_log_trace(f"got unlock... {self.name}")
             except Exception as exception:
                 task_log_error(
                     "Error while trying to unlock the device! (Probably now"

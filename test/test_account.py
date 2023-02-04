@@ -23,7 +23,10 @@ from klyqa_ctl.general.general import (
     set_debug_logger,
     task_log_debug,
 )
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
+from klyqa_ctl.general.parameters import (
+    add_config_args,
+    get_description_parser,
+)
 from klyqa_ctl.klyqa_ctl import Client
 
 
@@ -53,14 +56,17 @@ async def main() -> None:
 
     print_onboarded_devices: bool = True
 
-    account: Account = await client.add_account(
+    acc: Account = await client.add_account(
         username=username,
         password=password,
-        print_onboarded_devices=print_onboarded_devices,
     )
-    await account.get_account_settings()
-    if account.cloud:
-        await account.cloud.update_device_configs()
+    await acc.login()
+    await acc.get_account_state(
+        print_onboarded_devices=print_onboarded_devices
+    )
+    # await account.get_account_settings()
+    # if account.cloud:
+    #     await account.cloud.update_devices_configs()
 
     exit_ret = 0
 
@@ -76,13 +82,13 @@ async def main() -> None:
     unit_id: str = "04256291add6f1b414d1"
     unit_id_real: str = "286dcd5c6bda"
 
-    await account.cloud_post_command_to_dev(
-        account.devices[unit_id_real],
+    await acc.cloud_post_command_to_dev(
+        acc.devices[unit_id_real],
         PingCommand(),
     )
 
-    await account.cloud_post_command_to_dev(
-        account.devices[unit_id_real],
+    await acc.cloud_post_command_to_dev(
+        acc.devices[unit_id_real],
         ColorCommand(color=RgbColor(2, 22, 222)),
     )
 
