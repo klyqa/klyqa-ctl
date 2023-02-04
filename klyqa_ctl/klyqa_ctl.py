@@ -126,6 +126,14 @@ class Client(ControllerData):
     #         return bool(self.cloud_backend.access_token != "")
     #     return False
 
+    def create_device(self, unit_id: str, product_id: str) -> Device:
+        """Get or create a device from the controller data. Read in device
+        config when new device is created."""
+
+        dev: Device = super().create_device(unit_id, product_id)
+        dev.local_con = self.local
+        return dev
+
     async def add_account(
         self,
         username: str,
