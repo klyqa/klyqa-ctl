@@ -199,7 +199,11 @@ class Account:
         """Logout again from klyqa account."""
         if self.access_token and self.cloud:
             task_log_debug("Logout user from cloud backend.")
-            await self.cloud.request(RequestMethod.POST, "/auth/logout")
+            r: httpx.Response | None = await self.cloud.request(
+                RequestMethod.POST, "/auth/logout"
+            )
+            if r and str(r.status_code)[0] in ["1", "2", "3"]:
+                self.access_token = ""
 
     def run_password_prompt(self) -> bool:
         """Check if password is giving or prompt for it."""
