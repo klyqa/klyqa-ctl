@@ -396,8 +396,6 @@ class Account:
         if not self.backend_connected() or not self.cloud:
             return
 
-        await self.cloud.update_devices_configs()
-
         state_str = (
             f'Name: "{dev.acc_settings["name"]}"'
             + f'\tAES-KEY: {dev.acc_settings["aesKey"]}'
@@ -434,6 +432,8 @@ class Account:
         """Print account devices state."""
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
+        if self.cloud:
+            await self.cloud.update_devices_configs()
 
         devices_tasks: list[asyncio.Task[Any]] = [
             loop.create_task(
