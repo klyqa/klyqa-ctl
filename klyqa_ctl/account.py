@@ -466,16 +466,17 @@ class Account:
         if not self.settings:
             await self.read_cache()
 
-        if self.ctld and self.ctld.interact_prompts:
-            while not self.username:
-                LOGGER.error("Username missing, username cache empty.")
-                self.username = input(
-                    " Please enter your Klyqa Account username (will"
-                    " be cached for the script invoke): "
-                )
-        else:
-            LOGGER.info("Missing Klyqa account username. No login.")
-            return False
+        if not self.username:
+            if self.ctld and self.ctld.interact_prompts:
+                while not self.username:
+                    LOGGER.error("Username missing, username cache empty.")
+                    self.username = input(
+                        " Please enter your Klyqa Account username (will"
+                        " be cached for the script invoke): "
+                    )
+            else:
+                LOGGER.info("Missing Klyqa account username. No login.")
+                return False
 
         if not await self.perform_login():
             return False
