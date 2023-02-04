@@ -64,7 +64,7 @@ class Device:
         return await con.send_command_to_device(  # type: ignore[no-any-return]
             unit_id=UnitId(self.u_id),
             send_msgs=commands,
-            timeout_secs=time_to_live_secs,
+            time_to_live_secs=time_to_live_secs,
         )
 
     async def send_msg_local(
