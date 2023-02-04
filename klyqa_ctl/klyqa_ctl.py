@@ -130,7 +130,6 @@ class Client(ControllerData):
         self,
         username: str,
         password: str = "",
-        print_onboarded_devices: bool = False,
     ) -> Account:
         """Add user account to client."""
 
@@ -139,7 +138,6 @@ class Client(ControllerData):
             cloud=self.cloud,
             username=username,
             password=password,
-            print_onboarded_devices=print_onboarded_devices,
         )
         self.accounts[account.username] = account
 
@@ -757,7 +755,7 @@ async def async_main() -> None:
         server_ip=server_ip,
     )
 
-    print_onboarded_devices: bool = client.interactive_prompts
+    print_onboarded_devices: bool = client.interact_prompts
 
     print_onboarded_devices = (
         not args_parsed.device_name
@@ -790,10 +788,13 @@ async def async_main() -> None:
         print_onboarded_devices = False
 
     else:
-        await client.add_account(
+        acc: Account = await client.add_account(
             username=args_parsed.username[0] if args_parsed.username else "",
             password=args_parsed.password[0] if args_parsed.password else "",
-            print_onboarded_devices=print_onboarded_devices,
+        )
+        await acc.login()
+        await acc.get_account_state(
+            print_onboarded_devices=print_onboarded_devices
         )
 
     exit_ret = 0

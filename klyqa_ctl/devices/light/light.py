@@ -65,15 +65,15 @@ class Light(Device):
                 )
             else:
                 try:
-                    brightness_enum = [
-                        trait["value_schema"]["properties"]["brightness"]
-                        for trait in device_config["deviceTraits"]
-                        if trait["trait"] == "@core/traits/brightness"
-                    ]
-                    self.brightness_range = Range(
-                        brightness_enum[0]["minimum"],
-                        brightness_enum[0]["maximum"],
-                    )
+                    for trait in device_config["deviceTraits"]:
+                        if trait["trait"] != "@core/traits/brightness":
+                            continue
+                        if trait["value_schema"]["type"] == "integer":
+                            self.brightness_range = Range(
+                                trait["value_schema"]["minimum"],
+                                trait["value_schema"]["maximum"],
+                            )
+                            break
                 except Exception:
                     self.brightness_range = Range(0, 100)
                     task_log_trace(

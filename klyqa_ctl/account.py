@@ -25,6 +25,7 @@ from klyqa_ctl.general.general import (
     format_uid,
     get_asyncio_loop,
     task_log_debug,
+    task_log_error,
 )
 
 
@@ -130,7 +131,7 @@ class Account:
         return self._attr_settings_lock
 
     @property
-    def controller_data(self) -> ControllerData:
+    def ctld(self) -> ControllerData:
         """Return or set the controller data object."""
         return self._attr_controller_data
 
@@ -204,10 +205,7 @@ class Account:
         """Check if password is giving or prompt for it."""
 
         if not self.password:
-            if (
-                self.controller_data
-                and self.controller_data.interactive_prompts
-            ):
+            if self.ctld and self.ctld.interact_prompts:
                 self.password = getpass.getpass(
                     prompt=(
                         " Please enter your Klyqa Account password (will be"
@@ -233,7 +231,7 @@ class Account:
         if self.username is not None and self.password is not None:
             login_response: httpx.Response | None = None
 
-            while not self.access_token:
+            if not self.access_token:
                 login_data: TypeJson = {
                     "email": self.username,
                     "password": self.password,
@@ -248,52 +246,34 @@ class Account:
                 if not login_response:
                     return False
 
+                if login_response.status_code == 401:
+                    task_log_error("Login failed. Username or password wrong.")
+                    return False
+
                 login_json: TypeJson | None = (
                     await self.cloud.load_http_response(login_response)
                 )
 
                 if login_json:
                     self.access_token = str(login_json.get("accessToken"))
-                    # await self.get_account_settings()
                 else:
-                    self.password = ""
-                    if not self.run_password_prompt():
-                        return False
-
-                if not self.settings:
+                    task_log_error("Could not load login response.")
                     return False
 
         return True
 
-    async def read_username_cache(self) -> bool:
+    async def read_username_cache(self) -> None:
         """Read username from cache."""
 
         cached: bool
-        if not self.username:
 
-            user_name_cache: dict | None
-            user_name_cache, cached = await async_json_cache(
-                None, "last_username.json"
-            )
-            if cached and user_name_cache:
-                self.username = user_name_cache["username"]
-                LOGGER.info("Using Klyqa account %s.", self.username)
-            else:
-                LOGGER.error("Username missing, username cache empty.")
-
-                if (
-                    self.controller_data
-                    and self.controller_data.interactive_prompts
-                ):
-                    self.username = input(
-                        " Please enter your Klyqa Account username (will"
-                        " be cached for the script invoke): "
-                    )
-                else:
-                    LOGGER.info("Missing Klyqa account username. No login.")
-                    return False
-
-        return self.username != ""
+        user_name_cache: dict | None
+        user_name_cache, cached = await async_json_cache(
+            None, "last_username.json"
+        )
+        if cached and user_name_cache:
+            self.username = user_name_cache["username"]
+            LOGGER.info("Using Klyqa account %s.", self.username)
 
     async def request_device_configs_from_acc_sets(self) -> None:
         """Request the device config from the product ids in the
@@ -328,7 +308,7 @@ class Account:
         if unit_id in self.devices:
             dev = self.devices[unit_id]
         else:
-            device: Device = await self.controller_data.get_or_create_device(
+            device: Device = await self.ctld.get_or_create_device(
                 unit_id, product_id
             )
             dev = AccountDevice(device_sets, device)
@@ -350,7 +330,7 @@ class Account:
 
         for device_sets in self.settings["devices"]:
 
-            self.controller_data.aes_keys[
+            self.ctld.aes_keys[
                 format_uid(device_sets["localDeviceId"])
             ] = aes_key_to_bytes(device_sets["aesKey"])
 
@@ -364,7 +344,7 @@ class Account:
 
     async def read_acc_settings_cache(
         self,
-    ) -> bool:
+    ) -> None:
         """Read user account settings cache."""
 
         acc_settings: TypeJson | None
@@ -376,8 +356,6 @@ class Account:
             await self.set_settings(acc_settings)
             if self.settings and not self.password:
                 self.password = self.settings["password"]
-
-        return True
 
     # async def update_device_configs(self) -> None:
 
@@ -391,14 +369,12 @@ class Account:
     #             unit_id, device_sets["productId"], device_sets
     #         )
 
-    async def read_cache(self) -> bool:
+    async def read_cache(self) -> None:
         """Get cached account data for login and check existing username and
         password."""
-        if not await self.read_username_cache():
-            return False
-        if not await self.read_acc_settings_cache():
-            return False
-        return True
+
+        await self.read_username_cache()
+        await self.read_acc_settings_cache()
 
     async def init(self) -> None:
         """Initialize account."""
@@ -420,7 +396,7 @@ class Account:
         if not self.backend_connected() or not self.cloud:
             return
 
-        await self.cloud.update_device_configs()
+        await self.cloud.update_devices_configs()
 
         state_str = (
             f'Name: "{dev.acc_settings["name"]}"'
@@ -452,7 +428,26 @@ class Account:
         if print_onboarded_devices:
             print(state_str)
 
-    async def login(self, print_onboarded_devices: bool = False) -> bool:
+    async def device_request_and_print_task(
+        self, print_onboarded_devices: bool = False
+    ) -> None:
+        """Print account devices state."""
+
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
+
+        devices_tasks: list[asyncio.Task[Any]] = [
+            loop.create_task(
+                self.device_request_and_print(
+                    acc_dev,
+                    print_onboarded_devices=print_onboarded_devices,
+                    req_timeout=30,
+                )
+            )
+            for _, acc_dev in self.devices.items()
+        ]
+        await asyncio.wait(devices_tasks)
+
+    async def login(self) -> bool:
         """Login on klyqa account, get account settings, get onboarded
         device profiles, print all devices if parameter set.
 
@@ -468,7 +463,18 @@ class Account:
         if not self.cloud:
             return False
 
-        if not await self.read_cache():
+        if not self.settings:
+            await self.read_cache()
+
+        if self.ctld and self.ctld.interact_prompts:
+            while not self.username:
+                LOGGER.error("Username missing, username cache empty.")
+                self.username = input(
+                    " Please enter your Klyqa Account username (will"
+                    " be cached for the script invoke): "
+                )
+        else:
+            LOGGER.info("Missing Klyqa account username. No login.")
             return False
 
         if not await self.perform_login():
@@ -477,18 +483,6 @@ class Account:
         await async_json_cache(
             {"username": self.username}, "last_username.json"
         )
-
-        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
-
-        devices_tasks: list[asyncio.Task[Any]] = [
-            loop.create_task(
-                self.device_request_and_print(
-                    acc_dev, print_onboarded_devices, req_timeout=30
-                )
-            )
-            for _, acc_dev in self.devices.items()
-        ]
-        await asyncio.wait(devices_tasks)
 
         return True
 
@@ -564,8 +558,19 @@ class Account:
                     f"{self.username}.acc_settings.cache.json",
                 )
 
+    async def get_account_state(
+        self, print_onboarded_devices: bool = False
+    ) -> None:
+        """Get account state."""
+
+        await self.get_account_settings()
+
+        await self.device_request_and_print_task(
+            print_onboarded_devices=print_onboarded_devices
+        )
+
     async def update_device_configs(self) -> None:
-        """Request the account settings from the cloud."""
+        """Request the device configs from the cloud."""
 
         product_ids: set[str] = {
             acc_device.device.ident.product_id
@@ -575,8 +580,8 @@ class Account:
 
         for product_id in list(product_ids):
             if (
-                self.controller_data.device_configs
-                and product_id in self.controller_data.device_configs
+                self.ctld.device_configs
+                and product_id in self.ctld.device_configs
             ):
                 continue
             task_log_debug("Try to request device config from server.")
@@ -588,7 +593,7 @@ class Account:
             )
             device_config: DeviceConfig | None = config
             if device_config:
-                self.controller_data.device_configs[product_id] = device_config
+                self.ctld.device_configs[product_id] = device_config
 
     async def cloud_post_to_device(
         self,
@@ -663,17 +668,13 @@ class Account:
         cloud: CloudBackend | None,
         username: str = "",
         password: str = "",
-        print_onboarded_devices: bool = False,
     ) -> Account:
         """Create and initialize an account. Send login for access token."""
 
         acc: Account = Account(controller_data, cloud)
         acc.username = username
         acc.password = password
-        acc.print_onboarded_devices = print_onboarded_devices
 
         acc._attr_settings_lock = asyncio.Lock()
         await acc.init()
-        if cloud:
-            await acc.login(acc.print_onboarded_devices)
         return acc

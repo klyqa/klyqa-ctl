@@ -38,7 +38,7 @@ class ControllerData:
         return self._attr_aes_keys
 
     @property
-    def interactive_prompts(self) -> bool:
+    def interact_prompts(self) -> bool:
         return self._attr_interactive_prompts
 
     @property
