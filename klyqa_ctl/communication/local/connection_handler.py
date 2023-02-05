@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 from asyncio import AbstractEventLoop, CancelledError, Task
-from dataclasses import dataclass
 import datetime
 import json
 import select
@@ -354,6 +353,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     return False
                 task_log_debug("Bound TCP port 3333")
                 self.tcp.listen(1)
+                self.tcp.setblocking(False)
         except OSError:
             task_log_error("Could not bind the TCP port 3333!")
             task_log_trace_ex()
@@ -1062,29 +1062,57 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         device: Device = Device()
         addr: tuple
         connection: TcpConnection = TcpConnection()
-        (
-            connection.socket,
-            addr,
-        ) = self.tcp.accept()
-        if not addr[0] in self.current_addr_connections:
-            self.current_addr_connections.add(addr[0])
-            connection.address["ip"] = addr[0]
-            connection.address["port"] = addr[1]
 
-            new_task: Task[DeviceTcpReturn] = loop.create_task(
-                self.device_handle_local_tcp(device, connection)
+        while self.message_queue:
+            self.__read_tcp_task = loop.create_task(
+                loop.sock_accept(self.tcp)  # self.tcp.accept
             )
 
-            loop.create_task(
-                asyncio.wait_for(new_task, timeout=proc_timeout_secs)
-            )
+            task_log_debug("Reading incoming connections..")
+            try:
+                await asyncio.wait_for(self.__read_tcp_task, timeout=1.0)
+            except asyncio.TimeoutError:
+                task_log_debug("Socket-Timeout for incoming tcp connections.")
+                return
 
-            task_log_debug(
-                f"Address {connection.address['ip']} process task created."
-            )
-            self.__tasks_undone.append((new_task, datetime.datetime.now()))
-        else:
-            task_log_debug(f"Address {addr[0]} already in connection.")
+            except socket.error:
+                LOGGER.error("Socket error!")
+                task_log_trace_ex()
+                if not await self.bind_ports():
+                    LOGGER.error("Error binding ports udp 2222 and tcp 3333.")
+                return
+            except Exception as ex:
+                LOGGER.error("Socket error!")
+                task_log_trace_ex()
+                return
+
+            if self.__read_tcp_task.exception():
+                return
+
+            (
+                connection.socket,
+                addr,
+            ) = self.__read_tcp_task.result()
+
+            if not addr[0] in self.current_addr_connections:
+                self.current_addr_connections.add(addr[0])
+                connection.address["ip"] = addr[0]
+                connection.address["port"] = addr[1]
+
+                new_task: Task[DeviceTcpReturn] = loop.create_task(
+                    self.device_handle_local_tcp(device, connection)
+                )
+
+                loop.create_task(
+                    asyncio.wait_for(new_task, timeout=proc_timeout_secs)
+                )
+
+                task_log_debug(
+                    f"Address {connection.address['ip']} process task created."
+                )
+                self.__tasks_undone.append((new_task, datetime.datetime.now()))
+            else:
+                task_log_debug(f"Address {addr[0]} already in connection.")
 
     async def read_udp_socket_task(self) -> None:
         """Start read UDP socket for incoming syncs, when not running."""
@@ -1137,58 +1165,64 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         await self.standby()
 
                     while read_incoming_connections:
-
-                        self.__read_tcp_task = loop.create_task(
-                            self.read_incoming_tcp_con_task()
+                        await self.handle_incoming_tcp_connection(
+                            proc_timeout_secs
                         )
+                        pass
 
-                        task_log_debug("Reading incoming connections..")
-                        try:
-                            await asyncio.wait_for(
-                                self.__read_tcp_task, timeout=1.0
-                            )
-                        except asyncio.TimeoutError:
-                            task_log_debug(
-                                "Socket-Timeout for incoming tcp connections."
-                            )
+                        # self.__read_tcp_task = loop.create_task(
+                        #     self.handle_incoming_tcp_connection(
+                        #         proc_timeout_secs
+                        #     )
+                        # )
 
-                        except socket.error:
-                            LOGGER.error("Socket error!")
-                            task_log_trace_ex()
-                            if not await self.bind_ports():
-                                LOGGER.error(
-                                    "Error binding ports udp 2222 and tcp"
-                                    " 3333."
-                                )
+                        # task_log_debug("Reading incoming connections..")
+                        # try:
+                        #     await asyncio.wait_for(
+                        #         self.__read_tcp_task, timeout=1.0
+                        #     )
+                        # except asyncio.TimeoutError:
+                        #     task_log_debug(
+                        #         "Socket-Timeout for incoming tcp connections."
+                        #     )
 
-                        result: tuple[
-                            list[Any], list[Any], list[Any]
-                        ] | None = (
-                            self.__read_tcp_task.result()
-                            if self.__read_tcp_task
-                            else None
-                        )
-                        if (
-                            not result
-                            or not isinstance(result, tuple)
-                            or not len(result) == 3
-                        ):
-                            task_log_debug(
-                                "No incoming tcp connections read result."
-                                " break"
-                            )
-                            break
-                        readable: list[Any]
-                        readable, _, _ = result if result else ([], [], [])
+                        # except socket.error:
+                        #     LOGGER.error("Socket error!")
+                        #     task_log_trace_ex()
+                        #     if not await self.bind_ports():
+                        #         LOGGER.error(
+                        #             "Error binding ports udp 2222 and tcp"
+                        #             " 3333."
+                        #         )
 
-                        task_log_debug("Reading tcp port done..")
+                        # result: tuple[
+                        #     list[Any], list[Any], list[Any]
+                        # ] | None = (
+                        #     self.__read_tcp_task.result()
+                        #     if self.__read_tcp_task
+                        #     else None
+                        # )
+                        # if (
+                        #     not result
+                        #     or not isinstance(result, tuple)
+                        #     or not len(result) == 3
+                        # ):
+                        #     task_log_debug(
+                        #         "No incoming tcp connections read result."
+                        #         " break"
+                        #     )
+                        #     break
+                        # readable: list[Any]
+                        # readable, _, _ = result if result else ([], [], [])
 
-                        if self.tcp not in readable:
-                            break
-                        else:
-                            await self.handle_incoming_tcp_connection(
-                                proc_timeout_secs
-                            )
+                        # task_log_debug("Reading tcp port done..")
+
+                        # if self.tcp not in readable:
+                        #     break
+                        # else:
+                        #     await self.handle_incoming_tcp_connection(
+                        #         proc_timeout_secs
+                        #     )
 
                     # await self.check_messages_time_to_live()
 
@@ -1208,6 +1242,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             LOGGER.error(
                 "Exception on send and search loop. Stop search devices loop!"
             )
+            task_log_trace_ex()
             raise exception
         task_log_debug(
             "Search devices and process incoming connnections loop ended."
@@ -1239,6 +1274,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             except Exception:
                 task_log_trace_ex()
             task_log_debug("wait end for send and search loop.")
+
+
 
     def search_and_send_loop_task_alive(self) -> None:
         """Ensure broadcast's and connection handler's task is alive."""
