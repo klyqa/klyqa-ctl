@@ -388,9 +388,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
             new_dev.ident = identity
             if (
-                type(new_dev)  # pylint: disable=unidiomatic-typecheck
-                == Device
-            ):
+                type(new_dev) == Device
+            ):  # pylint: disable=unidiomatic-typecheck
                 log = [
                     "Found new device %s but don't know the product id %s.",
                     identity.unit_id,
@@ -914,7 +913,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             self.send_udp_broadcast_task_loop_set.clear()
             try:
                 await asyncio.wait_for(
-                    self.send_udp_broadcast_task_loop_set.wait(), timeout=0.3
+                    self.send_udp_broadcast_task_loop_set.wait(), timeout=1.9
                 )
             except asyncio.TimeoutError:
                 pass
@@ -1174,6 +1173,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     # await self.check_messages_time_to_live()
 
                 await self.connection_tasks_time_to_live(proc_timeout_secs)
+                if self.udp_broadcast_task:
+                    self.udp_broadcast_task.cancel()
 
                 if not self.message_queue:
                     await self.standby()
@@ -1285,7 +1286,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         self.message_queue.setdefault(str(unit_id), []).append(msg)
 
-        await self.send_udp_broadcast_task()
+        await self.send_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
         await response_event.wait()
