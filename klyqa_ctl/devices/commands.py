@@ -5,7 +5,27 @@ from abc import abstractmethod
 from dataclasses import dataclass
 
 from klyqa_ctl.devices.device import Device
-from klyqa_ctl.general.general import CommandType, CommandTyped, TypeJson
+from klyqa_ctl.general.general import (
+    Command,
+    CommandType,
+    CommandTyped,
+    TypeJson,
+)
+
+
+@dataclass
+class CommandAutoBuild(Command):
+    """Automatically build command by attributes not starting with '_' or
+    it's value is None."""
+
+    def json(self) -> TypeJson:
+        return TypeJson(
+            {
+                k: v
+                for k, v in self.__dict__.items()
+                if not k.startswith("_") and v != "" and v is not None
+            }
+        )
 
 
 @dataclass

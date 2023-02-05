@@ -9,7 +9,14 @@ import json
 import sys
 from typing import Any, Callable
 
-from klyqa_ctl.devices.commands import CommandWithCheckValues
+from klyqa_ctl.devices.commands import (
+    CommandWithCheckValues,
+    RebootCommand,
+    FactoryResetCommand,
+    PingCommand,
+    FwUpdateCommand,
+    CommandAutoBuild,
+)
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
@@ -81,7 +88,7 @@ class RequestCommand(CommandTyped):
 
 
 @dataclass
-class PowerCommand(RequestCommand, CloudStateCommand):
+class PowerCommand(CommandAutoBuild, RequestCommand, CloudStateCommand):
     """Power command."""
 
     status: str = "on"
@@ -286,53 +293,34 @@ class RoutineAction(str, Enum):
 
 
 @dataclass
-class RoutineCommand(CommandTyped):
+class RoutineCommand(CommandAutoBuild):
     """Routine command."""
-
-    action: str = RoutineAction.LIST.value
 
     def __post_init__(self) -> None:
         self.type = CommandType.ROUTINE.value
-
-    def json(self) -> TypeJson:
-        return TypeJson(
-            {
-                k: v
-                for k, v in self.__dict__.items()
-                if not k.startswith("_") and v != "" and v is not None
-            }
-        )
 
 
 @dataclass
 class RoutineListCommand(RoutineCommand):
     """Routine list command."""
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        self.action = RoutineAction.LIST.value
+    action: str = RoutineAction.LIST.value
 
 
 @dataclass
 class RoutineStartCommand(RoutineCommand, TransitionCommand):
     """Routine start command."""
 
+    action: str = RoutineAction.START.value
     id: str = ""  # routine_id
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        self.action = RoutineAction.START.value
 
 
 @dataclass
 class RoutineDeleteCommand(RoutineCommand, TransitionCommand):
     """Routine delete command."""
 
+    action: str = RoutineAction.DELETE.value
     id: str = ""  # routine_id
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        self.action = RoutineAction.DELETE.value
 
 
 @dataclass
@@ -341,13 +329,10 @@ class RoutinePutCommand(
 ):
     """Routine put command."""
 
+    action: str = RoutineAction.PUT.value
     id: str = ""  # routine_id
     scene: str = ""  # scene_id
     commands: str = ""  # routine_commands
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        self.action = RoutineAction.PUT.value
 
     def check_values(self, device: Device) -> bool:
         """Check device scene support."""
