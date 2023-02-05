@@ -47,15 +47,15 @@ from klyqa_ctl.communication.local.connection_handler import (
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
+    add_command_args_bulb,
     add_device_command_to_queue as add_device_command_to_queue_light,
 )
-from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum.commands import (
+    add_command_args_cleaner,
     create_device_message as create_device_message_vacuum,
 )
-from klyqa_ctl.devices.vacuum.commands import add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     AES_KEY_DEV_BYTES,
