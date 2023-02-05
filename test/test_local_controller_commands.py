@@ -10,12 +10,11 @@ from typing import Any
 from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
 )
+from klyqa_ctl.devices.commands import FwUpdateCommand, PingCommand
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
     BrightnessCommand,
     ColorCommand,
-    FwUpdateCommand,
-    PingCommand,
     RequestCommand,
     RoutineDeleteCommand,
     RoutineListCommand,
@@ -60,6 +59,7 @@ def main() -> None:
 
     print(AES_KEY_DEV_BYTES.hex())
     print(AES_KEY_DEV)
+    reply: str
 
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
@@ -75,14 +75,24 @@ def main() -> None:
         dev = local.controller_data.devices["00ac629de9ad2f4409dc"]
 
     # lc.controller_data.device_configs["@qcx.lighting.rgb-cw-ww.virtual"]
-    unit_id: UnitId = UnitId("00ac629de9ad2f4409dc_oooo")
+    unit_id: UnitId = UnitId("00ac629de9ad2f4409dc")
     aes_key: str = "e901f036a5a119a91ca1f30ef5c207d6"
+    aes = "0c2ff6f6aa0ede2c454ca712ecfa1dfd"
+    uid = UnitId("286DCD5C6BDA")
+
+    reply = local.send_to_device(
+        str(unit_id), aes_key, json.dumps(RequestCommand().json())
+    )
+
+    reply = local.send_to_device(
+        str(uid), aes, json.dumps(RequestCommand().json())
+    )
 
     req_color: ColorCommand = ColorCommand(
         color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
     )  # , force=True)json
 
-    reply: str = local.send_to_device(
+    reply = local.send_to_device(
         str(unit_id), aes_key, json.dumps(req_color.json())
     )
 
