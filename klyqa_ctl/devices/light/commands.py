@@ -357,6 +357,21 @@ class RoutinePutCommand(
             return not missing_config(self._force, device.product_id)
         return True
 
+    @classmethod
+    def create(cls: Any, scene_label: str) -> RoutinePutCommand:
+        """Create scene command."""
+
+        scene_result = [x for x in SCENES if x["label"] == scene_label]
+        if len(scene_result) > 0:
+            scene = scene_result[0]
+            command: RoutinePutCommand = RoutinePutCommand(
+                commands=scene["commands"], id="0", scene=str(scene["id"])
+            )
+        else:
+            raise ValueError(f"No such scene {scene_label}!")
+
+        return command
+
 
 def percent_color_message(
     red: str, green: str, blue: str, warm: str, cold: str, transition_time: int
