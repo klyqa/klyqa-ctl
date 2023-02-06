@@ -37,6 +37,14 @@ class ControllerData:
     def aes_keys(self) -> dict[str, bytes]:
         return self._attr_aes_keys
 
+    def add_aes_key(self, unit_id: str, aes_key: bytes | str) -> None:
+        """Add AES key for a device (as string converted to bytes)."""
+
+        if isinstance(aes_key, str):
+            self.aes_keys[unit_id] = bytes.fromhex(aes_key)
+        else:
+            self.aes_keys[unit_id] = aes_key
+
     @property
     def interact_prompts(self) -> bool:
         return self._attr_interactive_prompts
