@@ -64,9 +64,6 @@ async def main() -> None:
     await acc.get_account_state(
         print_onboarded_devices=print_onboarded_devices
     )
-    # await account.get_account_settings()
-    # if account.cloud:
-    #     await account.cloud.update_devices_configs()
 
     exit_ret = 0
 

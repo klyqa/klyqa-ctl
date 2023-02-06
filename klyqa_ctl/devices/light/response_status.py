@@ -41,8 +41,10 @@ class ResponseStatus(ResponseMessage):
         self._attr_sdkversion = None
         self._attr_status = None
         self._attr_temperature = None
+        self._attr_brightness = None
         self._attr_open_slots = None
         self._attr_color = None
+        self.connected = False
         super().__init__(**kwargs)
         task_log_debug(f"save status {self}")
 

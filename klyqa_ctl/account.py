@@ -10,7 +10,6 @@ import json
 from typing import Any
 
 import httpx
-
 from klyqa_ctl.communication.cloud import CloudBackend, RequestMethod
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.commands import CommandWithCheckValues

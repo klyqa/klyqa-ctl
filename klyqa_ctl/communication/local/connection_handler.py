@@ -300,53 +300,64 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         """bind ports."""
 
         server_address: tuple[str, int]
+        try:
+            if (
+                not self.udp
+            ):  # or self.udp._closed or self.udp.__getstate__() == -1:
+                self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                if self.network_interface is not None:
+                    self.udp.setsockopt(
+                        socket.SOL_SOCKET,
+                        SO_BINDTODEVICE_LINUX,
+                        str(self.network_interface + "\0").encode("utf-8"),
+                    )
+                server_address = (self.server_ip, 2222)
+                try:
+                    self.udp.bind(server_address)
+                except (socket.herror, socket.gaierror, socket.timeout):
+                    LOGGER.error(
+                        "Error on opening and binding the udp port 2222 on"
+                        " host for initiating the local device communication."
+                    )
+                    task_log_trace_ex()
+                    return False
+                task_log_debug("Bound UDP port 2222")
+        except OSError:
+            task_log_error("Could not bind the UDP Port 2222!")
+            task_log_trace_ex()
+            return False
 
-        if (
-            not self.udp
-        ):  # or self.udp._closed or self.udp.__getstate__() == -1:
-            self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            if self.network_interface is not None:
-                self.udp.setsockopt(
-                    socket.SOL_SOCKET,
-                    SO_BINDTODEVICE_LINUX,
-                    str(self.network_interface + "\0").encode("utf-8"),
-                )
-            server_address = (self.server_ip, 2222)
-            try:
-                self.udp.bind(server_address)
-            except (socket.herror, socket.gaierror, socket.timeout):
-                LOGGER.error(
-                    "Error on opening and binding the udp port 2222 on host"
-                    " for initiating the local device communication."
-                )
-                task_log_trace_ex()
-                return False
-            task_log_debug("Bound UDP port 2222")
+        try:
+            if (
+                not self.tcp
+            ):  # or self.tcp.closed() or self.tcp.fileno() == -1:
+                self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        if not self.tcp:  # or self.tcp.closed() or self.tcp.fileno() == -1:
-            self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-            if self.network_interface is not None:
-                self.tcp.setsockopt(
-                    socket.SOL_SOCKET,
-                    SO_BINDTODEVICE_LINUX,
-                    str(self.network_interface + "\0").encode("utf-8"),
-                )
-            server_address = ("0.0.0.0", 3333)
-            try:
-                self.tcp.bind(server_address)
-            except (socket.herror, socket.gaierror, socket.timeout):
-                LOGGER.error(
-                    "Error on opening and binding the tcp port 3333 on host"
-                    " for initiating the local device communication."
-                )
-                task_log_trace_ex()
-                return False
-            task_log_debug("Bound TCP port 3333")
-            self.tcp.listen(1)
+                if self.network_interface is not None:
+                    self.tcp.setsockopt(
+                        socket.SOL_SOCKET,
+                        SO_BINDTODEVICE_LINUX,
+                        str(self.network_interface + "\0").encode("utf-8"),
+                    )
+                server_address = ("0.0.0.0", 3333)
+                try:
+                    self.tcp.bind(server_address)
+                except (socket.herror, socket.gaierror, socket.timeout):
+                    LOGGER.error(
+                        "Error on opening and binding the tcp port 3333 on"
+                        " host for initiating the local device communication."
+                    )
+                    task_log_trace_ex()
+                    return False
+                task_log_debug("Bound TCP port 3333")
+                self.tcp.listen(1)
+        except OSError:
+            task_log_error("Could not bind the TCP port 3333!")
+            task_log_trace_ex()
+            return False
 
         return True
 
@@ -388,9 +399,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
             new_dev.ident = identity
             if (
-                type(new_dev)  # pylint: disable=unidiomatic-typecheck
-                == Device
-            ):
+                type(new_dev) == Device
+            ):  # pylint: disable=unidiomatic-typecheck
                 log = [
                     "Found new device %s but don't know the product id %s.",
                     identity.unit_id,
@@ -885,6 +895,15 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         """Send qcx-syn broadcast on udp socket."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
+        try:
+            if not await self.bind_ports():
+                return False
+        except Exception as ex:
+            task_log_trace_ex()
+            task_log_error(
+                "Error binding the UDP port 2222 and TCP port 3333!"
+            )
+            return False
 
         try:
             task_log_debug("Broadcasting QCX-SYN Burst")
@@ -907,14 +926,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return True
 
     async def send_udp_broadcast_task_loop(self) -> None:
-        """Send UDP broadcast in a loop."""
+        """Send UDP broadcast in a loop with timeout or when event lock set."""
 
         while True:
             await self.send_udp_broadcast_task()
             self.send_udp_broadcast_task_loop_set.clear()
             try:
                 await asyncio.wait_for(
-                    self.send_udp_broadcast_task_loop_set.wait(), timeout=0.3
+                    self.send_udp_broadcast_task_loop_set.wait(), timeout=1
                 )
             except asyncio.TimeoutError:
                 pass
@@ -1174,6 +1193,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     # await self.check_messages_time_to_live()
 
                 await self.connection_tasks_time_to_live(proc_timeout_secs)
+                if self.udp_broadcast_task:
+                    self.udp_broadcast_task.cancel()
 
                 if not self.message_queue:
                     await self.standby()
@@ -1285,7 +1306,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         self.message_queue.setdefault(str(unit_id), []).append(msg)
 
-        await self.send_udp_broadcast_task()
+        await self.send_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
         await response_event.wait()
