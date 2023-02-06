@@ -454,13 +454,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             connection.aes_key = self.controller_data.aes_keys[device.u_id]
         else:
             task_log_error("No AES key for device %s! Removing it's messages.")
-            for uid, msg in self.message_queue.items():
+            for uid, msgs in self.message_queue.items():
                 if uid == device.uid:
-                    task_log_debug(
-                        "Removing message %s",
-                        msg,
-                    )
-                    self.remove_msg_from_queue(msg, device)
+                    for msg in msgs:
+                        task_log_debug(
+                            "Removing message %s",
+                            msg,
+                        )
+                        self.remove_msg_from_queue(msg, device)
 
         try:
             if connection.socket is not None:
