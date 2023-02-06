@@ -572,7 +572,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         if msg not in self.message_queue[device.u_id]:
             return
 
-        task_log("remove message from queue")
+        task_log_debug("remove message from queue")
         self.message_queue[device.u_id].remove(msg)
         # msg.state = MessageState.SENT
 
@@ -581,6 +581,18 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             and not self.message_queue[device.u_id]
         ):
             del self.message_queue[device.u_id]
+
+    async def remove_msg_from_queue_cb(
+        self, msg: Message, device: Device | None
+    ) -> None:
+        """Remove message from message queue and call it's callback."""
+        self.remove_msg_from_queue(msg, device)
+        try:
+            task_log_debug("remove message from queue and callback")
+            await asyncio.wait_for(msg.call_cb(), 30)
+        except asyncio.exceptions.TimeoutError:
+            # Waited enough for the message callback
+            pass
 
     async def _send_msg(
         self,
@@ -620,7 +632,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         and not cwcv.check_values(device=device)
                     ):
                         msg.state = MessageState.VALUE_RANGE_LIMITS
-                        self.remove_msg_from_queue(msg, device)
+                        await self.remove_msg_from_queue_cb(msg, device)
                         return DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
 
                 try:
@@ -821,7 +833,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     # Remove the message precautiously from the
                     # message queue.
                     if msg_to_sent:
-                        self.remove_msg_from_queue(msg_to_sent, device)
+                        await self.remove_msg_from_queue_cb(
+                            msg_to_sent, device
+                        )
 
             device = r_device.ref
             if connection.socket is not None:
