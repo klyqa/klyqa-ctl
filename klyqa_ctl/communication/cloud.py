@@ -156,11 +156,21 @@ class CloudBackend:
         """Send http request with request method to url with headers."""
         response: httpx.Response | None = None
         try:
+            url_full: str = self.host + "/" + url
+            kw_str: str = ", ".join(
+                f"{key}={value}" for key, value in kwargs.items()
+            )
+            header: TypeJson = (
+                headers if headers else self.get_header_default()
+            )
+            task_log_debug(
+                "Send cloud request to %s: %s, %s", url_full, header, kw_str
+            )
             async with httpx.AsyncClient() as client:
                 response = await client.request(
                     method.value,
-                    url=self.host + "/" + url,
-                    headers=headers if headers else self.get_header_default(),
+                    url=url_full,
+                    headers=header,
                     **kwargs,
                 )
 
