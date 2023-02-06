@@ -180,7 +180,7 @@ class TcpConnection:
         if self.socket is None:
             return DeviceTcpReturn.SOCKET_ERROR
         try:
-            task_log_debug("Read tcp socket to device.")
+            task_log_debug("Read TCP socket to device.")
             # data_ref.ref = await loop.sock_recv(self.socket, 4096)
             data_ref.ref = await loop.run_in_executor(
                 None, self.socket.recv, 4096
