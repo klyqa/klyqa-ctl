@@ -55,6 +55,7 @@ PRODUCT_URLS: dict[str, str] = {
 }
 
 SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
+MAX_SOCKET_SEND_TIMEOUT_SECS = 1
 
 
 class DeviceType(str, Enum):

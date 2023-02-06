@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum, auto
 import json
 import logging
@@ -13,6 +13,7 @@ from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
+    MAX_SOCKET_SEND_TIMEOUT_SECS,
     ReferencePass,
     get_asyncio_loop,
     task_log,
@@ -180,7 +181,10 @@ class TcpConnection:
             return DeviceTcpReturn.SOCKET_ERROR
         try:
             task_log_debug("Read tcp socket to device.")
-            data_ref.ref = await loop.sock_recv(self.socket, 4096)
+            # data_ref.ref = await loop.sock_recv(self.socket, 4096)
+            data_ref.ref = await loop.run_in_executor(
+                None, self.socket.recv, 4096
+            )
             if len(data_ref.ref) == 0:
                 task_log("TCP connection ended unexpectedly!", LOGGER.error)
                 return DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
@@ -191,14 +195,13 @@ class TcpConnection:
             return DeviceTcpReturn.SOCKET_ERROR
         except Exception as ex:
             task_log_trace_ex()
-
+            return DeviceTcpReturn.SOCKET_ERROR
 
         return DeviceTcpReturn.NO_ERROR
 
     async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
         """Encrypt the msg with aes and send it over the socket."""
 
-        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
         info_str: str = (
             (f"{task_name()} - " if LOGGER.level == logging.DEBUG else "")
             + 'Sending in local network to "'
@@ -213,12 +216,22 @@ class TcpConnection:
         package: bytes = DataPackage.create(plain, PackageType.ENC).serialize(
             self.sending_aes
         )
+        return await self.send_msg(package)
 
+    async def send_msg(self, data: bytes) -> bool:
+        """Send data to socket."""
+
+        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
+        send_started = datetime.now()
+        max_timeout = timedelta(seconds=MAX_SOCKET_SEND_TIMEOUT_SECS)
         while self.socket:
             try:
-                await loop.sock_sendall(self.socket, package)
+                await loop.run_in_executor(None, self.socket.send, data)
                 return True
             except socket.timeout:
                 task_log_debug("Send timed out, retrying...")
+                if datetime.now() - send_started > max_timeout:
+                    return False
+                await asyncio.sleep(0.1)
 
         return False

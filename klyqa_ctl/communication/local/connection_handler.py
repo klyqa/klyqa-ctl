@@ -469,7 +469,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 iv_data: bytes = DataPackage.create(
                     connection.local_iv, PackageType.IV
                 ).serialize()
-                await loop.sock_sendall(connection.socket, iv_data)
+                await connection.send_msg(iv_data)
         except socket.error:
             return DeviceTcpReturn.SOCKET_ERROR
 
@@ -804,7 +804,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 "Unhandled exception during local communication! "
                 + str(type(exception))
             )
-            msg_to_sent_ref.ref.exception = exception
+            if isinstance(msg_to_sent_ref.ref, Message):
+                msg_to_sent_ref.ref.exception = exception
         finally:
 
             msg_to_sent: Message | None = msg_to_sent_ref.ref
