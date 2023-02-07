@@ -15,6 +15,7 @@ from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.commands import CommandWithCheckValues
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
+    ACC_SETS_REQUEST_TIMEDELTA,
     LOGGER,
     CloudStateCommand,
     Command,
@@ -506,7 +507,7 @@ class Account:
         return response
 
     async def request_account_settings_eco(
-        self, scan_interval: int = 60
+        self, timedelta: int = ACC_SETS_REQUEST_TIMEDELTA
     ) -> bool:
         """Only send a new account settings http request when the last update
         was after the scan interval."""
@@ -524,7 +525,7 @@ class Account:
                 or not self._settings_loaded_ts
                 or (
                     now - self._settings_loaded_ts
-                    >= datetime.timedelta(seconds=scan_interval)
+                    >= datetime.timedelta(seconds=timedelta)
                 )
             ):
                 # Look that the settings are loaded only once in the scan
