@@ -324,8 +324,14 @@ class Account:
     async def set_settings(self, settings: TypeJson) -> None:
         """Async setter for account settings."""
 
+        if self.settings_lock:
+            await self.settings_lock.acquire()
         self._attr_settings = settings
-        await self.sync_acc_settings_to_controller()
+        try:
+            await self.sync_acc_settings_to_controller()
+        finally:
+            if self.settings_lock:
+                self.settings_lock.release()
 
     async def sync_acc_settings_to_controller(self) -> bool:
         """Apply the account settings to the controller."""
@@ -515,25 +521,19 @@ class Account:
         if not self.cloud:
             return False
 
-        if self.settings_lock:
-            await self.settings_lock.acquire()
         ret: bool = True
-        try:
-            now: datetime.datetime = datetime.datetime.now()
-            if (
-                not self.settings
-                or not self._settings_loaded_ts
-                or (
-                    now - self._settings_loaded_ts
-                    >= datetime.timedelta(seconds=timedelta)
-                )
-            ):
-                # Look that the settings are loaded only once in the scan
-                # interval
-                await self.request_account_settings()
-        finally:
-            if self.settings_lock:
-                self.settings_lock.release()
+        now: datetime.datetime = datetime.datetime.now()
+        if (
+            not self.settings
+            or not self._settings_loaded_ts
+            or (
+                now - self._settings_loaded_ts
+                >= datetime.timedelta(seconds=timedelta)
+            )
+        ):
+            # Look that the settings are loaded only once in the scan
+            # interval
+            await self.request_account_settings()
         return ret
 
     async def request_account_settings(
@@ -557,6 +557,7 @@ class Account:
             RequestMethod.GET, "settings"
         )
         if acc_settings:
+            self._settings_loaded_ts = datetime.datetime.now()
             await self.set_settings(acc_settings)
             # save user account settings in cache
             if self.settings:
