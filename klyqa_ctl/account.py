@@ -529,13 +529,13 @@ class Account:
             ):
                 # Look that the settings are loaded only once in the scan
                 # interval
-                await self.get_account_settings()
+                await self.request_account_settings()
         finally:
             if self.settings_lock:
                 self.settings_lock.release()
         return ret
 
-    async def get_account_settings(
+    async def request_account_settings(
         self, add_to_cache: TypeJson | None = None
     ) -> None:
         """Request the account settings from cloud and apply it.
@@ -569,7 +569,7 @@ class Account:
     ) -> None:
         """Get account state."""
 
-        await self.get_account_settings()
+        await self.request_account_settings()
 
         await self.device_request_and_print_task(
             print_onboarded_devices=print_onboarded_devices
