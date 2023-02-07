@@ -20,3 +20,5 @@ docs
 apidoc
 old
 test_code
+core.[0-9]*
+.vscode/launch.json

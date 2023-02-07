@@ -424,8 +424,8 @@ class Client(ControllerData):
                     args_in,
                     send_to_devices_cb,
                     message_queue_tx_local,
-                    message_queue_tx_command_cloud,
-                    message_queue_tx_state_cloud,
+                    # message_queue_tx_command_cloud,
+                    # message_queue_tx_state_cloud,
                 )
             else:
                 LOGGER.error("Missing device type.")

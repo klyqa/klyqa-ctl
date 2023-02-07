@@ -19,7 +19,7 @@ from klyqa_ctl.devices.commands import (
 )
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
-from klyqa_ctl.devices.light.scenes import SCENES
+from klyqa_ctl.devices.light.scenes import SCENES, get_scene_by_key
 from klyqa_ctl.general.general import (
     LOGGER,
     CloudStateCommand,
@@ -339,16 +339,17 @@ class RoutinePutCommand(
         if not device.ident:
             return False
         try:
-            scene_result: list[dict[str, Any]] = [
-                x for x in SCENES if x["id"] == int(self.scene)
-            ]
-            scene: dict[str, Any] = scene_result[0]
+            scn: dict[str, Any] | None = get_scene_by_key(
+                "id", int(self.scene)
+            )
+            if not scn:
+                raise Exception()
 
             # bulb has no colors, therefore only cwww scenes are allowed
-            if ".rgb" not in device.product_id and "cwww" not in scene:
+            if ".rgb" not in device.product_id and "cwww" not in scn:
                 return forced_continue(
                     self._force,
-                    f"Scene {scene['label']} not supported by device product"
+                    f"Scene {scn['label']} not supported by device product"
                     + f"{device.acc_sets['productId']}. Coldwhite/Warmwhite"
                     " Scenes only.",
                 )
@@ -356,6 +357,20 @@ class RoutinePutCommand(
         except Exception:
             return not missing_config(self._force, device.product_id)
         return True
+
+    @classmethod
+    def create(cls: Any, scene_label: str) -> RoutinePutCommand:
+        """Create scene command."""
+
+        scn: TypeJson | None = get_scene_by_key("label", scene_label)
+        if scn:
+            command: RoutinePutCommand = RoutinePutCommand(
+                commands=scn["commands"], id="0", scene=str(scn["id"])
+            )
+        else:
+            raise ValueError(f"No such scene {scene_label}!")
+
+        return command
 
 
 def percent_color_message(
@@ -673,7 +688,7 @@ async def add_device_command_to_queue(
     #     and not args.allDevices
     #     and not args.discover
     # ):
-    #     args_ret: argparse.Namespace | None = await self.discover_devices(
+    #     args_ret: argparse.Namespace | None = await discover_devices(
     #         args, args_in, send_to_devices_callable
     #     )
 
@@ -1086,25 +1101,19 @@ def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
         scene = "Ice Cream"
 
     if scene:
-        scene_result: list[dict[str, Any]] = [
-            x for x in SCENES if x["label"] == scene
-        ]
-        if not len(scene_result) or len(scene_result) > 1:
-            LOGGER.error(
-                "Scene %s not found or more than one scene with the name"
-                " found.",
-                scene,
-            )
-            return False
-        scene_obj: dict[str, Any] = scene_result[0]
+        scn: TypeJson | None = get_scene_by_key("label", scene)
 
-        commands: str = scene_obj["commands"]
+        if not scn:
+            LOGGER.error("Scene %s not found!", scene)
+            return False
+
+        commands: str = scn["commands"]
         if len(commands.split(";")) > 2:
             commands += "l 0;"
         args.routine_id = 0
         args.routine_put = True
         args.routine_commands = commands
-        args.routine_scene = str(scene_obj["id"])
+        args.routine_scene = str(scn["id"])
 
         scene_list.append(scene)
 

@@ -12,23 +12,23 @@ from pathlib import Path
 import sys
 from threading import Event, Thread
 import traceback
-from typing import Any, Awaitable, Callable, TextIO, Type, TypeVar
+from typing import Any, Awaitable, Callable, Final, TextIO, Type, TypeVar
 
 import aiofiles
 import slugify
 
-TRACE = 5
+TRACE: Final = 5
 
 
-DEFAULT_SEND_TIMEOUT_MS: int = 30
-DEFAULT_MAX_COM_PROC_TIMEOUT_SECS: int = 600  # 600 secs = 10 min
+DEFAULT_SEND_TIMEOUT_MS: Final[int] = 30
+DEFAULT_MAX_COM_PROC_TIMEOUT_SECS: Final[int] = 120  # 2mins
 
 TypeJson = dict[str, Any]
 
 """ string output separator width """
 SEPARATION_WIDTH: int = 0
 
-PROD_HOST: str = "https://app-api.prod.qconnex.io"
+PROD_HOST: Final = "https://app-api.prod.qconnex.io"
 
 PRODUCT_URLS: dict[str, str] = {
     """TODO: Should be permalinks for urls here."""
@@ -54,7 +54,8 @@ PRODUCT_URLS: dict[str, str] = {
     "@klyqa.cleaning.vc1": "https://klyqa.de/Alle-Produkte/Smarter-Starter",
 }
 
-SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
+SEND_LOOP_MAX_SLEEP_TIME: Final[float] = 0.005
+MAX_SOCKET_SEND_TIMEOUT_SECS: Final[int] = 1
 
 
 class DeviceType(str, Enum):
@@ -64,13 +65,15 @@ class DeviceType(str, Enum):
     LIGHTING = "lighting"
 
 
-AES_KEY_DEV: str = "00112233445566778899AABBCCDDEEFF"
+AES_KEY_DEV: Final[str] = "00112233445566778899AABBCCDDEEFF"
 
-AES_KEY_DEV_BYTES: bytes = bytes.fromhex(AES_KEY_DEV)
+AES_KEY_DEV_BYTES: Final[bytes] = bytes.fromhex(AES_KEY_DEV)
 
-QCX_SYN: bytes = "QCX-SYN".encode("utf-8")
-QCX_DSYN: bytes = "QCX-DSYN".encode("utf-8")
-QCX_ACK: bytes = "QCX-ACK".encode("utf-8")
+QCX_SYN: Final[bytes] = "QCX-SYN".encode("utf-8")
+QCX_DSYN: Final[bytes] = "QCX-DSYN".encode("utf-8")
+QCX_ACK: Final[bytes] = "QCX-ACK".encode("utf-8")
+
+ACC_SETS_REQUEST_TIMEDELTA: Final = 60
 
 
 class CommandType(str, Enum):
@@ -504,6 +507,7 @@ LOGGER_debug: TraceLogger = TraceLogger.manager.getLogger(
     "klyqa_ctl_trace"
 )  # type: ignore[assignment]
 LOGGER_debug.setLevel(level=logging.INFO)
+LOGGER_debug.disabled = True
 
 debug_formatter: logging.Formatter = logging.Formatter(
     "%(asctime)s %(levelname)-8s - %(message)s"
@@ -520,6 +524,7 @@ def set_debug_logger(level: int = logging.DEBUG) -> None:
     LOGGER_debug.setLevel(level)
     trace_log_hdl.setLevel(level)
     trace_log_hdl.setFormatter(debug_formatter)
+    LOGGER_debug.disabled = False
 
 
 def task_log(
@@ -599,3 +604,9 @@ class Address:
 
     ip: str
     port: int
+
+
+def enum_index(key: str, enum: Enum) -> Any:
+    """Search string key name in enumeration and return the value."""
+
+    return [i.value for i in enum if i.name == key][0]

@@ -15,6 +15,7 @@ from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.commands import CommandWithCheckValues
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
+    ACC_SETS_REQUEST_TIMEDELTA,
     LOGGER,
     CloudStateCommand,
     Command,
@@ -323,8 +324,14 @@ class Account:
     async def set_settings(self, settings: TypeJson) -> None:
         """Async setter for account settings."""
 
+        if self.settings_lock:
+            await self.settings_lock.acquire()
         self._attr_settings = settings
-        await self.sync_acc_settings_to_controller()
+        try:
+            await self.sync_acc_settings_to_controller()
+        finally:
+            if self.settings_lock:
+                self.settings_lock.release()
 
     async def sync_acc_settings_to_controller(self) -> bool:
         """Apply the account settings to the controller."""
@@ -383,6 +390,7 @@ class Account:
     async def init(self) -> None:
         """Initialize account."""
 
+        self._attr_settings_lock = asyncio.Lock()
         await self.read_cache()
 
     async def device_request_and_print(
@@ -437,7 +445,7 @@ class Account:
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
         if self.cloud:
-            await self.cloud.update_devices_configs()
+            await self.cloud.update_devices_configs_all()
 
         devices_tasks: list[asyncio.Task[Any]] = [
             loop.create_task(
@@ -505,7 +513,7 @@ class Account:
         return response
 
     async def request_account_settings_eco(
-        self, scan_interval: int = 60
+        self, timedelta: int = ACC_SETS_REQUEST_TIMEDELTA
     ) -> bool:
         """Only send a new account settings http request when the last update
         was after the scan interval."""
@@ -513,28 +521,22 @@ class Account:
         if not self.cloud:
             return False
 
-        if self.settings_lock:
-            await self.settings_lock.acquire()
         ret: bool = True
-        try:
-            now: datetime.datetime = datetime.datetime.now()
-            if (
-                not self.settings
-                or not self._settings_loaded_ts
-                or (
-                    now - self._settings_loaded_ts
-                    >= datetime.timedelta(seconds=scan_interval)
-                )
-            ):
-                # Look that the settings are loaded only once in the scan
-                # interval
-                await self.get_account_settings()
-        finally:
-            if self.settings_lock:
-                self.settings_lock.release()
+        now: datetime.datetime = datetime.datetime.now()
+        if (
+            not self.settings
+            or not self._settings_loaded_ts
+            or (
+                now - self._settings_loaded_ts
+                >= datetime.timedelta(seconds=timedelta)
+            )
+        ):
+            # Look that the settings are loaded only once in the scan
+            # interval
+            await self.request_account_settings()
         return ret
 
-    async def get_account_settings(
+    async def request_account_settings(
         self, add_to_cache: TypeJson | None = None
     ) -> None:
         """Request the account settings from cloud and apply it.
@@ -555,6 +557,7 @@ class Account:
             RequestMethod.GET, "settings"
         )
         if acc_settings:
+            self._settings_loaded_ts = datetime.datetime.now()
             await self.set_settings(acc_settings)
             # save user account settings in cache
             if self.settings:
@@ -568,7 +571,7 @@ class Account:
     ) -> None:
         """Get account state."""
 
-        await self.get_account_settings()
+        await self.request_account_settings()
 
         await self.device_request_and_print_task(
             print_onboarded_devices=print_onboarded_devices
@@ -680,6 +683,5 @@ class Account:
         acc.username = username
         acc.password = password
 
-        acc._attr_settings_lock = asyncio.Lock()
         await acc.init()
         return acc

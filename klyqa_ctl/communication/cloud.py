@@ -117,17 +117,13 @@ class CloudBackend:
             LOGGER.info("No server reply for device configs. Using cache.")
         return None
 
-    async def update_devices_configs(self) -> None:
+    async def update_devices_configs(
+        self, device_product_ids: set[str]
+    ) -> None:
+        """Update the device configs of all added devices."""
 
         dev: Device
-        await self.get_device_configs(
-            set(
-                [
-                    dev.product_id
-                    for _, dev in self.controller_data.devices.items()
-                ]
-            )
-        )
+        await self.get_device_configs(device_product_ids)
 
         for _, dev in self.controller_data.devices.items():
             dev.read_device_config(
@@ -136,8 +132,21 @@ class CloudBackend:
                 ]
             )
 
+    async def update_devices_configs_all(self) -> None:
+        """Update the device configs of all added devices."""
+
+        await self.update_devices_configs(
+            set(
+                [
+                    dev.product_id
+                    for _, dev in self.controller_data.devices.items()
+                ]
+            )
+        )
+
     def get_header_default(self) -> TypeJson:
         """Get default request header for cloud request."""
+
         header: dict[str, str] = {
             "X-Request-Id": str(uuid.uuid4()),
             "Accept": "application/json",
@@ -154,13 +163,24 @@ class CloudBackend:
         **kwargs: Any,
     ) -> httpx.Response | None:
         """Send http request with request method to url with headers."""
+
         response: httpx.Response | None = None
         try:
+            url_full: str = self.host + "/" + url
+            kw_str: str = ", ".join(
+                f"{key}={value}" for key, value in kwargs.items()
+            )
+            header: TypeJson = (
+                headers if headers else self.get_header_default()
+            )
+            task_log_debug(
+                "Send cloud request to %s: %s, %s", url_full, header, kw_str
+            )
             async with httpx.AsyncClient() as client:
                 response = await client.request(
                     method.value,
-                    url=self.host + "/" + url,
-                    headers=headers if headers else self.get_header_default(),
+                    url=url_full,
+                    headers=header,
                     **kwargs,
                 )
 
@@ -182,6 +202,7 @@ class CloudBackend:
         self, response: httpx.Response
     ) -> TypeJson | None:
         """Load http response into json object."""
+
         answer: TypeJson | None = None
         if not response:
             LOGGER.error("No response from cloud request.")
