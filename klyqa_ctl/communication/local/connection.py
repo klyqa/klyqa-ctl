@@ -189,6 +189,9 @@ class TcpConnection:
         except socket.error:
             task_log_trace_ex()
             return DeviceTcpReturn.SOCKET_ERROR
+        except Exception as ex:
+            task_log_trace_ex()
+
 
         return DeviceTcpReturn.NO_ERROR
 
