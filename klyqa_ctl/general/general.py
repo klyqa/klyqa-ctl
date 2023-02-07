@@ -604,3 +604,9 @@ class Address:
 
     ip: str
     port: int
+
+
+def enum_index(key: str, enum: Enum) -> Any:
+    """Search string key name in enumeration and return the value."""
+
+    return [i.value for i in enum if i.name == key][0]
