@@ -16,13 +16,21 @@ from klyqa_ctl.general.general import (
 )
 from klyqa_ctl.general.general import LOGGER
 from klyqa_ctl.general.general import TypeJson
-from symbol import power
 
 
-class CommandType(Enum):
-    GET = 0
-    SET = 1
-    RESET = 2
+@dataclass
+class VacuumRequestCommand(CommandAutoBuild):
+    """Vacuum request command."""
+
+    type: str = "request"
+
+
+class CommandType(str, Enum):
+    """Command types for the vacuum cleaner."""
+
+    GET = "get"
+    SET = "set"
+    RESET = "reset"
 
 
 class ProductinfoCommand(RequestCommand):
@@ -33,12 +41,47 @@ class ProductinfoCommand(RequestCommand):
         return super().json() | self.productinfo_json()
 
 
-class RequestGetCommand(RequestCommand):
-    def get_json(self) -> TypeJson:
-        return {"action": "get"}
+@dataclass
+class RequestGetCommand(VacuumRequestCommand):
+    """Vacuum cleaner get command."""
 
-    def json(self) -> TypeJson:
-        return super().json() | self.get_json()
+    action: str = CommandType.GET
+
+    power: str | None = None
+    cleaning: str | None = None
+    beeping: str | None = None
+    battery: str | None = None
+    sidebrush: str | None = None
+    rollingbrush: str | None = None
+    filter: str | None = None
+    carpetbooster: str | None = None
+    area: str | None = None
+    time: str | None = None
+    calibrationtime: str | None = None
+    workingmode: str | None = None
+    workingstatus: str | None = None
+    suction: str | None = None
+    water: str | None = None
+    direction: str | None = None
+    errors: str | None = None
+    cleaningrec: str | None = None
+    equipmentmodel: str | None = None
+    alarmmessages: str | None = None
+    commissioninfo: str | None = None
+    mcu: str | None = None
+
+    @classmethod
+    def all(
+        cls: Any,
+    ) -> RequestGetCommand:
+        """Request all attributes command factory."""
+
+        cmd: RequestGetCommand = RequestGetCommand()
+        for k, v in cmd.__dict__.items():
+            if not k.startswith("_") and v is None:
+                setattr(cmd, k, "r")
+
+        return cmd
 
 
 class RequestResetCommand(RequestCommand):
@@ -50,15 +93,9 @@ class RequestResetCommand(RequestCommand):
 
 
 @dataclass
-class VacuumRequestCommand(CommandAutoBuild):
-
-    type: str = "request"
-
-
-@dataclass
 class RequestSetCommand(VacuumRequestCommand):
 
-    action: str = "set"
+    action: str = CommandType.SET
 
     power: str | None = None
     cleaning: str | None = None
@@ -129,13 +166,13 @@ async def create_device_message(
         if args.command == "productinfo":
             msg_queue.append(ProductinfoCommand())  # .json(), 100)
 
-        if args.command == CommandType.GET.name:
+        if args.command == CommandType.GET.value:
             get_command(args, msg_queue)
 
-        elif args.command == CommandType.SET.name:
+        elif args.command == CommandType.SET.value:
             set_command(args, msg_queue)
 
-        elif args.command == CommandType.RESET.name:
+        elif args.command == CommandType.RESET.value:
             reset_command(args, msg_queue)
 
         elif args.command == "routine":
