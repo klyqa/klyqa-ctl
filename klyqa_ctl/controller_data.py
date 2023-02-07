@@ -79,6 +79,13 @@ class ControllerData:
 
         self.add_devices_lock = AsyncIoLock("add_devices_lock")
 
+        await self.device_configs_cache()
+        await self.aes_cache()
+
+    async def device_configs_cache(self) -> None:
+        """Store device configs for caching or read from cache if no device
+        configs set."""
+
         device_configs_cache: dict | None = None
         cached: bool = False
         device_configs_cache, cached = await async_json_cache(
@@ -87,6 +94,19 @@ class ControllerData:
         if cached and device_configs_cache:
             self.device_configs = device_configs_cache
             task_log_debug("Read device configs cache.")
+
+    async def aes_cache(self) -> None:
+        """Store AES keys for caching or read from cache if no AES keys
+        set."""
+
+        aes_cache: dict | None = None
+        cached: bool = False
+        aes_cache, cached = await async_json_cache(
+            self.aes_keys or None, "aes.json"
+        )
+        if cached and aes_cache:
+            self._attr_aes_keys = aes_cache
+            task_log_debug("Read AES cache.")
 
     def create_device(self, unit_id: str, product_id: str) -> Device:
         """Create a device by product id in the controller data."""
