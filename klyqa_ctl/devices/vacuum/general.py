@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class VcWorkingStatus(Enum):
+class VcWorkingStatus(IntEnum):
     SLEEP = 0
     STANDBY = 1
     CLEANING = 2
@@ -18,7 +18,7 @@ class VcWorkingStatus(Enum):
     ERROR = 13
 
 
-class VcSuctionStrengths(Enum):
+class VcSuctionStrengths(IntEnum):
     NULL = 0
     STRONG = 1
     SMALL = 2
@@ -26,7 +26,7 @@ class VcSuctionStrengths(Enum):
     MAX = 4
 
 
-class VcWorkingMode(Enum):
+class VcWorkingMode(IntEnum):
     STANDBY = 0
     RANDOM = 1
     SMART = 2
