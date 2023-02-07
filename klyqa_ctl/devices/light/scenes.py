@@ -1,6 +1,8 @@
-from typing import Any
+"""Scenes for the lights."""
 
-SCENES: list[dict[str, Any]] = [
+from klyqa_ctl.general.general import TypeJson
+
+SCENES: list[TypeJson] = [
     {
         "id": 100,
         "colors": ["#FFECD8", "#FFAA5B"],
@@ -272,3 +274,13 @@ SCENES: list[dict[str, Any]] = [
         ),
     },
 ]
+
+
+def get_scene_by_key(key, value) -> TypeJson:
+    """Get scene by comparing the scenes attributes key value with
+    value."""
+
+    scene_result: list[TypeJson] = [x for x in SCENES if str(x[key]) == value]
+    if len(scene_result) > 0:
+        return scene_result[0]
+    return {}
