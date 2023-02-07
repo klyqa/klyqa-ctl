@@ -383,6 +383,7 @@ class Account:
     async def init(self) -> None:
         """Initialize account."""
 
+        self._attr_settings_lock = asyncio.Lock()
         await self.read_cache()
 
     async def device_request_and_print(
@@ -437,7 +438,7 @@ class Account:
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
         if self.cloud:
-            await self.cloud.update_devices_configs()
+            await self.cloud.update_devices_configs_all()
 
         devices_tasks: list[asyncio.Task[Any]] = [
             loop.create_task(
@@ -680,6 +681,5 @@ class Account:
         acc.username = username
         acc.password = password
 
-        acc._attr_settings_lock = asyncio.Lock()
         await acc.init()
         return acc

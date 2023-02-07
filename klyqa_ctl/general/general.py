@@ -54,7 +54,7 @@ PRODUCT_URLS: dict[str, str] = {
     "@klyqa.cleaning.vc1": "https://klyqa.de/Alle-Produkte/Smarter-Starter",
 }
 
-SEND_LOOP_MAX_SLEEP_TIME: float = 0.05
+SEND_LOOP_MAX_SLEEP_TIME: float = 0.005
 MAX_SOCKET_SEND_TIMEOUT_SECS = 1
 
 
