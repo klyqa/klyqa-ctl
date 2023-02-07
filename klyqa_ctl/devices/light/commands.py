@@ -361,7 +361,9 @@ class RoutinePutCommand(
     def create(cls: Any, scene_label: str) -> RoutinePutCommand:
         """Create scene command."""
 
-        scene_result = [x for x in SCENES if x["label"] == scene_label]
+        scene_result: list[dict[str, Any]] = [
+            x for x in SCENES if x["label"] == scene_label
+        ]
         if len(scene_result) > 0:
             scene = scene_result[0]
             command: RoutinePutCommand = RoutinePutCommand(

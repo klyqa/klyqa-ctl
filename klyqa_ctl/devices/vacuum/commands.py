@@ -6,12 +6,17 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 from typing import Any, Callable
+from klyqa_ctl.devices.commands import CommandAutoBuild
 
 from klyqa_ctl.devices.light.commands import RequestCommand
 from klyqa_ctl.devices.vacuum.general import VcSuctionStrengths, VcWorkingMode
-from klyqa_ctl.general.general import CommandType as MessageCommandType
+from klyqa_ctl.general.general import (
+    Command,
+    CommandType as MessageCommandType,
+)
 from klyqa_ctl.general.general import LOGGER
 from klyqa_ctl.general.general import TypeJson
+from symbol import power
 
 
 class CommandType(Enum):
@@ -44,12 +49,33 @@ class RequestResetCommand(RequestCommand):
         return super().json() | self.reset_json()
 
 
-class RequestSetCommand(RequestCommand):
-    def set_json(self) -> TypeJson:
-        return {"action": "set"}
+@dataclass
+class VacuumRequestCommand(CommandAutoBuild):
 
-    def json(self) -> TypeJson:
-        return super().json() | self.set_json()
+    type: str = "request"
+
+
+@dataclass
+class RequestSetCommand(VacuumRequestCommand):
+
+    action: str = "set"
+
+    power: str | None = None
+    cleaning: str | None = None
+    beeping: str | None = None
+    carpetbooster: str | None = None
+    workingmode: VcWorkingMode | None = None
+    suction: VcSuctionStrengths | None = None
+    water: str | None = None
+    direction: str | None = None
+    commissioninfo: str | None = None
+    calibrationtime: str | None = None
+
+    # def set_json(self) -> TypeJson:
+    #     return {"action": "set"}
+
+    # def json(self) -> TypeJson:
+    #     return super().json() | self.set_json()
 
 
 class RoutineCommandActions(str, Enum):
@@ -88,37 +114,35 @@ async def create_device_message(
     args: argparse.Namespace,
     args_in: list[Any],
     send_to_devices_callable: Callable[[argparse.Namespace], Any],
-    message_queue_tx_local: list[Any],
-    message_queue_tx_command_cloud: list[Any],
-    message_queue_tx_state_cloud: list[Any],
+    msg_queue: list[Command],
+    # message_queue_tx_command_cloud: list[Any],
+    # message_queue_tx_state_cloud: list[Any],
 ) -> None:
     """process_args_to_msg_cleaner"""
 
-    def local_and_cloud_command_msg(json_msg: TypeJson, timeout: int) -> None:
-        message_queue_tx_local.append((json.dumps(json_msg), timeout))
-        message_queue_tx_command_cloud.append(json_msg)
+    # def local_and_cloud_command_msg(json_msg: TypeJson, timeout: int) -> None:
+    #     message_queue_tx_local.append((json.dumps(json_msg), timeout))
+    #     message_queue_tx_command_cloud.append(json_msg)
 
     if args.command is not None:
 
         if args.command == "productinfo":
-            local_and_cloud_command_msg(ProductinfoCommand().json(), 100)
+            msg_queue.append(ProductinfoCommand())  # .json(), 100)
 
         if args.command == CommandType.GET.name:
-            get_command(args, local_and_cloud_command_msg)
+            get_command(args, msg_queue)
 
         elif args.command == CommandType.SET.name:
-            set_command(args, local_and_cloud_command_msg)
+            set_command(args, msg_queue)
 
         elif args.command == CommandType.RESET.name:
-            reset_command(args, local_and_cloud_command_msg)
+            reset_command(args, msg_queue)
 
         elif args.command == "routine":
             routine(args)
 
 
-def get_command(
-    args: argparse.Namespace, local_and_cloud_command_msg: Callable
-) -> None:
+def get_command(args: argparse.Namespace, msq_queue: list[Command]) -> None:
     """Get command."""
 
     get_dict: dict[str, Any] = RequestGetCommand().json()
@@ -166,12 +190,10 @@ def get_command(
         get_dict["commissioninfo"] = None
     if args.mcu or args.all:
         get_dict["mcu"] = None
-    local_and_cloud_command_msg(get_dict, 1000)
+    msq_queue.append(Command(_json=get_dict))  # , 1000)
 
 
-def reset_command(
-    args: argparse.Namespace, local_and_cloud_command_msg: Callable
-) -> None:
+def reset_command(args: argparse.Namespace, msq_queue: list[Command]) -> None:
     """Reset command."""
 
     reset_dict: dict[str, Any] = RequestResetCommand().json()
@@ -182,39 +204,38 @@ def reset_command(
         reset_dict["rollingbrush"] = None
     if args.filter:
         reset_dict["filter"] = None
-    local_and_cloud_command_msg(reset_dict, 1000)
+    msq_queue.append(Command(_json=reset_dict))
 
 
-def set_command(
-    args: argparse.Namespace, local_and_cloud_command_msg: Callable
-) -> None:
+def set_command(args: argparse.Namespace, msq_queue: list[Command]) -> None:
     """Set command."""
 
-    set_dict: dict[str, Any] = RequestSetCommand().json()
+    cmd: Command | None = None
 
     if args.power is not None:
-        set_dict["power"] = args.power
+        cmd = RequestSetCommand(power=args.power)
     if args.cleaning is not None:
-        set_dict["cleaning"] = args.cleaning
+        cmd = RequestSetCommand(cleaning=args.cleaning)
     if args.beeping is not None:
-        set_dict["beeping"] = args.beeping
+        cmd = RequestSetCommand(beeping=args.beeping)
     if args.carpetbooster is not None:
-        set_dict["carpetbooster"] = args.carpetbooster
+        cmd = RequestSetCommand(carpetbooster=args.carpetbooster)
     if args.workingmode is not None:
-        mode: int = VcWorkingMode[args.workingmode].value
-        set_dict["workingmode"] = mode
+        cmd = RequestSetCommand(workingmode=VcWorkingMode[args.workingmode])
     if args.suction is not None:
-        suction: int = VcSuctionStrengths[args.suction].value
-        set_dict["suction"] = suction - 1
+        suction: VcSuctionStrengths = VcSuctionStrengths[args.suction]
+        cmd = RequestSetCommand(suction=suction)
     if args.water is not None:
-        set_dict["water"] = args.water
+        cmd = RequestSetCommand(water=args.water)
     if args.direction is not None:
-        set_dict["direction"] = args.direction
+        cmd = RequestSetCommand(direction=args.direction)
     if args.commissioninfo is not None:
-        set_dict["commissioninfo"] = args.commissioninfo
+        cmd = RequestSetCommand(commissioninfo=args.commissioninfo)
     if args.calibrationtime is not None:
-        set_dict["calibrationtime"] = args.calibrationtime
-    local_and_cloud_command_msg(set_dict, 1000)
+        cmd = RequestSetCommand(calibrationtime=args.calibrationtime)
+
+    if cmd:
+        msq_queue.append(cmd)
 
 
 def routine(args: argparse.Namespace) -> None:
