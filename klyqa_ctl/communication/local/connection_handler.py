@@ -8,7 +8,7 @@ import datetime
 import json
 import select
 import socket
-from typing import Any
+from typing import Any, Awaitable, Callable
 
 from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
@@ -443,7 +443,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         if not is_new_device and device.ident:
             task_log(f"Found device {device.ident.unit_id}")
-        loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
         if "all" in self.controller_data.aes_keys:
             connection.aes_key = self.controller_data.aes_keys["all"]
@@ -455,13 +454,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         else:
             task_log_error("No AES key for device %s! Removing it's messages.")
             for uid, msgs in self.message_queue.items():
-                if uid == device.uid:
+                if uid == device.u_id:
                     for msg in msgs:
                         task_log_debug(
                             "Removing message %s",
                             msg,
                         )
-                        self.remove_msg_from_queue(msg, device)
+                        await self.remove_msg_from_queue_cb(msg, device)
+            return DeviceTcpReturn.MISSING_AES_KEY
 
         try:
             if connection.socket is not None:
@@ -1293,15 +1293,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         except Exception:
             task_log_trace_ex()
 
-    async def send_command_to_device(
+    async def send_command_to_device_cb(
         self,
-        unit_id: UnitId,
+        unit_id: str,
         send_msgs: list[Command],
+        answer_cb: Callable[[Message | None, str], Awaitable] | None,
         aes_key: str = "",
         time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
         **kwargs: Any,
     ) -> Message | None:
-        """Add message to message's queue."""
+        """Add message to message's queue with answer callback."""
+
         if not send_msgs:
             LOGGER.error("No message queue to send in message to %s!", unit_id)
             return None
@@ -1311,18 +1313,11 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 aes_key
             )
 
-        response_event: asyncio.Event = asyncio.Event()
-
-        async def answer(
-            msg: Message | None = None, unit_id: str = ""
-        ) -> None:
-            response_event.set()
-
         msg: Message = Message(
             datetime.datetime.now(),
             unit_id,
             msg_queue=send_msgs,
-            callback=answer,
+            callback=answer_cb,
             time_to_live_secs=time_to_live_secs,
             **kwargs,
         )
@@ -1335,9 +1330,30 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         )
 
         self.message_queue.setdefault(str(unit_id), []).append(msg)
-
-        await self.send_udp_broadcast()
+        if self.broadcast_discovery:
+            await self.send_udp_broadcast()
         self.search_and_send_loop_task_alive()
+
+        return msg
+
+    async def send_command_to_device(
+        self,
+        unit_id: UnitId,
+        send_msgs: list[Command],
+        aes_key: str = "",
+        time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
+        **kwargs: Any,
+    ) -> Message | None:
+        """Add message to message's queue."""
+
+        response_event: asyncio.Event = asyncio.Event()
+
+        async def answer(*_: Any) -> None:
+            response_event.set()
+
+        msg: Message | None = await self.send_command_to_device_cb(
+            unit_id, send_msgs, answer, aes_key, time_to_live_secs, **kwargs
+        )
 
         await response_event.wait()
         return msg
@@ -1346,7 +1362,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self,
         unit_id: str,
         command: str,
-        key: str,
+        key: str = "",
         time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
     ) -> str:
         """Sends command string to device with unit id and aes key."""
