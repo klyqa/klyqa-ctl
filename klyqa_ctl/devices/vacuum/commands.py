@@ -34,6 +34,8 @@ class CommandType(str, Enum):
 
 
 class ProductinfoCommand(RequestCommand):
+    """Vacuum cleaner productinfo command."""
+
     def productinfo_json(self) -> TypeJson:
         return {"action": "productinfo"}
 
@@ -85,6 +87,8 @@ class RequestGetCommand(VacuumRequestCommand):
 
 
 class RequestResetCommand(RequestCommand):
+    """Vacuum cleaner reset command."""
+
     def reset_json(self) -> TypeJson:
         return {"action": "reset"}
 
@@ -94,6 +98,7 @@ class RequestResetCommand(RequestCommand):
 
 @dataclass
 class RequestSetCommand(VacuumRequestCommand):
+    """Vacuum cleaner set command."""
 
     action: str = CommandType.SET
 
@@ -108,14 +113,10 @@ class RequestSetCommand(VacuumRequestCommand):
     commissioninfo: str | None = None
     calibrationtime: str | None = None
 
-    # def set_json(self) -> TypeJson:
-    #     return {"action": "set"}
-
-    # def json(self) -> TypeJson:
-    #     return super().json() | self.set_json()
-
 
 class RoutineCommandActions(str, Enum):
+    """Routine command actions."""
+
     ACTION = "action"
     COUNT = "count"
     LIST = "list"
@@ -126,6 +127,8 @@ class RoutineCommandActions(str, Enum):
 
 @dataclass
 class RoutineCommand(RequestCommand):
+    """Routine command."""
+
     type: MessageCommandType = MessageCommandType.ROUTINE
     action: RoutineCommandActions = RoutineCommandActions.ACTION
     id: str | None = None
@@ -152,19 +155,13 @@ async def create_device_message(
     args_in: list[Any],
     send_to_devices_callable: Callable[[argparse.Namespace], Any],
     msg_queue: list[Command],
-    # message_queue_tx_command_cloud: list[Any],
-    # message_queue_tx_state_cloud: list[Any],
 ) -> None:
     """process_args_to_msg_cleaner"""
-
-    # def local_and_cloud_command_msg(json_msg: TypeJson, timeout: int) -> None:
-    #     message_queue_tx_local.append((json.dumps(json_msg), timeout))
-    #     message_queue_tx_command_cloud.append(json_msg)
 
     if args.command is not None:
 
         if args.command == "productinfo":
-            msg_queue.append(ProductinfoCommand())  # .json(), 100)
+            msg_queue.append(ProductinfoCommand())
 
         if args.command == CommandType.GET.value:
             get_command(args, msg_queue)
@@ -227,7 +224,7 @@ def get_command(args: argparse.Namespace, msq_queue: list[Command]) -> None:
         get_dict["commissioninfo"] = None
     if args.mcu or args.all:
         get_dict["mcu"] = None
-    msq_queue.append(Command(_json=get_dict))  # , 1000)
+    msq_queue.append(Command(_json=get_dict))
 
 
 def reset_command(args: argparse.Namespace, msq_queue: list[Command]) -> None:
@@ -281,13 +278,11 @@ def routine(args: argparse.Namespace) -> None:
     routine_dict: dict[str, str] = RoutineCommand().json()
 
     if args.count:
-        # routine_dict["action"] = "count"
         routine_dict = RoutineCommand(
             action=RoutineCommandActions.COUNT
         ).json()
 
     if args.list:
-        # routine_dict["action"] = "list"
         routine_dict = RoutineCommand(action=RoutineCommandActions.LIST).json()
 
     if args.put:
@@ -298,10 +293,6 @@ def routine(args: argparse.Namespace) -> None:
                 scene="none",
                 commands=args.commands,
             ).json()
-            # routine_dict["action"] = "put"
-            # routine_dict["id"] = args.id
-            # routine_dict["scene"] = "none"
-            # routine_dict["commands"] = args.commands
         else:
             LOGGER.error("No ID and/or Commands given!")
 

@@ -276,7 +276,7 @@ SCENES: list[TypeJson] = [
 ]
 
 
-def get_scene_by_key(key, value) -> TypeJson:
+def get_scene_by_value(key, value) -> TypeJson:
     """Get scene by comparing the scenes attributes key value with
     value."""
 
