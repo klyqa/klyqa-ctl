@@ -17,6 +17,7 @@ from klyqa_ctl.general.general import (
     TRACE,
     DeviceType,
     set_debug_logger,
+    set_logger,
     task_name,
 )
 from klyqa_ctl.general.message import Message
@@ -130,7 +131,8 @@ async def load_test(client: Client) -> int:
 
 async def main() -> None:
 
-    set_debug_logger(level=TRACE)
+    set_logger()
+    set_debug_logger(TRACE)
 
     client: Client = await Client.create(
         interactive_prompts=True, offline=False
