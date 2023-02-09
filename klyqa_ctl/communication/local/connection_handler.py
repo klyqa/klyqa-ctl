@@ -8,7 +8,7 @@ import datetime
 import json
 import select
 import socket
-from typing import Any, Awaitable, Callable
+from typing import Any, Awaitable, Callable, cast
 
 from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
@@ -453,14 +453,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             connection.aes_key = self.controller_data.aes_keys[device.u_id]
         else:
             task_log_error("No AES key for device %s! Removing it's messages.")
-            for uid, msgs in self.message_queue.items():
-                if uid == device.u_id:
-                    for msg in msgs:
-                        task_log_debug(
-                            "Removing message %s",
-                            msg,
-                        )
-                        await self.remove_msg_from_queue_cb(msg, device)
+            await self.remove_device_from_queue(device)
             return DeviceTcpReturn.MISSING_AES_KEY
 
         try:
@@ -488,17 +481,22 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 " AES key with --aes [key]! "
                 + str(device.u_id)
             )
+            await self.remove_device_from_queue(device)
             return DeviceTcpReturn.MISSING_AES_KEY
-        connection.sending_aes = AES.new(
-            connection.aes_key,
-            AES.MODE_CBC,
-            iv=connection.local_iv + connection.remote_iv,
-        )
-        connection.receiving_aes = AES.new(
-            connection.aes_key,
-            AES.MODE_CBC,
-            iv=connection.remote_iv + connection.local_iv,
-        )
+        try:
+            connection.sending_aes = AES.new(
+                connection.aes_key,
+                AES.MODE_CBC,
+                iv=connection.local_iv + connection.remote_iv,
+            )
+            connection.receiving_aes = AES.new(
+                connection.aes_key,
+                AES.MODE_CBC,
+                iv=connection.remote_iv + connection.local_iv,
+            )
+        except ValueError:
+            await self.remove_device_from_queue(device)
+            return DeviceTcpReturn.WRONG_AES
 
         connection.state = AesConnectionState.CONNECTED
         task_log_debug("Received remote initial vector. Connected state.")
@@ -594,6 +592,18 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             # Waited enough for the message callback
             pass
 
+    async def remove_device_from_queue(self, device: Device) -> None:
+        """Remove all message to device from message queue."""
+
+        for uid, msgs in self.message_queue.copy().items():
+            if uid == device.u_id:
+                for msg in msgs:
+                    task_log_debug(
+                        "Removing message %s",
+                        msg,
+                    )
+                    await self.remove_msg_from_queue_cb(msg, device)
+
     async def _send_msg(
         self,
         connection: TcpConnection,
@@ -606,8 +616,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
         if (
-            not msg
-            and device.u_id in self.message_queue
+            device.u_id in self.message_queue
             and len(self.message_queue[device.u_id]) > 0
         ):
             msg = self.message_queue[device.u_id][0]
@@ -655,6 +664,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
             else:
                 self.remove_msg_from_queue(msg, device)
+        else:
+            return_val = DeviceTcpReturn.NO_MESSAGE_TO_SEND
 
         return return_val
 
@@ -732,9 +743,14 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 )
                 data = data_ref.ref
                 device = device_ref.ref
+
                 if return_val == DeviceTcpReturn.ANSWERED:
-                    msg_sent_r.ref = None
+                    msg: Message = cast(Message, msg_sent_r.ref)
                     communication_finished = True
+                    if msg.cb_called and device.u_id in self.message_queue:
+                        communication_finished = False
+                    msg_sent_r.ref = None
+
                 elif return_val != DeviceTcpReturn.NO_ERROR:
                     return return_val
 
