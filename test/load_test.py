@@ -130,7 +130,7 @@ async def load_test(client: Client) -> int:
 
 async def main() -> None:
 
-    set_debug_logger(TRACE)
+    set_debug_logger(level=TRACE)
 
     client: Client = await Client.create(
         interactive_prompts=True, offline=False

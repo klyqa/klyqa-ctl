@@ -11,7 +11,7 @@ from klyqa_ctl.local_controller import LocalController
 def main() -> None:
     """Main."""
 
-    set_debug_logger(TRACE)
+    set_debug_logger(level=TRACE)
 
     lc: LocalController = LocalController.create_standalone()
 

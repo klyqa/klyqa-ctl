@@ -210,7 +210,7 @@ class TcpConnection:
             + json.dumps(json.loads(msg), sort_keys=True, indent=4)
         )
 
-        LOGGER.info(info_str)
+        task_log_debug(info_str)
         plain: bytes = msg.encode("utf-8")
 
         package: bytes = DataPackage.create(plain, PackageType.ENC).serialize(

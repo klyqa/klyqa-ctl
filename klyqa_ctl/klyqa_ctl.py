@@ -68,8 +68,8 @@ from klyqa_ctl.general.general import (
     aes_key_to_bytes,
     get_asyncio_loop,
     get_obj_attrs_as_string,
-    logging_hdl,
     set_debug_logger,
+    set_logger,
     task_log_debug,
     task_log_trace_ex,
 )
@@ -611,12 +611,10 @@ class Client(ControllerData):
             args_parsed.tryLocalThanCloud = False
 
         if args_parsed.debug:
-            LOGGER.setLevel(level=logging.DEBUG)
-            logging_hdl.setLevel(level=logging.DEBUG)
+            set_debug_logger()
 
         if args_parsed.trace:
-            LOGGER.setLevel(TRACE)
-            logging_hdl.setLevel(TRACE)
+            set_debug_logger(level=TRACE)
 
         if args_parsed.dev:
             self.aes_keys["dev"] = AES_KEY_DEV_BYTES
@@ -748,8 +746,7 @@ async def async_main() -> None:
         set_debug_logger(level=TRACE)
 
     if args_parsed.quiet:
-        LOGGER.setLevel(level=logging.CRITICAL)
-        logging_hdl.setLevel(level=logging.CRITICAL)
+        set_logger(level=logging.CRITICAL)
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
     if args_parsed.timeout:

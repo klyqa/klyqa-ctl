@@ -532,7 +532,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 device.save_device_message(json_response)
                 connection.sent_msg_answer = json_response
                 connection.aes_key_confirmed = True
-                task_log(
+                task_log_debug(
                     f"device uid {device.u_id} aes_confirmed"
                     f" {connection.aes_key_confirmed}"
                 )
@@ -613,7 +613,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg = self.message_queue[device.u_id][0]
 
         if msg:
-            task_log(
+            task_log_debug(
                 f"Process msg to send '{msg.msg_queue}' to device"
                 f" '{device.u_id}'."
             )
@@ -722,7 +722,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             data = data_ref.ref
 
             while not communication_finished and (len(data)):
-                task_log(
+                task_log_debug(
                     f"TCP server received {str(len(data))} bytes from"
                     f" {str(connection.address)}"
                 )
@@ -859,7 +859,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     unit_id,
                 )
 
-            task_log(
+            task_log_debug(
                 "Finished tcp connection to device"
                 f" {connection.address['ip']} with return state:"
                 f" {return_state}"
