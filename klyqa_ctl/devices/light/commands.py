@@ -19,7 +19,7 @@ from klyqa_ctl.devices.commands import (
 )
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
-from klyqa_ctl.devices.light.scenes import SCENES, get_scene_by_key
+from klyqa_ctl.devices.light.scenes import SCENES, get_scene_by_value
 from klyqa_ctl.general.general import (
     LOGGER,
     CloudStateCommand,
@@ -339,7 +339,7 @@ class RoutinePutCommand(
         if not device.ident:
             return False
         try:
-            scn: dict[str, Any] | None = get_scene_by_key(
+            scn: dict[str, Any] | None = get_scene_by_value(
                 "id", int(self.scene)
             )
             if not scn:
@@ -362,7 +362,7 @@ class RoutinePutCommand(
     def create(cls: Any, scene_label: str) -> RoutinePutCommand:
         """Create scene command."""
 
-        scn: TypeJson | None = get_scene_by_key("label", scene_label)
+        scn: TypeJson | None = get_scene_by_value("label", scene_label)
         if scn:
             command: RoutinePutCommand = RoutinePutCommand(
                 commands=scn["commands"], id="0", scene=str(scn["id"])
@@ -784,12 +784,7 @@ async def add_device_command_to_queue(
     # return False
 
     if args.routine_list:
-        # message_queue_tx_local.append({"type": "routine", "action": "list"},
-        # 500)
-        msg_queue.append(
-            # Command(_json={"type": "routine", "action": "list"})
-            RoutineListCommand()
-        )
+        msg_queue.append(RoutineListCommand())
 
     if args.routine_put and args.routine_id is not None:
         msg_queue.append(
@@ -801,17 +796,9 @@ async def add_device_command_to_queue(
         )
 
     if args.routine_delete and args.routine_id is not None:
-        msg_queue.append(
-            RoutineDeleteCommand(id=args.routine_id)
-            # {"type": "routine", "action": "delete", "id": args.routine_id},
-            # 500
-        )
+        msg_queue.append(RoutineDeleteCommand(id=args.routine_id))
     if args.routine_start and args.routine_id is not None:
-        msg_queue.append(
-            RoutineStartCommand(id=args.routine_id)
-            # {"type": "routine", "action": "start", "id": args.routine_id},
-            # 500
-        )
+        msg_queue.append(RoutineStartCommand(id=args.routine_id))
 
     return True
 
@@ -1101,7 +1088,7 @@ def routine_scene(args: argparse.Namespace, scene_list: list[str]) -> bool:
         scene = "Ice Cream"
 
     if scene:
-        scn: TypeJson | None = get_scene_by_key("label", scene)
+        scn: TypeJson | None = get_scene_by_value("label", scene)
 
         if not scn:
             LOGGER.error("Scene %s not found!", scene)

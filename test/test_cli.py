@@ -16,11 +16,13 @@ from klyqa_ctl.devices.light.commands import (
 )
 from klyqa_ctl.general.general import (
     DEFAULT_SEND_TIMEOUT_MS,
+    LOGGER,
     PROD_HOST,
     TRACE,
     Command,
     RgbColor,
     set_debug_logger,
+    set_logger,
     task_log_debug,
 )
 from klyqa_ctl.general.parameters import (
@@ -47,6 +49,7 @@ async def main() -> None:
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
 
+    set_logger()
     client: Client = await Client.create(
         interactive_prompts=True,
         offline=False,

@@ -21,6 +21,7 @@ from klyqa_ctl.general.general import (
     Command,
     RgbColor,
     set_debug_logger,
+    set_logger,
     task_log_debug,
 )
 from klyqa_ctl.general.parameters import (
@@ -42,6 +43,7 @@ async def main() -> None:
     if "KLYQA_HOST" in os.environ and os.environ["KLYQA_HOST"]:
         host = os.environ["KLYQA_HOST"]
 
+    set_logger()
     set_debug_logger(level=TRACE)
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS

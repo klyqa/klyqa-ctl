@@ -36,26 +36,31 @@ class AesConnectionState(str, Enum):
 
 
 class DeviceTcpReturn(Enum):
+    """Return values of the TCP communication to device."""
+
     NO_ERROR = auto()
+    NOTHING_DONE = auto()
+    UNKNOWN_ERROR = auto()
     # SENT = auto()
     ANSWERED = auto()
+
+    SEND_ERROR = auto()
+    MSG_VALUES_OUT_OF_RANGE_LIMITS = auto()
+    RESPONSE_ERROR = auto()
+    NO_MESSAGE_TO_SEND = auto()
+
     WRONG_UNIT_ID = auto()
     NO_UNIT_ID = auto()
-    WRONG_AES = auto()
-    TCP_ERROR = auto()
-    TCP_SOCKET_CLOSED_UNEXPECTEDLY = auto()
-    UNKNOWN_ERROR = auto()
-    SOCKET_TIMEOUT = auto()
-    NOTHING_DONE = auto()
-    SENT_ERROR = auto()
-    NO_MESSAGE_TO_SEND = auto()
+
     DEVICE_LOCK_TIMEOUT = auto()
     ERROR_LOCAL_IV = auto()
     MISSING_AES_KEY = auto()
-    RESPONSE_ERROR = auto()
-    SEND_ERROR = auto()
+    WRONG_AES = auto()
+
+    SOCKET_TIMEOUT = auto()
+    TCP_ERROR = auto()
+    TCP_SOCKET_CLOSED_UNEXPECTEDLY = auto()
     SOCKET_ERROR = auto()
-    MSG_VALUES_OUT_OF_RANGE_LIMITS = auto()
 
 
 class TcpConnection:
@@ -210,7 +215,7 @@ class TcpConnection:
             + json.dumps(json.loads(msg), sort_keys=True, indent=4)
         )
 
-        LOGGER.info(info_str)
+        task_log_debug(info_str)
         plain: bytes = msg.encode("utf-8")
 
         package: bytes = DataPackage.create(plain, PackageType.ENC).serialize(

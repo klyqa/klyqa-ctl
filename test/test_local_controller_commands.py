@@ -56,7 +56,7 @@ from klyqa_ctl.local_controller import LocalController
 def main() -> None:
     """Main."""
 
-    set_debug_logger(TRACE)
+    set_debug_logger(level=TRACE)
 
     print(AES_KEY_DEV_BYTES.hex())
     print(AES_KEY_DEV)
@@ -129,7 +129,7 @@ def main() -> None:
 async def async_main() -> None:
     """Async main."""
 
-    set_debug_logger(TRACE)
+    set_debug_logger(level=TRACE)
     # rc: RoutinePutCommand = RoutinePutCommand(action="put")
     # print(rc.json())
 

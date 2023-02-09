@@ -47,15 +47,15 @@ from klyqa_ctl.communication.local.connection_handler import (
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
-    add_command_args_bulb,
     add_device_command_to_queue as add_device_command_to_queue_light,
 )
+from klyqa_ctl.devices.light.commands import add_command_args_bulb
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.response_status import ResponseStatus
 from klyqa_ctl.devices.vacuum.commands import (
-    add_command_args_cleaner,
     create_device_message as create_device_message_vacuum,
 )
+from klyqa_ctl.devices.vacuum.commands import add_command_args_cleaner
 from klyqa_ctl.devices.vacuum.vacuum import VacuumCleaner
 from klyqa_ctl.general.general import (
     AES_KEY_DEV_BYTES,
@@ -68,8 +68,8 @@ from klyqa_ctl.general.general import (
     aes_key_to_bytes,
     get_asyncio_loop,
     get_obj_attrs_as_string,
-    logging_hdl,
     set_debug_logger,
+    set_logger,
     task_log_debug,
     task_log_trace_ex,
 )
@@ -611,12 +611,10 @@ class Client(ControllerData):
             args_parsed.tryLocalThanCloud = False
 
         if args_parsed.debug:
-            LOGGER.setLevel(level=logging.DEBUG)
-            logging_hdl.setLevel(level=logging.DEBUG)
+            set_debug_logger()
 
         if args_parsed.trace:
-            LOGGER.setLevel(TRACE)
-            logging_hdl.setLevel(TRACE)
+            set_debug_logger(level=TRACE)
 
         if args_parsed.dev:
             self.aes_keys["dev"] = AES_KEY_DEV_BYTES
@@ -708,6 +706,7 @@ async def async_main() -> None:
     """Main function."""
 
     exit_ret: int = 0
+    set_logger()
 
     parser: argparse.ArgumentParser = get_description_parser()
 
@@ -748,8 +747,7 @@ async def async_main() -> None:
         set_debug_logger(level=TRACE)
 
     if args_parsed.quiet:
-        LOGGER.setLevel(level=logging.CRITICAL)
-        logging_hdl.setLevel(level=logging.CRITICAL)
+        set_logger(level=logging.CRITICAL)
 
     timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS
     if args_parsed.timeout:

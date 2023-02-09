@@ -488,43 +488,56 @@ class TraceLogger(logging.Logger):
 
 
 logging.setLoggerClass(TraceLogger)
-
 LOGGER: logging.Logger = logging.getLogger(__package__)
 
-LOGGER.setLevel(level=logging.INFO)
 
-info_formatter: logging.Formatter = logging.Formatter("%(message)s")
+def set_logger(
+    logger: logging.Logger = LOGGER,  # pylint: disable=used-prior-global-declaration
+    level: int = logging.INFO,
+) -> None:
+    """Set global logger object and initialize."""
 
-logging_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
-    stream=sys.stdout
-)
-logging_hdl.setLevel(level=logging.INFO)
-logging_hdl.setFormatter(fmt=info_formatter)
+    global LOGGER  # pylint: disable=global-statement
+    LOGGER = logger
+    LOGGER.setLevel(level=level)
 
-LOGGER.addHandler(logging_hdl)
+    info_formatter: logging.Formatter = logging.Formatter("%(message)s")
 
-LOGGER_debug: TraceLogger = TraceLogger.manager.getLogger(
+    logging_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
+        stream=sys.stdout
+    )
+    logging_hdl.setLevel(level=level)
+    logging_hdl.setFormatter(fmt=info_formatter)
+
+    LOGGER.addHandler(logging_hdl)
+
+
+LOGGER_DBG: TraceLogger = TraceLogger.manager.getLogger(
     "klyqa_ctl_trace"
 )  # type: ignore[assignment]
-LOGGER_debug.setLevel(level=logging.INFO)
-LOGGER_debug.disabled = True
-
-debug_formatter: logging.Formatter = logging.Formatter(
-    "%(asctime)s %(levelname)-8s - %(message)s"
-)
-trace_log_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
-    stream=sys.stderr
-)
-LOGGER_debug.addHandler(trace_log_hdl)
+LOGGER_DBG.disabled = True
 
 
-def set_debug_logger(level: int = logging.DEBUG) -> None:
+def set_debug_logger(
+    logger: TraceLogger = LOGGER_DBG,  # pylint: disable=used-prior-global-declaration
+    level: int = logging.DEBUG,
+) -> None:
     """Stream logging handler to stderr pipe."""
 
-    LOGGER_debug.setLevel(level)
+    global LOGGER_DBG  # pylint: disable=global-statement
+    LOGGER_DBG = logger
+    trace_log_hdl: logging.StreamHandler[TextIO] = logging.StreamHandler(
+        stream=sys.stderr
+    )
+    debug_formatter: logging.Formatter = logging.Formatter(
+        "%(asctime)s %(levelname)-8s - %(message)s"
+    )
     trace_log_hdl.setLevel(level)
     trace_log_hdl.setFormatter(debug_formatter)
-    LOGGER_debug.disabled = False
+
+    LOGGER_DBG.addHandler(trace_log_hdl)
+    LOGGER_DBG.setLevel(level)
+    LOGGER_DBG.disabled = False
 
 
 def task_log(
@@ -533,9 +546,7 @@ def task_log(
     """Output task name and logging string."""
 
     task_name_str: str = (
-        task_name()
-        if LOGGER_debug.getEffectiveLevel() <= logging.DEBUG
-        else ""
+        task_name() if LOGGER_DBG.getEffectiveLevel() <= logging.DEBUG else ""
     )
     output_func(
         f"{task_name_str} - {msg}" if task_name_str else f"{msg}",
@@ -547,19 +558,19 @@ def task_log(
 def task_log_debug(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
 
-    task_log(msg, LOGGER_debug.debug, *args, **kwargs)
+    task_log(msg, LOGGER_DBG.debug, *args, **kwargs)
 
 
 def task_log_trace(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output debug message with task name."""
 
-    task_log(msg, LOGGER_debug.trace, *args, **kwargs)
+    task_log(msg, LOGGER_DBG.trace, *args, **kwargs)
 
 
 def task_log_error(msg: str, *args: Any, **kwargs: Any) -> None:
     """Output error message with task name."""
 
-    task_log(msg, LOGGER_debug.trace, *args, **kwargs)
+    task_log(msg, LOGGER_DBG.trace, *args, **kwargs)
 
 
 def task_log_trace_ex() -> None:
