@@ -504,6 +504,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.answer_utf8 = plain_utf8
             msg_sent.answer_json = json_response
             msg_sent.state = MessageState.ANSWERED
+            self.remove_msg_from_queue(msg_sent, device)
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
 
@@ -526,7 +527,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         if not device:
             return
-        if msg not in self.message_queue[device.u_id]:
+        if (
+            device.u_id not in self.message_queue
+            or msg not in self.message_queue[device.u_id]
+        ):
             return
 
         task_log("remove message from queue")
@@ -588,7 +592,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         msg.msg_queue_sent.append(text)
 
                         msg.state = MessageState.SENT
-                        self.remove_msg_from_queue(msg, device)
+                        # self.remove_msg_from_queue(msg, device)
                     else:
                         LOGGER.error("Could not send message!")
                         return DeviceTcpReturn.SEND_ERROR
@@ -767,23 +771,28 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_to_sent: Message | None = msg_to_sent_ref.ref
 
             if msg_to_sent:
-                # release message wait for callback
-                await msg_to_sent.call_cb()
+                if msg_to_sent.state != MessageState.ANSWERED:
+                    msg_to_sent.state = MessageState.UNSENT
+                elif msg_to_sent.state == MessageState.ANSWERED:
+                    # release message wait for callback
+                    await msg_to_sent.call_cb()
 
-                if return_state in [
-                    DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
-                ]:
-                    # Something bad could have happened with the device.
-                    # Remove the message precautiously from the
-                    # message queue.
-                    if msg_to_sent:
-                        self.remove_msg_from_queue(msg_to_sent, device)
+                # if return_state in [
+                #     DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
+                # ]:
+                #     # Something bad could have happened with the device.
+                #     # Remove the message precautiously from the
+                #     # message queue.
+                #     if msg_to_sent:
+                #         self.remove_msg_from_queue(msg_to_sent, device)
 
             device = r_device.ref
             if connection.socket is not None:
                 try:
                     connection.socket.shutdown(socket.SHUT_RDWR)
                     connection.socket.close()
+                except OSError:
+                    pass
                 finally:
                     connection.socket = None
             self.current_addr_connections.remove(str(connection.address["ip"]))
