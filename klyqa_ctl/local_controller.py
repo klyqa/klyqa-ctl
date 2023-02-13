@@ -63,7 +63,7 @@ class LocalController:
         msg: Message | None = await self.connection_hdl.send_message(
             send_msgs=[command],
             target_device_uid=unit_id,
-            time_to_live_secs=11111,
+            time_to_live_secs=30,
         )
         if msg:
             if msg.exception:

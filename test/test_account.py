@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
 import sys
 
 from klyqa_ctl.account import Account
@@ -34,7 +35,9 @@ async def main() -> None:
 
     exit_ret: int = 0
 
-    username = "frederick.stallmeyer@qconnex.com"
+    username: str = (
+        os.environ["KLYQA_USERNAME"] if "KLYQA_USERNAME" in os.environ else ""
+    )
 
     set_debug_logger(level=TRACE)
 
