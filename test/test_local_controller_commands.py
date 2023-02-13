@@ -56,7 +56,7 @@ from klyqa_ctl.local_controller import LocalController
 def main() -> None:
     """Main."""
 
-    set_debug_logger(TRACE)
+    set_debug_logger(level=TRACE)
 
     print(AES_KEY_DEV_BYTES.hex())
     print(AES_KEY_DEV)
@@ -64,11 +64,11 @@ def main() -> None:
     loop: asyncio.AbstractEventLoop = get_asyncio_loop()
 
     lc: LocalController = LocalController.create_standalone(
-        network_interface="eth0", interactive_prompts=False
+        interactive_prompts=False,
     )
 
     if lc.connection_hdl:
-        loop.run_until_complete(lc.connection_hdl.discover_devices(0.3))
+        loop.run_until_complete(lc.connection_hdl.discover_devices(3))
 
     dev: Device | None = None
     if "00ac629de9ad2f4409dc" in lc.controller_data.devices:
