@@ -1053,7 +1053,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                             break
                 for uid in to_del:
                     del self.message_queue[uid]
-                await asyncio.sleep(0.05)
+                await asyncio.sleep(0.5)
         except asyncio.CancelledError:
             task_log_debug("Message queue time to live task ended.")
 

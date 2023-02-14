@@ -280,7 +280,7 @@ def get_scene_by_value(key, value) -> TypeJson:
     """Get scene by comparing the scenes attributes key value with
     value."""
 
-    scene_result: list[TypeJson] = [x for x in SCENES if str(x[key]) == value]
+    scene_result: list[TypeJson] = [x for x in SCENES if x[key] == value]
     if len(scene_result) > 0:
         return scene_result[0]
     return {}
