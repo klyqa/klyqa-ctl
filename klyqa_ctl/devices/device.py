@@ -57,6 +57,7 @@ class Device:
         commands: list[Command],
         time_to_live_secs: int,
         con: DeviceConnectionHandler,
+        **kwargs: Any,
     ) -> Message | None:
         """Send message to device via desired connection set in
         connection handler (param: con)."""
@@ -65,18 +66,22 @@ class Device:
             unit_id=UnitId(self.u_id),
             send_msgs=commands,
             time_to_live_secs=time_to_live_secs,
+            **kwargs,
         )
 
     async def send_msg_local(
         self,
         commands: list[Command],
         time_to_live_secs: int = DEFAULT_SEND_TIMEOUT_MS,
+        **kwargs,
     ) -> Message | None:
         """Send message to device via local connection."""
 
         if not self.local_con:
             return None
-        return await self.send_msg(commands, time_to_live_secs, self.local_con)
+        return await self.send_msg(
+            commands, time_to_live_secs, self.local_con, **kwargs
+        )
 
     @property
     def local_addr(self) -> dict[str, Any]:
