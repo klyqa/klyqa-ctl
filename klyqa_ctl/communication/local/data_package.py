@@ -2,13 +2,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import IntEnum
 from typing import Any
 
-from klyqa_ctl.general.general import task_log
+from klyqa_ctl.general.general import task_log, task_log_trace
 
 
-class PackageType(Enum):
+class PackageType(IntEnum):
     """Data package types"""
 
     PLAIN = 0
@@ -32,18 +32,32 @@ class DataPackage:
         """Write package to bytes stream."""
 
         data: bytes = self.data
+        data_coded: bytes = b""
 
         if self.ptype != PackageType.IV:
             while len(data) % 16:
                 data = data + bytes([0x20])  # space
 
         if aes_obj and self.ptype == PackageType.ENC:
-            data = aes_obj.encrypt(data)
+            data_coded = aes_obj.encrypt(data)
+        else:
+            data_coded = data
 
-        return (
-            bytes([len(data) // 256, len(data) % 256, 0, self.ptype.value])
-            + data
+        serialized: bytes = (
+            bytes(
+                [
+                    len(data_coded) // 256,
+                    len(data_coded) % 256,
+                    0,
+                    self.ptype.value,
+                ]
+            )
+            + data_coded
         )
+
+        task_log_trace("Serialized package data: %s", serialized)
+
+        return serialized
 
     @classmethod
     def create(
