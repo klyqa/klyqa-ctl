@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import datetime
 from enum import Enum
-from typing import Awaitable, Callable
+from typing import Awaitable, Callable, Set
 
 from klyqa_ctl.general.general import (
     LOGGER,
@@ -55,16 +55,22 @@ class Message:
         self.msg_counter = MSG_COUNTER
         MSG_COUNTER = MSG_COUNTER + 1
 
-    async def call_cb(self) -> None:
+    async def call_cb(self, uid_answered: str = "") -> None:
         if self.callback is not None and not self.cb_called:
-            await self.callback(self, self.target_uid)
+            await self.callback(self, uid_answered)
             self.cb_called = True
 
-    async def check_msg_ttl(self) -> bool:
-        """Verify time to live, if exceeded call the callback"""
-        if datetime.datetime.now() - self.started > datetime.timedelta(
+    def is_ttl_end(self) -> bool:
+        """Check time to live ended."""
+
+        return datetime.datetime.now() - self.started > datetime.timedelta(
             seconds=self.time_to_live_secs
-        ):
+        )
+
+    async def check_msg_ttl_cb(self) -> bool:
+        """Verify time to live, if exceeded call the callback"""
+
+        if self.is_ttl_end():
             task_log_debug(
                 f"time to live {self.time_to_live_secs} seconds for message"
                 f" {self.msg_counter} {self.msg_queue} ended."
@@ -81,3 +87,18 @@ class Message:
     @target_uid.setter
     def target_uid(self, target_uid: str) -> None:
         self._attr_target_uid = format_uid(target_uid)
+
+
+@dataclass
+class BroadcastMessage(Message):
+    """Broadcast message to all devices.
+    Callback on reply can be called multiple times.
+    Devices that answered to that message will be remember in sent_to and
+    not send to them again."""
+
+    sent_to: Set[str] = field(default_factory=set)
+
+    async def call_cb(self, uid_answered: str = "") -> None:
+        if self.callback is not None:
+            await self.callback(self, uid_answered)
+            self.cb_called = True
