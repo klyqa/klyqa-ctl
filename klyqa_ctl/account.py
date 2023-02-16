@@ -2,17 +2,18 @@
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
 import datetime
-from enum import Enum
 import getpass
 import json
+from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 
 import httpx
+
 from klyqa_ctl.communication.cloud import CloudBackend, RequestMethod
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices.commands import CommandWithCheckValues
+from klyqa_ctl.devices.commands_device import CommandWithCheckValues
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     ACC_SETS_REQUEST_TIMEDELTA,

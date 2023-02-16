@@ -22,7 +22,8 @@ from klyqa_ctl.communication.local.data_package import (
     PackageType,
 )
 from klyqa_ctl.controller_data import ControllerData
-from klyqa_ctl.devices.commands import CommandWithCheckValues, PingCommand
+from klyqa_ctl.devices.commands import PingCommand
+from klyqa_ctl.devices.commands_device import CommandWithCheckValues
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.general.general import (
@@ -36,6 +37,7 @@ from klyqa_ctl.general.general import (
     SEPARATION_WIDTH,
     Address,
     Command,
+    NoneType,
     ReferencePass,
     TypeJson,
     get_asyncio_loop,
@@ -46,7 +48,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
     task_name,
 )
-from klyqa_ctl.general.message import Message, MessageState
+from klyqa_ctl.general.message import BroadcastMessage, Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
 try:
@@ -98,11 +100,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_handlec_connections_task: Task | None = None
         self._attr_handle_connections_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
-        self.msg_ttl_task: Task | None = None
         self._attr_current_addr_connections = set()
         self._attr_network_interface: str | None = network_interface
         self._attr_read_udp_socket_task_hdl: Task[None] | None = None
         self._attr_broadcast_discovery: bool = True
+        self.msg_ttl_task: Task | None = None
+        # self.check_messages_time_to_live_timeout: Task | None = None
+        self.check_messages_time_to_live_set: asyncio.Event = asyncio.Event()
 
     @property
     def network_interface(self) -> str | None:
@@ -431,15 +435,15 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         connection.received_packages.append(json_response)
         device.save_device_message(json_response)
-        device.local_con = self
+        device.local.con = self
 
-        if (
-            device.u_id not in self.message_queue
-            or not self.message_queue[device.u_id]
-        ):
-            if device.u_id in self.message_queue:
-                del self.message_queue[device.u_id]
-            return DeviceTcpReturn.NO_MESSAGE_TO_SEND
+        # if False and (
+        #     device.u_id not in self.message_queue
+        #     or not self.message_queue[device.u_id]
+        # ):
+        #     if device.u_id in self.message_queue:
+        #         del self.message_queue[device.u_id]
+        #     return DeviceTcpReturn.NO_MESSAGE_TO_SEND
 
         if not is_new_device and device.ident:
             task_log(f"Found device {device.ident.unit_id}")
@@ -547,9 +551,12 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.state = MessageState.ANSWERED
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
+            device.local.connected = True
+            bm: BroadcastMessage = cast(BroadcastMessage, msg_sent)
+            bm.sent_to.add(device.u_id)
 
             if msg_sent and device is not None:
-                await msg_sent.call_cb()
+                await msg_sent.call_cb(device.u_id)
                 task_log_debug(
                     f"device {device.u_id} answered msg {msg_sent.msg_queue}"
                 )
@@ -560,37 +567,34 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         )
         return return_val
 
-    def remove_msg_from_queue(
-        self, msg: Message, device: Device | None
-    ) -> None:
+    def remove_msg_from_queue(self, msg: Message, u_id: str) -> None:
         """Remove message from message queue."""
 
-        if not device:
-            return
-        if msg not in self.message_queue[device.u_id]:
+        if (
+            u_id not in self.message_queue
+            or msg not in self.message_queue[u_id]
+        ):
             return
 
         task_log_debug("remove message from queue")
-        self.message_queue[device.u_id].remove(msg)
-        # msg.state = MessageState.SENT
+        self.message_queue[u_id].remove(msg)
 
-        if (
-            device.u_id in self.message_queue
-            and not self.message_queue[device.u_id]
-        ):
-            del self.message_queue[device.u_id]
+        if u_id in self.message_queue and not self.message_queue[u_id]:
+            del self.message_queue[u_id]
 
-    async def remove_msg_from_queue_cb(
-        self, msg: Message, device: Device | None
-    ) -> None:
+    async def remove_msg_from_queue_cb(self, msg: Message, u_id: str) -> None:
         """Remove message from message queue and call it's callback."""
-        self.remove_msg_from_queue(msg, device)
-        try:
-            task_log_debug("remove message from queue and callback")
-            await asyncio.wait_for(msg.call_cb(), 30)
-        except asyncio.exceptions.TimeoutError:
-            # Waited enough for the message callback
-            pass
+
+        task_log_debug("remove message from queue and callback")
+        self.remove_msg_from_queue(msg, u_id)
+        # try:
+
+        loop: AbstractEventLoop = get_asyncio_loop()
+        loop.create_task(msg.call_cb())
+        # await asyncio.wait_for(msg.call_cb(), 30)
+        # except asyncio.TimeoutError:
+        #     # Waited enough for the message callback
+        #     pass
 
     async def remove_device_from_queue(self, device: Device) -> None:
         """Remove all message to device from message queue."""
@@ -602,7 +606,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         "Removing message %s",
                         msg,
                     )
-                    await self.remove_msg_from_queue_cb(msg, device)
+                    await self.remove_msg_from_queue_cb(msg, device.u_id)
 
     async def _send_msg(
         self,
@@ -615,8 +619,21 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         msg: Message | None = None
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
+        if "all" in self.message_queue:
+            m: Message
+            for m in self.message_queue["all"]:
+                if not isinstance(m, BroadcastMessage):
+                    continue
+                bm: BroadcastMessage = cast(BroadcastMessage, m)
+
+                if device.u_id in bm.sent_to:
+                    continue
+                msg = bm
+                break
+
         if (
-            device.u_id in self.message_queue
+            not msg
+            and device.u_id in self.message_queue
             and len(self.message_queue[device.u_id]) > 0
         ):
             msg = self.message_queue[device.u_id][0]
@@ -641,7 +658,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         and not cwcv.check_values(device=device)
                     ):
                         msg.state = MessageState.VALUE_RANGE_LIMITS
-                        await self.remove_msg_from_queue_cb(msg, device)
+
+                        if not isinstance(msg, BroadcastMessage):
+                            await self.remove_msg_from_queue_cb(
+                                msg, device.u_id
+                            )
+                        else:
+                            await self.remove_msg_from_queue_cb(msg, "all")
                         return DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
 
                 try:
@@ -651,8 +674,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         j = j + 1
                         msg.msg_queue_sent.append(text)
 
-                        msg.state = MessageState.SENT
-                        self.remove_msg_from_queue(msg, device)
+                        if not isinstance(msg, BroadcastMessage):
+                            msg.state = MessageState.SENT
+                            self.remove_msg_from_queue(msg, device.u_id)
                     else:
                         LOGGER.error("Could not send message!")
                         return DeviceTcpReturn.SEND_ERROR
@@ -663,7 +687,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     return DeviceTcpReturn.SEND_ERROR
 
             else:
-                self.remove_msg_from_queue(msg, device)
+                self.remove_msg_from_queue(msg, device.u_id)
         else:
             return_val = DeviceTcpReturn.NO_MESSAGE_TO_SEND
 
@@ -701,12 +725,27 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         if msg_sent_r.ref and msg_sent_r.ref.state == MessageState.ANSWERED:
             msg_sent_r.ref = None
 
+        bm_l: list[BroadcastMessage] | None = None
+        bm: BroadcastMessage | None = None
+        if (
+            "all" in self.message_queue
+            and len(self.message_queue["all"]) > 0
+            and isinstance(self.message_queue["all"][0], BroadcastMessage)
+        ):
+            bm_l = cast(list[BroadcastMessage], self.message_queue["all"])
+
         while not communication_finished and (
             device.u_id == "no_uid"
             or type(device) == Device  # pylint: disable=unidiomatic-typecheck
             or device.u_id in self.message_queue
+            or bm_l  # and bm and device.u_id not in bm.sent_to)
             or msg_sent_r.ref
         ):
+            if not bm and device.u_id != "no_uid" and bm_l:
+                for m in bm_l:
+                    if device.u_id not in m.sent_to:
+                        bm = m
+                        break
 
             if (
                 msg_sent_r.ref
@@ -772,6 +811,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             return DeviceTcpReturn.RESPONSE_ERROR
 
         data_ref.ref = data_ref.ref[4 + package.length :]
+        data_ref.ref = b""
 
         if (
             connection.state == AesConnectionState.WAIT_IV
@@ -850,10 +890,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     # message queue.
                     if msg_to_sent:
                         await self.remove_msg_from_queue_cb(
-                            msg_to_sent, device
+                            msg_to_sent, device.u_id
                         )
 
             device = r_device.ref
+            # if (
+            #     msg_to_sent and device and # noqa: W504, E261
+            #     return_state != DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
+            # ):
+            #     # Maybe wrong AES key, so firstly set disconnected
+            #     device.local.connected = False
+
             if connection.socket is not None:
                 try:
                     connection.socket.shutdown(socket.SHUT_RDWR)
@@ -1039,21 +1086,46 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def check_messages_time_to_live(self) -> None:
         """Check message queue for end of live messages."""
 
-        to_del: list[str] = []
         try:
             while True:
-                to_del = []
+                to_del_uids: list[str] = []
+                to_del_msgs: list[Message] = []
+
                 for uid, msgs in self.message_queue.items():
                     for msg in msgs:
-                        if not await msg.check_msg_ttl():
-                            msgs.remove(msg)
-                        if not self.message_queue[uid]:
-                            # del self.message_queue[uid]
-                            to_del.append(uid)
-                            break
-                for uid in to_del:
-                    del self.message_queue[uid]
-                await asyncio.sleep(0.05)
+                        if msg.is_ttl_end():
+                            to_del_msgs.append(msg)
+                    for msg in to_del_msgs:
+                        try:
+                            # msgs.remove(msg)
+                            await self.remove_msg_from_queue_cb(msg, uid)
+                        except ValueError:
+                            task_log_debug(
+                                "Error while deleting message from queue."
+                            )
+                            task_log_trace_ex()
+                    if (
+                        uid in self.message_queue
+                        and not self.message_queue[uid]
+                    ):
+                        to_del_uids.append(uid)
+                for uid in to_del_uids:
+                    try:
+                        del self.message_queue[uid]
+                    except ValueError:
+                        task_log_debug(
+                            "Error while deleting uid messages from queue."
+                        )
+                        task_log_trace_ex()
+                try:
+
+                    self.check_messages_time_to_live_set.clear()
+                    await asyncio.wait_for(
+                        self.check_messages_time_to_live_set.wait(), timeout=5
+                    )
+                except asyncio.TimeoutError:
+                    pass
+
         except asyncio.CancelledError:
             task_log_debug("Message queue time to live task ended.")
 
@@ -1066,6 +1138,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             self.msg_ttl_task = loop.create_task(
                 self.check_messages_time_to_live()
             )
+        else:
+            self.check_messages_time_to_live_set.set()
 
     async def connection_tasks_time_to_live(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
@@ -1320,6 +1394,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> Message | None:
         """Add message to message's queue with answer callback."""
 
+        loop: AbstractEventLoop = get_asyncio_loop()
+
         if not send_msgs:
             LOGGER.error("No message queue to send in message to %s!", unit_id)
             return None
@@ -1328,17 +1404,28 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(
                 aes_key
             )
+        msg: Message
 
-        msg: Message = Message(
-            datetime.datetime.now(),
-            unit_id,
-            msg_queue=send_msgs,
-            callback=answer_cb,
-            time_to_live_secs=time_to_live_secs,
-            **kwargs,
-        )
+        if unit_id == "all":
+            msg = BroadcastMessage(
+                datetime.datetime.now(),
+                unit_id,
+                msg_queue=send_msgs,
+                callback=answer_cb,
+                time_to_live_secs=time_to_live_secs,
+                **kwargs,
+            )
+        else:
+            msg = Message(
+                datetime.datetime.now(),
+                unit_id,
+                msg_queue=send_msgs,
+                callback=answer_cb,
+                time_to_live_secs=time_to_live_secs,
+                **kwargs,
+            )
 
-        if not await msg.check_msg_ttl():
+        if not await msg.check_msg_ttl_cb():
             return msg
 
         task_log_trace(
@@ -1346,6 +1433,19 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         )
 
         self.message_queue.setdefault(str(unit_id), []).append(msg)
+
+        async def msg_ttl_task() -> None:
+            await asyncio.sleep(time_to_live_secs)
+            if unit_id in self.message_queue:
+                task_log_debug("Message ttl ended.")
+                task_log_trace("Message: %s", msg)
+                try:
+                    await self.remove_msg_from_queue_cb(msg=msg, u_id=unit_id)
+                except ValueError:
+                    self.check_messages_ttl_task_alive()
+
+        loop.create_task(msg_ttl_task())
+
         if self.broadcast_discovery:
             await self.send_udp_broadcast()
         self.search_and_send_loop_task_alive()
@@ -1368,10 +1468,21 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             response_event.set()
 
         msg: Message | None = await self.send_command_to_device_cb(
-            unit_id, send_msgs, answer, aes_key, time_to_live_secs, **kwargs
+            str(unit_id),
+            send_msgs,
+            answer,
+            aes_key,
+            time_to_live_secs,
+            **kwargs,
         )
 
-        await response_event.wait()
+        try:
+            await asyncio.wait_for(
+                response_event.wait(), timeout=time_to_live_secs
+            )
+        except asyncio.TimeoutError:
+            task_log_debug("Send local command to device timeout.")
+
         return msg
 
     async def send_to_device(
@@ -1411,15 +1522,39 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         print(SEPARATION_WIDTH * "-")
 
         task_log_debug("discover ping start")
+
+        response_event: asyncio.Event = asyncio.Event()
+
+        async def answer(msg: Message | None, uid: str) -> None:
+            if (
+                "all" in self.message_queue
+                and msg in self.message_queue["all"]
+            ):
+                return
+            response_event.set()
+
+        await self.send_command_to_device_cb(
+            "all",
+            [PingCommand()],
+            answer,
+            time_to_live_secs=timeout_secs,
+        )
+
+        try:
+            await asyncio.wait_for(response_event.wait(), timeout=timeout_secs)
+        except asyncio.TimeoutError:
+            task_log_debug("Discover devices locally timed out.")
+        return
+
         # send a message to uid "all" which is fake but will get the
         # identification message from the devices in the aes_search
         # and send msg function and we can send then a real
         # request message to these discovered devices.
-        await self.send_command_to_device(
-            UnitId("all"),
-            [PingCommand()],
-            time_to_live_secs=timeout_secs,
-        )
+        # await self.send_command_to_device(
+        #     UnitId("all"),
+        #     [PingCommand()],
+        #     time_to_live_secs=timeout_secs,
+        # )
 
     @classmethod
     def create_default(
