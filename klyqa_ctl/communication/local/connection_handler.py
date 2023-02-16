@@ -552,8 +552,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
             device.local.connected = True
-            bm: BroadcastMessage = cast(BroadcastMessage, msg_sent)
-            bm.sent_to.add(device.u_id)
+            if isinstance(msg_sent, BroadcastMessage):
+                bm: BroadcastMessage = cast(BroadcastMessage, msg_sent)
+                bm.sent_to.add(device.u_id)
 
             if msg_sent and device is not None:
                 await msg_sent.call_cb(device.u_id)
