@@ -36,14 +36,13 @@ import json
 import logging
 import sys
 import time
-from typing import Any
+from typing import Any, cast
 
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.local.connection_handler import (
-    LocalConnectionHandler,
-)
+from klyqa_ctl.communication.device_connection_handler import DeviceConnectionHandler
+from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
@@ -74,10 +73,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message, MessageState
-from klyqa_ctl.general.parameters import (
-    add_config_args,
-    get_description_parser,
-)
+from klyqa_ctl.general.parameters import add_config_args, get_description_parser
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -126,12 +122,38 @@ class Client(ControllerData):
     #         return bool(self.cloud_backend.access_token != "")
     #     return False
 
+    async def discover_devices(self, ttl_secs: int = 3) -> None:
+        """Discover devices from device list via cloud or with local UDP
+        broadcast."""
+
+        tasks: list[asyncio.Task] = []
+        if self.local:
+            tasks.append(
+                asyncio.create_task(self.local.discover_devices(ttl_secs))
+            )
+        if self.cloud and False:
+            device: Device
+            for _, device in self.devices.items():
+                tasks.append(
+                    asyncio.create_task(
+                        device.ping_con(device.cloud, ttl_ping_secs=ttl_secs)
+                    )
+                )
+
+        for task in tasks:
+            try:
+                await asyncio.wait_for(task, timeout=ttl_secs)
+            except asyncio.exceptions.TimeoutError:
+                task_log_debug("Discover timeout.")
+        # await asyncio.wait(tasks)
+
     def create_device(self, unit_id: str, product_id: str) -> Device:
         """Get or create a device from the controller data. Read in device
         config when new device is created."""
 
         dev: Device = super().create_device(unit_id, product_id)
-        dev.local_con = self.local
+        dev.local.con = cast(DeviceConnectionHandler, self.local)
+        dev.cloud.con = cast(DeviceConnectionHandler, self.cloud)
         return dev
 
     async def add_account(
@@ -159,37 +181,37 @@ class Client(ControllerData):
         if self.local:
             await self.local.shutdown()
 
-    async def discover_devices(
-        self,
-        args: argparse.Namespace,
-        message_queue_tx_local: list[Any],
-        target_device_uids: set[Any],
-    ) -> None:
-        """Discover devices."""
-        if not self.local:
-            return
+    # async def discover_devices(
+    #     self,
+    #     args: argparse.Namespace,
+    #     message_queue_tx_local: list[Any],
+    #     target_device_uids: set[Any],
+    # ) -> None:
+    #     """Discover devices."""
+    #     if not self.local:
+    #         return
 
-        print(SEPARATION_WIDTH * "-")
-        print("Search local network for devices ...")
-        print(SEPARATION_WIDTH * "-")
+    #     print(SEPARATION_WIDTH * "-")
+    #     print("Search local network for devices ...")
+    #     print(SEPARATION_WIDTH * "-")
 
-        discover_timeout_secs: float = 2.5
+    #     discover_timeout_secs: float = 2.5
 
-        task_log_debug("discover ping start")
-        # send a message to uid "all" which is fake but will get the
-        # identification message from the devices in the aes_search and
-        # send msg function and we can send then a real
-        # request message to these discovered devices.
-        await self.local.send_command_to_device(
-            UnitId("all"),
-            message_queue_tx_local,
-            timeout_secs=discover_timeout_secs,
-        )
-        task_log_debug("discover ping end")
-        # if self.devices:
-        #     target_device_uids = set(
-        # u_id for u_id, v in self.devices.items())
-        # some code missing
+    #     task_log_debug("discover ping start")
+    #     # send a message to uid "all" which is fake but will get the
+    #     # identification message from the devices in the aes_search and
+    #     # send msg function and we can send then a real
+    #     # request message to these discovered devices.
+    #     await self.local.send_command_to_device(
+    #         UnitId("all"),
+    #         message_queue_tx_local,
+    #         timeout_secs=discover_timeout_secs,
+    #     )
+    #     task_log_debug("discover ping end")
+    # if self.devices:
+    #     target_device_uids = set(
+    # u_id for u_id, v in self.devices.items())
+    # some code missing
 
     # def device_name_to_uid(
     #     self, args: argparse.Namespace, target_device_uids: set[str]

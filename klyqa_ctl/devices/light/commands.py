@@ -1,22 +1,22 @@
 """Contains all functions for light commands."""
 from __future__ import annotations
 
-from abc import abstractmethod
 import argparse
-from dataclasses import dataclass
-from enum import Enum
 import json
 import sys
+from abc import abstractmethod
+from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Callable
 
 from klyqa_ctl.devices.commands import (
-    CommandWithCheckValues,
-    RebootCommand,
-    FactoryResetCommand,
-    PingCommand,
-    FwUpdateCommand,
     CommandAutoBuild,
+    FactoryResetCommand,
+    FwUpdateCommand,
+    PingCommand,
+    RebootCommand,
 )
+from klyqa_ctl.devices.commands_device import CommandWithCheckValues
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES, get_scene_by_value

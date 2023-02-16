@@ -1,15 +1,12 @@
 """General device"""
 from __future__ import annotations
 
-from abc import abstractmethod
 import asyncio
-from dataclasses import dataclass
+import datetime
 from typing import Any
 
-from klyqa_ctl.communication.device_connection_handler import (
-    DeviceConnectionHandler,
-)
-from klyqa_ctl.devices.cloud_state import DeviceCloudState
+from klyqa_ctl.devices.commands import PingCommand
+from klyqa_ctl.devices.connection import DeviceConnection
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.general import (
@@ -17,11 +14,10 @@ from klyqa_ctl.general.general import (
     LOGGER,
     AsyncIoLock,
     Command,
-    CommandTyped,
     task_log_debug,
     task_log_trace_ex,
 )
-from klyqa_ctl.general.message import Message
+from klyqa_ctl.general.message import Message, MessageState
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -34,7 +30,8 @@ class Device:
     def __init__(self) -> None:
         self._attr_local_addr: dict[str, Any] = {"ip": "", "port": -1}
         # device specific cloud connection results
-        self._attr_cloud: DeviceCloudState = DeviceCloudState()
+        self._attr_local: DeviceConnection = DeviceConnection()
+        self._attr_cloud: DeviceConnection = DeviceConnection()
         self._attr_ident: ResponseIdentityMessage = ResponseIdentityMessage()
 
         self._attr_u_id: str = UnitId("no_uid")
@@ -49,25 +46,54 @@ class Device:
         }
         self._attr_device_config: dict[str, Any] = {}
         self._attr_product_id: str = ""
+        self._attr_last_ping_con: datetime.datetime | None = None
 
-        self.local_con: DeviceConnectionHandler | None = None
+    async def ping_con(
+        self, dcon: DeviceConnection, ttl_ping_secs: int = 10
+    ) -> None:
+        """Try reach out device via connection and set connection state."""
+
+        if (
+            self._attr_last_ping_con
+            and datetime.datetime.now() - self._attr_last_ping_con
+            < datetime.timedelta(seconds=ttl_ping_secs)
+        ):
+            return
+        self._attr_last_ping_con = datetime.datetime.now()
+
+        msg: Message | None = await self.send_msg(
+            [PingCommand()], time_to_live_secs=ttl_ping_secs, dcon=dcon
+        )
+
+        # if msg and msg.state == MessageState.ANSWERED:
+        #     dcon.connected = True
+        # else:
+        #     dcon.connected = False
 
     async def send_msg(
         self,
         commands: list[Command],
         time_to_live_secs: int,
-        con: DeviceConnectionHandler,
-        **kwargs: Any,
+        dcon: DeviceConnection,
     ) -> Message | None:
         """Send message to device via desired connection set in
         connection handler (param: con)."""
 
-        return await con.send_command_to_device(  # type: ignore[no-any-return]
+        if not dcon.con:
+            return None
+
+        msg: Message | None = await dcon.con.send_command_to_device(
             unit_id=UnitId(self.u_id),
             send_msgs=commands,
             time_to_live_secs=time_to_live_secs,
             **kwargs,
         )
+        # if msg and msg.state == MessageState.ANSWERED:
+        #     dcon.connected = True
+        # else:
+        #     dcon.connected = False
+
+        return msg
 
     async def send_msg_local(
         self,
@@ -77,11 +103,38 @@ class Device:
     ) -> Message | None:
         """Send message to device via local connection."""
 
-        if not self.local_con:
+        if not self.local.con:
             return None
-        return await self.send_msg(
-            commands, time_to_live_secs, self.local_con, **kwargs
-        )
+        return await self.send_msg(commands, time_to_live_secs, self.local)
+
+    async def send_msg_auto(
+        self,
+        commands: list[Command],
+        time_to_live_secs: int = DEFAULT_SEND_TIMEOUT_MS,
+    ) -> Message | None:
+        """Send message to device via local or cloud connection and restore
+        connection states."""
+
+        msg: Message | None = None
+        for con in [self.local, self.cloud]:
+            if con:
+                if con.connected and (
+                    not msg or msg.state != MessageState.ANSWERED
+                ):
+                    msg = await self.send_msg(
+                        commands, time_to_live_secs, self.local
+                    )
+                elif not con.connected:
+                    asyncio.create_task(self.ping_con(con))
+        return msg
+
+    @property
+    def local(self) -> DeviceConnection:
+        return self._attr_local
+
+    @local.setter
+    def local(self, local: DeviceConnection) -> None:
+        self._attr_local = local
 
     @property
     def local_addr(self) -> dict[str, Any]:
@@ -92,11 +145,11 @@ class Device:
         self._attr_local_addr = local_addr
 
     @property
-    def cloud(self) -> DeviceCloudState:
+    def cloud(self) -> DeviceConnection:
         return self._attr_cloud
 
     @cloud.setter
-    def cloud(self, cloud: DeviceCloudState) -> None:
+    def cloud(self, cloud: DeviceConnection) -> None:
         self._attr_cloud = cloud
 
     @property
