@@ -81,6 +81,10 @@ async def main() -> None:
     unit_id: str = "04256291add6f1b414d1"
     unit_id_real: str = "286dcd5c6bda"
 
+    await client.discover_devices(33333)
+    # if client.local:
+    #     loop.run_until_complete(client.local.discover_devices(3))
+
     await acc.cloud_post_command_to_dev(
         acc.devices[unit_id_real],
         PingCommand(),
