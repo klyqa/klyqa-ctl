@@ -32,7 +32,7 @@ LOGGER.addHandler(logging_hdl)
 # logging_hdl_clr.setFormatter(formatter)
 # LOGGER.addHandler(logging_hdl_clr)
 
-DEFAULT_SEND_TIMEOUT_MS = 30
+DEFAULT_SEND_TIMEOUT_MS = 30000
 DEFAULT_MAX_COM_PROC_TIMEOUT_SECS = 600
 
 TypeJSON = dict[str, Any]
