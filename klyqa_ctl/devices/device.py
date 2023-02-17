@@ -86,6 +86,7 @@ class Device:
             unit_id=UnitId(self.u_id),
             send_msgs=commands,
             time_to_live_secs=time_to_live_secs,
+            **kwargs,
         )
         # if msg and msg.state == MessageState.ANSWERED:
         #     dcon.connected = True
@@ -98,6 +99,7 @@ class Device:
         self,
         commands: list[Command],
         time_to_live_secs: int = DEFAULT_SEND_TIMEOUT_MS,
+        **kwargs,
     ) -> Message | None:
         """Send message to device via local connection."""
 

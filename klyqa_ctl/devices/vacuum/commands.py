@@ -60,7 +60,7 @@ class RequestGetCommand(VacuumRequestCommand):
     area: str | None = None
     time: str | None = None
     calibrationtime: str | None = None
-    workingmode: str | None = None
+    workingmode: int | None = None
     workingstatus: str | None = None
     suction: str | None = None
     water: str | None = None
@@ -72,6 +72,15 @@ class RequestGetCommand(VacuumRequestCommand):
     commissioninfo: str | None = None
     mcu: str | None = None
 
+    def json(self) -> TypeJson:
+        return TypeJson(
+            {
+                k: v
+                for k, v in self.__dict__.items()
+                if not k.startswith("_") and v != ""  # and v is not None
+            }
+        )
+
     @classmethod
     def all(
         cls: Any,
@@ -81,7 +90,8 @@ class RequestGetCommand(VacuumRequestCommand):
         cmd: RequestGetCommand = RequestGetCommand()
         for k, v in cmd.__dict__.items():
             if not k.startswith("_") and v is None:
-                setattr(cmd, k, "r")
+                setattr(cmd, k, None)
+                # setattr(cmd, k, "r")
 
         return cmd
 

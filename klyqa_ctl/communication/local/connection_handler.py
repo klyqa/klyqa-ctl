@@ -552,8 +552,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
             device.local.connected = True
-            bm: BroadcastMessage = cast(BroadcastMessage, msg_sent)
-            bm.sent_to.add(device.u_id)
+            
+            if isinstance(msg_sent, BroadcastMessage):
+                bm: BroadcastMessage = cast(BroadcastMessage, msg_sent)
+                bm.sent_to.add(device.u_id)
 
             if msg_sent and device is not None:
                 await msg_sent.call_cb(device.u_id)
@@ -907,7 +909,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     connection.socket.close()
                 finally:
                     connection.socket = None
-            self.current_addr_connections.remove(str(connection.address["ip"]))
+            # self.current_addr_connections.remove(str(connection.address["ip"]))
 
             unit_id: str = f" Unit-ID: {device.u_id}" if device.u_id else ""
 
@@ -1190,25 +1192,23 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             connection.socket,
             addr,
         ) = self.tcp.accept()
-        if not addr[0] in self.current_addr_connections:
-            self.current_addr_connections.add(addr[0])
-            connection.address["ip"] = addr[0]
-            connection.address["port"] = addr[1]
+        # if not addr[0] in self.current_addr_connections:
+        # self.current_addr_connections.add(addr[0])
+        connection.address["ip"] = addr[0]
+        connection.address["port"] = addr[1]
 
-            new_task: Task[DeviceTcpReturn] = loop.create_task(
-                self.device_handle_local_tcp(device, connection)
-            )
+        new_task: Task[DeviceTcpReturn] = loop.create_task(
+            self.device_handle_local_tcp(device, connection)
+        )
 
-            loop.create_task(
-                asyncio.wait_for(new_task, timeout=proc_timeout_secs)
-            )
+        loop.create_task(asyncio.wait_for(new_task, timeout=proc_timeout_secs))
 
-            task_log_debug(
-                f"Address {connection.address['ip']} process task created."
-            )
-            self.__tasks_undone.append((new_task, datetime.datetime.now()))
-        else:
-            task_log_debug(f"Address {addr[0]} already in connection.")
+        task_log_debug(
+            f"Address {connection.address['ip']} process task created."
+        )
+        self.__tasks_undone.append((new_task, datetime.datetime.now()))
+        # else:
+        #     task_log_debug(f"Address {addr[0]} already in connection.")
 
     async def read_udp_socket_task(self) -> None:
         """Start read UDP socket for incoming syncs, when not running."""

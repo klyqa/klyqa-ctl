@@ -359,13 +359,15 @@ class RoutinePutCommand(
         return True
 
     @classmethod
-    def create(cls: Any, scene_label: str) -> RoutinePutCommand:
+    def create(
+        cls: Any, scene_label: str, id_in_dev: str = "0"
+    ) -> RoutinePutCommand:
         """Create scene command."""
 
         scn: TypeJson | None = get_scene_by_value("label", scene_label)
         if scn:
             command: RoutinePutCommand = RoutinePutCommand(
-                commands=scn["commands"], id="0", scene=str(scn["id"])
+                commands=scn["commands"], id=id_in_dev, scene=str(scn["id"])
             )
         else:
             raise ValueError(f"No such scene {scene_label}!")
