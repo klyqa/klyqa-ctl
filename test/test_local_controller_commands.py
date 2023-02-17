@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import random
-from typing import Any
+from typing import Any, cast
 
 from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
@@ -25,8 +25,7 @@ from klyqa_ctl.devices.light.commands import (
 )
 from klyqa_ctl.devices.light.light import Light
 from klyqa_ctl.devices.light.scenes import SCENES
-from klyqa_ctl.general.general import (  # AES_KEY_DEV,
-    AES_KEY_DEV,
+from klyqa_ctl.general.general import (
     AES_KEY_DEV_BYTES,
     LOGGER,
     TRACE,
@@ -34,6 +33,7 @@ from klyqa_ctl.general.general import (  # AES_KEY_DEV,
     get_asyncio_loop,
     set_debug_logger,
 )
+from klyqa_ctl.general.general import AES_KEY_DEV  # AES_KEY_DEV,
 from klyqa_ctl.general.message import Message
 from klyqa_ctl.general.unit_id import UnitId
 from klyqa_ctl.local_controller import LocalController
@@ -97,19 +97,20 @@ def main() -> None:
         str(uid), aes, json.dumps(RequestCommand().json())
     )
 
-    # req_color: ColorCommand = ColorCommand(
-    #     color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
-    # )  # , force=True)json
+    req_color: ColorCommand = ColorCommand(
+        color=RgbColor(random.randrange(0, 255), 22, 122), transition_time=4000
+    )  # , force=True)json
 
     # reply = local.send_to_device(
     #     str(unit_id), aes_key, json.dumps(req_color.json())
     # )
 
     if dev:
-        light: Light = dev
+        light: Light = cast(Light, dev)
 
-        light.local_con = local.connection_hdl
-        if light.local_con:
+        light.local.con = cast(LocalConnectionHandler, local.connection_hdl)
+
+        if light.local.con:
 
             ret: Message | None = loop.run_until_complete(
                 light.send_msg_local([PingCommand()], 3333)

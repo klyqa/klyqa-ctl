@@ -1,5 +1,6 @@
 """Scenes for the lights."""
 
+from typing import Any
 from klyqa_ctl.general.general import TypeJson
 
 SCENES: list[TypeJson] = [
@@ -276,7 +277,7 @@ SCENES: list[TypeJson] = [
 ]
 
 
-def get_scene_by_value(key, value) -> TypeJson:
+def get_scene_by_value(key: str, value: Any) -> TypeJson:
     """Get scene by comparing the scenes attributes key value with
     value."""
 
