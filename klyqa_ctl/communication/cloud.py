@@ -26,6 +26,7 @@ from klyqa_ctl.general.general import (
     format_uid,
     get_asyncio_loop,
     task_log_debug,
+    task_log_trace,
     task_log_trace_ex,
 )
 
@@ -173,7 +174,8 @@ class CloudBackend:
             header: TypeJson = (
                 headers if headers else self.get_header_default()
             )
-            task_log_debug(
+            task_log_debug("Send cloud request to %s.", url_full)
+            task_log_trace(
                 "Send cloud request to %s: %s, %s", url_full, header, kw_str
             )
             async with httpx.AsyncClient() as client:
