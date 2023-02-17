@@ -8,7 +8,7 @@ import datetime
 import json
 import select
 import socket
-from typing import Any, Awaitable, Callable, cast
+from typing import Any, Awaitable, Callable, Type, cast
 
 from klyqa_ctl.communication.connection_handler import ConnectionHandler
 from klyqa_ctl.communication.local.connection import (
@@ -516,6 +516,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> DeviceTcpReturn:
         """Process the encrypted device answer."""
 
+        if not answer:
+            return DeviceTcpReturn.NO_ERROR
+
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
         cipher: bytes = answer
@@ -523,8 +526,12 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         plain: bytes = connection.receiving_aes.decrypt(cipher)
         connection.received_packages.append(plain)
         if (
-            msg_sent is not None
-            and not msg_sent.state == MessageState.ANSWERED
+            plain
+            and msg_sent is not None
+            and (
+                not msg_sent.state == MessageState.ANSWERED
+                or isinstance(msg_sent, BroadcastMessage)
+            )
         ):
             msg_sent.answer = plain
             json_response: TypeJson = {}
@@ -645,9 +652,12 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 f"Process msg to send '{msg.msg_queue}' to device"
                 f" '{device.u_id}'."
             )
+            task_log_trace("%s", msg)
             j: int = 0
 
-            if msg.state == MessageState.UNSENT:
+            if msg.state == MessageState.UNSENT or isinstance(
+                msg, BroadcastMessage
+            ):
 
                 msg_to_sent_r.ref = msg
 
@@ -752,6 +762,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             if (
                 msg_sent_r.ref
                 and msg_sent_r.ref.state == MessageState.ANSWERED
+                and not isinstance(msg_sent_r.ref, BroadcastMessage)
             ):
                 msg_sent_r.ref = None
 
@@ -907,6 +918,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 try:
                     connection.socket.shutdown(socket.SHUT_RDWR)
                     connection.socket.close()
+                except OSError:
+                    task_log_trace("error in closing socket.")
                 finally:
                     connection.socket = None
             # self.current_addr_connections.remove(str(connection.address["ip"]))
@@ -1197,16 +1210,21 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         connection.address["ip"] = addr[0]
         connection.address["port"] = addr[1]
 
-        new_task: Task[DeviceTcpReturn] = loop.create_task(
-            self.device_handle_local_tcp(device, connection)
-        )
+        # FOR DEBUG out
+        # new_task: Task[DeviceTcpReturn] = loop.create_task(
+        #     self.device_handle_local_tcp(device, connection)
+        # )
 
-        loop.create_task(asyncio.wait_for(new_task, timeout=proc_timeout_secs))
+        # loop.create_task(asyncio.wait_for(new_task, timeout=proc_timeout_secs))
+
+        # FOR DEBUG in
+        await self.device_handle_local_tcp(device, connection)
 
         task_log_debug(
             f"Address {connection.address['ip']} process task created."
         )
-        self.__tasks_undone.append((new_task, datetime.datetime.now()))
+        # self.__tasks_undone.append((new_task, datetime.datetime.now()))
+
         # else:
         #     task_log_debug(f"Address {addr[0]} already in connection.")
 
@@ -1406,24 +1424,32 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
         msg: Message
 
-        if unit_id == "all":
-            msg = BroadcastMessage(
-                datetime.datetime.now(),
-                unit_id,
-                msg_queue=send_msgs,
-                callback=answer_cb,
-                time_to_live_secs=time_to_live_secs,
-                **kwargs,
-            )
-        else:
-            msg = Message(
-                datetime.datetime.now(),
-                unit_id,
-                msg_queue=send_msgs,
-                callback=answer_cb,
-                time_to_live_secs=time_to_live_secs,
-                **kwargs,
-            )
+        async def answer(msg: Message | None, uid: str) -> None:
+            """Control local connected state of the devices."""
+            if (
+                (not msg or msg.state != MessageState.ANSWERED)
+                and uid
+                and uid in self.controller_data.devices
+                and self.controller_data.devices[uid].local
+            ):
+                # True is controlled inside answer procedure of handle
+                # connection.
+                self.controller_data.devices[uid].local.connected = False
+            if answer_cb is not None:
+                await answer_cb(msg, uid)
+
+        AddMessageType: Type[BroadcastMessage] | Type[Message] = (
+            BroadcastMessage if unit_id == "all" else Message
+        )
+
+        msg = AddMessageType(
+            datetime.datetime.now(),
+            unit_id,
+            msg_queue=send_msgs,
+            callback=answer,
+            time_to_live_secs=time_to_live_secs,
+            **kwargs,
+        )
 
         if not await msg.check_msg_ttl_cb():
             return msg
