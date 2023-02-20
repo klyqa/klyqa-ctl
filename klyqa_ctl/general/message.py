@@ -33,6 +33,7 @@ class Message:
 
     started: datetime.datetime
     _attr_target_uid: str
+    _attr_target_ip: str
     msg_queue: list[Command]
     msg_queue_sent: list[str] = field(default_factory=lambda: [])
     state: MessageState = MessageState.UNSENT
@@ -87,6 +88,14 @@ class Message:
     @target_uid.setter
     def target_uid(self, target_uid: str) -> None:
         self._attr_target_uid = format_uid(target_uid)
+
+    @property
+    def target_ip(self) -> str:
+        return self._attr_target_ip
+
+    @target_ip.setter
+    def target_ip(self, target_ip: str) -> None:
+        self._attr_target_ip = target_ip
 
 
 @dataclass
