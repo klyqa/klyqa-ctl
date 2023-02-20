@@ -14,7 +14,7 @@ from klyqa_ctl.communication.local.connection import (
 from klyqa_ctl.general.general import ReferencePass
 
 
-class ConnectionHandler(DeviceConnectionHandler):  # type: ignore[misc]
+class ConnectionHandler(DeviceConnectionHandler):
     """Abstract class for a general connection handler class."""
 
     @abstractmethod
