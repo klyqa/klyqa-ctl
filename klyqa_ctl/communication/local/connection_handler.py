@@ -25,6 +25,7 @@ from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.commands import PingCommand
 from klyqa_ctl.devices.commands_device import CommandWithCheckValues
 from klyqa_ctl.devices.device import Device
+from klyqa_ctl.devices.light.commands import RequestCommand
 from klyqa_ctl.devices.response_identity_message import ResponseIdentityMessage
 from klyqa_ctl.general.general import (
     DEFAULT_MAX_COM_PROC_TIMEOUT_SECS,
@@ -87,7 +88,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_tcp: socket.socket | None = None
         self._attr_udp: socket.socket | None = None
         self.udp_broadcast_task: asyncio.Task | None = None
-        self.send_udp_broadcast_task_loop_set: asyncio.Event = asyncio.Event()
+        self.send_syn_udp_broadcast_event: asyncio.Event = asyncio.Event()
         self._attr_server_ip: str = server_ip
         # here message queue key needs to be string not UnitId to be hashable
         # for dictionaries and sets
@@ -457,7 +458,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             connection.aes_key = self.controller_data.aes_keys[device.u_id]
         else:
             task_log_error("No AES key for device %s! Removing it's messages.")
-            await self.remove_device_from_queue(device)
+            await self.remove_device_from_queue(device.u_id)
             return DeviceTcpReturn.MISSING_AES_KEY
 
         try:
@@ -485,7 +486,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 " AES key with --aes [key]! "
                 + str(device.u_id)
             )
-            await self.remove_device_from_queue(device)
+            await self.remove_device_from_queue(device.u_id)
             return DeviceTcpReturn.MISSING_AES_KEY
         try:
             connection.sending_aes = AES.new(
@@ -499,7 +500,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 iv=connection.remote_iv + connection.local_iv,
             )
         except ValueError:
-            await self.remove_device_from_queue(device)
+            await self.remove_device_from_queue(device.u_id)
             return DeviceTcpReturn.WRONG_AES
 
         connection.state = AesConnectionState.CONNECTED
@@ -576,60 +577,81 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         )
         return return_val
 
-    def remove_msg_from_queue(self, msg: Message, u_id: str) -> None:
+    def remove_msg_from_queue(self, msg: Message, sub_q: str = "") -> None:
         """Remove message from message queue."""
 
-        if (
-            u_id not in self.message_queue
-            or msg not in self.message_queue[u_id]
+        if sub_q and (
+            sub_q not in self.message_queue
+            or msg not in self.message_queue[sub_q]
         ):
             return
 
+        def remove_empty_sub_queue() -> None:
+            if sub_q in self.message_queue and not self.message_queue[sub_q]:
+                del self.message_queue[sub_q]
+
         task_log_debug("remove message from queue")
-        self.message_queue[u_id].remove(msg)
+        task_log_trace("%s", msg)
 
-        if u_id in self.message_queue and not self.message_queue[u_id]:
-            del self.message_queue[u_id]
+        try_search: bool = False
+        if sub_q:
+            try:
+                self.message_queue[sub_q].remove(msg)
+            except ValueError:
+                try_search = True
 
-    async def remove_msg_from_queue_cb(self, msg: Message, u_id: str) -> None:
+        if not sub_q or try_search:
+            for _, q in self.message_queue.items():
+                if msg in q:
+                    q.remove(msg)
+
+        remove_empty_sub_queue()
+
+    async def remove_msg_from_queue_cb(
+        self, msg: Message, sub_q: str = ""
+    ) -> None:
         """Remove message from message queue and call it's callback."""
 
         task_log_debug("remove message from queue and callback")
-        self.remove_msg_from_queue(msg, u_id)
-        # try:
+        self.remove_msg_from_queue(msg, sub_q)
 
         loop: AbstractEventLoop = get_asyncio_loop()
         loop.create_task(msg.call_cb())
-        # await asyncio.wait_for(msg.call_cb(), 30)
-        # except asyncio.TimeoutError:
-        #     # Waited enough for the message callback
-        #     pass
 
-    async def remove_device_from_queue(self, device: Device) -> None:
-        """Remove all message to device from message queue."""
+    async def remove_device_from_queue(self, sub_q: str) -> None:
+        """Remove all messages to device from message queue."""
 
-        for uid, msgs in self.message_queue.copy().items():
-            if uid == device.u_id:
-                for msg in msgs:
+        for sq_name, sq in self.message_queue.copy().items():
+            if sq_name == sub_q:
+                for msg in sq:
                     task_log_debug(
                         "Removing message %s",
                         msg,
                     )
-                    await self.remove_msg_from_queue_cb(msg, device.u_id)
+                    await self.remove_msg_from_queue_cb(msg, sub_q)
 
-    async def _send_msg(
+    async def handle_send_msg(
         self,
         connection: TcpConnection,
         device: Device,
         msg_to_sent_r: ReferencePass,
     ) -> DeviceTcpReturn:
-        """Select message to send and check the values range limits."""
+        """Within the handshaked AES TCP tunnel, select message to
+        send and check sending the values for the device range limits."""
 
         msg: Message | None = None
+        m: Message
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
-        if "all" in self.message_queue:
-            m: Message
+        ip: str = cast(str, connection.address["ip"])
+        if ip in self.message_queue:
+            for m in self.message_queue[ip]:
+                if m.state != MessageState.UNSENT:
+                    continue
+                msg = m
+                break
+
+        if not msg and "all" in self.message_queue:
             for m in self.message_queue["all"]:
                 if not isinstance(m, BroadcastMessage):
                     continue
@@ -671,12 +693,15 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     ):
                         msg.state = MessageState.VALUE_RANGE_LIMITS
 
-                        if not isinstance(msg, BroadcastMessage):
-                            await self.remove_msg_from_queue_cb(
-                                msg, device.u_id
-                            )
-                        else:
-                            await self.remove_msg_from_queue_cb(msg, "all")
+                        await self.remove_msg_from_queue_cb(
+                            msg, msg.target_uid or msg.target_ip
+                        )
+                        # if not isinstance(msg, BroadcastMessage):
+                        #     await self.remove_msg_from_queue_cb(
+                        #         msg, device.u_id
+                        #     )
+                        # else:
+                        #     await self.remove_msg_from_queue_cb(msg, "all")
                         return DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
 
                 try:
@@ -688,7 +713,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
                         if not isinstance(msg, BroadcastMessage):
                             msg.state = MessageState.SENT
-                            self.remove_msg_from_queue(msg, device.u_id)
+                            self.remove_msg_from_queue(
+                                msg, msg.target_uid or msg.target_ip
+                            )
                     else:
                         LOGGER.error("Could not send message!")
                         return DeviceTcpReturn.SEND_ERROR
@@ -699,7 +726,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     return DeviceTcpReturn.SEND_ERROR
 
             else:
-                self.remove_msg_from_queue(msg, device.u_id)
+                self.remove_msg_from_queue(
+                    msg, msg.target_uid or msg.target_ip
+                )
         else:
             return_val = DeviceTcpReturn.NO_MESSAGE_TO_SEND
 
@@ -753,6 +782,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             or bm_l  # and bm and device.u_id not in bm.sent_to)
             or msg_sent_r.ref
         ):
+            # look if we have a broadcast message to send to the device
             if not bm and device.u_id != "no_uid" and bm_l:
                 for m in bm_l:
                     if device.u_id not in m.sent_to:
@@ -770,7 +800,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 connection.state == AesConnectionState.CONNECTED
                 and msg_sent_r.ref is None
             ):
-                return_val = await self._send_msg(
+                return_val = await self.handle_send_msg(
                     connection, device_ref.ref, msg_sent_r
                 )
                 if return_val != DeviceTcpReturn.NO_ERROR:
@@ -987,18 +1017,27 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     task_log_debug(
                         "Send %r to %s.", ack_data, address.__dict__
                     )
+                    # add request message to queue before we send ack and get
+                    # the tcp tunnel answer
+                    await self.add_message(
+                        Message(
+                            target_ip=address.ip,
+                            msg_queue=[RequestCommand()],
+                        ),
+                        syn_broadcast_timeout=-1,
+                    )
                     self.udp.sendto(ack_data, addr_tup)
                 except socket.error:
                     await self.reconnect_socket_udp()
 
-    async def send_udp_broadcast_task(self) -> bool:
+    async def send_syn_udp(self, ip: str = "255.255.255.255") -> bool:
         """Send qcx-syn broadcast on udp socket."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
         try:
             if not await self.bind_ports():
                 return False
-        except Exception as ex:
+        except Exception:
             task_log_trace_ex()
             task_log_error(
                 "Error binding the UDP port 2222 and TCP port 3333!"
@@ -1006,49 +1045,52 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             return False
 
         try:
-            task_log_debug("Broadcasting QCX-SYN Burst")
+            task_log_debug("Send QCX-SYN to %s", ip)
             if self.udp:
                 await loop.run_in_executor(
                     None,
                     self.udp.sendto,
                     QCX_SYN,
-                    ("255.255.255.255", 2222),
+                    (ip, 2222),
                 )
             else:
                 return False
 
         except socket.error:
-            task_log_debug("Broadcasting QCX-SYN Burst Exception")
+            task_log_debug("Failed: Send QCX-SYN to %s", ip)
             task_log_trace_ex()
             if not await self.bind_ports():
                 LOGGER.error("Error binding ports udp 2222 and tcp 3333.")
                 return False
         return True
 
-    async def send_udp_broadcast_task_loop(self) -> None:
-        """Send UDP broadcast in a loop with timeout or when event lock set."""
+    async def send_syn_udp_broadcast_loop(self) -> None:
+        """Send syn UDP broadcasts in a loop or when an event set."""
 
         while True:
-            await self.send_udp_broadcast_task()
-            self.send_udp_broadcast_task_loop_set.clear()
+            task_log_trace("Broadcasting QCX-SYN Burst")
+            if not await self.send_syn_udp():
+                task_log_trace("Broadcasting QCX-SYN Burst Exception")
+
+            self.send_syn_udp_broadcast_event.clear()
             try:
                 await asyncio.wait_for(
-                    self.send_udp_broadcast_task_loop_set.wait(), timeout=1
+                    self.send_syn_udp_broadcast_event.wait(), timeout=1
                 )
             except asyncio.TimeoutError:
                 pass
 
-    async def send_udp_broadcast(self) -> None:
-        """Start send UDP broadcasts for discover."""
+    async def send_syn_udp_broadcast(self) -> None:
+        """Start send syn UDP broadcasts for initialize communication."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
         if self.udp_broadcast_task is None or self.udp_broadcast_task.done():
             self.udp_broadcast_task = loop.create_task(
-                self.send_udp_broadcast_task_loop()
+                self.send_syn_udp_broadcast_loop()
             )
         else:
-            self.send_udp_broadcast_task_loop_set.set()
+            self.send_syn_udp_broadcast_event.set()
 
     async def standby(self) -> None:
         """Standby search devices and create incoming connection tasks."""
@@ -1272,7 +1314,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     read_incoming_connections: bool = True
 
                     if self.broadcast_discovery:
-                        await self.send_udp_broadcast()
+                        await self.send_syn_udp_broadcast()
 
                     if not read_incoming_connections:
                         await self.standby()
@@ -1412,8 +1454,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> Message | None:
         """Add message to message's queue with answer callback."""
 
-        loop: AbstractEventLoop = get_asyncio_loop()
-
         if not send_msgs:
             LOGGER.error("No message queue to send in message to %s!", unit_id)
             return None
@@ -1422,7 +1462,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(
                 aes_key
             )
-        msg: Message
 
         async def answer(msg: Message | None, uid: str) -> None:
             """Control local connected state of the devices."""
@@ -1442,41 +1481,83 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             BroadcastMessage if unit_id == "all" else Message
         )
 
-        msg = AddMessageType(
-            datetime.datetime.now(),
-            unit_id,
-            msg_queue=send_msgs,
-            callback=answer,
-            time_to_live_secs=time_to_live_secs,
-            **kwargs,
+        await self.add_message(
+            AddMessageType(
+                # started=datetime.datetime.now(),
+                send_msgs,
+                unit_id,
+                callback=answer,
+                time_to_live_secs=time_to_live_secs,
+                **kwargs,
+            )
         )
+
+    async def add_message(
+        self, msg: Message, syn_broadcast_timeout: float = 3
+    ) -> bool:
+        """Add message to message's queue with answer callback."""
+
+        loop: AbstractEventLoop = get_asyncio_loop()
 
         if not await msg.check_msg_ttl_cb():
-            return msg
+            return False
 
-        task_log_trace(
-            f"new message {msg.msg_counter} target {unit_id} {send_msgs}"
-        )
+        task_log_trace(f"new message {msg.msg_counter} target.")
 
-        self.message_queue.setdefault(str(unit_id), []).append(msg)
+        sub_q: str = msg.target_uid or msg.target_ip
+        self.message_queue.setdefault(sub_q, []).append(msg)
 
         async def msg_ttl_task() -> None:
-            await asyncio.sleep(time_to_live_secs)
-            if unit_id in self.message_queue:
-                task_log_debug("Message ttl ended.")
-                task_log_trace("Message: %s", msg)
-                try:
-                    await self.remove_msg_from_queue_cb(msg=msg, u_id=unit_id)
-                except ValueError:
-                    self.check_messages_ttl_task_alive()
+            await asyncio.sleep(msg.time_to_live_secs)
+            try:
+                await self.remove_msg_from_queue_cb(msg=msg, sub_q=sub_q)
+            except ValueError:
+                self.check_messages_ttl_task_alive()
+
+            # if unit_id in self.message_queue:
+            #     task_log_debug("Message ttl ended.")
+            #     task_log_trace("Message: %s", msg)
+            #     try:
+            #         await self.remove_msg_from_queue_cb(msg=msg, u_id=unit_id)
+            #     except ValueError:
+            #         self.check_messages_ttl_task_alive()
 
         loop.create_task(msg_ttl_task())
 
-        if self.broadcast_discovery:
-            await self.send_udp_broadcast()
+        # only broadcast udp syns when no ip and take the device
+        # IP what was last used in connection. timeout for sending
+        # syn broadcasts when no answer to find the device
+        target_ip: str = msg.target_ip
+        if (
+            not target_ip
+            and msg.target_uid
+            and msg.target_uid in self.devices
+            and self.devices[msg.target_uid].local_addr["ip"]
+        ):
+            target_ip = self.devices[msg.target_uid].local_addr["ip"]
+
+        if target_ip:
+            await self.send_syn_udp(target_ip)
+
+            async def direct_syn_timeout() -> None:
+                """When not reply after timeout from device directly, start
+                broadcasting syns to the local network to find the device."""
+
+                await asyncio.sleep(syn_broadcast_timeout)
+                if (
+                    msg.state == MessageState.UNSENT
+                    and self.broadcast_discovery
+                ):
+                    await self.send_syn_udp_broadcast()
+
+            if syn_broadcast_timeout >= 0:
+                loop.create_task(direct_syn_timeout())
+
+        elif msg.target_uid and self.broadcast_discovery:
+            await self.send_syn_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
-        return msg
+        return True
 
     async def send_command_to_device(
         self,
