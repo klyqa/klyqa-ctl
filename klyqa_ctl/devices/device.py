@@ -141,6 +141,10 @@ class Device:
     def status_update_cb(self) -> list[Callable[[], None]]:
         return self._attr_status_update_cb
 
+    def add_status_update_cb(self, cb: Callable[[], None]) -> None:
+        if cb not in self.status_update_cb:
+            self.status_update_cb.append(cb)
+
     @property
     def local(self) -> DeviceConnection:
         return self._attr_local
