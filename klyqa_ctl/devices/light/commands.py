@@ -1,12 +1,12 @@
 """Contains all functions for light commands."""
 from __future__ import annotations
 
-import argparse
-import json
-import sys
 from abc import abstractmethod
+import argparse
 from dataclasses import dataclass
 from enum import Enum
+import json
+import sys
 from typing import Any, Callable
 
 from klyqa_ctl.devices.commands import (
@@ -369,6 +369,8 @@ class RoutinePutCommand(
             command: RoutinePutCommand = RoutinePutCommand(
                 commands=scn["commands"], id=id_in_dev, scene=str(scn["id"])
             )
+            if len(command.commands.split(";")) > 2:
+                command.commands += "l 0;"
         else:
             raise ValueError(f"No such scene {scene_label}!")
 
