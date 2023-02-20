@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import datetime
-from typing import Any
+from typing import Any, Callable
 
 from klyqa_ctl.devices.commands import PingCommand
 from klyqa_ctl.devices.connection import DeviceConnection
@@ -40,6 +40,9 @@ class Device:
         self._attr__use_thread: asyncio.Task[Any] | None = None
 
         self._attr_status: ResponseMessage | None = None
+
+        self._attr_status_update_cb: list[Callable[[], None]] = []
+
         self._attr_response_classes: dict[str, Any] = {
             "ident": ResponseIdentityMessage,
             "status": ResponseMessage,
@@ -50,7 +53,7 @@ class Device:
 
     async def ping_con(
         self, dcon: DeviceConnection, ttl_ping_secs: int = 10
-    ) -> None:
+    ) -> Message | None:
         """Try reach out device via connection and set connection state."""
 
         if (
@@ -58,7 +61,7 @@ class Device:
             and datetime.datetime.now() - self._attr_last_ping_con
             < datetime.timedelta(seconds=ttl_ping_secs)
         ):
-            return
+            return None
         self._attr_last_ping_con = datetime.datetime.now()
 
         msg: Message | None = await self.send_msg(
@@ -69,12 +72,14 @@ class Device:
         #     dcon.connected = True
         # else:
         #     dcon.connected = False
+        return msg
 
     async def send_msg(
         self,
         commands: list[Command],
         time_to_live_secs: int,
         dcon: DeviceConnection,
+        **kwargs: Any,
     ) -> Message | None:
         """Send message to device via desired connection set in
         connection handler (param: con)."""
@@ -99,7 +104,7 @@ class Device:
         self,
         commands: list[Command],
         time_to_live_secs: int = DEFAULT_SEND_TIMEOUT_MS,
-        **kwargs,
+        **kwargs: Any,
     ) -> Message | None:
         """Send message to device via local connection."""
 
@@ -111,6 +116,7 @@ class Device:
         self,
         commands: list[Command],
         time_to_live_secs: int = DEFAULT_SEND_TIMEOUT_MS,
+        **kwargs: Any,
     ) -> Message | None:
         """Send message to device via local or cloud connection and restore
         connection states."""
@@ -122,11 +128,18 @@ class Device:
                     not msg or msg.state != MessageState.ANSWERED
                 ):
                     msg = await self.send_msg(
-                        commands, time_to_live_secs, self.local
+                        commands,
+                        time_to_live_secs,
+                        self.local,
+                        **kwargs,
                     )
                 elif not con.connected:
                     asyncio.create_task(self.ping_con(con))
         return msg
+
+    @property
+    def status_update_cb(self) -> list[Callable[[], None]]:
+        return self._attr_status_update_cb
 
     @property
     def local(self) -> DeviceConnection:
@@ -264,6 +277,13 @@ class Device:
                         self.status = self.response_classes["status"](**msg)
                     else:
                         self.status.update(**msg)
+                        for update_cb in self.status_update_cb:
+                            try:
+                                update_cb()
+                            except ValueError:
+                                task_log_trace_ex()
+                else:
+                    raise ValueError
             except Exception:
                 task_log_trace_ex()
                 LOGGER.error("Could not process device response: ")
