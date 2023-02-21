@@ -12,6 +12,7 @@ from klyqa_ctl.devices.response_message import ResponseMessage
 from klyqa_ctl.general.general import (
     DEFAULT_SEND_TIMEOUT_MS,
     LOGGER,
+    Address,
     AsyncIoLock,
     Command,
     task_log_debug,
@@ -28,13 +29,13 @@ class Device:
     # Amount of attributes as needed in this case.
 
     def __init__(self) -> None:
-        self._attr_local_addr: dict[str, Any] = {"ip": "", "port": -1}
+        self._attr_local_addr: Address = Address()
         # device specific cloud connection results
         self._attr_local: DeviceConnection = DeviceConnection()
         self._attr_cloud: DeviceConnection = DeviceConnection()
         self._attr_ident: ResponseIdentityMessage = ResponseIdentityMessage()
 
-        self._attr_u_id: str = UnitId("no_uid")
+        self._attr_u_id: str = ""
         self._attr_acc_sets: dict[Any, Any] = {}
         self._attr__use_lock: AsyncIoLock | None = None
         self._attr__use_thread: asyncio.Task[Any] | None = None
@@ -154,11 +155,11 @@ class Device:
         self._attr_local = local
 
     @property
-    def local_addr(self) -> dict[str, Any]:
+    def local_addr(self) -> Address:
         return self._attr_local_addr
 
     @local_addr.setter
-    def local_addr(self, local_addr: dict[str, Any]) -> None:
+    def local_addr(self, local_addr: Address) -> None:
         self._attr_local_addr = local_addr
 
     @property
