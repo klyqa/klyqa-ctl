@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import datetime
-from enum import Enum
+from enum import Enum, auto
 from typing import Awaitable, Callable, Set
 
 from klyqa_ctl.general.general import (
@@ -23,6 +23,7 @@ class MessageState(Enum):
     ANSWERED = 1
     UNSENT = 2
     VALUE_RANGE_LIMITS = 3
+    SELECTED = auto()
 
 
 MSG_COUNTER = 0
