@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import socket
 from test.conftest import TEST_UNIT_ID
 
-from h11 import Data
+import mock
 import pytest
 
 from klyqa_ctl.communication.local.connection import (
@@ -67,6 +68,10 @@ def test_process_identity_package(
     lc_con_hdl.broadcast_discovery = False
     get_asyncio_loop().run_until_complete(lc_con_hdl.add_message(msg))
 
+    with mock.patch("socket.socket"):
+        get_asyncio_loop().run_until_complete(lc_con_hdl.bind_ports())
+        tcp_con.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     ret = get_asyncio_loop().run_until_complete(
         lc_con_hdl.process_device_identity_package(tcp_con, data_pkg.data)
     )
@@ -75,3 +80,4 @@ def test_process_identity_package(
     assert tcp_con.device, "No device set"
     assert tcp_con.device.u_id, "No device uid set"
     assert tcp_con.msg, "No message for sending selected"
+    tcp_con.socket.send.assert_called_once()
