@@ -41,8 +41,12 @@ from typing import Any, cast
 from klyqa_ctl.__init__ import __version__
 from klyqa_ctl.account import Account, AccountDevice
 from klyqa_ctl.communication.cloud import CloudBackend
-from klyqa_ctl.communication.device_connection_handler import DeviceConnectionHandler
-from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
+from klyqa_ctl.communication.device_connection_handler import (
+    DeviceConnectionHandler,
+)
+from klyqa_ctl.communication.local.connection_handler import (
+    LocalConnectionHandler,
+)
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.devices.light.commands import (
@@ -73,7 +77,10 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
 )
 from klyqa_ctl.general.message import Message, MessageState
-from klyqa_ctl.general.parameters import add_config_args, get_description_parser
+from klyqa_ctl.general.parameters import (
+    add_config_args,
+    get_description_parser,
+)
 from klyqa_ctl.general.unit_id import UnitId
 
 
@@ -307,9 +314,8 @@ class Client(ControllerData):
             if device.acc_sets and "name" in device.acc_sets:
                 name = device.acc_sets["name"]
             address: str = (
-                " (local"
-                f" {device.local_addr['ip']}:{device.local_addr['port']})"
-                if device.local_addr["ip"]
+                f" (local {device.local_addr.ip}:{device.local_addr.port})"
+                if device.local_addr.ip
                 else ""
             )
             cloud: str = " (cloud connected)" if device.cloud.connected else ""

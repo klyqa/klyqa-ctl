@@ -492,7 +492,8 @@ LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 def set_logger(
-    logger: logging.Logger = LOGGER,  # pylint: disable=used-prior-global-declaration
+    # pylint: disable-next=used-prior-global-declaration
+    logger: logging.Logger = LOGGER,
     level: int = logging.INFO,
 ) -> None:
     """Set global logger object and initialize."""
@@ -519,7 +520,8 @@ LOGGER_DBG.disabled = True
 
 
 def set_debug_logger(
-    logger: TraceLogger = LOGGER_DBG,  # pylint: disable=used-prior-global-declaration
+    # pylint: disable-next=used-prior-global-declaration
+    logger: TraceLogger = LOGGER_DBG,
     level: int = logging.DEBUG,
 ) -> None:
     """Stream logging handler to stderr pipe."""
@@ -613,11 +615,11 @@ class ShutDownHandler:
 class Address:
     """Class for IP address with port."""
 
-    ip: str
-    port: int
+    ip: str = ""
+    port: int = -1
 
 
-def enum_index(key: str, enum: Enum) -> Any:
+def enum_index(key: str, enum: Type[Enum]) -> Any:
     """Search string key name in enumeration and return the value."""
 
     return [i.value for i in enum if i.name == key][0]

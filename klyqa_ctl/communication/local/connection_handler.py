@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from asyncio import AbstractEventLoop, CancelledError, Task
+from asyncio import AbstractEventLoop, CancelledError, Lock, Task
 import datetime
 import json
 import select
@@ -93,6 +93,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # here message queue key needs to be string not UnitId to be hashable
         # for dictionaries and sets
         self._attr_message_queue: dict[str, list[Message]] = {}
+        self.message_queue_lock: Lock = asyncio.Lock()
         self.__attr_send_loop_sleep: Task | None = None
         self.__attr_tasks_done: list[
             tuple[Task, datetime.datetime, datetime.datetime]
@@ -103,11 +104,11 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self.__attr_read_tcp_task: Task | None = None
         self._attr_current_addr_connections = set()
         self._attr_network_interface: str | None = network_interface
-        self._attr_read_udp_socket_task_hdl: Task[None] | None = None
+        self._attr_read_udp_socket_task_hdl: Task | None = None
         self._attr_broadcast_discovery: bool = True
         self.msg_ttl_task: Task | None = None
         # self.check_messages_time_to_live_timeout: Task | None = None
-        self.check_messages_time_to_live_set: asyncio.Event = asyncio.Event()
+        self.check_messages_ttl_event: asyncio.Event = asyncio.Event()
 
     @property
     def network_interface(self) -> str | None:
@@ -364,10 +365,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return True
 
     async def process_device_identity_package(
-        self,
-        connection: TcpConnection,
-        data: bytes,
-        device_ref: ReferencePass,
+        self, con: TcpConnection, pkg: bytes
     ) -> DeviceTcpReturn:
         """Process the device identity package."""
 
@@ -376,12 +374,12 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # device, send the local initial vector for the encrypted communication
         # to the device.
 
-        device: Device = device_ref.ref
+        device: Device = con.device
         log: list
 
-        task_log_debug("Plain: %s", str(data))
+        task_log_debug("Plain: %s", str(pkg))
         try:
-            json_response: dict[str, Any] = json.loads(data)
+            json_response: dict[str, Any] = json.loads(pkg)
             identity: ResponseIdentityMessage = ResponseIdentityMessage(
                 **json_response["ident"]
             )
@@ -391,7 +389,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         is_new_device: bool = False
 
-        if device.u_id != "no_uid" and device.u_id not in self.devices:
+        if device.u_id and device.u_id not in self.devices:
 
             is_new_device = True
             new_dev: Device = (
@@ -422,19 +420,24 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             return DeviceTcpReturn.NOTHING_DONE
         device_repl: Device = self.devices[device.u_id]
 
+        if not con.msg:
+            con.msg = await self.select_msg_to_send(con)
+            if not con.msg:
+                return DeviceTcpReturn.NO_MESSAGE_TO_SEND
+
         if await device_repl.use_lock():
-            device_repl.local_addr = connection.address
+            device_repl.local_addr = con.address
             device = device_repl
-            device_ref.ref = device_repl
+            con.device = device_repl
         else:
             err: str = (
                 f"{task_name()} - Couldn't get use lock for device"
-                f" {device_repl.get_name()} {connection.address})"
+                f" {device_repl.get_name()} {con.address})"
             )
             LOGGER.error(err)
             return DeviceTcpReturn.DEVICE_LOCK_TIMEOUT
 
-        connection.received_packages.append(json_response)
+        con.received_packages.append(json_response)
         device.save_device_message(json_response)
         device.local.con = self
 
@@ -450,70 +453,67 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             task_log(f"Found device {device.ident.unit_id}")
 
         if "all" in self.controller_data.aes_keys:
-            connection.aes_key = self.controller_data.aes_keys["all"]
-        elif (
-            isinstance(self.controller_data.aes_keys, dict)
-            and device.u_id in self.controller_data.aes_keys
-        ):
-            connection.aes_key = self.controller_data.aes_keys[device.u_id]
+            con.aes_key = self.controller_data.aes_keys["all"]
+        elif device.u_id in self.controller_data.aes_keys:
+            con.aes_key = self.controller_data.aes_keys[device.u_id]
         else:
             task_log_error("No AES key for device %s! Removing it's messages.")
             await self.remove_device_from_queue(device.u_id)
             return DeviceTcpReturn.MISSING_AES_KEY
 
         try:
-            if connection.socket is not None:
+            if con.socket is not None:
                 task_log_debug("Sending local initial vector.")
                 iv_data: bytes = DataPackage.create(
-                    connection.local_iv, PackageType.IV
+                    con.local_iv, PackageType.IV
                 ).serialize()
-                await connection.send_msg(iv_data)
+                await con.send_msg(iv_data)
+            else:
+                raise socket.error
         except socket.error:
             return DeviceTcpReturn.SOCKET_ERROR
 
         return DeviceTcpReturn.NO_ERROR
 
     async def process_aes_initial_vector_package(
-        self, connection: TcpConnection, data: bytes, device: Device
+        self, con: TcpConnection, pkg: bytes
     ) -> DeviceTcpReturn:
         """Create the AES encryption and decryption objects."""
 
-        connection.remote_iv = data
-        connection.received_packages.append(data)
-        if not connection.aes_key:
+        con.remote_iv = pkg
+        con.received_packages.append(pkg)
+        if not con.aes_key:
             task_log(
                 "Missing AES key. Probably not in onboarded devices. Provide"
                 " AES key with --aes [key]! "
-                + str(device.u_id)
+                + str(con.device.u_id)
             )
-            await self.remove_device_from_queue(device.u_id)
+            await self.remove_device_from_queue(con.device.u_id)
             return DeviceTcpReturn.MISSING_AES_KEY
         try:
-            connection.sending_aes = AES.new(
-                connection.aes_key,
+            con.sending_aes = AES.new(
+                con.aes_key,
                 AES.MODE_CBC,
-                iv=connection.local_iv + connection.remote_iv,
+                iv=con.local_iv + con.remote_iv,
             )
-            connection.receiving_aes = AES.new(
-                connection.aes_key,
+            con.receiving_aes = AES.new(
+                con.aes_key,
                 AES.MODE_CBC,
-                iv=connection.remote_iv + connection.local_iv,
+                iv=con.remote_iv + con.local_iv,
             )
         except ValueError:
-            await self.remove_device_from_queue(device.u_id)
+            await self.remove_device_from_queue(con.device.u_id)
             return DeviceTcpReturn.WRONG_AES
 
-        connection.state = AesConnectionState.CONNECTED
+        con.state = AesConnectionState.CONNECTED
         task_log_debug("Received remote initial vector. Connected state.")
 
         return DeviceTcpReturn.NO_ERROR
 
     async def process_message_answer_package(
         self,
-        connection: TcpConnection,
+        con: TcpConnection,
         answer: bytes,
-        device: Device,
-        msg_sent: Message | None,
     ) -> DeviceTcpReturn:
         """Process the encrypted device answer."""
 
@@ -524,8 +524,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         cipher: bytes = answer
 
-        plain: bytes = connection.receiving_aes.decrypt(cipher)
-        connection.received_packages.append(plain)
+        plain: bytes = con.receiving_aes.decrypt(cipher)
+        con.received_packages.append(plain)
+
+        msg_sent: Message | None = con.msg
         if (
             plain
             and msg_sent is not None
@@ -539,17 +541,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             try:
                 plain_utf8: str = plain.decode()
                 json_response = json.loads(plain_utf8)
-                device.save_device_message(json_response)
-                connection.sent_msg_answer = json_response
-                connection.aes_key_confirmed = True
+                con.device.save_device_message(json_response)
+                con.sent_msg_answer = json_response
+                con.aes_key_confirmed = True
                 task_log_debug(
-                    f"device uid {device.u_id} aes_confirmed"
-                    f" {connection.aes_key_confirmed}"
+                    f"device uid {con.device.u_id} aes_confirmed"
+                    f" {con.aes_key_confirmed}"
                 )
             except json.JSONDecodeError:
                 task_log("Could not load json message from device: ")
                 LOGGER.error(
-                    "Couldn't read answer from device %s!", device.u_id
+                    "Couldn't read answer from device %s!", con.device.u_id
                 )
                 task_log_debug("%s", str(answer))
                 return DeviceTcpReturn.RESPONSE_ERROR
@@ -559,21 +561,22 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             msg_sent.state = MessageState.ANSWERED
             msg_sent.answered_datetime = datetime.datetime.now()
             return_val = DeviceTcpReturn.ANSWERED
-            device.local.connected = True
-            
+            con.device.local.connected = True
+
             if isinstance(msg_sent, BroadcastMessage):
                 bm: BroadcastMessage = cast(BroadcastMessage, msg_sent)
-                bm.sent_to.add(device.u_id)
+                bm.sent_to.add(con.device.u_id)
 
-            if msg_sent and device is not None:
-                await msg_sent.call_cb(device.u_id)
+            if msg_sent and con.device is not None:
+                await msg_sent.call_cb(con.device.u_id)
                 task_log_debug(
-                    f"device {device.u_id} answered msg {msg_sent.msg_queue}"
+                    f"device {con.device.u_id} answered msg"
+                    f" {msg_sent.msg_queue}"
                 )
 
         task_log_debug(
             "%s Request's reply decrypted: " + str(plain),
-            device.u_id if device else "",
+            con.device.u_id if con.device else "",
         )
         return return_val
 
@@ -630,46 +633,80 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     )
                     await self.remove_msg_from_queue_cb(msg, sub_q)
 
+    async def select_msg_to_send(
+        self, connection: TcpConnection
+    ) -> Message | None:
+        """Look up for a message to send to device."""
+
+        if connection.msg:
+            return None
+
+        msg: Message | None = None
+        m: Message
+        device: Device = connection.device
+
+        async with self.message_queue_lock:
+            ip: str = cast(str, connection.address.ip)
+            if not msg and ip in self.message_queue:
+                for m in self.message_queue[ip]:
+                    if m.state != MessageState.UNSENT:
+                        continue
+                    msg = m
+                    break
+                # idea: possibly remove msg from queue for faster loops
+                # in lock, but needs readd logic to queue on error when want
+                # resend retry.
+
+            if not msg and "all" in self.message_queue:
+                for m in self.message_queue["all"]:
+                    if not isinstance(m, BroadcastMessage):
+                        continue
+                    bm: BroadcastMessage = cast(BroadcastMessage, m)
+
+                    if device.u_id in bm.sent_to:
+                        continue
+                    msg = cast(Message, m)
+                    break
+
+            if (
+                not msg
+                and device.u_id in self.message_queue
+                and len(self.message_queue[device.u_id]) > 0
+            ):
+                # msg = self.message_queue[device.u_id][0]
+                for m in self.message_queue[device.u_id]:
+                    if m.state != MessageState.UNSENT:
+                        continue
+                    msg = m
+                    break
+
+            if msg:
+                msg.state = MessageState.SELECTED
+                connection.msg = msg
+
+        return msg
+
     async def handle_send_msg(
         self,
         connection: TcpConnection,
-        device: Device,
-        msg_to_sent_r: ReferencePass,
     ) -> DeviceTcpReturn:
         """Within the handshaked AES TCP tunnel, select message to
         send and check sending the values for the device range limits."""
 
-        msg: Message | None = None
-        m: Message
+        msg: Message | None = connection.msg
+        device: Device = connection.device
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
-        ip: str = cast(str, connection.address["ip"])
-        if ip in self.message_queue:
-            for m in self.message_queue[ip]:
-                if m.state != MessageState.UNSENT:
-                    continue
-                msg = m
-                break
-
-        if not msg and "all" in self.message_queue:
-            for m in self.message_queue["all"]:
-                if not isinstance(m, BroadcastMessage):
-                    continue
-                bm: BroadcastMessage = cast(BroadcastMessage, m)
-
-                if device.u_id in bm.sent_to:
-                    continue
-                msg = bm
-                break
-
-        if (
-            not msg
-            and device.u_id in self.message_queue
-            and len(self.message_queue[device.u_id]) > 0
-        ):
-            msg = self.message_queue[device.u_id][0]
+        if not msg or msg.state == MessageState.ANSWERED:
+            msg = await self.select_msg_to_send(connection)
 
         if msg:
+            if (
+                msg.state == MessageState.SENT
+                and msg.state != MessageState.ANSWERED
+            ):
+                return return_val  # wait for reply
+
             task_log_debug(
                 f"Process msg to send '{msg.msg_queue}' to device"
                 f" '{device.u_id}'."
@@ -681,7 +718,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 msg, BroadcastMessage
             ):
 
-                msg_to_sent_r.ref = msg
+                connection.msg = msg
 
                 command: Command = msg.msg_queue[j]
                 text: str = command.msg_str()
@@ -734,12 +771,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         return return_val
 
-    async def handle_connection(
-        self,
-        device_ref: ReferencePass,
-        connection: TcpConnection,
-        msg_sent_r: ReferencePass,
-    ) -> DeviceTcpReturn:
+    async def handle_connection(self, con: TcpConnection) -> DeviceTcpReturn:
         """
         Make AES handshake.
         Getting the identity of the device.
@@ -747,142 +779,123 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         or to any device.
 
         Params:
-            device: Device reference - (initial) device object with the tcp
-                connection
             connection - TCP connection tunnel to the device
-            msg_sent_r - Message reference object to send
 
         Returns: DeviceTcpReturn
         """
 
-        device: Device = device_ref.ref
-        if device is None or connection.socket is None:
+        if con.device is None or con.socket is None:
             return DeviceTcpReturn.UNKNOWN_ERROR
 
-        data: bytes = b""
         return_val: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
         communication_finished: bool = False
 
-        if msg_sent_r.ref and msg_sent_r.ref.state == MessageState.ANSWERED:
-            msg_sent_r.ref = None
+        if con.msg and con.msg.state == MessageState.ANSWERED:
+            con.msg = None
 
-        bm_l: list[BroadcastMessage] | None = None
-        bm: BroadcastMessage | None = None
-        if (
-            "all" in self.message_queue
-            and len(self.message_queue["all"]) > 0
-            and isinstance(self.message_queue["all"][0], BroadcastMessage)
-        ):
-            bm_l = cast(list[BroadcastMessage], self.message_queue["all"])
+        # bm_l: list[BroadcastMessage] | None = None
+        # bm: BroadcastMessage | None = None
+        # if (
+        #     "all" in self.message_queue
+        #     and len(self.message_queue["all"]) > 0
+        #     and isinstance(self.message_queue["all"][0], BroadcastMessage)
+        # ):
+        #     bm_l = cast(list[BroadcastMessage], self.message_queue["all"])
 
         while not communication_finished and (
-            device.u_id == "no_uid"
-            or type(device) == Device  # pylint: disable=unidiomatic-typecheck
-            or device.u_id in self.message_queue
-            or bm_l  # and bm and device.u_id not in bm.sent_to)
-            or msg_sent_r.ref
+            not con.device.u_id
+            # # pylint: disable-next=unidiomatic-typecheck
+            # or type(con.device) == Device
+            or con.device.u_id in self.message_queue
+            # or bm_l  # and bm and device.u_id not in bm.sent_to)
+            or con.msg
         ):
-            # look if we have a broadcast message to send to the device
-            if not bm and device.u_id != "no_uid" and bm_l:
-                for m in bm_l:
-                    if device.u_id not in m.sent_to:
-                        bm = m
-                        break
+            # # look if we have a broadcast message to send to the device
+            # if not bm and con.device.u_id and bm_l:
+            #     for m in bm_l:
+            #         if con.device.u_id not in m.sent_to:
+            #             con.msg = m
+            #             break
 
             if (
-                msg_sent_r.ref
-                and msg_sent_r.ref.state == MessageState.ANSWERED
-                and not isinstance(msg_sent_r.ref, BroadcastMessage)
+                con.msg
+                and con.msg.state == MessageState.ANSWERED
+                and not isinstance(con.msg, BroadcastMessage)
             ):
-                msg_sent_r.ref = None
+                con.msg = None
 
-            if (
-                connection.state == AesConnectionState.CONNECTED
-                and msg_sent_r.ref is None
+            if con.state == AesConnectionState.CONNECTED and (
+                con.msg is None
+                # or isinstance(con.msg, BroadcastMessage)
+                or con.msg.state == MessageState.SELECTED
             ):
-                return_val = await self.handle_send_msg(
-                    connection, device_ref.ref, msg_sent_r
-                )
+                return_val = await self.handle_send_msg(con)
                 if return_val != DeviceTcpReturn.NO_ERROR:
                     return return_val
 
-            data_ref: ReferencePass = ReferencePass(data)
-            read_data_ret: DeviceTcpReturn = (
-                await connection.read_local_tcp_socket(data_ref)
-            )
+            read_data_ret: DeviceTcpReturn = await con.read_local_tcp_socket()
             if read_data_ret != DeviceTcpReturn.NO_ERROR:
                 return read_data_ret
-            data = data_ref.ref
 
-            while not communication_finished and (len(data)):
+            while not communication_finished and (len(con.data)):
                 task_log_debug(
-                    f"TCP server received {str(len(data))} bytes from"
-                    f" {str(connection.address)}"
+                    f"TCP server received {str(len(con.data))} bytes from"
+                    f" {str(con.address)}"
                 )
 
-                return_val = await self.process_tcp_package(
-                    connection, data_ref, msg_sent_r.ref, device_ref
-                )
-                data = data_ref.ref
-                device = device_ref.ref
+                return_val = await self.process_tcp_package(con)
 
                 if return_val == DeviceTcpReturn.ANSWERED:
-                    msg: Message = cast(Message, msg_sent_r.ref)
+                    msg: Message = cast(Message, con.msg)
                     communication_finished = True
-                    if msg.cb_called and device.u_id in self.message_queue:
+                    if msg.cb_called and con.device.u_id in self.message_queue:
                         communication_finished = False
-                    msg_sent_r.ref = None
+                    con.msg = None
 
                 elif return_val != DeviceTcpReturn.NO_ERROR:
                     return return_val
 
         return return_val
 
-    async def process_tcp_package(
-        self,
-        connection: TcpConnection,
-        data_ref: ReferencePass,
-        msg_sent: Message | None,
-        device_ref: ReferencePass,
-    ) -> DeviceTcpReturn:
+    async def process_tcp_package(self, con: TcpConnection) -> DeviceTcpReturn:
         """Read tcp socket and process packages."""
 
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
         try:
-            package: DataPackage = DataPackage.deserialize(data_ref.ref)
+            package: DataPackage = DataPackage.deserialize(con.data)
         except PackageException:
             return DeviceTcpReturn.RESPONSE_ERROR
 
-        data_ref.ref = data_ref.ref[4 + package.length :]
-        data_ref.ref = b""
+        con.data = con.data[4 + package.length :]
+        con.data = b""
 
         if (
-            connection.state == AesConnectionState.WAIT_IV
+            con.state == AesConnectionState.WAIT_IV
             and package.ptype == PackageType.PLAIN
         ):
 
             return_val = await self.process_device_identity_package(
-                connection, package.data, device_ref
+                con, package.data
             )
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
         if (
-            connection.state == AesConnectionState.WAIT_IV
+            con.state == AesConnectionState.WAIT_IV
             and package.ptype == PackageType.IV
         ):
             return_val = await self.process_aes_initial_vector_package(
-                connection, package.data, device_ref.ref
+                con, package.data
             )
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
         elif (
-            connection.state == AesConnectionState.CONNECTED
+            con.state == AesConnectionState.CONNECTED
             and package.ptype == PackageType.ENC
         ):
             return_val = await self.process_message_answer_package(
-                connection, package.data, device_ref.ref, msg_sent
+                con, package.data
             )
         else:
             task_log_debug(
@@ -891,35 +904,32 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return return_val
 
     async def device_handle_local_tcp(
-        self, device: Device, connection: TcpConnection
+        self, connection: TcpConnection
     ) -> DeviceTcpReturn:
         """Handle the incoming tcp connection to the device."""
 
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
-        r_device: ReferencePass = ReferencePass(device)
-        msg_to_sent_ref: ReferencePass = ReferencePass(None)
+        # r_device: ReferencePass = ReferencePass(device)
+        # msg_to_sent_ref: ReferencePass = ReferencePass(None)
 
         task_log_debug(f"New tcp connection to device at {connection.address}")
         try:
-            return_state = await self.handle_connection(
-                r_device, connection=connection, msg_sent_r=msg_to_sent_ref
-            )
+            return_state = await self.handle_connection(con=connection)
         except CancelledError:
-            LOGGER.error(
-                "Cancelled local send to %s!", connection.address["ip"]
-            )
+            LOGGER.error("Cancelled local send to %s!", connection.address.ip)
         except Exception as exception:
             task_log_trace_ex()
             task_log_error(
                 "Unhandled exception during local communication! "
                 + str(type(exception))
             )
-            if isinstance(msg_to_sent_ref.ref, Message):
-                msg_to_sent_ref.ref.exception = exception
+            if isinstance(connection.msg, Message):
+                connection.msg.exception = exception
         finally:
 
-            msg_to_sent: Message | None = msg_to_sent_ref.ref
+            msg_to_sent: Message | None = connection.msg
+            device: Device = connection.device
 
             if msg_to_sent:
                 # release message wait for callback
@@ -936,7 +946,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                             msg_to_sent, device.u_id
                         )
 
-            device = r_device.ref
             # if (
             #     msg_to_sent and device and # noqa: W504, E261
             #     return_state != DeviceTcpReturn.MSG_VALUES_OUT_OF_RANGE_LIMITS
@@ -952,7 +961,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     task_log_trace("error in closing socket.")
                 finally:
                     connection.socket = None
-            # self.current_addr_connections.remove(str(connection.address["ip"]))
+            # self.current_addr_connections.remove(str(connection.address.ip))
 
             unit_id: str = f" Unit-ID: {device.u_id}" if device.u_id else ""
 
@@ -969,7 +978,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
             task_log_debug(
                 "Finished tcp connection to device"
-                f" {connection.address['ip']} with return state:"
+                f" {connection.address.ip} with return state:"
                 f" {return_state}"
             )
 
@@ -1019,7 +1028,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     )
                     # add request message to queue before we send ack and get
                     # the tcp tunnel answer
-                    await self.add_message(
+                    await self.send_msg(
                         Message(
                             target_ip=address.ip,
                             msg_queue=[RequestCommand()],
@@ -1161,10 +1170,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                                 "Error while deleting message from queue."
                             )
                             task_log_trace_ex()
-                    if (
-                        uid in self.message_queue
-                        and not self.message_queue[uid]
-                    ):
+                    if uid in self.message_queue and not msgs:
                         to_del_uids.append(uid)
                 for uid in to_del_uids:
                     try:
@@ -1176,9 +1182,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                         task_log_trace_ex()
                 try:
 
-                    self.check_messages_time_to_live_set.clear()
+                    self.check_messages_ttl_event.clear()
                     await asyncio.wait_for(
-                        self.check_messages_time_to_live_set.wait(), timeout=5
+                        self.check_messages_ttl_event.wait(), timeout=5
                     )
                 except asyncio.TimeoutError:
                     pass
@@ -1196,7 +1202,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 self.check_messages_time_to_live()
             )
         else:
-            self.check_messages_time_to_live_set.set()
+            self.check_messages_ttl_event.set()
 
     async def connection_tasks_time_to_live(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
@@ -1239,7 +1245,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         if not self.tcp:
             return
         loop: AbstractEventLoop = get_asyncio_loop()
-        device: Device = Device()
+        # device: Device = Device()
         addr: tuple
         connection: TcpConnection = TcpConnection()
 
@@ -1249,8 +1255,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         ) = self.tcp.accept()
         # if not addr[0] in self.current_addr_connections:
         # self.current_addr_connections.add(addr[0])
-        connection.address["ip"] = addr[0]
-        connection.address["port"] = addr[1]
+        # connection.address.ip = addr[0]
+        # connection.address.port = addr[1]
+        connection.address = Address(*addr)
 
         # FOR DEBUG out
         # new_task: Task[DeviceTcpReturn] = loop.create_task(
@@ -1260,10 +1267,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # loop.create_task(asyncio.wait_for(new_task, timeout=proc_timeout_secs))
 
         # FOR DEBUG in
-        await self.device_handle_local_tcp(device, connection)
+        await self.device_handle_local_tcp(connection)
 
         task_log_debug(
-            f"Address {connection.address['ip']} process task created."
+            f"Address {connection.address.ip} process task created."
         )
         # self.__tasks_undone.append((new_task, datetime.datetime.now()))
 
@@ -1481,16 +1488,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             BroadcastMessage if unit_id == "all" else Message
         )
 
-        await self.add_message(
-            AddMessageType(
-                # started=datetime.datetime.now(),
-                send_msgs,
-                unit_id,
-                callback=answer,
-                time_to_live_secs=time_to_live_secs,
-                **kwargs,
-            )
+        msg: Message = AddMessageType(
+            send_msgs,
+            unit_id,
+            callback=answer,
+            time_to_live_secs=time_to_live_secs,
+            **kwargs,
         )
+        if await self.send_msg(msg):
+            return msg
+
+        return None
 
     async def add_message(
         self, msg: Message, syn_broadcast_timeout: float = 3
@@ -1524,6 +1532,19 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         loop.create_task(msg_ttl_task())
 
+        return True
+
+    async def send_msg(
+        self, msg: Message, syn_broadcast_timeout: float = 3
+    ) -> bool:
+        """Add message to message queue and start connection
+        discover."""
+
+        loop: AbstractEventLoop = get_asyncio_loop()
+
+        if not self.add_message(msg, syn_broadcast_timeout):
+            return False
+
         # only broadcast udp syns when no ip and take the device
         # IP what was last used in connection. timeout for sending
         # syn broadcasts when no answer to find the device
@@ -1532,9 +1553,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             not target_ip
             and msg.target_uid
             and msg.target_uid in self.devices
-            and self.devices[msg.target_uid].local_addr["ip"]
+            and self.devices[msg.target_uid].local_addr.ip
         ):
-            target_ip = self.devices[msg.target_uid].local_addr["ip"]
+            target_ip = self.devices[msg.target_uid].local_addr.ip
 
         if target_ip:
             await self.send_syn_udp(target_ip)

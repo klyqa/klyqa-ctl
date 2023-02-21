@@ -4,7 +4,11 @@ from __future__ import annotations
 
 import json
 
-from klyqa_ctl.general.general import TRACE, set_debug_logger  # AES_KEY_DEV,
+from klyqa_ctl.general.general import (  # AES_KEY_DEV,
+    TRACE,
+    get_asyncio_loop,
+    set_debug_logger,
+)
 from klyqa_ctl.local_controller import LocalController
 
 
@@ -23,6 +27,8 @@ def main() -> None:
     )
 
     print(reply)
+
+    get_asyncio_loop().run_until_complete(lc.shutdown())
 
 
 if __name__ == "__main__":
