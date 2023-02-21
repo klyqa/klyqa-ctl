@@ -14,6 +14,7 @@ from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
     MAX_SOCKET_SEND_TIMEOUT_SECS,
+    Address,
     ReferencePass,
     get_asyncio_loop,
     task_log,
@@ -21,6 +22,7 @@ from klyqa_ctl.general.general import (
     task_log_trace_ex,
     task_name,
 )
+from klyqa_ctl.general.message import Message
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
@@ -72,13 +74,16 @@ class TcpConnection:
         self._attr_remote_iv: bytes = b""
         self._attr_sending_aes: Any = None
         self._attr_receiving_aes: Any = None
-        self._attr_address: dict[str, str | int] = {"ip": "", "port": -1}
+        self._attr_address: Address = Address()
         self._attr_socket: socket.socket | None = None
         self._attr_received_packages: list[Any] = []
         self._attr_sent_msg_answer: dict[str, Any] = {}
         self._attr_aes_key_confirmed: bool = False
         self._attr_aes_key: bytes = b""
         self._attr_started: datetime = datetime.now()
+        self._attr_msg: Message | None = None
+        self._attr_device: Device = Device()
+        self._attr_data: bytes = b""
 
     @property
     def state(self) -> str:
@@ -87,6 +92,38 @@ class TcpConnection:
     @state.setter
     def state(self, state: str) -> None:
         self._attr_state = state
+
+    @property
+    def data(self) -> bytes:
+        return self._attr_data
+
+    @data.setter
+    def data(self, data: bytes) -> None:
+        self._attr_data = data
+
+    @property
+    def address(self) -> Address:
+        return self._attr_address
+
+    @address.setter
+    def address(self, address: Address) -> None:
+        self._attr_address = address
+
+    @property
+    def device(self) -> Device:
+        return self._attr_device
+
+    @device.setter
+    def device(self, device: Device) -> None:
+        self._attr_device = device
+
+    @property
+    def msg(self) -> Message | None:
+        return self._attr_msg
+
+    @msg.setter
+    def msg(self, msg: Message | None) -> None:
+        self._attr_msg = msg
 
     @property
     def remote_iv(self) -> bytes:
@@ -119,14 +156,6 @@ class TcpConnection:
     @receiving_aes.setter
     def receiving_aes(self, receiving_aes: Any) -> None:
         self._attr_receiving_aes = receiving_aes
-
-    @property
-    def address(self) -> dict[str, str | int]:
-        return self._attr_address
-
-    @address.setter
-    def address(self, address: dict[str, str | int]) -> None:
-        self._attr_address = address
 
     @property
     def socket(self) -> socket.socket | None:
@@ -176,9 +205,7 @@ class TcpConnection:
     def started(self, started: datetime) -> None:
         self._attr_started = started
 
-    async def read_local_tcp_socket(
-        self, data_ref: ReferencePass
-    ) -> DeviceTcpReturn:
+    async def read_local_tcp_socket(self) -> DeviceTcpReturn:
         """Read from tcp socket and handle some exceptions."""
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
@@ -186,11 +213,11 @@ class TcpConnection:
             return DeviceTcpReturn.SOCKET_ERROR
         try:
             task_log_debug("Read TCP socket to device.")
-            # data_ref.ref = await loop.sock_recv(self.socket, 4096)
-            data_ref.ref = await loop.run_in_executor(
+            # self.data = await loop.sock_recv(self.socket, 4096)
+            self.data = await loop.run_in_executor(
                 None, self.socket.recv, 4096
             )
-            if len(data_ref.ref) == 0:
+            if len(self.data) == 0:
                 task_log("TCP connection ended unexpectedly!", LOGGER.error)
                 return DeviceTcpReturn.TCP_SOCKET_CLOSED_UNEXPECTEDLY
         except socket.timeout:
@@ -227,8 +254,10 @@ class TcpConnection:
         """Send data to socket."""
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
-        send_started = datetime.now()
-        max_timeout = timedelta(seconds=MAX_SOCKET_SEND_TIMEOUT_SECS)
+        send_started: datetime = datetime.now()
+        max_timeout: timedelta = timedelta(
+            seconds=MAX_SOCKET_SEND_TIMEOUT_SECS
+        )
         while self.socket:
             try:
                 await loop.run_in_executor(None, self.socket.send, data)
