@@ -69,18 +69,22 @@ class TcpConnection:
     """Local connection class."""
 
     def __init__(self) -> None:
+        self._attr_started: datetime = datetime.now()
         self._attr_state: str = AesConnectionState.WAIT_IV
+
         self._attr_local_iv: bytes = get_random_bytes(8)
         self._attr_remote_iv: bytes = b""
         self._attr_sending_aes: Any = None
         self._attr_receiving_aes: Any = None
-        self._attr_address: Address = Address()
-        self._attr_socket: socket.socket | None = None
-        self._attr_received_packages: list[Any] = []
-        self._attr_sent_msg_answer: dict[str, Any] = {}
         self._attr_aes_key_confirmed: bool = False
         self._attr_aes_key: bytes = b""
-        self._attr_started: datetime = datetime.now()
+
+        self._attr_address: Address = Address()
+        self._attr_socket: socket.socket | None = None
+
+        self._attr_received_packages: list[Any] = []
+        self._attr_sent_msg_answer: dict[str, Any] = {}
+
         self._attr_msg: Message | None = None
         self._attr_device: Device = Device()
         self._attr_data: bytes = b""
