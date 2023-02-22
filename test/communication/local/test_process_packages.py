@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import socket
-from test.conftest import TEST_AES_KEY, TEST_UNIT_ID
+from test.conftest import TEST_UNIT_ID
 
 import mock
 import pytest
@@ -16,10 +16,8 @@ from klyqa_ctl.communication.local.connection_handler import (
 )
 from klyqa_ctl.communication.local.data_package import DataPackage
 from klyqa_ctl.devices.commands import PingCommand
-from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import TRACE, get_asyncio_loop, set_debug_logger
 from klyqa_ctl.general.message import Message
-from klyqa_ctl.local_controller import LocalController
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
@@ -167,9 +165,8 @@ def test_process_iv_package_standalone(
 def test_handle_send_msg_no_msg(
     lc_con_hdl: LocalConnectionHandler,
     tcp_con: TcpConnection,
-    msg_with_target_uid: Message,
 ) -> None:
-    """Test handle send message no message to send"""
+    """Test handle send message with no message to send"""
 
     ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
