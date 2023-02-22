@@ -657,17 +657,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 # in lock, but needs readd logic to queue on error when want
                 # resend retry.
 
-            if not msg and "all" in self.message_queue:
-                for m in self.message_queue["all"]:
-                    if not isinstance(m, BroadcastMessage):
-                        continue
-                    bm: BroadcastMessage = cast(BroadcastMessage, m)
-
-                    if device.u_id in bm.sent_to:
-                        continue
-                    msg = cast(Message, m)
-                    break
-
             if (
                 not msg
                 and device.u_id in self.message_queue
@@ -678,6 +667,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     if m.state != MessageState.UNSENT:
                         continue
                     msg = m
+                    break
+
+            if not msg and "all" in self.message_queue:
+                for m in self.message_queue["all"]:
+                    if not isinstance(m, BroadcastMessage):
+                        continue
+                    bm: BroadcastMessage = cast(BroadcastMessage, m)
+
+                    if device.u_id in bm.sent_to:
+                        continue
+                    msg = cast(Message, m)
                     break
 
             if msg:
@@ -714,7 +714,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             task_log_trace("%s", msg)
             j: int = 0
 
-            if msg.state == MessageState.UNSENT or isinstance(
+            if msg.state == MessageState.SELECTED or isinstance(
                 msg, BroadcastMessage
             ):
 

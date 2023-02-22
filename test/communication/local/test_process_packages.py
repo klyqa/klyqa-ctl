@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import socket
-from test.conftest import TEST_AES_KEY, TEST_UNIT_ID
+from test.conftest import TEST_UNIT_ID
 
 import mock
 import pytest
@@ -16,15 +16,15 @@ from klyqa_ctl.communication.local.connection_handler import (
 )
 from klyqa_ctl.communication.local.data_package import DataPackage
 from klyqa_ctl.devices.commands import PingCommand
-from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import TRACE, get_asyncio_loop, set_debug_logger
 from klyqa_ctl.general.message import Message
-from klyqa_ctl.local_controller import LocalController
 
 try:
     from Cryptodome.Random import get_random_bytes  # pycryptodome
 except ImportError:
     from Crypto.Random import get_random_bytes  # pycryptodome
+
+TEST_IP: str = "192.168.8.4"
 
 
 @pytest.fixture
@@ -32,6 +32,10 @@ def tcp_con(lc_con_hdl: LocalConnectionHandler) -> TcpConnection:
     """Create example tcp connection."""
 
     con: TcpConnection = TcpConnection()
+    con.address.ip = TEST_IP
+
+    with mock.patch("socket.socket"):
+        con.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     return con
 
@@ -55,16 +59,22 @@ def data_pkg_identity(tcp_con: TcpConnection) -> DataPackage:
 
 
 @pytest.fixture
-def msg() -> Message:
+def msg_with_target_uid() -> Message:
     """Get message for local message queue."""
     return Message([PingCommand()], _attr_target_uid=TEST_UNIT_ID)
+
+
+@pytest.fixture
+def msg_with_target_ip() -> Message:
+    """Get message for local message queue."""
+    return Message([PingCommand()], target_ip=TEST_IP)
 
 
 def test_process_identity_package(
     lc_con_hdl: LocalConnectionHandler,
     tcp_con: TcpConnection,
     data_pkg_identity: DataPackage,
-    msg: Message,
+    msg_with_target_uid: Message,
 ) -> None:
     """Test the identity package processing in local tcp communication.
     Look that the initial vector is sent as well."""
@@ -82,22 +92,21 @@ def test_process_identity_package(
     ), f"Uncorrect return error {ret}"
 
     lc_con_hdl.broadcast_discovery = False
-    get_asyncio_loop().run_until_complete(lc_con_hdl.add_message(msg))
+    get_asyncio_loop().run_until_complete(
+        lc_con_hdl.add_message(msg_with_target_uid)
+    )
 
-    with mock.patch("socket.socket"):
-        tcp_con.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        ret = get_asyncio_loop().run_until_complete(
-            lc_con_hdl.process_device_identity_package(
-                tcp_con, data_pkg_identity.data
-            )
+    ret = get_asyncio_loop().run_until_complete(
+        lc_con_hdl.process_device_identity_package(
+            tcp_con, data_pkg_identity.data
         )
+    )
 
-        assert ret == DeviceTcpReturn.NO_ERROR, f"Uncorrect return error {ret}"
-        assert tcp_con.device, "No device set"
-        assert tcp_con.device.u_id, "No device uid set"
-        assert tcp_con.msg, "No message for sending selected"
-        tcp_con.socket.send.assert_called_once()
+    assert ret == DeviceTcpReturn.NO_ERROR, f"Uncorrect return error {ret}"
+    assert tcp_con.device, "No device set"
+    assert tcp_con.device.u_id, "No device uid set"
+    assert tcp_con.msg, "No message for sending selected"
+    tcp_con.socket.send.assert_called_once()
 
 
 # @pytest.mark.dependency(depends=["test_process_identity_package"])
@@ -118,7 +127,7 @@ def test_process_iv_package_standalone(
     lc_con_hdl: LocalConnectionHandler,
     tcp_con: TcpConnection,
     data_pkg_iv: bytes,
-    msg: Message,
+    msg_with_target_uid: Message,
 ) -> None:
     """Testing processing AES initial vector package."""
 
@@ -151,3 +160,75 @@ def test_process_iv_package_standalone(
     ), "Connection is not in connected state"
     assert tcp_con.sending_aes != None, "Missing sending AES object!"
     assert tcp_con.receiving_aes != None, "Missing receiving AES object!"
+
+
+def test_handle_send_msg_no_msg(
+    lc_con_hdl: LocalConnectionHandler,
+    tcp_con: TcpConnection,
+) -> None:
+    """Test handle send message with no message to send"""
+
+    ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+
+    ret = get_asyncio_loop().run_until_complete(
+        lc_con_hdl.handle_send_msg(tcp_con)
+    )
+    assert (
+        ret == DeviceTcpReturn.NO_MESSAGE_TO_SEND
+    ), f"Uncorrect return error for missing aes key {ret}"
+
+
+def test_handle_send_msg_target_unit_id(
+    lc_con_hdl: LocalConnectionHandler,
+    tcp_con: TcpConnection,
+    msg_with_target_uid: Message,
+) -> None:
+    """Test handle send message with target unit ID"""
+
+    ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+
+    # Message with target Unit ID
+    get_asyncio_loop().run_until_complete(
+        lc_con_hdl.add_message(msg_with_target_uid)
+    )
+    tcp_con.device.u_id = TEST_UNIT_ID
+
+    ret = get_asyncio_loop().run_until_complete(
+        lc_con_hdl.handle_send_msg(tcp_con)
+    )
+    assert (
+        ret == DeviceTcpReturn.NO_ERROR
+    ), f"Uncorrect return error for missing aes key {ret}"
+
+    assert (
+        TEST_UNIT_ID not in lc_con_hdl.message_queue
+    ), f"Message queue for {TEST_UNIT_ID} should be empty!"
+
+    tcp_con.socket.send.assert_called_once()
+
+
+def test_handle_send_msg_target_ip(
+    lc_con_hdl: LocalConnectionHandler,
+    tcp_con: TcpConnection,
+    msg_with_target_ip: Message,
+) -> None:
+    """Test handle send message with target IP"""
+
+    ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+
+    get_asyncio_loop().run_until_complete(
+        lc_con_hdl.add_message(msg_with_target_ip)
+    )
+
+    ret = get_asyncio_loop().run_until_complete(
+        lc_con_hdl.handle_send_msg(tcp_con)
+    )
+    assert (
+        ret == DeviceTcpReturn.NO_ERROR
+    ), f"Uncorrect return error for missing aes key {ret}"
+
+    assert (
+        TEST_IP not in lc_con_hdl.message_queue
+    ), f"Message queue for {TEST_IP} should be empty!"
+
+    tcp_con.socket.send.assert_called_once()
