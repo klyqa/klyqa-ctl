@@ -1,0 +1,6 @@
+# https://github.com/pypa/pip/issues/7883
+# When pip install -r requirements.txt stuck use below shell env
+
+export PYTHON_KEYRING_BACKEND = keyring.backends.null.Keyring
+
+PYTHON_KEYRING_BACKEND = keyring.backends.null.Keyring pip install.
