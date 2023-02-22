@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from typing import Generator
 
+import mock
 import pytest
 
-from klyqa_ctl.communication.local.connection_handler import (
-    LocalConnectionHandler,
-)
+from klyqa_ctl.communication.local.connection_handler import LocalConnectionHandler
 from klyqa_ctl.controller_data import ControllerData
 from klyqa_ctl.general.general import TRACE, get_asyncio_loop, set_debug_logger
 from klyqa_ctl.local_controller import LocalController
@@ -48,6 +47,8 @@ def lc_con_hdl(
     lc_hdl: LocalConnectionHandler = LocalConnectionHandler.create_default(
         controller_data=controller_data_lc_lib
     )
+    with mock.patch("socket.socket"):
+        get_asyncio_loop().run_until_complete(lc_hdl.bind_ports())
 
     yield lc_hdl
     get_asyncio_loop().run_until_complete(lc_hdl.shutdown())
