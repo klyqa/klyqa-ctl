@@ -457,7 +457,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         elif device.u_id in self.controller_data.aes_keys:
             con.aes_key = self.controller_data.aes_keys[device.u_id]
         else:
-            task_log_error("No AES key for device %s! Removing it's messages.")
+            task_log_error(
+                "No AES key for device %s! Removing it's messages.",
+                device.u_id,
+            )
             await self.remove_device_from_queue(device.u_id)
             return DeviceTcpReturn.MISSING_AES_KEY
 
@@ -548,6 +551,11 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     f"device uid {con.device.u_id} aes_confirmed"
                     f" {con.aes_key_confirmed}"
                 )
+            except UnicodeDecodeError:
+                task_log_error(
+                    "Could not decode message from device %s", con.device.u_id
+                )
+                return DeviceTcpReturn.RESPONSE_ERROR
             except json.JSONDecodeError:
                 task_log("Could not load json message from device: ")
                 LOGGER.error(
@@ -1543,7 +1551,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
-        if not self.add_message(msg, syn_broadcast_timeout):
+        if not await self.add_message(msg, syn_broadcast_timeout):
             return False
 
         # only broadcast udp syns when no ip and take the device
