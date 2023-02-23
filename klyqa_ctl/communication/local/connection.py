@@ -9,7 +9,11 @@ import logging
 import socket
 from typing import Any
 
-from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
+from klyqa_ctl.communication.local.data_package import (
+    DataPackage,
+    PackageException,
+    PackageType,
+)
 from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import (
     LOGGER,
@@ -88,6 +92,7 @@ class TcpConnection:
         self._attr_msg: Message | None = None
         self._attr_device: Device = Device()
         self._attr_data: bytes = b""
+        self.pkg: DataPackage | None = None
 
     @property
     def state(self) -> str:
@@ -209,7 +214,7 @@ class TcpConnection:
     def started(self, started: datetime) -> None:
         self._attr_started = started
 
-    async def read_local_tcp_socket(self) -> DeviceTcpReturn:
+    async def read_socket(self) -> DeviceTcpReturn:
         """Read from tcp socket and handle some exceptions."""
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
@@ -235,6 +240,29 @@ class TcpConnection:
 
         return DeviceTcpReturn.NO_ERROR
 
+    async def process_socket_data(self) -> DeviceTcpReturn:
+        """Read from tcp socket and handle some exceptions."""
+
+        return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+        try:
+            self.pkg = DataPackage.deserialize(self.data)
+        except PackageException:
+            return DeviceTcpReturn.RESPONSE_ERROR
+
+        self.data = self.data[4 + self.pkg.length :]
+        self.data = b""
+
+        return return_val
+
+    def encrypt_text(self, msg: str) -> bytes:
+
+        plain: bytes = msg.encode("utf-8")
+
+        data: bytes = DataPackage.create(plain, PackageType.ENC).serialize(
+            self.sending_aes
+        )
+        return data
+
     async def encrypt_and_send_msg(self, msg: str, device: Device) -> bool:
         """Encrypt the msg with aes and send it over the socket."""
 
@@ -247,12 +275,9 @@ class TcpConnection:
         )
 
         task_log_debug(info_str)
-        plain: bytes = msg.encode("utf-8")
 
-        package: bytes = DataPackage.create(plain, PackageType.ENC).serialize(
-            self.sending_aes
-        )
-        return await self.send_msg(package)
+        data: bytes = self.encrypt_text(msg)
+        return await self.send_msg(data)
 
     async def send_msg(self, data: bytes) -> bool:
         """Send data to socket."""

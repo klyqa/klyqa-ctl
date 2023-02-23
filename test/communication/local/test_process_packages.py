@@ -14,7 +14,7 @@ from klyqa_ctl.communication.local.connection import (
 from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
 )
-from klyqa_ctl.communication.local.data_package import DataPackage
+from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.devices.commands import PingCommand
 from klyqa_ctl.general.general import TRACE, get_asyncio_loop, set_debug_logger
 from klyqa_ctl.general.message import Message
@@ -46,13 +46,19 @@ def data_pkg_iv(tcp_con: TcpConnection) -> bytes:
     return get_random_bytes(8)
 
 
+DATA_IDENTITY: bytes = b'\x00\xda\x00\x00{"type":"ident","ident":{"fw_version":"virtual","fw_build":"1","hw_version":"1","manufacturer_id":"59a58a9f-59ca-4c46-96fc-791a79839bc7","product_id":"@qcx.lighting.rgb-cw-ww.virtual","unit_id":"29daa5a4439969f57934"}}'
+# @pytest.fixture
+# def data_identity(tcp_con: TcpConnection) -> bytes:
+#     """Get example identity data from device."""
+
+#     return =
+
+
 @pytest.fixture
-def data_pkg_identity(tcp_con: TcpConnection) -> DataPackage:
+def pkg_identity() -> DataPackage:
     """Get example identity data package from device."""
 
-    tcp_con.data = b'\x00\xda\x00\x00{"type":"ident","ident":{"fw_version":"virtual","fw_build":"1","hw_version":"1","manufacturer_id":"59a58a9f-59ca-4c46-96fc-791a79839bc7","product_id":"@qcx.lighting.rgb-cw-ww.virtual","unit_id":"29daa5a4439969f57934"}}'
-
-    package: DataPackage = DataPackage.deserialize(tcp_con.data)
+    package: DataPackage = DataPackage.deserialize(DATA_IDENTITY)
     assert package.length > 0, "Package error no length"
 
     return package
@@ -73,7 +79,7 @@ def msg_with_target_ip() -> Message:
 def test_process_identity_package(
     lc_con_hdl: LocalConnectionHandler,
     tcp_con: TcpConnection,
-    data_pkg_identity: DataPackage,
+    pkg_identity: DataPackage,
     msg_with_target_uid: Message,
 ) -> None:
     """Test the identity package processing in local tcp communication.
@@ -82,9 +88,7 @@ def test_process_identity_package(
     set_debug_logger(level=TRACE)
 
     ret: DeviceTcpReturn = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_device_identity_package(
-            tcp_con, data_pkg_identity.data
-        )
+        lc_con_hdl.process_device_identity_package(tcp_con, pkg_identity.data)
     )
 
     assert (
@@ -97,9 +101,7 @@ def test_process_identity_package(
     )
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_device_identity_package(
-            tcp_con, data_pkg_identity.data
-        )
+        lc_con_hdl.process_device_identity_package(tcp_con, pkg_identity.data)
     )
 
     assert ret == DeviceTcpReturn.NO_ERROR, f"Uncorrect return error {ret}"
@@ -232,3 +234,84 @@ def test_handle_send_msg_target_ip(
     ), f"Message queue for {TEST_IP} should be empty!"
 
     tcp_con.socket.send.assert_called_once()
+
+
+def test_process_tcp_package(
+    lc_con_hdl: LocalConnectionHandler,
+    tcp_con: TcpConnection,
+    msg_with_target_ip: Message,
+    pkg_identity: DataPackage,
+) -> None:
+    """Test handle send message with target IP"""
+
+    ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+
+    get_asyncio_loop().run_until_complete(
+        lc_con_hdl.add_message(msg_with_target_ip)
+    )
+
+    tcp_con.pkg = pkg_identity
+
+    ret = get_asyncio_loop().run_until_complete(
+        lc_con_hdl.process_tcp_package(tcp_con)
+    )
+    assert (
+        ret == DeviceTcpReturn.NO_ERROR
+    ), f"Uncorrect return error process package {ret}"
+
+    assert (
+        TEST_IP not in lc_con_hdl.message_queue
+    ), f"Message queue for {TEST_IP} should be empty!"
+
+    tcp_con.socket.send.assert_called_once()
+
+
+class SocketRecvMock(mock.MagicMock):
+    """"""
+
+    remote_iv: bytes = get_random_bytes(8)
+    tcp_con = None
+
+    def __call__(_mock_self, *args, **kwargs):
+        ret_val: bytes = b"0"
+        if _mock_self.call_count == 0:
+            ret_val = DATA_IDENTITY
+        elif _mock_self.call_count == 1:
+            ret_val = DataPackage.create(
+                _mock_self.remote_iv, PackageType.IV
+            ).serialize()
+        elif _mock_self.call_count == 2 and _mock_self.tcp_con:
+            ret_val = _mock_self.tcp_con.encrypt_text(str(PingCommand()))
+        super().__call__(_mock_self, *args, **kwargs)
+        _mock_self._mock_call(*args, **kwargs)
+        return ret_val
+
+
+def test_handle_connection(
+    lc_con_hdl: LocalConnectionHandler,
+    tcp_con: TcpConnection,
+    msg_with_target_ip: Message,
+    pkg_identity: DataPackage,
+) -> None:
+    """Test handle"""
+
+    set_debug_logger(level=TRACE)
+
+    ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
+
+    get_asyncio_loop().run_until_complete(
+        lc_con_hdl.add_message(msg_with_target_ip)
+    )
+
+    # mock,
+    if tcp_con.socket:
+        # tcp_con.socket.return_value.recv.return_value = b"okokoko222"
+        tcp_con.socket.recv = SocketRecvMock()
+        tcp_con.socket.recv.tcp_con = tcp_con
+        # mock.MagicMock(return_value=b"okokoko222")
+        # mock_socket.return_value.recv.decode.return_value
+        # tcp_con.socket.
+        ret = get_asyncio_loop().run_until_complete(
+            lc_con_hdl.handle_connection(tcp_con)
+        )
+        pass
