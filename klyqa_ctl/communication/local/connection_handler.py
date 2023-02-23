@@ -833,17 +833,23 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if return_val != DeviceTcpReturn.NO_ERROR:
                     return return_val
 
-            read_data_ret: DeviceTcpReturn = await con.read_local_tcp_socket()
+            read_data_ret: DeviceTcpReturn = await con.read_socket()
             if read_data_ret != DeviceTcpReturn.NO_ERROR:
                 return read_data_ret
 
-            while not communication_finished and (len(con.data)):
+            return_val = await con.process_socket_data()
+            if return_val != DeviceTcpReturn.NO_ERROR:
+                return return_val
+
+            if not communication_finished and con.pkg:
                 task_log_debug(
-                    f"TCP server received {str(len(con.data))} bytes from"
+                    f"TCP server received {str(con.pkg.length)} bytes from"
                     f" {str(con.address)}"
                 )
 
                 return_val = await self.process_tcp_package(con)
+                if return_val != DeviceTcpReturn.NO_ERROR:
+                    return return_val
 
                 if return_val == DeviceTcpReturn.ANSWERED:
                     msg: Message = cast(Message, con.msg)
@@ -861,41 +867,36 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         """Read tcp socket and process packages."""
 
         return_val: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
-        try:
-            package: DataPackage = DataPackage.deserialize(con.data)
-        except PackageException:
-            return DeviceTcpReturn.RESPONSE_ERROR
-
-        con.data = con.data[4 + package.length :]
-        con.data = b""
+        if not con.pkg:
+            return DeviceTcpReturn.UNKNOWN_ERROR
 
         if (
             con.state == AesConnectionState.WAIT_IV
-            and package.ptype == PackageType.PLAIN
+            and con.pkg.ptype == PackageType.PLAIN
         ):
 
             return_val = await self.process_device_identity_package(
-                con, package.data
+                con, con.pkg.data
             )
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
         if (
             con.state == AesConnectionState.WAIT_IV
-            and package.ptype == PackageType.IV
+            and con.pkg.ptype == PackageType.IV
         ):
             return_val = await self.process_aes_initial_vector_package(
-                con, package.data
+                con, con.pkg.data
             )
             if return_val != DeviceTcpReturn.NO_ERROR:
                 return return_val
 
         elif (
             con.state == AesConnectionState.CONNECTED
-            and package.ptype == PackageType.ENC
+            and con.pkg.ptype == PackageType.ENC
         ):
             return_val = await self.process_message_answer_package(
-                con, package.data
+                con, con.pkg.data
             )
         else:
             task_log_debug(
