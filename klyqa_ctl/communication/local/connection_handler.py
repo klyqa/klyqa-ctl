@@ -1048,7 +1048,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 except socket.error:
                     await self.reconnect_socket_udp()
 
-    async def send_syn_udp(self, ip: str = "255.255.255.255") -> bool:
+    async def send_syn_udp(
+        self, ip: str = "255.255.255.255", target_unit_id: str = "FFFFFFFFFFFF"
+    ) -> bool:
         """Send qcx-syn broadcast on udp socket."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
@@ -1068,7 +1070,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 await loop.run_in_executor(
                     None,
                     self.udp.sendto,
-                    QCX_SYN,
+                    QCX_SYN + (";" + target_unit_id).encode("utf-8"),
                     (ip, 2222),
                 )
             else:
@@ -1567,7 +1569,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             target_ip = self.devices[msg.target_uid].local_addr.ip
 
         if target_ip:
-            await self.send_syn_udp(target_ip)
+            await self.send_syn_udp(target_ip, msg.target_uid or "FFFFFFFFFFFF")
 
             async def direct_syn_timeout() -> None:
                 """When not reply after timeout from device directly, start
