@@ -254,7 +254,8 @@ class TcpConnection:
 
         return return_val
 
-    def encrypt_text(self, msg: str) -> bytes:
+    def encrypt_pkg_text(self, msg: str) -> bytes:
+        """Create serialized package from message string and encrypt it."""
 
         plain: bytes = msg.encode("utf-8")
 
@@ -276,11 +277,11 @@ class TcpConnection:
 
         task_log_debug(info_str)
 
-        data: bytes = self.encrypt_text(msg)
+        data: bytes = self.encrypt_pkg_text(msg)
         return await self.send_msg(data)
 
     async def send_msg(self, data: bytes) -> bool:
-        """Send data to socket."""
+        """Write data to the TCP connection socket."""
 
         loop: asyncio.AbstractEventLoop = get_asyncio_loop()
         send_started: datetime = datetime.now()
