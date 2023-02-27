@@ -1,5 +1,7 @@
 from typing import Any
 
+from klyqa_ctl.general.general import TypeJson
+
 SCENES: list[dict[str, Any]] = [
     {
         "id": 100,
@@ -272,3 +274,13 @@ SCENES: list[dict[str, Any]] = [
         ),
     },
 ]
+
+
+def get_scene_by_value(key: str, value: Any) -> TypeJson:
+    """Get scene by comparing the scenes attributes key value with
+    value."""
+
+    scene_result: list[TypeJson] = [x for x in SCENES if x[key] == value]
+    if len(scene_result) > 0:
+        return scene_result[0]
+    return {}

@@ -11,7 +11,7 @@ from typing import Any, Callable
 
 from klyqa_ctl.devices.device import CommandWithCheckValues, Device
 from klyqa_ctl.devices.light.light import Light
-from klyqa_ctl.devices.light.scenes import SCENES
+from klyqa_ctl.devices.light.scenes import SCENES, get_scene_by_value
 from klyqa_ctl.general.general import (
     LOGGER,
     CloudStateCommand,
@@ -410,6 +410,24 @@ class RoutinePutCommand(
         except Exception:
             return not missing_config(self._force, device.product_id)
         return True
+
+    @classmethod
+    def create(
+        cls: Any, scene_label: str, id_in_dev: str = "0"
+    ) -> RoutinePutCommand:
+        """Create scene command."""
+
+        scn: TypeJson | None = get_scene_by_value("label", scene_label)
+        if scn:
+            command: RoutinePutCommand = RoutinePutCommand(
+                commands=scn["commands"], id=id_in_dev, scene=str(scn["id"])
+            )
+            if len(command.commands.split(";")) > 2:
+                command.commands += "l 0;"
+        else:
+            raise ValueError(f"No such scene {scene_label}!")
+
+        return command
 
 
 def percent_color_message(
