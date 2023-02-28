@@ -12,15 +12,8 @@
   ],
   // Set *default* container specific settings.json values on container create.
   "settings": {
-    // Please keep this file in sync with settings in home-assistant/.devcontainer/devcontainer.json
     "python.formatting.provider": "black",
     "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-    // Added --no-cov to work around TypeError: message must be set
-    // https://github.com/microsoft/vscode-python/issues/14067
-    // "python.testing.pytestArgs": [
-    //     "--pdb"
-    // ],
-    // https://code.visualstudio.com/docs/python/testing#_pytest-configuration-settings
     "python.testing.pytestEnabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.mypyEnabled": true,
@@ -36,7 +29,7 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
-  }
+  },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "ms-python.python",
