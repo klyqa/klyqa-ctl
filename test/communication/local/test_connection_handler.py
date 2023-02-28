@@ -1,42 +1,18 @@
 from __future__ import annotations
 
 import asyncio
-import socket
-from test.communication.local import DATA_IDENTITY, TEST_IP
-from test.conftest import TEST_UNIT_ID
-import time
+from test.communication.local import TEST_IP, UDPSynSocketRecvMock
 from typing import Any
 
 import mock
 import pytest
 
-from klyqa_ctl.communication.local.connection import (
-    AesConnectionState,
-    DeviceTcpReturn,
-    TcpConnection,
-)
 from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
 )
-from klyqa_ctl.communication.local.data_package import DataPackage, PackageType
 from klyqa_ctl.devices.commands import PingCommand
-from klyqa_ctl.general.general import (
-    LOGGER_DBG,
-    TRACE,
-    get_asyncio_loop,
-    set_debug_logger,
-)
+from klyqa_ctl.general.general import TRACE, get_asyncio_loop, set_debug_logger
 from klyqa_ctl.general.message import Message, MessageState
-
-try:
-    from Cryptodome.Random import get_random_bytes  # pycryptodome
-except ImportError:
-    from Crypto.Random import get_random_bytes  # pycryptodome
-
-try:
-    from Cryptodome.Cipher import AES  # provided by pycryptodome
-except ImportError:
-    from Crypto.Cipher import AES  # provided by pycryptodome
 
 
 @pytest.fixture
@@ -73,3 +49,26 @@ def test_check_messages_time_to_live_hit(
     assert len(lc_con_hdl.message_queue[TEST_IP]) == 0
     assert ping_msg_that_hit_ttl.cb_called
     assert ping_msg_that_hit_ttl.state == MessageState.UNSENT
+
+
+def test_read_udp_socket_task(lc_con_hdl: LocalConnectionHandler) -> None:
+    """Test udp syns received on boot up device"""
+
+    set_debug_logger(level=TRACE)
+
+    with mock.patch("socket.socket"):
+        lc_con_hdl.udp.recvfrom = UDPSynSocketRecvMock()
+        lc_con_hdl.udp.sendto = mock.MagicMock()
+
+        # disable the search and send loop task for receiving
+        # the open tcp port connection to device after the ack.
+        lc_con_hdl.search_and_send_loop_task_alive = mock.MagicMock()
+
+        # mock send_msg as well now, for sending the ack
+        lc_con_hdl.send_msg = mock.AsyncMock()
+
+    lc_con_hdl.read_udp_socket_task()
+    get_asyncio_loop().run_until_complete(asyncio.sleep(14))
+
+    lc_con_hdl.udp.sendto.assert_called()
+    lc_con_hdl.send_msg.assert_called()
