@@ -597,9 +597,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         ):
             return
 
-        def remove_empty_sub_queue() -> None:
-            if sub_q in self.message_queue and not self.message_queue[sub_q]:
-                del self.message_queue[sub_q]
+        # def remove_empty_sub_queue() -> None:
+        #     if sub_q in self.message_queue and not self.message_queue[sub_q]:
+        #         del self.message_queue[sub_q]
 
         task_log_debug("remove message from queue")
         task_log_trace("%s", msg)
@@ -616,7 +616,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if msg in q:
                     q.remove(msg)
 
-        remove_empty_sub_queue()
+        # remove_empty_sub_queue()
 
     async def remove_msg_from_queue_cb(
         self, msg: Message, sub_q: str = ""
@@ -1165,7 +1165,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         try:
             while True:
-                to_del_uids: list[str] = []
+                # to_del_uids: list[str] = []
                 to_del_msgs: list[Message] = []
 
                 for uid, msgs in self.message_queue.items():
@@ -1181,18 +1181,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                                 "Error while deleting message from queue."
                             )
                             task_log_trace_ex()
-                    if uid in self.message_queue and not msgs:
-                        to_del_uids.append(uid)
-                for uid in to_del_uids:
-                    try:
-                        del self.message_queue[uid]
-                    except ValueError:
-                        task_log_debug(
-                            "Error while deleting uid messages from queue."
-                        )
-                        task_log_trace_ex()
+                    # if uid in self.message_queue and not msgs:
+                    #     to_del_uids.append(uid)
+                # for uid in to_del_uids:
+                #     try:
+                #         del self.message_queue[uid]
+                #     except ValueError:
+                #         task_log_debug(
+                #             "Error while deleting uid messages from queue."
+                #         )
+                #         task_log_trace_ex()
                 try:
-
                     self.check_messages_ttl_event.clear()
                     await asyncio.wait_for(
                         self.check_messages_ttl_event.wait(), timeout=5
@@ -1569,7 +1568,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             target_ip = self.devices[msg.target_uid].local_addr.ip
 
         if target_ip:
-            await self.send_syn_udp(target_ip, msg.target_uid or "FFFFFFFFFFFF")
+            await self.send_syn_udp(
+                target_ip, msg.target_uid or "FFFFFFFFFFFF"
+            )
 
             async def direct_syn_timeout() -> None:
                 """When not reply after timeout from device directly, start
