@@ -1,5 +1,4 @@
 {
-    // Please keep this file in sync with settings in home-assistant/.devcontainer/devcontainer.json
     "python.formatting.provider": "black",
     "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
     "python.testing.pytestEnabled": true,
