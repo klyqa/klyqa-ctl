@@ -24,14 +24,14 @@ class UDPSynSocketRecvMock(mock.MagicMock):  # type: ignore[misc]
     def __call__(self, *args: Any, **kwargs: Any) -> tuple:
         """Call mocked SYN send from device with 1 sec delay."""
 
-        ret_val: bytes = QCX_SYN
+        ret_val: bytes = b"NO_SYN"
 
         if self.call_count > 0:
             time.sleep(1.0)
 
-        if self.call_count >= 10:
-            # mock 10 syns then sleep
-            asyncio.run(asyncio.sleep(1000.0))
+        if self.call_count < 10:
+            # mock 10 syns
+            ret_val = QCX_SYN
 
         super().__call__(self, *args, **kwargs)
         self._mock_call(*args, **kwargs)

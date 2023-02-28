@@ -90,6 +90,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self.udp_broadcast_task: asyncio.Task | None = None
         self.send_syn_udp_broadcast_event: asyncio.Event = asyncio.Event()
         self._attr_server_ip: str = server_ip
+        # remember received syns for 30 seconds so we ack only once per IP.
+        self.received_syn_dt: dict[str, datetime.datetime] = {}
+
         # here message queue key needs to be string not UnitId to be hashable
         # for dictionaries and sets
         self._attr_message_queue: dict[str, list[Message]] = {}
@@ -107,6 +110,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_read_udp_socket_task_hdl: Task | None = None
         self._attr_broadcast_discovery: bool = True
         self.msg_ttl_task: Task | None = None
+
         # self.check_messages_time_to_live_timeout: Task | None = None
         self.check_messages_ttl_event: asyncio.Event = asyncio.Event()
 
@@ -1031,20 +1035,29 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
             if data == QCX_SYN or data == QCX_DSYN:
                 try:
-                    ack_data: bytes = QCX_ACK
-                    task_log_debug(
-                        "Send %r to %s.", ack_data, address.__dict__
-                    )
                     # add request message to queue before we send ack and get
                     # the tcp tunnel answer
-                    await self.send_msg(
-                        Message(
-                            target_ip=address.ip,
-                            msg_queue=[RequestCommand()],
-                        ),
-                        syn_broadcast_timeout=-1,
-                    )
-                    self.udp.sendto(ack_data, addr_tup)
+                    if (
+                        address.ip not in self.received_syn_dt
+                        or datetime.datetime.now()
+                        - self.received_syn_dt[address.ip]
+                        > datetime.timedelta(seconds=30)
+                    ):
+                        ack_data: bytes = QCX_ACK
+                        task_log_debug(
+                            "Send %r to %s.", ack_data, address.__dict__
+                        )
+                        await self.send_msg(
+                            Message(
+                                target_ip=address.ip,
+                                msg_queue=[RequestCommand()],
+                            ),
+                            syn_broadcast_timeout=-1,
+                        )
+                        self.udp.sendto(ack_data, addr_tup)
+                        self.received_syn_dt[
+                            address.ip
+                        ] = datetime.datetime.now()
                 except socket.error:
                     await self.reconnect_socket_udp()
 
@@ -1287,7 +1300,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # else:
         #     task_log_debug(f"Address {addr[0]} already in connection.")
 
-    async def read_udp_socket_task(self) -> None:
+    def read_udp_socket_task(self) -> None:
         """Start read UDP socket for incoming syncs, when not running."""
 
         if (
@@ -1326,7 +1339,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if stop:
                     break
 
-                await self.read_udp_socket_task()
+                self.read_udp_socket_task()
                 if self.message_queue:
                     read_incoming_connections: bool = True
 
