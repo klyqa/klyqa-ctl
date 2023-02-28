@@ -12,27 +12,23 @@
   ],
   // Set *default* container specific settings.json values on container create.
   "settings": {
-    "explorer.autoReveal": true,
-    "explorer.compactFolders": true,
-    "explorer.fileNesting.expand": true,
-    "python.pythonPath": "/usr/local/bin/python",
-    "python.languageServer": "Pylance",
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+    "python.testing.pytestEnabled": true,
     "python.linting.pylintEnabled": true,
+    "python.linting.mypyEnabled": true,
     "python.linting.enabled": true,
-    "editor.formatOnSave": true,
     "python.linting.flake8Enabled": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true,
       "source.addMissingImports": true
     },
-    "python.linting.mypyEnabled": true,
-    "python.testing.pytestEnabled": false,
-    "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-    "python.formatting.provider": "black",
     "python.formatting.blackArgs": [
       "--line-length=79",
       "--experimental-string-processing"
     ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
   },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
@@ -43,6 +39,7 @@
     "waderyan.gitblame",
     "donjayamanne.git-extension-pack",
     "howardzuo.vscode-git-tags",
-    "donjayamanne.python-environment-manager"
+    "donjayamanne.python-environment-manager",
+    "donjayamanne.python-extension-pack"
   ]
 }
