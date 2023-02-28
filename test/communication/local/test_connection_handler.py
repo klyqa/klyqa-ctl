@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import asyncio
-from test.communication.local import TEST_IP, UDPSynSocketRecvMock
+from datetime import time
+import json
+from test.communication.local import TEST_IP, UDPSynSocketRecvMock, tcp_con
+from test.conftest import TEST_PRODUCT_ID, TEST_UNIT_ID
 from typing import Any
 
 import mock
@@ -11,6 +14,7 @@ from klyqa_ctl.communication.local.connection_handler import (
     LocalConnectionHandler,
 )
 from klyqa_ctl.devices.commands import PingCommand
+from klyqa_ctl.devices.device import Device
 from klyqa_ctl.general.general import TRACE, get_asyncio_loop, set_debug_logger
 from klyqa_ctl.general.message import Message, MessageState
 
@@ -56,19 +60,62 @@ def test_read_udp_socket_task(lc_con_hdl: LocalConnectionHandler) -> None:
 
     set_debug_logger(level=TRACE)
 
-    with mock.patch("socket.socket"):
-        lc_con_hdl.udp.recvfrom = UDPSynSocketRecvMock()
-        lc_con_hdl.udp.sendto = mock.MagicMock()
+    lc_con_hdl.udp.recvfrom = UDPSynSocketRecvMock()
+    lc_con_hdl.udp.sendto = mock.MagicMock()
 
-        # disable the search and send loop task for receiving
-        # the open tcp port connection to device after the ack.
-        lc_con_hdl.search_and_send_loop_task_alive = mock.MagicMock()
+    # disable the search and send loop task for receiving
+    # the open tcp port connection to device after the ack.
+    lc_con_hdl.search_and_send_loop_task_alive = mock.MagicMock()
 
-        # mock send_msg as well now, for sending the ack
-        lc_con_hdl.send_msg = mock.AsyncMock()
+    # mock send_msg as well now, for sending the ack
+    lc_con_hdl.send_msg = mock.AsyncMock()
 
     lc_con_hdl.read_udp_socket_task()
     get_asyncio_loop().run_until_complete(asyncio.sleep(14))
 
     lc_con_hdl.udp.sendto.assert_called()
     lc_con_hdl.send_msg.assert_called()
+
+
+def test_status_update_callback_on_device_power_on(
+    lc_con_hdl: LocalConnectionHandler,
+    tcp_con: TcpConnection,
+) -> None:
+    """Test status update callback that is called when a device
+    get's powered on."""
+
+    set_debug_logger(level=TRACE)
+
+    get_asyncio_loop().run_until_complete(
+        lc_con_hdl.controller_data.get_or_create_device(
+            TEST_UNIT_ID, TEST_PRODUCT_ID
+        )
+    )
+    status_updated: bool = False
+
+    def status_update_cb() -> None:
+        nonlocal status_updated
+        print("status updated.")
+        status_updated = True
+
+    dev: Device | None = lc_con_hdl.controller_data.devices.get(TEST_UNIT_ID)
+
+    assert dev is not None
+    if dev:
+        dev.add_status_update_cb(status_update_cb)
+
+    lc_con_hdl.udp.recvfrom = UDPSynSocketRecvMock()
+    lc_con_hdl.udp.sendto = mock.MagicMock()
+
+    lc_con_hdl.read_udp_socket_task()
+
+    tcp_con.device = dev
+
+    json_response: str = '{"type": "status", "brightness": {"percentage":88}}'
+    tcp_con.device.save_device_message(json.loads(json_response))
+    assert status_updated
+
+    status_updated = False
+    json_response = '{"type": "status", "temperature": 4488}'
+    tcp_con.device.save_device_message(json.loads(json_response))
+    assert status_updated

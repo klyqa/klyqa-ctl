@@ -282,11 +282,11 @@ class Device:
                         self.status = self.response_classes["status"](**msg)
                     else:
                         self.status.update(**msg)
-                        for update_cb in self.status_update_cb:
-                            try:
-                                update_cb()
-                            except ValueError:
-                                task_log_trace_ex()
+                    for update_cb in self.status_update_cb:
+                        try:
+                            update_cb()
+                        except ValueError:
+                            task_log_trace_ex()
                 else:
                     raise ValueError
             except Exception:

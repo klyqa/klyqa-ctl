@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 import socket
-from test.communication.local import DATA_IDENTITY, TEST_IP
+from test.communication.local import (
+    DATA_IDENTITY,
+    TEST_IP,
+    SocketRecvTCPMock,
+    tcp_con,
+)
 from test.conftest import TEST_UNIT_ID
 import time
 from typing import Any
@@ -36,19 +41,6 @@ try:
     from Cryptodome.Cipher import AES  # provided by pycryptodome
 except ImportError:
     from Crypto.Cipher import AES  # provided by pycryptodome
-
-
-@pytest.fixture
-def tcp_con(lc_con_hdl: LocalConnectionHandler) -> TcpConnection:
-    """Create example tcp connection."""
-
-    con: TcpConnection = TcpConnection()
-    con.address.ip = TEST_IP
-
-    with mock.patch("socket.socket"):
-        con.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    return con
 
 
 @pytest.fixture
@@ -256,46 +248,6 @@ def test_process_tcp_package(
     tcp_con.socket.send.assert_called_once()
 
 
-class SocketRecvMock(mock.MagicMock):  # type: ignore[misc]
-    """Mock the receive method of the TCP socket"""
-
-    remote_iv: bytes = get_random_bytes(8)
-    tcp_con: TcpConnection | None = None
-
-    def __call__(self, *args: Any, **kwargs: Any) -> bytes:
-        """Call the mocked function"""
-
-        ret_val: bytes = b""
-
-        if self.call_count == 0:
-            ret_val = DATA_IDENTITY
-
-        elif self.call_count == 1:
-            ret_val = DataPackage.create(
-                self.remote_iv, PackageType.IV
-            ).serialize()
-
-        elif self.call_count == 2 and self.tcp_con:
-            msg: str = '{"type":"pong","ts":"' + str(int(time.time())) + '"}'
-            plain: bytes = msg.encode("utf-8")
-
-            _mock_sender_aes = AES.new(
-                self.tcp_con.aes_key,
-                AES.MODE_CBC,
-                iv=self.tcp_con.remote_iv + self.tcp_con.local_iv,
-            )
-
-            ser_enc_data: bytes = DataPackage.create(
-                plain, PackageType.ENC
-            ).serialize(_mock_sender_aes)
-            ret_val = ser_enc_data
-
-        super().__call__(self, *args, **kwargs)
-        self._mock_call(*args, **kwargs)
-
-        return ret_val
-
-
 def test_handle_connection(
     lc_con_hdl: LocalConnectionHandler,
     tcp_con: TcpConnection,
@@ -313,8 +265,11 @@ def test_handle_connection(
     )
 
     if tcp_con.socket:
-        tcp_con.socket.recv = SocketRecvMock()
+        tcp_con.socket.recv = SocketRecvTCPMock()
         tcp_con.socket.recv.tcp_con = tcp_con
+        tcp_con.socket.recv.msg = (
+            '{"type":"pong","ts":"' + str(int(time.time())) + '"}'
+        )
         ret = get_asyncio_loop().run_until_complete(
             lc_con_hdl.handle_connection(tcp_con)
         )
