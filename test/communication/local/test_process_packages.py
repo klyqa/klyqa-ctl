@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import socket
-from sre_constants import ANY
-from test.communication.local import TEST_IP
+from test.communication.local import DATA_IDENTITY, TEST_IP
 from test.conftest import TEST_UNIT_ID
 import time
 from typing import Any
@@ -56,13 +55,6 @@ def tcp_con(lc_con_hdl: LocalConnectionHandler) -> TcpConnection:
 def data_pkg_iv(tcp_con: TcpConnection) -> bytes:
     """Get example identity data package from device."""
     return get_random_bytes(8)
-
-
-DATA_IDENTITY: bytes = (
-    b'\x00\xda\x00\x00{"type":"ident","ident":{"fw_version":"virtual","fw_build":"1","hw_version":"1","manufacturer_id":"59a58a9f-59ca-4c46-96fc-791a79839bc7","product_id":"@qcx.lighting.rgb-cw-ww.virtual","unit_id":"'
-    + TEST_UNIT_ID.encode("utf-8")
-    + b'"}}'
-)
 
 
 @pytest.fixture
@@ -192,6 +184,9 @@ def test_handle_send_msg_target_unit_id(
     get_asyncio_loop().run_until_complete(
         lc_con_hdl.add_message(msg_with_target_uid)
     )
+    assert (
+        TEST_UNIT_ID in lc_con_hdl.message_queue
+    ), f"Message queue for {TEST_UNIT_ID} should be not empty!"
     tcp_con.device.u_id = TEST_UNIT_ID
 
     ret = get_asyncio_loop().run_until_complete(
