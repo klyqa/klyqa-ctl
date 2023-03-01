@@ -25,6 +25,7 @@ def local_controller() -> Generator[LocalController, None, None]:
 
 TEST_UNIT_ID = "29daa5a4439969f57934"
 TEST_AES_KEY = "53b962431abc7af6ef84b43802994424"
+TEST_PRODUCT_ID = "@klyqa.lighting.rgb-cw-ww.e27"
 
 
 @pytest.fixture

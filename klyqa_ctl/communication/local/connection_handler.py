@@ -90,6 +90,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self.udp_broadcast_task: asyncio.Task | None = None
         self.send_syn_udp_broadcast_event: asyncio.Event = asyncio.Event()
         self._attr_server_ip: str = server_ip
+        # remember received syns for 30 seconds so we ack only once per IP.
+        self.received_syn_dt: dict[str, datetime.datetime] = {}
+
         # here message queue key needs to be string not UnitId to be hashable
         # for dictionaries and sets
         self._attr_message_queue: dict[str, list[Message]] = {}
@@ -107,6 +110,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self._attr_read_udp_socket_task_hdl: Task | None = None
         self._attr_broadcast_discovery: bool = True
         self.msg_ttl_task: Task | None = None
+
         # self.check_messages_time_to_live_timeout: Task | None = None
         self.check_messages_ttl_event: asyncio.Event = asyncio.Event()
 
@@ -597,9 +601,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         ):
             return
 
-        def remove_empty_sub_queue() -> None:
-            if sub_q in self.message_queue and not self.message_queue[sub_q]:
-                del self.message_queue[sub_q]
+        # def remove_empty_sub_queue() -> None:
+        #     if sub_q in self.message_queue and not self.message_queue[sub_q]:
+        #         del self.message_queue[sub_q]
 
         task_log_debug("remove message from queue")
         task_log_trace("%s", msg)
@@ -616,7 +620,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if msg in q:
                     q.remove(msg)
 
-        remove_empty_sub_queue()
+        # remove_empty_sub_queue()
 
     async def remove_msg_from_queue_cb(
         self, msg: Message, sub_q: str = ""
@@ -1031,20 +1035,29 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
             if data == QCX_SYN or data == QCX_DSYN:
                 try:
-                    ack_data: bytes = QCX_ACK
-                    task_log_debug(
-                        "Send %r to %s.", ack_data, address.__dict__
-                    )
                     # add request message to queue before we send ack and get
                     # the tcp tunnel answer
-                    await self.send_msg(
-                        Message(
-                            target_ip=address.ip,
-                            msg_queue=[RequestCommand()],
-                        ),
-                        syn_broadcast_timeout=-1,
-                    )
-                    self.udp.sendto(ack_data, addr_tup)
+                    if (
+                        address.ip not in self.received_syn_dt
+                        or datetime.datetime.now()
+                        - self.received_syn_dt[address.ip]
+                        > datetime.timedelta(seconds=30)
+                    ):
+                        ack_data: bytes = QCX_ACK
+                        task_log_debug(
+                            "Send %r to %s.", ack_data, address.__dict__
+                        )
+                        await self.send_msg(
+                            Message(
+                                target_ip=address.ip,
+                                msg_queue=[RequestCommand()],
+                            ),
+                            syn_broadcast_timeout=-1,
+                        )
+                        self.udp.sendto(ack_data, addr_tup)
+                        self.received_syn_dt[
+                            address.ip
+                        ] = datetime.datetime.now()
                 except socket.error:
                     await self.reconnect_socket_udp()
 
@@ -1165,7 +1178,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         try:
             while True:
-                to_del_uids: list[str] = []
+                # to_del_uids: list[str] = []
                 to_del_msgs: list[Message] = []
 
                 for uid, msgs in self.message_queue.items():
@@ -1181,18 +1194,17 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                                 "Error while deleting message from queue."
                             )
                             task_log_trace_ex()
-                    if uid in self.message_queue and not msgs:
-                        to_del_uids.append(uid)
-                for uid in to_del_uids:
-                    try:
-                        del self.message_queue[uid]
-                    except ValueError:
-                        task_log_debug(
-                            "Error while deleting uid messages from queue."
-                        )
-                        task_log_trace_ex()
+                    # if uid in self.message_queue and not msgs:
+                    #     to_del_uids.append(uid)
+                # for uid in to_del_uids:
+                #     try:
+                #         del self.message_queue[uid]
+                #     except ValueError:
+                #         task_log_debug(
+                #             "Error while deleting uid messages from queue."
+                #         )
+                #         task_log_trace_ex()
                 try:
-
                     self.check_messages_ttl_event.clear()
                     await asyncio.wait_for(
                         self.check_messages_ttl_event.wait(), timeout=5
@@ -1214,6 +1226,16 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
         else:
             self.check_messages_ttl_event.set()
+
+    def delete_empty_sub_message_queues(self) -> None:
+        """Iterate through all sub message queues and delete empty ones."""
+
+        to_del: list = []
+        for i, m in self.message_queue.items():
+            if not m:
+                to_del.append(i)
+        for a in to_del:
+            del self.message_queue[a]
 
     async def connection_tasks_time_to_live(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
@@ -1288,7 +1310,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         # else:
         #     task_log_debug(f"Address {addr[0]} already in connection.")
 
-    async def read_udp_socket_task(self) -> None:
+    def read_udp_socket_task(self) -> None:
         """Start read UDP socket for incoming syncs, when not running."""
 
         if (
@@ -1327,7 +1349,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 if stop:
                     break
 
-                await self.read_udp_socket_task()
+                self.read_udp_socket_task()
                 if self.message_queue:
                     read_incoming_connections: bool = True
 
@@ -1395,6 +1417,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 await self.connection_tasks_time_to_live(proc_timeout_secs)
                 if self.udp_broadcast_task:
                     self.udp_broadcast_task.cancel()
+
+                self.delete_empty_sub_message_queues()
 
                 if not self.message_queue:
                     await self.standby()
@@ -1569,7 +1593,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             target_ip = self.devices[msg.target_uid].local_addr.ip
 
         if target_ip:
-            await self.send_syn_udp(target_ip, msg.target_uid or "FFFFFFFFFFFF")
+            await self.send_syn_udp(
+                target_ip, msg.target_uid or "FFFFFFFFFFFF"
+            )
 
             async def direct_syn_timeout() -> None:
                 """When not reply after timeout from device directly, start
@@ -1586,6 +1612,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 loop.create_task(direct_syn_timeout())
 
         elif msg.target_uid and self.broadcast_discovery:
+            # direct connection via IP
             await self.send_syn_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
