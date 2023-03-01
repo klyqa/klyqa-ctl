@@ -19,7 +19,6 @@ from klyqa_ctl.general.general import (
     LOGGER,
     MAX_SOCKET_SEND_TIMEOUT_SECS,
     Address,
-    ReferencePass,
     get_asyncio_loop,
     task_log,
     task_log_debug,

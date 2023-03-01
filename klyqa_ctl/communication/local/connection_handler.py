@@ -38,8 +38,6 @@ from klyqa_ctl.general.general import (
     SEPARATION_WIDTH,
     Address,
     Command,
-    NoneType,
-    ReferencePass,
     TypeJson,
     get_asyncio_loop,
     task_log,
@@ -923,9 +921,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         return_state: DeviceTcpReturn = DeviceTcpReturn.NOTHING_DONE
 
-        # r_device: ReferencePass = ReferencePass(device)
-        # msg_to_sent_ref: ReferencePass = ReferencePass(None)
-
         task_log_debug(f"New tcp connection to device at {connection.address}")
         try:
             return_state = await self.handle_connection(con=connection)
@@ -1557,14 +1552,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             except ValueError:
                 self.check_messages_ttl_task_alive()
 
-            # if unit_id in self.message_queue:
-            #     task_log_debug("Message ttl ended.")
-            #     task_log_trace("Message: %s", msg)
-            #     try:
-            #         await self.remove_msg_from_queue_cb(msg=msg, u_id=unit_id)
-            #     except ValueError:
-            #         self.check_messages_ttl_task_alive()
-
         loop.create_task(msg_ttl_task())
 
         return True
@@ -1580,9 +1567,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         if not await self.add_message(msg, syn_broadcast_timeout):
             return False
 
-        # only broadcast udp syns when no ip and take the device
+        # Only broadcast udp syns when no ip and take the device
         # IP what was last used in connection. timeout for sending
-        # syn broadcasts when no answer to find the device
+        # syn broadcasts when no answer to find the device.
         target_ip: str = msg.target_ip
         if (
             not target_ip
@@ -1711,16 +1698,6 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         except asyncio.TimeoutError:
             task_log_debug("Discover devices locally timed out.")
         return
-
-        # send a message to uid "all" which is fake but will get the
-        # identification message from the devices in the aes_search
-        # and send msg function and we can send then a real
-        # request message to these discovered devices.
-        # await self.send_command_to_device(
-        #     UnitId("all"),
-        #     [PingCommand()],
-        #     time_to_live_secs=timeout_secs,
-        # )
 
     @classmethod
     def create_default(
