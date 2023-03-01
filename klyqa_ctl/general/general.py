@@ -319,25 +319,6 @@ def task_name() -> str:
     return name
 
 
-class ReferencePass:  # pylint: disable=too-few-public-methods
-    """Reference passing to functions."""
-
-    _attr_ref: Any = None
-
-    def __init__(self, ref: Any) -> None:
-        self._attr_ref = ref
-
-    @property
-    def ref(self) -> Any:
-        """Reference getter."""
-
-        return self._attr_ref
-
-    @ref.setter
-    def ref(self, ref: Any) -> None:
-        self._attr_ref = ref
-
-
 DeviceConfig = dict
 
 ReturnTuple = TypeVar("ReturnTuple", tuple[int, str], tuple[int, dict])
