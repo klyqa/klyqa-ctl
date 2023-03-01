@@ -1227,6 +1227,16 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         else:
             self.check_messages_ttl_event.set()
 
+    def delete_empty_sub_message_queues(self) -> None:
+        """Iterate through all sub message queues and delete empty ones."""
+
+        to_del: list = []
+        for i, m in self.message_queue.items():
+            if not m:
+                to_del.append(i)
+        for a in to_del:
+            del self.message_queue[a]
+
     async def connection_tasks_time_to_live(
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> None:
@@ -1407,6 +1417,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 await self.connection_tasks_time_to_live(proc_timeout_secs)
                 if self.udp_broadcast_task:
                     self.udp_broadcast_task.cancel()
+
+                self.delete_empty_sub_message_queues()
 
                 if not self.message_queue:
                     await self.standby()
@@ -1600,6 +1612,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 loop.create_task(direct_syn_timeout())
 
         elif msg.target_uid and self.broadcast_discovery:
+            # direct connection via IP
             await self.send_syn_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
