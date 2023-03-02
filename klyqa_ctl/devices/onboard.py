@@ -6,12 +6,7 @@ import os
 import socket
 import ssl
 
-from klyqa_ctl.general.general import (
-    TypeJson,
-    task_log,
-    task_log_debug,
-    task_log_error,
-)
+from klyqa_ctl.general.general import TypeJson, task_log, task_log_debug, task_log_error
 
 
 def build_configuration_and_backend_url(
@@ -19,8 +14,7 @@ def build_configuration_and_backend_url(
     pw: str,
     aes: str = "00112233445566778899AABBCCDDEEFF",
     acc_token: str = "",
-    backend_url: str = "mqtt.service.stage.aws.homecastle.house",
-    # i think that url is not up to date.
+    backend_url: str = "mqtt.prod.qconnex.io",
 ) -> str:
 
     if "QC_BACKEND_URL" in os.environ:
