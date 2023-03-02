@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 import asyncio
+from dataclasses import dataclass
 import datetime
+from enum import Enum
 import getpass
 import json
-from dataclasses import dataclass
-from enum import Enum
 from typing import Any
 
 import httpx
@@ -277,7 +277,7 @@ class Account:
         user_name_cache, cached = await async_json_cache(
             None, "last_username.json"
         )
-        if cached and user_name_cache:
+        if not self.username and cached and user_name_cache:
             self.username = user_name_cache["username"]
             LOGGER.info("Using Klyqa account %s.", self.username)
 
