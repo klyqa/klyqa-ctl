@@ -100,7 +100,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             tuple[Task, datetime.datetime, datetime.datetime]
         ] = []
         self.__attr_tasks_undone: list[tuple[Task, datetime.datetime]] = []
-        self._attr_handlec_connections_task: Task | None = None
+        self._attr_handle_connections_task: Task | None = None
+        self.handle_connections_ttl_task: Task | None = None
         self._attr_handle_connections_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
         self._attr_current_addr_connections = set()
@@ -227,13 +228,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def handle_connections_task(self) -> Task | None:
         """Get connection handle task."""
 
-        return self._attr_handlec_connections_task
+        return self._attr_handle_connections_task
 
     @handle_connections_task.setter
     def handle_connections_task(
         self, handle_connections_tasks: Task | None
     ) -> None:
-        self._attr_handlec_connections_task = handle_connections_tasks
+        self._attr_handle_connections_task = handle_connections_tasks
 
     @property
     def handle_connections_task_end_now(self) -> bool:
@@ -1093,12 +1094,31 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return True
 
     async def send_syn_udp_broadcast_loop(self) -> None:
-        """Send syn UDP broadcasts in a loop or when an event set."""
+        """Send syn UDP broadcasts in a loop or when the broadcast event is
+        set."""
 
         while True:
-            task_log_trace("Broadcasting QCX-SYN Burst")
-            if not await self.send_syn_udp():
-                task_log_trace("Broadcasting QCX-SYN Burst Exception")
+
+            msgs_broadcast_syn: bool = False
+
+            # Look for messages that want syn broadcasts
+            # (here we can add the unit ids to the syn string, until our
+            # firmware with this feature is mainly rolled out, keep it
+            # like that.)
+
+            for _, msgs in self.message_queue.copy().items():
+                for msg in msgs:
+                    if msg.broadcast_syn:
+                        msgs_broadcast_syn = True
+                        break
+                if msgs_broadcast_syn:
+                    break
+
+            if msgs_broadcast_syn:
+                task_log_trace("Broadcasting QCX-SYN Burst")
+
+                if not await self.send_syn_udp():
+                    task_log_trace("Broadcasting QCX-SYN Burst Exception")
 
             self.send_syn_udp_broadcast_event.clear()
             try:
@@ -1143,23 +1163,58 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
     async def read_incoming_tcp_con_task(
         self,
-    ) -> tuple[list[Any], list[Any], list[Any]] | None:
+    ) -> None:
         """Read incoming connections on tcp socket."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
-        timeout_read: float = 0.3
-        task_log_debug("Read again tcp port..")
+        timeout_read: float = 10
 
         try:
-            return await loop.run_in_executor(
-                None,
-                select.select,
-                [self.tcp],
-                [],
-                [],
-                timeout_read,
-            )
+            while True:
+                task_log_debug("Read again tcp port..")
+                result: tuple[list[Any], list[Any], list[Any]] | None = (
+                    await loop.run_in_executor(
+                        None,
+                        select.select,
+                        [self.tcp],
+                        [],
+                        [],
+                        timeout_read,
+                    )
+                )
+                if (
+                    not result
+                    or not isinstance(result, tuple)
+                    or not len(result) == 3
+                ):
+                    continue
+
+                readable: list[Any]
+                readable, _, _ = result if result else ([], [], [])
+                if self.tcp in readable:
+                    loop.create_task(
+                        self.handle_incoming_tcp_connection(
+                            proc_timeout_secs=DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
+                        )
+                    )
+
+                    # async def con_task_timeout(task: Task) -> None:
+                    #     await asyncio.sleep(DEFAULT_MAX_COM_PROC_TIMEOUT_SECS)
+                    #     try:
+                    #         task.cancel()
+                    #     except asyncio.TimeoutError:
+                    #         pass
+                    # loop.create_task(con_task_timeout(task))
+
+        except socket.error:
+            LOGGER.error("Socket error!")
+            task_log_trace_ex()
+            if not await self.bind_ports():
+                LOGGER.error(
+                    "Error binding ports udp 2222 and tcp"
+                    " 3333."
+                )
         except CancelledError:
             task_log_debug("cancelled tcp reading.")
         except Exception:
@@ -1202,7 +1257,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                 try:
                     self.check_messages_ttl_event.clear()
                     await asyncio.wait_for(
-                        self.check_messages_ttl_event.wait(), timeout=5
+                        self.check_messages_ttl_event.wait(), timeout=1
                     )
                 except asyncio.TimeoutError:
                     pass
@@ -1236,31 +1291,36 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self, proc_timeout_secs: int = DEFAULT_MAX_COM_PROC_TIMEOUT_SECS
     ) -> None:
         """End connection tasks with run out time to live."""
+
         try:
-            tasks_undone_new: list[Any] = []
-            for task, started in self.__tasks_undone:
-                if task.done():
-                    self.__tasks_done.append(
-                        (task, started, datetime.datetime.now())
-                    )
-                    exception: Any = task.exception()
-                    if exception:
-                        task_log_debug(
-                            "Exception error device connection handler task in"
-                            f" {task.get_coro()}: {exception}"
+            while True:
+                tasks_undone_new: list[Any] = []
+                for task, started in self.__tasks_undone:
+                    if task.done():
+                        self.__tasks_done.append(
+                            (task, started, datetime.datetime.now())
                         )
-                else:
-                    if datetime.datetime.now() - started > datetime.timedelta(
-                        seconds=proc_timeout_secs
-                    ):
-                        task.cancel(
-                            msg=(
-                                "timeout of process of"
-                                f" {proc_timeout_secs} seconds."
+                        exception: Any = task.exception()
+                        if exception:
+                            task_log_debug(
+                                "Exception error device connection handler task in"
+                                f" {task.get_coro()}: {exception}"
                             )
-                        )
-                    tasks_undone_new.append((task, started))
-            self.__tasks_undone = tasks_undone_new
+                    else:
+                        if (
+                            datetime.datetime.now() - started > datetime.timedelta(
+                                seconds=proc_timeout_secs
+                            )
+                        ):
+                            task.cancel(
+                                msg=(
+                                    "timeout of process of"
+                                    f" {proc_timeout_secs} seconds."
+                                )
+                            )
+                        tasks_undone_new.append((task, started))
+                self.__tasks_undone = tasks_undone_new
+                await asyncio.sleep(5)
 
         except CancelledError:
             task_log_debug("__tasks_undone check cancelled.")
@@ -1270,10 +1330,12 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> None:
         """Accept incoming tcp connection and start connection handle
         process."""
+
         if not self.tcp:
             return
+
         loop: AbstractEventLoop = get_asyncio_loop()
-        # device: Device = Device()
+
         addr: tuple
         connection: TcpConnection = TcpConnection()
 
@@ -1288,19 +1350,19 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         connection.address = Address(*addr)
 
         # FOR DEBUG out
-        # new_task: Task[DeviceTcpReturn] = loop.create_task(
-        #     self.device_handle_local_tcp(device, connection)
-        # )
+        new_task: Task[DeviceTcpReturn] = loop.create_task(
+            self.device_handle_local_tcp(connection)
+        )
 
-        # loop.create_task(asyncio.wait_for(new_task, timeout=proc_timeout_secs))
+        loop.create_task(asyncio.wait_for(new_task, timeout=proc_timeout_secs))
 
         # FOR DEBUG in
-        await self.device_handle_local_tcp(connection)
+        # await self.device_handle_local_tcp(connection)
 
         task_log_debug(
             f"Address {connection.address.ip} process task created."
         )
-        # self.__tasks_undone.append((new_task, datetime.datetime.now()))
+        self.__tasks_undone.append((new_task, datetime.datetime.now()))
 
         # else:
         #     task_log_debug(f"Address {addr[0]} already in connection.")
@@ -1345,69 +1407,69 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     break
 
                 self.read_udp_socket_task()
-                if self.message_queue:
-                    read_incoming_connections: bool = True
+                # if self.message_queue:
+                #     read_incoming_connections: bool = True
 
-                    if self.broadcast_discovery:
-                        await self.send_syn_udp_broadcast()
+                #     if self.broadcast_discovery:
+                #         await self.send_syn_udp_broadcast()
 
-                    if not read_incoming_connections:
-                        await self.standby()
+                #     if not read_incoming_connections:
+                #         await self.standby()
 
-                    while read_incoming_connections:
-                        self.__read_tcp_task = asyncio.create_task(
-                            self.read_incoming_tcp_con_task()
-                        )
+                #     while read_incoming_connections:
+                #         self.__read_tcp_task = asyncio.create_task(
+                #             self.read_incoming_tcp_con_task()
+                #         )
 
-                        task_log_debug("Reading incoming connections..")
-                        try:
-                            await asyncio.wait_for(
-                                self.__read_tcp_task, timeout=1.0
-                            )
-                        except asyncio.TimeoutError:
-                            task_log_debug(
-                                "Socket-Timeout for incoming tcp connections."
-                            )
+                #         task_log_debug("Reading incoming connections..")
+                #         try:
+                #             await asyncio.wait_for(
+                #                 self.__read_tcp_task, timeout=1.0
+                #             )
+                #         except asyncio.TimeoutError:
+                #             task_log_debug(
+                #                 "Socket-Timeout for incoming tcp connections."
+                #             )
 
-                        except socket.error:
-                            LOGGER.error("Socket error!")
-                            task_log_trace_ex()
-                            if not await self.bind_ports():
-                                LOGGER.error(
-                                    "Error binding ports udp 2222 and tcp"
-                                    " 3333."
-                                )
+                #         except socket.error:
+                #             LOGGER.error("Socket error!")
+                #             task_log_trace_ex()
+                #             if not await self.bind_ports():
+                #                 LOGGER.error(
+                #                     "Error binding ports udp 2222 and tcp"
+                #                     " 3333."
+                #                 )
 
-                        result: tuple[
-                            list[Any], list[Any], list[Any]
-                        ] | None = (
-                            self.__read_tcp_task.result()
-                            if self.__read_tcp_task
-                            else None
-                        )
-                        if (
-                            not result
-                            or not isinstance(result, tuple)
-                            or not len(result) == 3
-                        ):
-                            task_log_debug(
-                                "No incoming tcp connections read result."
-                                " break"
-                            )
-                            break
-                        readable: list[Any]
-                        readable, _, _ = result if result else ([], [], [])
+                #         result: tuple[
+                #             list[Any], list[Any], list[Any]
+                #         ] | None = (
+                #             self.__read_tcp_task.result()
+                #             if self.__read_tcp_task
+                #             else None
+                #         )
+                #         if (
+                #             not result
+                #             or not isinstance(result, tuple)
+                #             or not len(result) == 3
+                #         ):
+                #             task_log_debug(
+                #                 "No incoming tcp connections read result."
+                #                 " break"
+                #             )
+                #             break
+                #         readable: list[Any]
+                #         readable, _, _ = result if result else ([], [], [])
 
-                        task_log_debug("Reading tcp port done..")
+                #         task_log_debug("Reading tcp port done..")
 
-                        if self.tcp not in readable:
-                            break
-                        else:
-                            await self.handle_incoming_tcp_connection(
-                                proc_timeout_secs
-                            )
+                #         if self.tcp not in readable:
+                #             break
+                #         else:
+                #             await self.handle_incoming_tcp_connection(
+                #                 proc_timeout_secs
+                #             )
 
-                    self.check_messages_ttl_task_alive()
+                #     self.check_messages_ttl_task_alive()
 
                 await self.connection_tasks_time_to_live(proc_timeout_secs)
                 if self.udp_broadcast_task:
@@ -1472,11 +1534,22 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         ):
             task_log_debug("search and send loop task created.")
             self.handle_connections_task = loop.create_task(
-                self.handle_connections()
+                self.read_incoming_tcp_con_task()
             )
+
+        if (
+            not self.handle_connections_ttl_task
+            or self.handle_connections_ttl_task.done()
+        ):
+            task_log_debug("search and send loop task created.")
+            self.handle_connections_ttl_task = loop.create_task(
+                self.connection_tasks_time_to_live()
+            )
+
         try:
             if self.__send_loop_sleep is not None:
                 self.__send_loop_sleep.cancel()
+
         except Exception:
             task_log_trace_ex()
 
@@ -1533,7 +1606,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def add_message(
         self, msg: Message, syn_broadcast_timeout: float = 3
     ) -> bool:
-        """Add message to message's queue with answer callback."""
+        """Add message to message's queue and start time to live timeout task."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
@@ -1560,7 +1633,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self, msg: Message, syn_broadcast_timeout: float = 3
     ) -> bool:
         """Add message to message queue and start connection
-        discover."""
+        discover. Look for device IP from it's last connection and send
+        syn there for connection or broadcast syn message."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
@@ -1575,6 +1649,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             not target_ip
             and msg.target_uid
             and msg.target_uid in self.devices
+            and self.devices[msg.target_uid].local.connected
             and self.devices[msg.target_uid].local_addr.ip
         ):
             target_ip = self.devices[msg.target_uid].local_addr.ip
@@ -1585,21 +1660,25 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
 
             async def direct_syn_timeout() -> None:
-                """When not reply after timeout from device directly, start
-                broadcasting syns to the local network to find the device."""
+                """When no reply from device IP (after timeout), start
+                broadcasting syns (to find the device)."""
 
                 await asyncio.sleep(syn_broadcast_timeout)
                 if (
                     msg.state == MessageState.UNSENT
                     and self.broadcast_discovery
                 ):
-                    await self.send_syn_udp_broadcast()
+                    # await self.send_syn_udp_broadcast()
+                    msg.broadcast_syn = True
 
             if syn_broadcast_timeout >= 0:
                 loop.create_task(direct_syn_timeout())
+            else:
+                msg.broadcast_syn = True
+                await self.send_syn_udp_broadcast()
 
         elif msg.target_uid and self.broadcast_discovery:
-            # direct connection via IP
+            msg.broadcast_syn = True
             await self.send_syn_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
@@ -1613,7 +1692,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
         **kwargs: Any,
     ) -> Message | None:
-        """Add message to message's queue."""
+        """Create message with the commands, send it and wait for reply or
+        timeout."""
 
         response_event: asyncio.Event = asyncio.Event()
 
@@ -1642,12 +1722,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self,
         unit_id: str,
         command: str,
-        key: str = "",
+        aes_key: str = "",
         time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
     ) -> str:
-        """Sends command string to device with unit id and aes key."""
+        """Send command json string to device with unit id. Add aes key to
+        controller data."""
 
-        self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(key)
+        self.controller_data.aes_keys[str(unit_id)] = bytes.fromhex(aes_key)
 
         msg_answer: str = ""
         command_obj: Command = Command(_json=json.loads(command))

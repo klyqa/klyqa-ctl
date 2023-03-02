@@ -52,6 +52,7 @@ class Message:
     msg_counter: int = -1
     send_try: int = 0
     aes_key: bytes | None = None
+    broadcast_syn: bool = False
 
     def __post_init__(self) -> None:
         global MSG_COUNTER
