@@ -19,7 +19,7 @@ def build_configuration_and_backend_url(
     pw: str,
     aes: str = "00112233445566778899AABBCCDDEEFF",
     acc_token: str = "",
-    backend_url: str = "mqtt.service.stage.aws.homecastle.house",
+    backend_url: str = "mqtt.prod.qconnex.io",
     # i think that url is not up to date.
 ) -> str:
 
