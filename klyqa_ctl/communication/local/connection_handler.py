@@ -1270,8 +1270,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> None:
         """Accept incoming tcp connection and start connection handle
         process."""
+
         if not self.tcp:
             return
+
         loop: AbstractEventLoop = get_asyncio_loop()
         # device: Device = Device()
         addr: tuple
