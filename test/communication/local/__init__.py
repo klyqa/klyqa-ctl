@@ -38,8 +38,9 @@ DATA_IDENTITY: bytes = (
 )
 
 
-class UDPSynSocketRecvMock(mock.MagicMock):  # type: ignore[misc]
-    """Mock the receive method of the UDP socket"""
+class UDPSocketRecvSynDeviceBootupMock(mock.MagicMock):  # type: ignore[misc]
+    """Mock the UDP socket receive method for the device initial 10 syns
+    with 1 second delay when devie is booting up."""
 
     def __call__(self, *args: Any, **kwargs: Any) -> tuple:
         """Call mocked SYN send from device with 1 sec delay."""
@@ -60,8 +61,8 @@ class UDPSynSocketRecvMock(mock.MagicMock):  # type: ignore[misc]
 
 
 @pytest.fixture
-def tcp_con(lc_con_hdl: LocalConnectionHandler) -> TcpConnection:
-    """Create example tcp connection."""
+def tcp_connection_mock(lc_con_hdl: LocalConnectionHandler) -> TcpConnection:
+    """Create a TCP connection to the device mock."""
 
     con: TcpConnection = TcpConnection()
     con.address.ip = TEST_IP
@@ -72,8 +73,10 @@ def tcp_con(lc_con_hdl: LocalConnectionHandler) -> TcpConnection:
     return con
 
 
-class SocketRecvTCPMock(mock.MagicMock):  # type: ignore[misc]
-    """Mock the receive method of the TCP socket"""
+class TCPDeviceConnectionMock(mock.MagicMock):  # type: ignore[misc]
+    """Mock the receive method of the TCP socket for a connection to the
+    device. Mock the AES handshake and the receiving of the encrypted
+    message reply."""
 
     remote_iv: bytes = get_random_bytes(8)
     tcp_con: TcpConnection | None = None
