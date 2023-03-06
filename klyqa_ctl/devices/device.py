@@ -15,6 +15,7 @@ from klyqa_ctl.general.general import (
     Address,
     AsyncIoLock,
     Command,
+    TypeJson,
     task_log_debug,
     task_log_trace_ex,
 )
@@ -29,6 +30,8 @@ class Device:
     # Amount of attributes as needed in this case.
 
     def __init__(self) -> None:
+        """Initialize a general device without much details."""
+
         self._attr_local_addr: Address = Address()
         # device specific cloud connection results
         self._attr_local: DeviceConnection = DeviceConnection()
@@ -264,8 +267,8 @@ class Device:
             return
         self._use_lock.release_within_task()
 
-    def save_device_message(self, msg: Any) -> None:
-        """msg: json dict"""
+    def save_device_message(self, msg: TypeJson) -> None:
+        """Save a device response message into the device object."""
 
         status_update_types: set = {"status", "statechange"}
         if msg["type"] in status_update_types:

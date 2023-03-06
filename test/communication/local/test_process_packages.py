@@ -4,8 +4,8 @@ import socket
 from test.communication.local import (
     DATA_IDENTITY,
     TEST_IP,
-    SocketRecvTCPMock,
-    tcp_con,
+    TCPDeviceConnectionMock,
+    tcp_connection_mock,
 )
 from test.conftest import TEST_UNIT_ID
 import time
@@ -44,7 +44,7 @@ except ImportError:
 
 
 @pytest.fixture
-def data_pkg_iv(tcp_con: TcpConnection) -> bytes:
+def data_pkg_iv(tcp_connection_mock: TcpConnection) -> bytes:
     """Get example identity data package from device."""
     return get_random_bytes(8)
 
@@ -73,7 +73,7 @@ def ping_msg_with_target_ip() -> Message:
 
 def test_process_identity_package(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
     pkg_identity: DataPackage,
     msg_with_target_uid: Message,
 ) -> None:
@@ -85,7 +85,9 @@ def test_process_identity_package(
     ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_device_identity_package(tcp_con, pkg_identity.data)
+        lc_con_hdl.process_device_identity_package(
+            tcp_connection_mock, pkg_identity.data
+        )
     )
 
     assert (
@@ -98,19 +100,21 @@ def test_process_identity_package(
     )
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_device_identity_package(tcp_con, pkg_identity.data)
+        lc_con_hdl.process_device_identity_package(
+            tcp_connection_mock, pkg_identity.data
+        )
     )
 
     assert ret == DeviceTcpReturn.NO_ERROR, f"Uncorrect return error {ret}"
-    assert tcp_con.device, "No device set"
-    assert tcp_con.device.u_id, "No device uid set"
-    assert tcp_con.msg, "No message for sending selected"
-    tcp_con.socket.send.assert_called_once()
+    assert tcp_connection_mock.device, "No device set"
+    assert tcp_connection_mock.device.u_id, "No device uid set"
+    assert tcp_connection_mock.msg, "No message for sending selected"
+    tcp_connection_mock.socket.send.assert_called_once()
 
 
 def test_process_iv_package_standalone(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
     data_pkg_iv: bytes,
     msg_with_target_uid: Message,
 ) -> None:
@@ -118,45 +122,57 @@ def test_process_iv_package_standalone(
 
     ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_aes_initial_vector_package(tcp_con, data_pkg_iv)
+        lc_con_hdl.process_aes_initial_vector_package(
+            tcp_connection_mock, data_pkg_iv
+        )
     )
     assert (
         ret == DeviceTcpReturn.MISSING_AES_KEY
     ), f"Uncorrect return error for missing aes key {ret}"
 
-    tcp_con.device.u_id = TEST_UNIT_ID
-    tcp_con.aes_key = lc_con_hdl.controller_data.aes_keys[TEST_UNIT_ID]
+    tcp_connection_mock.device.u_id = TEST_UNIT_ID
+    tcp_connection_mock.aes_key = lc_con_hdl.controller_data.aes_keys[
+        TEST_UNIT_ID
+    ]
 
     wrong_iv: bytes = b"2d2ad3"
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_aes_initial_vector_package(tcp_con, wrong_iv)
+        lc_con_hdl.process_aes_initial_vector_package(
+            tcp_connection_mock, wrong_iv
+        )
     )
     assert (
         ret == DeviceTcpReturn.WRONG_AES
     ), f"Uncorrect return error for iv for aes key {ret}"
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_aes_initial_vector_package(tcp_con, data_pkg_iv)
+        lc_con_hdl.process_aes_initial_vector_package(
+            tcp_connection_mock, data_pkg_iv
+        )
     )
     assert ret == DeviceTcpReturn.NO_ERROR, f"Uncorrect return error {ret}"
     assert (
-        tcp_con.state == AesConnectionState.CONNECTED
+        tcp_connection_mock.state == AesConnectionState.CONNECTED
     ), "Connection is not in connected state"
-    assert tcp_con.sending_aes != None, "Missing sending AES object!"
-    assert tcp_con.receiving_aes != None, "Missing receiving AES object!"
+    assert (
+        tcp_connection_mock.sending_aes != None
+    ), "Missing sending AES object!"
+    assert (
+        tcp_connection_mock.receiving_aes != None
+    ), "Missing receiving AES object!"
 
 
 def test_handle_send_msg_no_msg(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
 ) -> None:
     """Test handle send message with no message to send"""
 
     ret: DeviceTcpReturn = DeviceTcpReturn.NO_ERROR
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.handle_send_msg(tcp_con)
+        lc_con_hdl.handle_send_msg(tcp_connection_mock)
     )
     assert (
         ret == DeviceTcpReturn.NO_MESSAGE_TO_SEND
@@ -165,7 +181,7 @@ def test_handle_send_msg_no_msg(
 
 def test_handle_send_msg_target_unit_id(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
     msg_with_target_uid: Message,
 ) -> None:
     """Test handle send message with target unit ID"""
@@ -179,10 +195,10 @@ def test_handle_send_msg_target_unit_id(
     assert (
         TEST_UNIT_ID in lc_con_hdl.message_queue
     ), f"Message queue for {TEST_UNIT_ID} should be not empty!"
-    tcp_con.device.u_id = TEST_UNIT_ID
+    tcp_connection_mock.device.u_id = TEST_UNIT_ID
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.handle_send_msg(tcp_con)
+        lc_con_hdl.handle_send_msg(tcp_connection_mock)
     )
     assert (
         ret == DeviceTcpReturn.NO_ERROR
@@ -190,14 +206,15 @@ def test_handle_send_msg_target_unit_id(
 
     assert (
         TEST_UNIT_ID not in lc_con_hdl.message_queue
+        or not lc_con_hdl.message_queue[TEST_UNIT_ID]
     ), f"Message queue for {TEST_UNIT_ID} should be empty!"
 
-    tcp_con.socket.send.assert_called_once()
+    tcp_connection_mock.socket.send.assert_called_once()
 
 
 def test_handle_send_msg_target_ip(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
     ping_msg_with_target_ip: Message,
 ) -> None:
     """Test handle send message with target IP"""
@@ -209,7 +226,7 @@ def test_handle_send_msg_target_ip(
     )
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.handle_send_msg(tcp_con)
+        lc_con_hdl.handle_send_msg(tcp_connection_mock)
     )
     assert (
         ret == DeviceTcpReturn.NO_ERROR
@@ -217,14 +234,15 @@ def test_handle_send_msg_target_ip(
 
     assert (
         TEST_IP not in lc_con_hdl.message_queue
+        or not lc_con_hdl.message_queue[TEST_IP]
     ), f"Message queue for {TEST_IP} should be empty!"
 
-    tcp_con.socket.send.assert_called_once()
+    tcp_connection_mock.socket.send.assert_called_once()
 
 
 def test_process_tcp_package(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
     ping_msg_with_target_ip: Message,
     pkg_identity: DataPackage,
 ) -> None:
@@ -236,21 +254,21 @@ def test_process_tcp_package(
         lc_con_hdl.add_message(ping_msg_with_target_ip)
     )
 
-    tcp_con.pkg = pkg_identity
+    tcp_connection_mock.pkg = pkg_identity
 
     ret = get_asyncio_loop().run_until_complete(
-        lc_con_hdl.process_tcp_package(tcp_con)
+        lc_con_hdl.process_tcp_package(tcp_connection_mock)
     )
     assert (
         ret == DeviceTcpReturn.NO_ERROR
     ), f"Uncorrect return error process package {ret}"
 
-    tcp_con.socket.send.assert_called_once()
+    tcp_connection_mock.socket.send.assert_called_once()
 
 
 def test_handle_connection(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
     ping_msg_with_target_ip: Message,
     pkg_identity: DataPackage,
 ) -> None:
@@ -264,14 +282,14 @@ def test_handle_connection(
         lc_con_hdl.add_message(ping_msg_with_target_ip)
     )
 
-    if tcp_con.socket:
-        tcp_con.socket.recv = SocketRecvTCPMock()
-        tcp_con.socket.recv.tcp_con = tcp_con
-        tcp_con.socket.recv.msg = (
+    if tcp_connection_mock.socket:
+        tcp_connection_mock.socket.recv = TCPDeviceConnectionMock()
+        tcp_connection_mock.socket.recv.tcp_con = tcp_connection_mock
+        tcp_connection_mock.socket.recv.msg = (
             '{"type":"pong","ts":"' + str(int(time.time())) + '"}'
         )
         ret = get_asyncio_loop().run_until_complete(
-            lc_con_hdl.handle_connection(tcp_con)
+            lc_con_hdl.handle_connection(tcp_connection_mock)
         )
         assert (
             ret == DeviceTcpReturn.ANSWERED

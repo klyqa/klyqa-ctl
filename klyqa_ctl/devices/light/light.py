@@ -51,6 +51,8 @@ class Light(Device):
         self._attr_color_range = color_range
 
     def set_brightness_range(self, device_config: TypeJson) -> None:
+        """Set the device brightness range limits for minimum and maximum."""
+
         brightness_enum: list[Any] = []
         try:
             if self.ident and self.product_id.endswith(".rgb-cw-ww.e27"):
@@ -90,6 +92,8 @@ class Light(Device):
             task_log_trace_ex()
 
     def set_temperature_range(self, device_config: TypeJson) -> None:
+        """Set the device temperature range limits for minimum and maximum."""
+
         try:
             if self.ident and self.product_id.endswith(".rgb-cw-ww.e27"):
                 self.temperature_range = Range(
@@ -139,6 +143,8 @@ class Light(Device):
             task_log_trace_ex()
 
     def set_color_range(self, device_config: TypeJson) -> None:
+        """Set the device color range limits for minimum and maximum."""
+
         color_enum: list[Any] = []
         try:
             if self.ident and self.product_id.endswith(".rgb-cw-ww.e27"):
@@ -176,6 +182,8 @@ class Light(Device):
             task_log_trace_ex()
 
     def read_device_config(self, device_config: TypeJson) -> None:
+        """Read and set the device config from json configuration."""
+
         super().read_device_config(device_config)
         self.set_brightness_range(device_config)
         self.set_temperature_range(device_config)
@@ -183,6 +191,9 @@ class Light(Device):
             self.set_color_range(device_config)
 
     def set_temperature(self, temp: int) -> bool:
+        """Set the device temperature if the temperature is within the
+        limits."""
+
         if not self.device_config:
             return False
         temperature_enum: list[Any] = []

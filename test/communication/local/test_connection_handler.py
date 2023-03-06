@@ -3,7 +3,11 @@ from __future__ import annotations
 import asyncio
 from datetime import time
 import json
-from test.communication.local import TEST_IP, UDPSynSocketRecvMock, tcp_con
+from test.communication.local import (
+    TEST_IP,
+    UDPSocketRecvSynDeviceBootupMock,
+    tcp_connection_mock,
+)
 from test.conftest import TEST_PRODUCT_ID, TEST_UNIT_ID
 from typing import Any
 
@@ -38,7 +42,7 @@ def test_check_messages_time_to_live_hit(
     lc_con_hdl: LocalConnectionHandler,
     ping_msg_that_hit_ttl: Message,
 ) -> None:
-    """Test time to live for message when hit limit."""
+    """Test time to live for message when timelimit hit."""
 
     set_debug_logger(level=TRACE)
 
@@ -60,7 +64,7 @@ def test_read_udp_socket_task(lc_con_hdl: LocalConnectionHandler) -> None:
 
     set_debug_logger(level=TRACE)
 
-    lc_con_hdl.udp.recvfrom = UDPSynSocketRecvMock()
+    lc_con_hdl.udp.recvfrom = UDPSocketRecvSynDeviceBootupMock()
     lc_con_hdl.udp.sendto = mock.MagicMock()
 
     # disable the search and send loop task for receiving
@@ -79,7 +83,7 @@ def test_read_udp_socket_task(lc_con_hdl: LocalConnectionHandler) -> None:
 
 def test_status_update_callback_on_device_power_on(
     lc_con_hdl: LocalConnectionHandler,
-    tcp_con: TcpConnection,
+    tcp_connection_mock: TcpConnection,
 ) -> None:
     """Test status update callback that is called when a device
     get's powered on."""
@@ -104,18 +108,18 @@ def test_status_update_callback_on_device_power_on(
     if dev:
         dev.add_status_update_cb(status_update_cb)
 
-    lc_con_hdl.udp.recvfrom = UDPSynSocketRecvMock()
+    lc_con_hdl.udp.recvfrom = UDPSocketRecvSynDeviceBootupMock()
     lc_con_hdl.udp.sendto = mock.MagicMock()
 
     lc_con_hdl.read_udp_socket_task()
 
-    tcp_con.device = dev
+    tcp_connection_mock.device = dev
 
     json_response: str = '{"type": "status", "brightness": {"percentage":88}}'
-    tcp_con.device.save_device_message(json.loads(json_response))
+    tcp_connection_mock.device.save_device_message(json.loads(json_response))
     assert status_updated
 
     status_updated = False
     json_response = '{"type": "status", "temperature": 4488}'
-    tcp_con.device.save_device_message(json.loads(json_response))
+    tcp_connection_mock.device.save_device_message(json.loads(json_response))
     assert status_updated

@@ -32,7 +32,8 @@ class ResponseStatus(ResponseMessage):
         return get_obj_attr_values_as_string(self)
 
     def __init__(self, **kwargs: Any) -> None:
-        """__init__"""
+        """Initialization to an empty light response status message."""
+
         self._attr_active_command = None
         self._attr_active_scene = None
         self._attr_fwversion = None

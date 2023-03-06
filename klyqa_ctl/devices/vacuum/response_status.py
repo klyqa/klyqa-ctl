@@ -13,17 +13,19 @@ from klyqa_ctl.general.general import (
 
 
 class ResponseStatus(ResponseMessage):
-    """Vacuum cleaner Response Status"""
+    """Vacuum cleaner status response class."""
 
     def __str__(self) -> str:
-        """__str__"""
+        """Get attribute name and value pair concatenated string."""
+
         return get_obj_attr_values_as_string(self)
 
     def __init__(
         self,
         **kwargs: Any,
     ) -> None:
-        """__init__"""
+        """Initialization to an empty vacuum status response message."""
+
         self.action: str = ""
         self.active_command: int = -1
         self.alarmmessages: str = ""

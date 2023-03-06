@@ -58,7 +58,7 @@ except ImportError:
 SO_BINDTODEVICE_LINUX: int = 25
 
 
-class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
+class LocalConnectionHandler(ConnectionHandler):
     """Data communicator for local device connection.
 
     Important: Call async function shutdown() after using send method,
@@ -100,7 +100,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             tuple[Task, datetime.datetime, datetime.datetime]
         ] = []
         self.__attr_tasks_undone: list[tuple[Task, datetime.datetime]] = []
-        self._attr_handlec_connections_task: Task | None = None
+        self._attr_handle_connections_task: Task | None = None
         self._attr_handle_connections_task_end_now: bool = False
         self.__attr_read_tcp_task: Task | None = None
         self._attr_current_addr_connections = set()
@@ -227,13 +227,13 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     def handle_connections_task(self) -> Task | None:
         """Get connection handle task."""
 
-        return self._attr_handlec_connections_task
+        return self._attr_handle_connections_task
 
     @handle_connections_task.setter
     def handle_connections_task(
         self, handle_connections_tasks: Task | None
     ) -> None:
-        self._attr_handlec_connections_task = handle_connections_tasks
+        self._attr_handle_connections_task = handle_connections_tasks
 
     @property
     def handle_connections_task_end_now(self) -> bool:
@@ -308,9 +308,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         server_address: tuple[str, int]
         try:
-            if (
-                not self.udp
-            ):  # or self.udp._closed or self.udp.__getstate__() == -1:
+            if not self.udp:
                 self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 self.udp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -401,8 +399,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             )
             new_dev.ident = identity
             if (
-                type(new_dev) == Device
-            ):  # pylint: disable=unidiomatic-typecheck
+                # pylint: disable-next=unidiomatic-typecheck
+                type(new_dev)
+                == Device
+            ):
                 log = [
                     "Found new device %s but don't know the product id %s.",
                     identity.unit_id,
@@ -443,16 +443,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         device.save_device_message(json_response)
         device.local.con = self
 
-        # if False and (
-        #     device.u_id not in self.message_queue
-        #     or not self.message_queue[device.u_id]
-        # ):
-        #     if device.u_id in self.message_queue:
-        #         del self.message_queue[device.u_id]
-        #     return DeviceTcpReturn.NO_MESSAGE_TO_SEND
-
         if not is_new_device and device.ident:
-            task_log(f"Found device {device.ident.unit_id}")
+            task_log_debug("Found device {device.ident.unit_id}")
 
         if "all" in self.controller_data.aes_keys:
             con.aes_key = self.controller_data.aes_keys["all"]
@@ -1093,12 +1085,31 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         return True
 
     async def send_syn_udp_broadcast_loop(self) -> None:
-        """Send syn UDP broadcasts in a loop or when an event set."""
+        """Send syn UDP broadcasts in a loop or when the broadcast event is
+        set."""
 
         while True:
-            task_log_trace("Broadcasting QCX-SYN Burst")
-            if not await self.send_syn_udp():
-                task_log_trace("Broadcasting QCX-SYN Burst Exception")
+
+            msgs_broadcast_syn: bool = False
+
+            # Look for messages that want syn broadcasts
+            # (here we can add the unit ids to the syn string, until our
+            # firmware with this feature is mainly rolled out, keep it
+            # like that.)
+
+            for _, msgs in self.message_queue.copy().items():
+                for msg in msgs:
+                    if msg.broadcast_syn:
+                        msgs_broadcast_syn = True
+                        break
+                if msgs_broadcast_syn:
+                    break
+
+            if msgs_broadcast_syn:
+                task_log_trace("Broadcasting QCX-SYN Burst")
+
+                if not await self.send_syn_udp():
+                    task_log_trace("Broadcasting QCX-SYN Burst Exception")
 
             self.send_syn_udp_broadcast_event.clear()
             try:
@@ -1148,7 +1159,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
-        timeout_read: float = 0.3
+        timeout_read: float = 0.1
         task_log_debug("Read again tcp port..")
 
         try:
@@ -1270,8 +1281,10 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     ) -> None:
         """Accept incoming tcp connection and start connection handle
         process."""
+
         if not self.tcp:
             return
+
         loop: AbstractEventLoop = get_asyncio_loop()
         # device: Device = Device()
         addr: tuple
@@ -1533,7 +1546,9 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
     async def add_message(
         self, msg: Message, syn_broadcast_timeout: float = 3
     ) -> bool:
-        """Add message to message's queue with answer callback."""
+        """Add message to message's queue and start time to live timeout
+        task."""
+
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
@@ -1560,7 +1575,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         self, msg: Message, syn_broadcast_timeout: float = 3
     ) -> bool:
         """Add message to message queue and start connection
-        discover."""
+        discover. Look for device IP from it's last connection and send
+        syn there for connection or broadcast syn message."""
 
         loop: AbstractEventLoop = get_asyncio_loop()
 
@@ -1575,6 +1591,7 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
             not target_ip
             and msg.target_uid
             and msg.target_uid in self.devices
+            and self.devices[msg.target_uid].local.connected
             and self.devices[msg.target_uid].local_addr.ip
         ):
             target_ip = self.devices[msg.target_uid].local_addr.ip
@@ -1593,13 +1610,16 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
                     msg.state == MessageState.UNSENT
                     and self.broadcast_discovery
                 ):
-                    await self.send_syn_udp_broadcast()
+                    msg.broadcast_syn = True
 
             if syn_broadcast_timeout >= 0:
                 loop.create_task(direct_syn_timeout())
+            else:
+                msg.broadcast_syn = True
+                await self.send_syn_udp_broadcast()
 
         elif msg.target_uid and self.broadcast_discovery:
-            # direct connection via IP
+            msg.broadcast_syn = True
             await self.send_syn_udp_broadcast()
         self.search_and_send_loop_task_alive()
 
@@ -1613,7 +1633,8 @@ class LocalConnectionHandler(ConnectionHandler):  # type: ignore[misc]
         time_to_live_secs: float = DEFAULT_SEND_TIMEOUT_MS,
         **kwargs: Any,
     ) -> Message | None:
-        """Add message to message's queue."""
+        """Create message with the commands, send it and wait for reply or
+        timeout."""
 
         response_event: asyncio.Event = asyncio.Event()
 
